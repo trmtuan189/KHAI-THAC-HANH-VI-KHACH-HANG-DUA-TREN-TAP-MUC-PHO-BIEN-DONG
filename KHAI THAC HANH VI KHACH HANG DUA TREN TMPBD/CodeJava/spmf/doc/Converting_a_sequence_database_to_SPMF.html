@@ -1,0 +1,118 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Converting a Sequence Database to SPMF Format  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Converting a Sequence Database to SPMF Format (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to  <strong>convert a sequence database to SPMF format</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Convert_a_sequence_database_to_SPMF_format</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextCSVSeq</span><span class="highlight">.csv&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    (4) set <em>input_format =</em><span class="highlight"> CSV_INTEGER</span> and <em>sequence count = </em><span class="highlight">5</span>.(5) click
+    &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run Convert_a_sequence_database_to_SPMF_format contextCSVSeq.csv output.txt <strong>CSV_INTEGER</strong> 5</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextCSVSeq.csv</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestConvertSequenceDatabase.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<p>The <strong>tool for converting a sequence databases to SPMF format </strong>takes three prameters as input:</p>
+<ul>
+  <li>a sequence database,</li>
+  <li>the name of the sequence database format (<em>CSV_INTEGER</em>, <em>Kosarak</em>, <em>Snake</em>, <em>IBMGenerator</em> or <em>BMS</em>),</li>
+  <li>the number of sequences to be converted</li>
+</ul>
+<p>The algorithm outputs a sequence database in SPMF format.</p>
+<p>The <strong>CSV_INTEGER format</strong> is defined as follows:</p>
+<ul>
+  <li>each line is a sequence</li>
+  <li>each sequence is a list of items represented by positive integers
+    (&gt;0) separated by commas.</li>
+</ul>
+<p>For example, the follwing sequence databasee is in CSV_INTEGER
+  format and contains four sequences: </p>
+<p>1,2,3,4<br>
+  5,6,7,8<br>
+  5,6,7<br>
+  1,2,3</p>
+<p>The <strong>Kosarak format </strong>is defined as follows:</p>
+<ul>
+  <li>each line is a sequence</li>
+  <li>each sequence is a list of items represented by integers and
+    separated by a space.</li>
+</ul>
+<p>For example, the follwing sequence databasee is in Kosarak format
+  and contains four sequences: </p>
+1 2 3 4<br>
+5 6 7 8<br>
+5 6 7<br>
+1 2 3
+<p>The <strong>IBMGenerator format </strong>is the format used by the <strong>IBM Data Quest Generato</strong>r. The format is defined as
+  follows:</p>
+<ul>
+  <li>the file is a binary file in little indian format</li>
+  <li>the file is a list of integers without spaces</li>
+  <li>a positive integer represents an item</li>
+  <li>-1 represents the end of an itemset</li>
+  <li>-2 represents the end of a sequence</li>
+</ul>
+<p>For example, the follwing sequence databasee is in Kosarak format
+  and contains four sequences: </p>
+1 -1 2 -1 3 -1 4 -1 -2<br>
+5 -1 6 -1 7 -1 8 -1 -2<br>
+5 -1 6 -1 7 -1 -2<br>
+1 -1 2 -1 3 -1 -2
+<p>The <strong>Snake format </strong>is defined as follows:</p>
+<ul>
+  <li>each line is a sequence</li>
+  <li>each sequence is a list of letters </li>
+</ul>
+<p>For example, the follwing sequence databasee is in Snake format and
+  contains four sequences: </p>
+ABCD<br>
+ABAB<br>
+CACD<br>
+ADAC<br>
+<br>
+<p>The <strong>BMS format </strong>is defined as follows:</p>
+<ul>
+  <li>each line contains a sequence id and an item, both represented as
+    integers</li>
+</ul>
+<p>For example, the following sequence databasee is in BMS format and
+  contains four sequences with the ids 10, 20, 30 and 40, respectively: </p>
+10 1<br>
+10 2<br>
+10 3<br>
+10 4<br>
+20 5<br>
+20 6<br>
+20 7<br>
+20 8<br>
+30 5<br>
+30 6<br>
+30 7<br>
+40 1<br>
+40 2<br>
+40 3
+<!----------END------>
+<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

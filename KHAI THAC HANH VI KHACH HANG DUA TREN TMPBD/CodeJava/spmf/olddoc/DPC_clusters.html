@@ -1,0 +1,113 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Clustering using the DPC Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000CC}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+                <!----------START------>
+                <h1>Clustering using the DPC Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+                <p>This example explains how to run the <strong>DPC algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+                <!--------------(4) Insert the example here:------------->
+                <h2>How to run this example?</h2>
+                <ul>
+                  <li><strong>If you are using the graphical interface, </strong>(1)
+                    choose the <strong>&quot;<span class="style1">DPC</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="style1">szu.txt</span><span class="highlight">&quot;</span></strong>,
+                    (3) set the output file name (e.g. &quot;<span class="style1"><strong>output.txt</strong></span>&quot;)
+                    (4) set <em>dc =1</em>, <em>rhoMin</em> = 150, and <em>deltaMin</em> = 1 and (5) click &quot;<span class="highlight">Run
+                      algorithm</span>&quot;.<br>
+                  Note that there is also an optional parameter called &quot;separator&quot;. It can be used to read other types of input files where values are not separated by spaces. For example, for a file separated by the ',' character, the parameter &quot;separator&quot; would have to be set to &quot;,&quot;.</li>
+                  <li><strong>If you want to execute this example from the command line</strong>,
+                    then execute this command: <br>
+        <span class="highlight style1">java -jar spmf.jar run<strong> DPC szu.txt
+          output.txt 1 150 1 </strong></span> in a folder containing <span class="highlight"><strong>spmf.jar</strong></span> and the example input file <span class="highlight"><strong>szu.txt</strong></span>.</li>
+                  <li><strong>If you are using the source code version of SPMF, </strong>launch
+                    the file <strong><span class="highlight">&quot;<span class="style1">MainTestDPC_saveToFile.java&quot;</span></span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+                </ul>
+                <h2>What is DPC?</h2>
+                <p><strong>DPC (Density Peak Clustering) </strong>is a an algorithm to find clusters in data represented as vectors using the concept of &quot;density peaks&quot;. The DPC algorithm is well-known and was publish in the Science journal.</p>
+                <p>This version follows the original implementation of DPC by drawing inspiration of the original MatLab code. It is to be note that while the original DPC paper claims that DPC is a parameter free algorithm, it is actually not true. In the original MatLab code of DPC, the user has to visually select a rectangle with the mouse. Thus, this algorithm has in reality three parameters called &quot;dc&quot;, &quot;rho_min&quot; and &quot;delta_min&quot;, which are also used in this implementation. </p>
+                <h2>What is the input?</h2>
+                <p><strong>DPC </strong>takes as input (1) a set of instances having a name and containing one or more double values, and (2) the three parameters <strong></strong> &quot;dc&quot; (double value), &quot;rho_min&quot; (integer value)  and &quot;delta_min&quot;(double value). Please see paper about DPC for more
+                  details about the meaning of these parameters.. </p>
+                <p>The <strong>input file format</strong> is is a text file containing several instances. </p>
+                <p>The first lines (optional) specify the name of the attributes used for describing the instances. In this example, two attributes will be used, named X and Y. But note that more than two attributes could be used. Each attribute is specified on a separated line by the keyword &quot;@ATTRIBUTEDEF=&quot;, followed by the attribute name</p>
+                <p>Then, each instance is described by two lines. The first line (which is optional) contains the string &quot;@NAME=&quot; followed by the name of the instance. Then, the second line provides a list of double values separated by single spaces. </p>
+                <p>An example of input is provided in the file &quot;<span class="highlight"><strong>szu.txt</strong></span>&quot;
+                  of the SPMF distribution. It contains hundreds of instances, each described by two attributes:.</p>
+                <p>1.12 3.65<br>
+                  8.71 1.86<br>
+                  9.23 2.26<br>
+                  3.68 5.28<br>
+                  0.42 4.50<br>
+                  7.99 5.36<br>
+                  2.10 4.31</p>
+                <p>For example, the first instance  is a vector with two values: 1.12  and 3.65 for the first and second attributes, respectively.</p>
+                <p>This input file represents a set of vectors that have two dimensions.  But note that, it is possible to use more than two attributes to describe instances. To give a better idea of what the input file looks like, here is a visual representation:</p>
+                <p><img src="SZU_datasets.png" width="582" height="487" alt=""/></p>
+                <p>The distance function used by <strong>DPC</strong> is the <strong>Euclidian distance</strong>.</p>
+                <h2>What is the output?</h2>
+                <p><strong>DPCs</strong> groups vectors (points) in clusters based
+                  on density and distance between points. </p>
+                <p>Note that it is normal that <strong>DPC</strong> may generate a cluster having
+                  less than minPts (this happens if the neibhoors of a core points get
+                  &quot;stolen&quot; by another cluster).</p>
+                <p>Note also that <strong>DPC</strong> may eliminate points that are seen as noise (a
+                  point having less than minPts neighboors within a radius of epsilon)</p>
+                <p>By running <strong>DPC</strong> on the previous input file and
+                  minPts =100, we obtain the following output file containing
+                  8 clusters. The output file looks like this: </p>
+                <p>@ATTRIBUTEDEF=Attribute0<br>
+                  @ATTRIBUTEDEF=Attribute1<br>
+                  [Series405 3.61 4.81][Series3944 3.6 4.81][Series3002 3.62 4.8] ...<br>
+                [Series2595 3.67 4.88][Series7779 3.64 4.88][Series3146 3.68 4.86][Series3523 3.67 4.85] ... <br>
+                .....</p>
+                <p>The <strong>output file format </strong>is defined as follows.
+                  The first few lines indicate the attribute names. Each attribute is specified on a separated line with the keyword &quot;ATTRIBUTEDEF=&quot; followed by the attribute name (a string).</p>
+                <p> Then, the list of clusters is indicated. Each cluster is specified on a separated line, listing the instances contained in the cluster.
+                  An instance  is a name followed by a list of double values separated by &quot; &quot; and between the
+                  &quot;[&quot; and &quot;]&quot; characters.</p>
+                <p>The clusters found by the algorithm can be viewed visually using the &quot;<strong>Cluster Viewer</strong>&quot; provided in SPMF. If you are using the graphical interface of SPMF, select &quot;<strong>Open output file using</strong>&quot; the &quot;<strong>Cluster Viewer&quot;</strong> before pressing the &quot;<strong>Run Algorithm</strong>&quot; button. The result will be displayed in the Cluster Viewer, as follows: </p>
+                <p><img src="DPC_clusters_found.png" width="573" height="499" alt=""/></p>
+                <p>As it can be seen in this example, the result can be more or less good. Points that are close to each other have put in the same clusters but some closers may be broken into separate parts. An interesting thing about DPC is that it can find clusters of various shapes.</p>
+                <h2>Using an Extended Input File Format</h2>
+                <p>Note that it is also possible to use an extended <strong>input file format</strong> where names can be given to the attributes and instances in the input file. In this case, the first lines (optional) specify the name of the attributes used for describing the instances. We will give an example with two attributes named X and Y. Each attribute is specified on a separated line by the keyword &quot;@ATTRIBUTEDEF=&quot;, followed by the attribute name. Then, each instance is described by two lines. The first line (which is optional) contains the string &quot;@NAME=&quot; followed by the name of the instance. Then, the second line provides a list of double values separated by single spaces. An example of input using this extended format is provided in the file &quot;<span class="highlight"><strong>inputDBScan2.tx</strong>t</span>&quot;
+                  of the SPMF distribution. It contains 31 instances, each described by two attribute called X and Y, and the first lines look like this: </p>
+                <p>@ATTRIBUTEDEF=X<br>
+                  @ATTRIBUTEDEF=Y<br>
+                  @NAME=Instance1<br>
+                  1 1<br>
+                  @NAME=Instance2<br>
+                  0 1<br>
+                  @NAME=Instance3<br>
+                  1 0<br>
+                  @NAME=Instance4<br>
+                  11 12<br>
+                  ... </p>
+                <h2>Applying DPC  to time series</h2>
+                <p>Note that the DPC algorithm implementation in SPMF can also be applied to time series database such as the file contextSAX.txt in the SPMF distribution. To apply this algorithm to time series, it is necessary to set the &quot;separator&quot; parameter of this algorithm to &quot;,&quot; since time series files separate values by &quot;,&quot; instead of separating by spaces.</p>
+                <h2>Where can I get more information about DPC?</h2>
+                <p>DPC is a most famous data mining algorithm for clustering. It is
+                  described in almost all data mining books that focus on algorithms, and
+                  on many websites. The original article describing DPC is:</p>
+                <p>Rodriguez, A., &amp; Laio, A. (2014). Clustering by fast search and find of density peaks. science, 344(6191), 1492-1496.</p>
+                <!----------END------>
+                <div class="footer">
+                  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+                  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+                </div>
+			  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

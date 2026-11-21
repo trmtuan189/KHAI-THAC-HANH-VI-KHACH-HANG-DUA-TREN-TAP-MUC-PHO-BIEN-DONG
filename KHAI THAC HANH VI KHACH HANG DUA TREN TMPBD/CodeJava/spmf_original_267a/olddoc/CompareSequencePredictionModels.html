@@ -1,0 +1,81 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Comparing Several Sequence Prediction Models (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Comparing Several Sequence Prediction Models (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to <strong> compare sequence prediction models </strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>This Example </strong> is not available in the graphical
+    user interface of SPMF.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestCompareSequencePredictionModels.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span></li>
+</ul>
+<p>This example illustrates how to automatically compare the
+  accuracy, coverage, training time and prediction time of various
+  sequence prediction models, on several datasets. This capability was
+  used for example to generate the experimental results shown in the CPT+
+  paper (Gueniche et al., 2015).</p>
+<p>To understand this example, you should open the file <strong><span class="highlight">&quot;MainTestCompareSequencePredictionModels.java&quot;</span></strong> in the package &quot;<strong class="highlight">ca.pfv.SPMF.tests</strong>&quot;.</p>
+<p>The first line creates an instance of the Evaluator class to
+  automatically compare several sequence prediction models. It takes as
+  parameter a file path where a location on your computer where datasets should be stored. For example, lets assumes that some datasets are located in a folder
+  on the hard drive of the local computercalled &quot;/home/ted/java/IPredict/datasets&quot;. <strong>Note
+    that  datasets are not included in the source code of SPMF due to
+    the large size of some datasets. But they can be downloaded from the <a href="https://www.philippe-fournier-viger.com/spmf/index.php?link=datasets.html">dataset
+      page </a>on the SPMF website.</strong> To run this example, create a folder, and download the datasets to this folder. Then in the following line, replace &quot;/home/ted/java/IPredict/datasets&quot; by your folder: </p>
+
+  <p> Evaluator evaluator = new
+    Evaluator(&quot;/home/ted/java/IPredict/datasets&quot;);</p>
+
+<p>The next lines indicates which datasets should be used for the
+  experiments. For example, the following lines indicates to load the
+  BMS.dat dataset and SIGN.dat datasets, and to respectively use the
+  first 5000 and 1000 lines of these datasets.</p>
+
+  <p> evaluator.addDataset(&quot;BMS&quot;, 5000);<br>
+    evaluator.addDataset(&quot;SIGN&quot;, 1000);<br>
+    ... </p>
+
+<p>The next lines specify which sequence prediction models should be
+  compared and their parameters. For example, the following lines
+  indicates to compare DG, TDAG and CPT+. Moreover, the look-ahead
+  parameter of DG is set to 4 and the parameters CCF and CBS of CPT+ are
+  set to true.</p>
+
+  <p> evaluator.addPredictor(new DGPredictor(&quot;DG&quot;, &quot;lookahead:4&quot;));<br>
+    evaluator.addPredictor(new TDAGPredictor());<br>
+    evaluator.addPredictor(new CPTPlusPredictor(&quot;CPT+&quot;, &quot;CCF:true
+    CBS:true&quot;));<br>
+    ...</p>
+
+<p>Then, the next line indicates to run the experiment with a k-fold
+  cross-validation of k = 14, and to print the results, dataset
+  statistics, and execution statistics.</p>
+
+  <p> //Start the experiment<br>
+    StatsLogger results = evaluator.Start(Evaluator.KFOLD, 14 , true, true,
+    true);</p>
+
+<p>When this example is run, it will show a comparison of the
+  performance of the various sequence prediction models.</p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

@@ -1,0 +1,122 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Visualizing clusters using the Instance Viewer  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Visualizing instances using the Instance Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>Instance Viewer</strong> of the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Vizualize_instances</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">inputDBScan2.txt"</span></strong>, (3) and click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run <strong>Vizualize_instances</strong> inputDBScan2.txt <br>
+    </span>in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">inputDBScan2.txt</span>. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>to
+    run respectively <strong>this example</strong><strong>, </strong>launch
+    the file <strong><span class="highlight">"MainTestInstanceViewerFile.java"</span></strong>in
+    the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is the <strong>Instance Viewer</strong>?</h2>
+The <strong>Instance Viewer </strong> is a tool offered in SPMF for visualizing a set of instances used as input for clustering algorithms. The Instance Viewer provides some basic functions like zooming in, zooming out, printing, and saving the picture as an image. It is useful for visualizing the instances that will be given to a clustering algorithm as input. Visualizing instances can help to decide which algorithm should then be applied.
+<p>What is the input of the Instance Viewer?</p>
+
+  <p>The input is a file containing several instances. The <strong>input file format</strong> is defined as follows. </p>
+  <p>The first lines (optional) specify the name of the attributes used for describing the instances. In this example, two attributes will be used, named X and Y. But note that more than two attributes could be used. Each attribute is specified on a separated line by the keyword &quot;@ATTRIBUTEDEF=&quot;, followed by the attribute name</p>
+  <p>Then, each instance is described by two lines. The first line (which is optional) contains the string &quot;@NAME=&quot; followed by the name of the instance. Then, the second line provides a list of double values separated by single spaces. </p>
+  <p>An example of input is provided in the file "<span class="highlight">inputDBScan2.txt</span>"
+    of the SPMF distribution. It contains 31 instances, each described by two attribute called X and Y.</p>
+  <p>@ATTRIBUTEDEF=X<br>
+    @ATTRIBUTEDEF=Y<br>
+    @NAME=Instance1<br>
+    1 1<br>
+    @NAME=Instance2<br>
+    0 1<br>
+    @NAME=Instance3<br>
+    1 0<br>
+    @NAME=Instance4<br>
+    11 12<br>
+    @NAME=Instance5<br>
+    11 13<br>
+    @NAME=Instance6<br>
+    13 13<br>
+    @NAME=Instance7<br>
+    12 8.5<br>
+    @NAME=Instance8<br>
+    13 8<br>
+    @NAME=Instance9<br>
+    13 9<br>
+    @NAME=Instance10<br>
+    13 7<br>
+    @NAME=Instance11<br>
+    11 7<br>
+    @NAME=Instance12<br>
+    8 2 <br>
+    @NAME=Instance13<br>
+    9 2<br>
+    @NAME=Instance14<br>
+    10 1<br>
+    @NAME=Instance15<br>
+    7 13<br>
+    @NAME=Instance16<br>
+    5 9<br>
+    @NAME=Instance17<br>
+    16 16<br>
+    @NAME=Instance18<br>
+    11.5 8<br>
+    @NAME=Instance20<br>
+    13 10<br>
+    @NAME=Instance21<br>
+    12 13<br>
+    @NAME=Instance21<br>
+    14 12.5<br>
+    @NAME=Instance22<br>
+    14.5 11.5<br>
+    @NAME=Instance23<br>
+    15 10.5<br>
+    @NAME=Instance24<br>
+    15 9.5<br>
+    @NAME=Instance25<br>
+    12 9.5<br>
+    @NAME=Instance26<br>
+    10.5 11<br>
+    @NAME=Instance27<br>
+    10 10.5<br>
+    @NAME=Instance28<br>
+    9 3<br>
+    @NAME=Instance29<br>
+    9 4<br>
+    @NAME=Instance30<br>
+    9 5</p>
+  <p>For example, the first instance is named &quot;Instance1&quot;, and it is a vector with two values: 1 and 1 for the attributes X and Y, respectively.<br>
+  </p>
+
+  <h2>What is the result of running theinstance viewer?</h2>
+  <p>Running the Instance Viewer will display the instances visually. For example, for the above instances, the instances will be displayed as follows (note that this may vary depending on your version of SPMF). </p>
+  <p><img src="inputDBScan2.png" width="580" height="496" alt=""/></p>
+
+&nbsp;
+<h2>Implementation details</h2>
+<p>The Instance Viewer has been implemented by reusing and extending some code provided by Yuriy Guskov under the MIT License for displaying charts.</p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>
+

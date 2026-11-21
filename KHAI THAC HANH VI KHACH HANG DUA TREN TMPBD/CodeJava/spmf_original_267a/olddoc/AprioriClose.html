@@ -1,0 +1,252 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Frequent Closed Itemsets using the AprioriClose Algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<!---------------------- (2) Change the title of the example in the <a> tag: --->
+<h1><a href="documentation.html"></a> Mining Frequent Closed Itemsets using the AprioriClose or AprioriTIDClose Algorithms (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>AprioriClose algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">AprioriClose</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextPasquier99.txt&quot;</span></strong>, (3) set the
+    output file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;) (4)
+    set minsup to <span class="highlight">40% </span>and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong> <span class="highlight">AprioriClose</span></strong> contextPasquier99.txt
+      output.txt 40%</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextPasquier99.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestAprioriClose1.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is AprioriClose?</h2>
+<p><strong>AprioriClose</strong> (aka <strong>Close</strong>) is an
+    algorithm for discovering <strong> frequent closed itemsets</strong> in a transaction database. It was proposed by Pasquier et al. (1999). </p>
+
+<h2>What is the input of the AprioriClose algorithm?</h2>
+<p>The input is a <strong>transaction database</strong> (aka
+      binary context) and a threshold named <em><strong>minsup</strong></em> (a value between 0 and 100 %). </p>
+    <p>A <strong>transaction database</strong> is a set of
+      transactions. Each <strong>transaction</strong> is a set of items. For
+      example, consider the following transaction database. It contains 5
+      transactions (t1, t2, ..., t5) and 5 items (1,2, 3, 4, 5). For example,
+      the first transaction represents the set of items 1, 3 and 4. This
+      database is provided as the file <strong>contextPasquier99.txt</strong> in the SPMF distribution. It is important to note that an item is not
+      allowed to appear twice in the same transaction and that items are
+      assumed to be sorted by lexicographical order in a transaction.</p>
+  
+  <table align="center" border="1" width="100%">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 3, 4}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{2, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>What is the output of the AprioriClose algorithm?</h2>
+  <p><strong>AprioriClose</strong> outputs <strong>frequent closed
+    itemsets. </strong> To explain what is a frequent closed itemset, it
+    is necessary to review a few definitions. </p>
+  <p> An itemset is an unordered set of distinct items. The <strong>support
+    of an itemset</strong> is the number of transactions that contain the
+    itemset. For example, consider the itemset {1, 3}. It has a support of
+    3 because it appears in three transactions (t1, t3 and t5) from the
+    transaction database . </p>
+  <p>A <strong>frequent itemset</strong> is an itemset that appears in
+    at least <em>minsup </em>transactions from the transaction database,
+    where <em>minsup </em>is a threshold set by the user. A <strong>frequent
+      closed itemset </strong>is a frequent itemset that is not included in
+    a proper superset having exactly the same support. The set of <strong>frequent
+      closed itemsets</strong> is thus a subset of the set of frequent
+    itemsets. Why is it interesting to discover frequent closed itemset ?
+    The reason is that the set of frequent closed itemsets is usually much
+    smaller than the set of frequent itemsets and it can be shown that no
+    information is lost (all the frequent itemsets can be regenerated from
+    the set of frequent closed itemsets - see Pasquier(1999) for more
+    details).</p>
+  <p>If we apply <strong>AprioriClose</strong> on the previous
+    transaction database with a <em>minsup</em> of 40 % (2 transactions),
+    we get the following five frequent closed itemsets:</p>
+
+<table align="center" border="1" width="100%">
+  <tbody>
+    <tr>
+      <td width="231"><strong>frequent closed itemsets</strong></td>
+      <td width="109"><strong>support</strong></td>
+    </tr>
+    <tr>
+      <td>{3}</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{1, 3}</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{2, 5}</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{2, 3, 5}</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{1, 2, 3, 5}</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+ If you would apply the regular Apriori algorithm instead
+  of AprioriClose, you would get 15 itemsets instead of 5, which shows
+  that the set of frequent closed itemset can be much smaller than the
+  set of frequent itemsets.
+ <h2>How should I interpret the results?</h2>
+ <p>In the results, each frequent closed itemset is annotated with its
+    support. For example, the itemset {2, 3, 5} has a support of 3 because
+    it appears in transactions t2, t3 and t5. The itemset {2, 3, 5} is a
+    frequent itemset because its support is higher or equal to the <em>minsup </em>parameter. Furthermore, it is a closed itemsets because it has
+    no proper superset having exactly the same support.</p>
+
+ <h2>Input file format</h2>
+ <p>The <strong> input file format</strong> used by AprioriClose is
+    defined as follows. It is a text file. An item is represented by a
+    positive integer. A transaction is a line in the text file. In each
+    line (transaction), items are separated by a single space. It is
+    assumed that all items within a same transaction (line) are sorted
+    according to a total order (e.g. ascending order) and that no item can
+    appear twice within the same line.</p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>1 3 4<br>
+    2 3 5<br>
+    1 2 3 5<br>
+    2 5 <br>
+    1 2 3 5</p>
+  <p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the
+    ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+    Most features of the ARFF format are supported except that (1) the
+    character &quot;=&quot; is forbidden and (2) escape characters are not
+    considered. Note that when the ARFF format is used, the performance of
+    the data mining algorithms will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file, where each line represents a <strong>frequent closed
+      itemset</strong>. On each line, the items of the itemset are first
+    listed. Each item is represented by an integer and it is followed by a
+    single space. After, all the items, the keyword &quot;#SUP:&quot; appears, which
+    is followed by an integer indicating the support of the itemset,
+    expressed as a number of transactions. For example, we show below the
+    output file for this example. The second line indicates the frequent
+    itemset consisting of the item 1 and 3, and it indicates that this
+    itemset has a support of 4 transactions.</p>
+  <p>3 #SUP: 4<br>
+    1 3 #SUP: 3<br>
+    2 5 #SUP: 4<br>
+    2 3 5 #SUP: 3<br>
+    1 2 3 5 #SUP: 2 </p>
+  <p>Note that if the ARFF format is used as input instead of the
+    default input format, the output format will be the same except that
+    items will be represented by strings instead of integers.</p>
+
+  <h2>Optional feature: giving names to items</h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextPasquier99.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+    @CONVERTED_FROM_TEXT<br>
+    @ITEM=1=apple<br>
+    @ITEM=2=orange<br>
+    @ITEM=3=tomato<br>
+    @ITEM=4=milk<br>
+    @ITEM=5=bread<br>
+    1 3 4<br>
+    2 3 5<br>
+    1 2 3 5<br>
+    2 5 <br>
+    1 2 3 5 </p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second line indicates that the item 1 is called &quot;apple&quot;. The third line indicates that the item 2 is called &quot;orange&quot;. Then the following lines define transactions in the SPMF format.</p>
+  <p>Then, if we apply the algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+      <br>
+    orange tomato bread  #SUP: 3<br>
+    orange bread  #SUP: 4<br>
+    apple orange tomato bread  #SUP: 2</p>
+  <p>Note that this feature could be also used from the <strong>source code</strong> of SPMF using the ResultConverter class. However, there is currently no example provided for using it from the source code.</p>
+
+  <h2>Performance</h2>
+  <p> The <strong>AprioriClose</strong> algorithm is important for
+    historical reasons because it is the first algorithm for mining
+    frequent closed itemsets. However, there exists several other
+    algorithms for mining frequent closed itemsets.  </p>
+  <p>In SPMF, there are three implementations of <strong>AprioriClose</strong>:</p>
+  <ul>
+    <li><strong>AprioriClose</strong>: This is a highly optimized verison of AprioriClose, which is the default implementation in SPMF from version 2.65. It is in the package <strong>ca.pfv.spmf.algorithms.frequent_patterns.aprioriTID_fast</strong></li>
+    <li><strong>Apriori_TIDClose: </strong>This is a highly optimized version of ApriorClose, implemented with a vertical database representation, as done in AprioriTID, introduced in SPMF 2.66. It can be usedin the graphical interface of SPMF and called from the command line as:<br>
+        <span class="highlight">java -jar spmf.jar run<strong> Apriori_TIDClose</strong> contextPasquier99.txt
+      output.txt 40%</span><br>
+</li>
+    <li><strong>AprioriClose_simple</strong> : This is a simple version of AprioriClose used in SPMF up to version 2.64. It is in the package <strong>ca.pfv.spmf.algorithms.frequent_patterns.apriori_simple.</strong>  It can be used in the graphical interface of SPMF and called from the command line as:<br>
+      <span class="highlight">java -jar spmf.jar run<strong> AprioriClose_simple</strong> contextPasquier99.txt
+      output.txt 40%</span></li>
+    </ul>
+  <h2>Implementation details</h2>
+  <p>In SPMF, there are two versions of <strong>AprioriClose</strong>.
+    The first version is named &quot;<span class="highlight">AprioriClose</span>&quot;
+    and is based on the &quot;Apriori&quot; algorithm. The second version is named &quot;<span class="highlight">Apriori_TIDClose</span>&quot; and is based on the AprioriTID
+    algorithm instead of Apriori (it uses tidsets to calculate support to
+    reduce the number of database scans). Both version are available in the
+    graphical user interface of SPMF. In the source code, the files <strong><span class="highlight">&quot;MainTestAprioriClose1.java&quot; </span></strong><span class="highlight">and</span>&quot;<strong><span class="highlight">MainTestAprioriTIDClose.java</span></strong>&quot;
+    respectively correspond to these two versions.</p>
+
+  <h2>Where can I get more information about the AprioriClose algorithm?</h2>
+  <p>The following article describes the AprioriClose algorithm:</p>
+  <p><em>Nicolas Pasquier, Yves Bastide, Rafik Taouil, Lotfi Lakhal: <a rel="nofollow" href="https://www.philippe-fournier-viger.com/spmf/pasquier99.pdf">Discovering
+    Frequent Closed Itemsets for Association Rules</a>. ICDT 1999: 398-416</em></p>
+
+
+  <p>Also, for a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+				
+	
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;CompareAlgorithms.java&apos; to &apos;BaselineSPMF267a/src/bakery.experiment&apos;&#x0D;&#x0A;- Original project: &apos;BakeryClosedItemsets&apos;&#x0D;&#x0A;- Destination element: &apos;BaselineSPMF267a/src/bakery.experiment&apos;&#x0D;&#x0A;- Original element: &apos;bakery.experiment.CompareAlgorithms.java&apos;" description="Copy compilation unit" destination="=BaselineSPMF267a/src&lt;bakery.experiment" element1="/src&lt;bakery.experiment{CompareAlgorithms.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1794378131707" units="1" version="1.0"/>
+</session>

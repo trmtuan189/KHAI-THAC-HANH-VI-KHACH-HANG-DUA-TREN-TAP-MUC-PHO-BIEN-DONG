@@ -1,0 +1,136 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Calculate Statistics for a Transaction Database with Utility and Cost Information   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style3 {color: #0000FF; font-weight: bold; }
+.style4 {
+	color: #0000CC;
+	font-weight: bold;
+}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<h1>Calculate Statistics for a Transaction Database with Utility and Cost Information (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to  <strong> calculate statistics for a transaction database with utility and cost information</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight style1">Calculate_stats_for_a_transaction_database_with_cost_utility</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the input file <span class="style3">DB_cost.txt</span> (3) click &quot;<span class="style3">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command
+    line</strong>, then execute this command: <br>
+    <span class="highlight style4">java -jar spmf.jar run Calculate_stats_for_a_transaction_database_with_cost_utility DB_cost.txt
+      no_output_file</span> in a folder containing <span class="highlight">spmf.jar</span> and the input file <span class="style3"><strong>DB_cost.txt</strong></span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;</span><span class="style3">MainTestStatsCostUtilityTDB.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this tool?</h2>
+<p>This tool is a tool for generating statistics about a
+    transaction database that contains utility and cost information. This tool can be used to know for example what is the average length of transaction in a database, and what is the total utility of the database. This type of database is used as input by some low-cost high utility itemset mining algorithms such as <strong>LCIM</strong>.</p>
+
+<h2>What is the input?</h2>
+<p>The input is a transaction database with utility and cost information three parameters called the minimum utility threshold <em>min_utility </em>(a positive integer)<em>, maxcost </em>(an integer)<em>, </em>and <em>minsup</em> (a double value) <em>.</em> Let's consider the following database consisting of 5 transactions (t1,t2...t5) and 7 items (1, 2, 3, 4, 5, 6, 7). This database is provided in the text file "<strong>DB_cost.txt</strong>" in the package <strong>ca.pfv.spmf.tests </strong>of the SPMF distribution<strong>.</strong></p>
+  <table align="center" border="1" width="721">
+    <tbody>
+      <tr>
+        <td width="56"><br></td>
+        <td width="156"><strong>Items</strong></td>
+        <td width="190"><strong>Transaction utility</strong></td>
+        <td width="291"><strong>Item cost values for this transaction</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>3 5 1 2 4 6</td>
+        <td>40</td>
+        <td>1 3 5 10 6 5</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>3 5 2 4</td>
+        <td>20</td>
+        <td>3 3 8 6</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>3 1 4</td>
+        <td>8</td>
+        <td>1 5 2</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>3 5 1 7</td>
+        <td>37</td>
+        <td>6 6 10 5</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>3 5 2 7</td>
+        <td>21</td>
+        <td>2 3 4 2</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Each line of the <strong>database</strong> is:</p>
+  <ul>
+    <li>a set of items (the second column of the table) representing some nominal values,</li>
+    <li>a utility value (an integer) that is assigned to this transaction (the third column of the table),</li>
+    <li>a cost value (integer) for each item of this transaction (the fourth column of the table).</li>
+  </ul>
+  <p>Let's explain what this means with a real example. Let's say that this data is from e-learning. Each transaction (record) is a set of items that may represent the courses taken by students. Here the items are called 1,2,3,4,5,6,7, which means different courses. For example, the first transaction <em>t1</em> indicates that a student took the courses 3, 5, 1, 2, 4 and 6 (without any specific order). Then, the utility of the transaction <em>t1</em> is 40, which represents the grade that the student obtained after taking an exam after taking the courses. For example, the student described by transaction <em>t1</em> received a utility (grade) of 40 at the final exam. Then, the last column indicates the cost of each item, which may represent the time spent on each course. For example, the transaction <em>t1</em> has the cost values 1, 3, 5, 10, 6 and 5, which means that the student spent 1 time unit on course 3, 3 time units on course 5, 5 time units on course 1, 10 time units on course 2, 6 time units on course 4, and 5 time units on course 6. The database contains five transactions (t1, t2, t3, t4, and t5), which may indicate the information for five students.</p>
+  <p>It is to be noted that here we use the example of e-learning but other types of data could also be represented using that same format such as medical data, or shopping data.</p>
+  <h2>What is the output?</h2>
+    <p>The output is statistics about the transaction database. For
+    example, if we use the tool on the previous  database given as
+    example, we get the following statistics:</p>
+  <p class="style1">---------- Cost-Utility Transaction Database Information----------<br>
+    Number of transations : 5<br>
+    Total utility : 136<br>
+    Number of distinct items : 7<br>
+    Maximum Id of item : 7<br>
+    Average length of transaction : 4.2<br>
+    Maximum length of transaction : 6<br>
+    Average cost per item: 4.571428571428571 standard deviation: 2.536803924165182 variance: 6.435374149659867<br>
+    Average utility per transaction: 27.2 standard deviation: 9.325234581499814 variance: 86.96000000000001<br>
+    Database density: 60.0 %  </p>
+  <p>Note: the database density is calculated as the average transaction length divided by the number of distinct items. </p>
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong>is defined as follows. It is a text file. Each lines represents a transaction. Each line is composed of three sections, as follows.</p>
+  <ul>
+    <li>First, the items contained in the transaction are listed. An item is represented by a positive integer. Each item is separated from the next item by a single space. It is assumed that all items within a same transaction (line) are sorted according to a total order (e.g. ascending order) and that no item can appear twice within the same transaction.</li>
+    <li>Second, the symbol ":" appears and is followed by the transaction utility (an integer).</li>
+    <li>Third, the symbol ":" appears and is followed by the cost of each item in this transaction (an integer), separated by single spaces.</li>
+  </ul>
+  <p>For example, for the previous example, the input file is defined as follows:</p>
+  <p>@FILETYPE=&quot;Transaction database with utility and cost values&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    3 5 1 2 4 6:40:1 3 5 10 6 5<br>
+    3 5 2 4:20:3 3 8 6<br>
+    3 1 4:18:1 5 2<br>
+    3 5 1 7:37:6 6 10 5<br>
+    3 5 2 7:21:2 3 4 2</p>
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. Consider the first line of data. It means that the transaction {3, 5, 1,
+    2, 4, 6} has a total utility of 40 and that items 3, 5, 1, 2, 4 and 6
+    respectively have a cost of 1, 3, 5, 10, 6 and 5 in this
+    transaction. The following lines follow the same format.</p>
+  <p>&nbsp;</p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

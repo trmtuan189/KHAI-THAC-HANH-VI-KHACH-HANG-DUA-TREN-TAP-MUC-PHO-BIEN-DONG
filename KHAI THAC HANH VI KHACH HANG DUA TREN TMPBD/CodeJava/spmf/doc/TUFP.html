@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Example: Mining Top-k Frequent Itemsets from Uncertain Data with the TUFP Algorithm (SPMF - Java)</title>
+	<link rel="stylesheet" href="docstyle.css"/>
+    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+    </style>
+</head>
+  <body>
+	<div width="100%" class="container">
+		  <div class="content">
+			<!----------START------>
+<h1>Mining Top-k Frequent Itemsets from Uncertain Data with the TUFP Algorithm (<a href="documentation.html">SPMF documentation)</a></h1>
+<p>This example explains how to run the <strong>TUFP algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="style1">TUFP</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="style1">contextUncertain.txt</span>&quot;</strong>, (3) set the
+    output file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;) (4)
+    set the value of <span class="style1"><strong>k</strong></span> to <span class="style1"><strong>10</strong></span>  and
+    (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight style1">java -jar spmf.jar run<strong> TUFP contextUncertain</strong>.txt
+      output.txt 10 </span><span class="style1"> in a folder containing spmf.jar and the example input file contextUncertain.txt.</span></li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;</span><span class="style1">MainTestTUFP.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.spmf.test</strong></span>. </li>
+</ul>
+<h2>What is TUFP?</h2>
+<p><strong>TUFP</strong> (Top-k Uncertain Frequent Patterns) is an algorithm for mining the top-k most frequent
+    itemsets from a transaction database where the data is uncertain
+    (contains probabilities). The TUFP algorithm was proposed by Le,  et al. (2020). 
+    Unlike traditional frequent itemset mining algorithms that require the user to specify a minimum support 
+    threshold, TUFP directly discovers the k itemsets with the highest expected support without requiring 
+    this parameter. TUFP uses CUP-Lists (Conditional Uncertain Probability-Lists), a vertical data structure, 
+    combined with effective threshold raising strategies to efficiently mine top-k patterns.</p>
+  <p>This algorithm can have multiple applications such as in mining
+    medical data or sensor data where observations may be uncertain, and where the user wants to focus on the most promising patterns.</p>
+
+  <h2>What is the input ?</h2>
+  <p><strong>TUFP</strong> takes as input a <strong>transaction
+    database</strong> containing probabilities and a parameter <strong>k</strong> (a positive integer). 
+    A <strong>transaction database</strong> is a set of transactions where each
+    transaction is a set of items. In TUFP, we assume that each item in
+    a transaction is annotated with an existential probability. For
+    example, let's consider the following transaction database, consisting
+    of 4 transactions (t1, t2, t3, t4) and 5 items (1, 2, 3, 4, 5). The transaction
+    t1 contains item 1 with a probability of 0.5, item 2 with a probability
+    of 0.4, item 4 with a probability of 0.3 and item 5 with a probability
+    of 0.7. This database is provided in the file &quot;<strong>contextUncertain.txt</strong>&quot;
+    of the SPMF distribution:</p>
+
+<table align="center" border="1" width="200">
+  <tbody>
+    <tr>
+      <td><br></td>
+      <td><strong>1</strong></td>
+      <td><strong>2</strong></td>
+      <td><strong>3</strong></td>
+      <td><strong>4</strong></td>
+      <td><strong>5</strong></td>
+    </tr>
+    <tr>
+      <td><strong>t1</strong></td>
+      <td>0.5</td>
+      <td>0.4</td>
+      <td><br></td>
+      <td>0.3</td>
+      <td>0.7</td>
+    </tr>
+    <tr>
+      <td><strong>t2</strong></td>
+      <td><br></td>
+      <td>0.5</td>
+      <td>0.4</td>
+      <td><br></td>
+      <td>0.4</td>
+    </tr>
+    <tr>
+      <td><strong>t3</strong></td>
+      <td>0.6</td>
+      <td>0.5</td>
+      <td><br></td>
+      <td>0.1</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <td><strong>t4</strong></td>
+      <td>0.7</td>
+      <td>0.4</td>
+      <td>0.3</td>
+      <td><br></td>
+      <td>0.9</td>
+    </tr>
+  </tbody>
+</table>
+<h2>What is the output?</h2>
+<p>The output of <strong>TUFP</strong> is a set of exactly k itemsets (or more if there are ties at the k-th position) 
+with the highest expected support values. Note that the definition of a <strong>frequent itemset</strong> and 
+<strong>expected support</strong> are the same as in other uncertain frequent itemset mining algorithms like UV-Eclat and UApriori. </p>
+  <p>The <strong>expected support of an itemset in a transaction</strong> is defined as the product of the existential probability of each item
+    from the itemset in this transaction. It is a value between 0 and 1.
+    For example, the support of itemset {1, 2} in transaction t1 is 0.5 × 
+    0.4 = 0.2. The <strong>expected support of an itemset in a transaction
+      database</strong> is the sum of its support in all transactions where
+    it occurs. For example, the expected support of itemset {2, 3} is the
+    sum of its expected support in t2 and t4 : 0.5 × 0.4 + 0.4 × 0.3 = 0.32.</p>
+
+  <p>By running <strong>TUFP</strong> with k = 10 on the example database, we obtain the top-10 itemsets with the highest expected support:</p>
+
+<table align="center" border="1" width="267">
+  <tbody>
+    <tr>
+      <td><strong>Rank</strong></td>
+      <td><strong>Itemset</strong></td>
+      <td><strong>Expected Support</strong></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>{5}</td>
+      <td>2.5</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>{1}</td>
+      <td>1.8</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>{2}</td>
+      <td>1.8</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>{1, 5}</td>
+      <td>1.28</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>{2, 5}</td>
+      <td>1.09</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>{1, 2}</td>
+      <td>0.78</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>{3}</td>
+      <td>0.7</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>{1, 2, 5}</td>
+      <td>0.542</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>{3, 5}</td>
+      <td>0.43</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>{4}</td>
+      <td>0.4</td>
+    </tr>
+  </tbody>
+</table>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> of <strong>TUFP</strong> is
+    a text file. An item is represented by a
+    positive integer. Each item is associated with a probability indicated
+    as a double value between parenthesis. A transaction is a line in the
+    text file. In each line (transaction), each item is immediately
+    followed by its probability between parenthesis and a single space. It
+    is assumed that all items within a same transaction (line) are sorted
+    according to a total order (e.g. ascending order) and that no item can
+    appear twice within the same line. Probabilities should be greater than
+    0 and not more than 1.</p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:<br>
+    <br>
+    @FILETYPE=&quot;Uncertain transaction database&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1(0.5) 2(0.4) 4(0.3) 5(0.7)<br>
+    2(0.5) 3(0.4) 5(0.4)<br>
+    1(0.6) 2(0.5) 4(0.1) 5(0.5)<br>
+    1(0.7) 2(0.4) 3(0.3) 5(0.9)</p>
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section.The first transaction represents the itemsets {1, 2, 4, 5} where items 1, 2, 4 and 5 respectively have the probabilities 0.5, 0.4, 0.3 and 0.7.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> of <strong>UV-Eclat</strong> is defined as follows. It is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line represents an<strong> itemset</strong>. On each line, the items of the itemset are first
+    listed. Each item is represented by an integer followed by a single space. After all the items,
+    the keyword &quot;#SUP:&quot; appears, which is followed by a double value
+    indicating the expected support of the itemset. For example, we show
+    below the output file for this example. </p>
+  <p>For example, below is the output file for this example with k = 10:</p>
+  <p>
+    @FILETYPE=&quot;Uncertain frequent itemsets&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    5 #SUP: 2.5<br>
+    1 #SUP: 1.8<br>
+    2 #SUP: 1.7999999999999998<br>
+    1 5 #SUP: 1.2799999999999998<br>
+    2 5 #SUP: 1.09<br>
+    1 2 #SUP: 0.78<br>
+    3 #SUP: 0.7<br>
+    1 2 5 #SUP: 0.542<br>
+    3 5 #SUP: 0.43000000000000005<br>
+    4 #SUP: 0.4  </p>
+  <p>For example, the first line indicates that the itemset {5}
+    has the highest expected support of 2.5, while the last line indicates that the itemset {4}
+    is the 10th most frequent itemset with an expected support of 0.4.</p>
+
+  <h2>Parameter(s)</h2>
+  <p><strong>TUFP</strong> has the following required parameter:</p>
+  <ul>
+    <li><strong>k</strong> (integer) : This parameter specifies the number of top-k itemsets to discover. It must be a positive integer. If there are ties at the k-th position (multiple itemsets with the same expected support as the k-th itemset), all tied patterns will be included in the output.</li>
+  </ul>
+
+  <p>If you are using the command line interface of SPMF, the k parameter should be provided as the last argument. For example: <br>
+      <span class="style1">java -jar spmf.jar run<strong><span class="highlight"> TUFP </span></strong><strong><span class="highlight">contextUncertain.txt</span></strong>
+    output.txt 10 </span><br>
+    means to run the above example to find the top-10 frequent itemsets.</p>
+
+  <h2>Performance</h2>
+  <p>TUFP is generally efficient for discovering the most important patterns in uncertain databases because it uses effective threshold raising strategies that dynamically increase the minimum support threshold as better patterns are found, enabling aggressive pruning of the search space.</p>
+  <h2>Where can I get more information about the TUFP algorithm?</h2>
+  <p>Here is the article describing the TUFP algorithm:</p>
+  <p><em>Tuong Le, Bay Vo, Van-Nam Huynh, Ngoc Thanh Nguyen, Sung Wook Baik. Mining top-k frequent patterns from uncertain databases. Applied Intelligence, Springer Nature, 2020. https://doi.org/10.1007/s10489-019-01622-1</em></p>
+
+  <p>For a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+			<!----------END------>
+			<div class="footer">
+			  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+			  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+			</div>
+	  </div>
+  </div>
+	</table>
+  </body>
+</html>

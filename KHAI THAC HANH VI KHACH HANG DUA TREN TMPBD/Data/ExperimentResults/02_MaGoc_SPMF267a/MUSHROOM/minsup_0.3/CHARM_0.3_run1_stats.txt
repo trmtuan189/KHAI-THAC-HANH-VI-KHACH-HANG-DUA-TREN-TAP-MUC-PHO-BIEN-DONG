@@ -1,0 +1,12 @@
+Algorithm: CHARM
+Minsup: 0.3000
+Run: 1
+Closed itemsets: 425
+Elapsed time (ms): 201.219
+Sampled peak heap (MiB): 22.000
+Dataset: MUSHROOM
+Input: D:\KHAI THAC HANH VI KHACH HANG DUA TREN TMPBD\Data\BenchmarkDatasets\mushrooms.txt
+SPMF version: 2.67a
+Algorithm source: original archive, unchanged
+CHARM triangular matrix: true
+Java version: 21.0.13

@@ -1,0 +1,126 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Converting a Sequence Database with Cost to a Transaction Database   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Converting a Sequence Database with Cost Values to a Transaction Database with Cost Values (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to <strong> convert a sequence database to a transaction database</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Convert_cost_sequence_database_to_cost_t ransaction_database</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">example_CEPN</span><span class="highlight">.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    and <em>sequence count = </em><span class="highlight">500</span> (5) click
+    &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+        <span class="highlight">java -jar spmf.jar run<strong> Convert_cost_sequence_database_to_cost_transaction_database </strong><strong>example_CEPN</strong>.txt
+          output.txt 500 </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>example_CEPN</strong>.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestConvertCostSeqDBToTCosTransDB.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span></li>
+</ul>
+<h2>What is this tool?</h2>
+<p>This tool converts a sequence database with cost values to a transaction database
+    with cost values by removing the ordering between items. This tool is useful if you have
+    a sequence database with cost values and you want to apply an algorithm that is designed
+    to be applied on a transaction database with cost values. </p>
+
+<h2>What is the input?</h2>
+<p>The <strong>tool</strong> takes two prameters as input:</p>
+  <ul>
+    <li>an input file (the sequence database with cost values),</li>
+    <li>the number of lines of the input file to be converted</li>
+  </ul>
+  <p><strong>The input file type is a </strong> <strong>sequence database where each sequence is an ordered list of events, each event has a cost value (a positive integer), </strong> and <strong>each sequence has a utility</strong> value ( a numeric value such that a high value indicates a better outcome or result). Moreover, the user must set two parameters: (1) a minimum support threshold <em>minsup </em>(a positive integer), (2) a maximum cost threshold <em>maxcost </em>(a positive integer), and a (3) minimum occupancy <em>minoccupancy </em>threshold (a value in the [0,1] interval).&nbsp;</p>
+  <p>For example, consider the following sequence database, which is provided in the file <span class="highlight"><strong>example_CEPN</strong>.txt</span> of the SPMF distribution: </p>
+  <p>1[20] -1 2[40] -1 3[50] -1 4[20] -1 -2 SUtility:80<br>
+    2[25] -1 4[12] -1 3[30] -1 5[25] -1 -2 SUtility:60<br>
+    1[25] -1 5[14] -1 2[30] -1 -2 SUtility:50<br>
+    1[40] -1 2[16] -1 4[40] -1 -2 SUtility:40<br>
+    2[20] -1 5[24] -1 3[20] -1 -2 SUtility:70  </p>
+  <p>This database contains five lines. Each line is a sequence. </p>
+  <p>Moreover, each sequence (line) is an ordered list of events separated by -1.</p>
+  <p> An event is represented by a positive integer and it is followed by a <strong>cost value</strong> (e.g. spent time on the event) indicated between squared brackets [ ]. A cost is a positive integer. </p>
+  <p>The end of a sequence is indicated by -2. Finally, at the end of each line, the keyword &quot;SUtility:&quot; is followed by a positive integer which indicates how good the outcome of this sequence is (e.g. it could represents a final exam score) </p>
+  <p> For example, the first line indicates that event &quot;1&quot; had a cost of 20, was followed by event &quot;2&quot; with a cost of 40, followed by event &quot;3&quot; with a cost of 50, followed by event &quot;4&quot; with a cost of 20. Moreover, this sequence has a utility of 80, which means a quite good outcome (compared to other sequences in this database). The other sequences follow the same format.</p>
+  <p>This database could for example represents sequences of learning activities made by learners, where the events 1,2,3,4 and 5 are learning activities, cost values are the time spent on a learning activity and the utility is the grade obtained at a final exam. </p>
+
+  <h2>What is the output?</h2>
+  <p>The output is a transaction database in SPMF format with cost values. A transaction
+    database is a set of transactions. Each transaction an unordered set of
+    items (symbols) represented by positive integers. The output for this example would be the
+    following transaction database<strong>.</strong> It contains five
+    transactions. The first transaction contains the set of items {1, 3, 4,
+    6}.</p>
+  <table align="center" border="1" width="640">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156">Utility</td>
+        <td width="156"><strong>Items</strong></td>
+        <td width="156"><strong>Costs</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>80</td>
+        <td>{1, 2, 3, 4}</td>
+        <td>20 40 50 20 </td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>60</td>
+        <td>{2, 3, 4, 5} </td>
+        <td>25 30 12 25 </td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>50</td>
+        <td>{1, 2, 5}</td>
+        <td>25 30 14 </td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>40</td>
+        <td>{1, 2, 4}</td>
+        <td>40 16 40 </td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>70</td>
+        <td>{2, 3, 5}</td>
+        <td>20 20 24 </td>
+      </tr>
+    </tbody>
+  </table>
+  <p>The first transaction t1 has a utility of 80. Moreover, it indicates that the items 1,2,3,4 appears with cost values of 20, 40, 50 and 20 respectively. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong> output file format</strong> is defined as follows.
+    It is a text file. Each line is a transaction. First, all items are presented as an integer, separated by a space. Then the symbol &quot;:&quot; appears, followed by the utility of the transaction (an integer). Then, the symbol &quot;:&quot; appears. Then, the list of cost values of items appears (integers separated by spaces). </p>
+  <p>For example, for the previous example, the output file is defined
+    as follows:</p>
+  <p>1 2 3 4:80:20 40 50 20<br>
+    2 3 4 5:60:25 30 12 25<br>
+    1 2 5:50:25 30 14<br>
+    1 2 4:40:40 16 40<br>
+  2 3 5:70:20 20 24</p>
+
+	<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

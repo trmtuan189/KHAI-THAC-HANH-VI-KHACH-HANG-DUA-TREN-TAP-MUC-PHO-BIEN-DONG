@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Example: Mining Frequent Itemsets from Uncertain Data with the UApriori Algorithm (SPMF - Java)</title>
+	<link rel="stylesheet" href="docstyle.css"/>
+</head>
+  <body>
+	<div width="100%" class="container">
+		  <div class="content">
+			<!----------START------>
+<h1>Mining Frequent Itemsets from Uncertain Data with the UApriori Algorithm (<a href="documentation.html">SPMF documentation)</a></h1>
+<p>This example explains how to run the <strong>UApriori algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">UApriori</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextUncertain.txt&quot;</span></strong>, (3) set the
+    output file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;) (4)
+    set the minimum expected support to 0.10 <span class="highlight"> </span>and
+    (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> UApriori </span></strong><strong><span class="highlight">contextUncertain</span></strong>.txt
+      output.txt 10% </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextUncertain.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestUApriori.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is UApriori?</h2>
+<p><strong>UApriori</strong> is an algorithm for mining frequent
+    itemsets from a transaction database where the data is uncertain
+    (contains probabilities). The UApriori algorithm was proposed by Chui
+    et al. (2007). </p>
+  <p>This algorithm can have multiple applications such as in mining
+    medical data or sensor data where observations may be uncertain.</p>
+
+  <h2>What is the input?</h2>
+  <p><strong>UApriori</strong> takes as input a <strong>transaction
+    database</strong> containing probabilities and a <strong>minimum
+      expected support</strong> threshold (a value between 0 and 1). A<strong> transaction database</strong> is a set of transactions where each
+    transaction is a set of items. In UApriori, we assume that each item in
+    a transaction is annotated with an existential probability. For
+    example, let's consider the following transaction database, consisting
+    of 4 transactions (t1,t2,t3,t4) and 5 items (1,2,3,4,5). The transaction
+    t1 contains item 1 with a probability of 0.5, item 2 with a probability
+    of 0.4, item 4 with a probability of 0.3 and item 5 with a probability
+    of 0.7. This database is provided in the file &quot;<strong>contextUncertain.txt</strong>&quot;
+    of the SPMF distribution:</p>
+
+<table align="center" border="1" width="200">
+  <tbody>
+    <tr>
+      <td><br></td>
+      <td><strong>1</strong></td>
+      <td><strong>2</strong></td>
+      <td><strong>3</strong></td>
+      <td><strong>4</strong></td>
+      <td><strong>5</strong></td>
+    </tr>
+    <tr>
+      <td><strong>t1</strong></td>
+      <td>0.5</td>
+      <td>0.4</td>
+      <td><br></td>
+      <td>0.3</td>
+      <td>0.7</td>
+    </tr>
+    <tr>
+      <td><strong>t2</strong></td>
+      <td><br></td>
+      <td>0.5</td>
+      <td>0.4</td>
+      <td><br></td>
+      <td>0.4</td>
+    </tr>
+    <tr>
+      <td><strong>t3</strong></td>
+      <td>0.6</td>
+      <td>0.5</td>
+      <td><br></td>
+      <td>0.1</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <td><strong>t4</strong></td>
+      <td>0.7</td>
+      <td>0.4</td>
+      <td>0.3</td>
+      <td><br></td>
+      <td>0.9</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>What is the output?</h2>
+<p>The output of <strong>UApriori</strong> is the set of frequent
+    itemsets. Note that the definition of a <strong>frequent itemset</strong> is
+    here different from the definition used by the regular Apriori
+    algorithm because we have to consider the existential probabilities.</p>
+  <p>The <strong>expected support of an itemset in a transaction</strong> is defined as the product of the existential probability of each item
+    from the itemset in this transaction. It is a value between 0 and 1.
+    For example, the expected support of itemset {1, 2} in transaction t1 is 0.5 x
+    0.4 = 0.2. The <strong>expected support of an itemset in a transaction
+      database</strong> is the sum of its expected support in all transactions where
+    it occurs. For example, the expected support of itemset {2, 3} is the
+    sum of its expected support in t2 and t4 : 0.5 x 0.4 + 0.4 x 0.3 =
+    0.32. A <strong>frequent itemset</strong> is an itemset that has an
+    expected support higher or equal to the minimum expected support set by
+    the user. For example, by running <strong>UApriori</strong> with a
+    <strong>minimum expected support of 0.10</strong>, we obtain 19 frequent
+    itemsets, including:</p>
+
+<table align="center" border="1" width="267">
+  <tbody>
+    <tr>
+      <td><strong>itemsets</strong></td>
+      <td><strong>expected support</strong></td>
+    </tr>
+    <tr>
+      <td>{2 3 5}</td>
+      <td>0.188</td>
+    </tr>
+    <tr>
+      <td>{1 3 5}</td>
+      <td>0.189</td>
+    </tr>
+    <tr>
+      <td>{1 4 5}</td>
+      <td>0.135</td>
+    </tr>
+    <tr>
+      <td>{2 4 5}</td>
+      <td>0.109</td>
+    </tr>
+    <tr>
+      <td>{1 2 5}</td>
+      <td>0.542</td>
+    </tr>
+    <tr>
+      <td>{1 5}</td>
+      <td>1.28</td>
+    </tr>
+    <tr>
+      <td>{1 3}</td>
+      <td>0.21</td>
+    </tr>
+    <tr>
+      <td>{1 4}</td>
+      <td>0.21</td>
+    </tr>
+    <tr>
+      <td>{2 3}</td>
+      <td>0.32</td>
+    </tr>
+    <tr>
+      <td>{1 2}</td>
+      <td>0.78</td>
+    </tr>
+    <tr>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Input file format</h2>
+<p>The <strong>input file format</strong> of <strong>UApriori</strong> is
+    defined as follows. It is a text file. An item is represented by a
+    positive integer. Each item is associated with a probability indicated
+    as a double value between parentheses. A transaction is a line in the
+    text file. In each line (transaction), each item is immediately
+    followed by its probability between parentheses and a single space. It
+    is assumed that all items within a same transaction (line) are sorted
+    according to a total order (e.g. ascending order) and that no item can
+    appear twice within the same line. Probabilities should be greater than
+    0 and not more than 1.</p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p># This binary context contains uncertain data.<br>
+    # Each line represents a transaction.<br>
+    # For each item there is an existential probability.<br>
+    1(0.5) 2(0.4) 4(0.3) 5(0.7)<br>
+    2(0.5) 3(0.4) 5(0.4)<br>
+    1(0.6) 2(0.5) 4(0.1) 5(0.5)<br>
+    1(0.7) 2(0.4) 3(0.3) 5(0.9)</p>
+  <p>The first line represents the transaction {1, 2, 4, 5} where items 1,
+    2, 4 and 5 respectively have the existential probabilities 0.5, 0.4, 0.3 and 0.7.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> of <strong>UApriori</strong> is defined as follows. It is a text file where each line represents a <strong>frequent
+    itemset</strong>. On each line, the items of the itemset are listed as
+    space-separated integers, followed by the keyword &quot;#SUP:&quot; and a double value
+    indicating the total expected support of the itemset across the database.
+    For example, the output file for this example is shown below.</p>
+  <p>1 #SUP: 1.8<br>
+    2 #SUP: 1.7999999999999998<br>
+    3 #SUP: 0.7<br>
+    4 #SUP: 0.4<br>
+    5 #SUP: 2.5<br>
+    1 2 #SUP: 0.78<br>
+    1 3 #SUP: 0.21<br>
+    1 4 #SUP: 0.21<br>
+    1 5 #SUP: 1.2799999999999998<br>
+    2 3 #SUP: 0.32<br>
+    2 4 #SUP: 0.16999999999999998<br>
+    2 5 #SUP: 1.09<br>
+    3 5 #SUP: 0.43000000000000005<br>
+    4 5 #SUP: 0.26<br>
+    1 2 5 #SUP: 0.542<br>
+    1 3 5 #SUP: 0.189<br>
+    1 4 5 #SUP: 0.135<br>
+    2 3 5 #SUP: 0.188<br>
+    2 4 5 #SUP: 0.10899999999999999</p>
+  <p>For example, the last line indicates that the itemset {2, 4, 5}
+    has a total expected support of approximately 0.109.</p>
+
+  <h2>Optional parameter(s): constraints on the size of itemsets</h2>
+  <p>Sometimes, there may be just too many itemsets, and itemsets containing many items may not be interesting. Thus, it is also possible to specify an optional parameter in the <strong>user interface of SPMF:</strong></p>
+
+<ul>
+  <li><strong>Max pattern length</strong> (integer): This parameter allows setting a maximum number of items to appear in an itemset. By default, this parameter is set to infinity if not specified.</li>
+</ul>
+
+  <p>If you are using the command line interface of SPMF, it is also possible to use this optional parameter by adding it at the end of the command. For example: <br>
+      <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> UApriori </span></strong><strong><span class="highlight">contextUncertain</span></strong>.txt
+    output.txt 10% 2 </span><br>
+    means to run the above example to find only frequent itemsets having 2 items or less.</p>
+
+  <h2>Performance</h2>
+  <p>UApriori is not the most efficient algorithm for uncertain itemset
+    mining but it is simple and it is the first algorithm designed for this
+    task.</p>
+
+  <h2>Where can I get more information about the UApriori algorithm?</h2>
+  <p>Here is the article describing the UApriori algorithm:</p>
+  <p><em>C. Kit Chui, B. Kao, E. Hung: <a href="https://www.philippe-fournier-viger.com/spmf/uapriori.pdf" rel="nofollow">Mining Frequent Itemsets from Uncertain Data</a>. PAKDD 2007: 47-58</em></p>
+
+  <p>For a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>.</p>
+			<!----------END------>
+			<div class="footer">
+			  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+			  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+			</div>
+	  </div>
+  </div>
+	</table>
+  </body>
+</html>

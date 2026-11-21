@@ -1,0 +1,201 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Cost-Efficient Sequential Patterns Using CEPB Algorithm   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<h1>Mining Cost-Efficient Sequential Patterns Using CEPB Algorithm (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>CEPB algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> &quot;<span class="highlight">CEPB</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">example_CEPB</span><span class="highlight">.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    (4) set <em>minsup = 2, </em><em>maxcost = 50, minoccupancy - 0.1, </em>and (5) click &quot;<span class="highlight">Run
+      algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command
+    line</strong>, then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run CEPB example_CEPB.txt output.txt 2 50 0.1 </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>example_CEPB</strong>.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestCEPB.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is CEPB?</h2>
+<p> CEPB is an algorithm proposed by Fournier-Viger, P., <strong>Li, Jiaxuan </strong>et al. (2020) for discovering cost-effective patterns in a sequence database (a set of sequences), where each event/activity in a sequence has a <strong>cost</strong>, and each sequence has an outcome called &quot;<strong>utility</strong>&quot; that is a binary class (good or bad outcome).</p>
+  <p>This type of data can be found in many domains. For example, it can model how students use an e-learning system. In that case, each sequence is a list of activities or sessions performed by a student, and the cost represents the time spent for studying for each activity. Then, the utility represents the outcome of a sequence such whether the student passed or failed the course or exam (binary utility). Another example of <strong>cost-utility sequences </strong>is hospital data, where a sequence is a list of medicines taken by some patient, the cost indicates how much money or time was spent for these medical treaments, and the utility is whether a patient has cured or died. </p>
+  <p>The CEPB algorithm can discover patterns in such sequences that are said to be cost-efficient. This means that the pattern has a low cost and is likely to bring a high utility. In the above examples, some cost-effective patterns may be that studying some e-learning materials A and B typically require not much time but leadw to high scores, or that taking some given medicines has a low cost but a high possibility of success to cure a disease.  </p>
+  <p>It is to be noted that another algorithm named CorCEPB is offered in SPMF, which can be viewed as an improvement of CEPB that also calculates the correlation between a pattern and a good outcome. Besides, another algorithm named CEPN is provided to handle the case where utility is a numeric value instead of a binary value for each sequence.</p>
+
+  <h2>What is the input of CEPB?</h2>
+  <p> <strong>CEPB</strong> takes as input a <strong>sequence database where each sequence is an ordered list of events, each event has a cost value (a positive integer), </strong> and <strong>each sequence has a utility</strong> value ( a boolean value indicating for example, a good or bad outcome). Moreover, the user must set two parameters: (1) a minimum support threshold <em>minsup </em>(a positive integer),  (2) a maximum cost threshold <em>maxcost </em>(a positive integer), and a (3) minimum occupancy <em>minoccupancy </em>threshold (a value in the [0,1] interval).&nbsp;</p>
+  <p>For example, consider the following sequence database, which is provided in the file <span class="highlight"><strong>example_CEPB</strong>.txt</span> of the SPMF distribution: </p>
+  <p>@FILETYPE=&quot;Sequence database with cost and binary utility&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1[4] -1 2[2] -1 5[4] -1 3[4] -1 4[5] -1 -2 SUtility:1<br>
+    2[3] -1 3[2] -1 6[1] -1 4[1] -1 5[2] -1 -2 SUtility:1<br>
+    1[2] -1 6[2] -1 5[1] -1 3[3] -1 4[5] -1 -2 SUtility:1<br>
+    1[2] -1 2[2] -1 3[1] -1 6[2] -1 -2 SUtility:1</p>
+  <p>The two first lines of the database are optional metadata indicating the filetype and the source of the data. Then, there are four lines of data. Each line is a sequence. </p>
+  <p>Moreover, each sequence (line) is an ordered list of events separated by -1.</p>
+  <p> An event is represented by a positive integer and it is followed by a <strong>cost value</strong> (e.g. spent time on the event) indicated between squared brackets [ ].</p>
+  <p>The end of a sequence is indicated by -2. Finally, at the end of each line, the keyword &quot;SUtility:&quot; is followed by 0 or 1, which respectively represent a negative or positive outcome. </p>
+  <p>    For example, the first line indicates that event &quot;1&quot; had a cost of 4, was followed by event &quot;2&quot; with a cost of 2, followed by event &quot;5&quot; with a cost of 4, followed by event &quot;3&quot; with a cost of 4, and followed by event &quot;4&quot;, with a cost of 5. Moreover, this sequence has a utility of 1, which means a positive outcome. The other sequences follow the same format.</p>
+  <p>This database could for example represents sequences of learning activities made by learners, where the events 1,2,3,4 and 5 are learning activities, cost values are the time spent on a learning activity and the utility is to pass or faill an exam</p>
+
+  <h2>What is the output of CEPB?</h2>
+  <p> The output of <strong>CEPB</strong> is the set of all <strong>cost-effective patterns </strong>meeting the criteria specified by the user.  </p>
+  <p>A <strong>pattern</strong> is a subsequence of events that appear in some sequences of the input database.</p>
+  <p>A <strong>pattern</strong> is said to be <strong>cost-effective</strong> if it meets the following criteria:</p>
+  <ul>
+    <li>it appears in at least <em>minsup </em>sequences of the database. </li>
+    <li>the average cost of the sequence is not greater than the <em>maxcost</em> parameter set by the user,</li>
+    <li>the pattern has an occupancy not smaller than the <em>minoccupancy </em>threshold.</li>
+  </ul>
+  <p><strong>Note: </strong>It is important to note that the CEPB algorithm <strong>only considers the sequences that have a positive utility (SUtility: 1)</strong>. There is another algorithm called CorCEPB that considers both sequences with a positive and negative utility. </p>
+  <p>For example, if we set <em>minsup = 2, </em><em>maxcost = 50</em>, <em>minoccupancy = 0.1, </em>we find <strong>29 cost-effective patterns</strong>. </p>
+  <p>This is the output file, where each line is a <strong>cost-effective pattern</strong>: </p>
+  
+    <p>@FILETYPE=&quot;Cost-efficient Sequential patterns&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+1 -1 -2 #SUP: 3 #AVGCOST: 2.667 #OCCUP: 0.108<br>
+      2 -1 -2 #SUP: 3 #AVGCOST: 2.333 #OCCUP: 0.108<br>
+      5 -1 -2 #SUP: 3 #AVGCOST: 2.333 #OCCUP: 0.100<br>
+      3 -1 -2 #SUP: 4 #AVGCOST: 2.500 #OCCUP: 0.106<br>
+      4 -1 -2 #SUP: 3 #AVGCOST: 3.667 #OCCUP: 0.100<br>
+      6 -1 -2 #SUP: 3 #AVGCOST: 1.667 #OCCUP: 0.108<br>
+      1 -1 2 -1 -2 #SUP: 2 #AVGCOST: 5.000 #OCCUP: 0.450<br>
+      1 -1 5 -1 -2 #SUP: 2 #AVGCOST: 5.500 #OCCUP: 0.400<br>
+      1 -1 3 -1 -2 #SUP: 3 #AVGCOST: 5.333 #OCCUP: 0.433<br>
+      1 -1 4 -1 -2 #SUP: 2 #AVGCOST: 8.000 #OCCUP: 0.400<br>
+      1 -1 6 -1 -2 #SUP: 2 #AVGCOST: 4.000 #OCCUP: 0.450<br>
+      2 -1 5 -1 -2 #SUP: 2 #AVGCOST: 5.500 #OCCUP: 0.400<br>
+      2 -1 3 -1 -2 #SUP: 3 #AVGCOST: 4.667 #OCCUP: 0.433<br>
+      2 -1 4 -1 -2 #SUP: 2 #AVGCOST: 5.500 #OCCUP: 0.400<br>
+      2 -1 6 -1 -2 #SUP: 2 #AVGCOST: 4.000 #OCCUP: 0.450<br>
+      5 -1 3 -1 -2 #SUP: 2 #AVGCOST: 6.000 #OCCUP: 0.400<br>
+      5 -1 4 -1 -2 #SUP: 2 #AVGCOST: 7.500 #OCCUP: 0.400<br>
+      3 -1 4 -1 -2 #SUP: 3 #AVGCOST: 6.667 #OCCUP: 0.400<br>
+      3 -1 6 -1 -2 #SUP: 2 #AVGCOST: 3.000 #OCCUP: 0.450<br>
+      6 -1 5 -1 -2 #SUP: 2 #AVGCOST: 3.000 #OCCUP: 0.400<br>
+      6 -1 4 -1 -2 #SUP: 2 #AVGCOST: 4.500 #OCCUP: 0.400<br>
+      1 -1 2 -1 3 -1 -2 #SUP: 2 #AVGCOST: 7.500 #OCCUP: 0.675<br>
+      1 -1 5 -1 3 -1 -2 #SUP: 2 #AVGCOST: 9.000 #OCCUP: 0.600<br>
+      1 -1 5 -1 4 -1 -2 #SUP: 2 #AVGCOST: 10.500 #OCCUP: 0.600<br>
+      1 -1 3 -1 4 -1 -2 #SUP: 2 #AVGCOST: 11.500 #OCCUP: 0.600<br>
+      2 -1 3 -1 4 -1 -2 #SUP: 2 #AVGCOST: 8.500 #OCCUP: 0.600<br>
+      2 -1 3 -1 6 -1 -2 #SUP: 2 #AVGCOST: 5.500 #OCCUP: 0.675<br>
+      5 -1 3 -1 4 -1 -2 #SUP: 2 #AVGCOST: 11.000 #OCCUP: 0.600<br>
+      1 -1 5 -1 3 -1 4 -1 -2 #SUP: 2 #AVGCOST: 14.000 #OCCUP: 0.800    </p>
+    <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. Consider the last line:<br>
+1 -1 5 -1 3 -1 4 -1 -2 #SUP: 2 #AVGCOST: 14.000 #OCCUP: 0.800 </p>
+    <p>This line is the pattern where event &quot;1&quot; is followed by event &quot;5&quot;, followed by event &quot;3&quot;, and finally followed by event &quot;4&quot;. On that line, there is #SUP:2, which indicates that the support (occurrence frequency) of this pattern is 2, and its average cost is 14.</p>
+    <p>The support of that pattern is 2 because this pattern appears in the first and the third sequences of the input database. Below, I have highlighted these two occurrences in blue, and the corresponding cost values in red: </p>
+    <p><span class="highlight"><strong>1</strong></span>[<span class="highlight"><strong>4</strong></span>] -1 2[2] -1 <span class="highlight"><strong>5</strong></span>[<span class="highlight"><strong>4</strong></span>] -1 <span class="highlight"><strong>3</strong></span>[<span class="highlight"><strong>4</strong></span>] -1 <span class="highlight"><strong>4</strong></span>[<span class="highlight"><strong>5</strong></span>] -1 -2 SUtility:1<br>
+2[3] -1 3[2] -1 6[1] -1 4[1] -1 5[2] -1 -2 SUtility:1<br>
+<span class="highlight"><strong>1</strong></span>[<span class="highlight"><strong>2</strong></span>] -1 6[2] -1<span class="highlight"><strong> 5</strong></span>[<span class="highlight"><strong>1</strong></span>] -1 <span class="highlight"><strong>3</strong></span>[<span class="highlight"><strong>3</strong></span>] -1 <span class="highlight"><strong>4</strong></span>[<span class="highlight"><strong>5</strong></span>] -1 -2 SUtility:1<br>
+1[2] -1 2[2] -1 3[1] -1 6[2] -1 -2 SUtility:1 </p>
+    <p>In that first sequence, the cost of that pattern is 4 + 4 + 4 + 5 = 17 (the sum of the red values). In the third sequence, the cost of that pattern is 2 + 1 + 3 + 5 = 11. Thus, the average cost of that pattern is : (17 + 11) / 2 = 14.</p>
+    <p>Besides, &quot;#OCCUP: 0.800&quot; indicates that this pattern has an occupancy of 0.8. The occupancy of a pattern represents how much a pattern covers the sequences in which it appears. The occupancy of the pattern in Sequence 1 is 0.8 because the pattern consists of 4 of the 5 events of that sequence. The occupancy of the pattern in Sequence 3 is also 0.8 because it consists of 4 of the 5 events in that sequence. The occupancy of that pattern for the whole database is the average of its occupancy in Sequence 1 and Sequence 3, that is 0.8. </p>
+    <p>Since the cost of that pattern is 14 &lt;= <em>maxcost, </em>  its support is 2 &gt;= <em>minsup, </em>and its occupancy is 0.8 &gt;= <em>minoccupancy, </em>this pattern is a cost-effective pattern, and it is output.</p>
+    <p>If the database is sequences of events from an e-learning website, we could interpret this pattern as follows. Two learners have some learning activity 1, followed by some learning activity 5, followed by the activities 3 and 4, and they have spent an average of 14 hours, and then <strong>passed the exam.</strong>. </p>
+    <p>Note that if one does not wish to use the occupancy measure, it is possible to simply set <em>minoccupancy = 0. </em></p>
+  
+
+    <h2>Optional parameter(s)</h2>
+    <p>The <strong>CEPB</strong> implementation allows to specify
+    an additional optional parameter:</p>
+  <ul>
+    <li>&quot;maximum pattern length&quot; allows to specify the maximum number
+      of items that patterns found should contain.</li>
+  </ul>
+  <p>These parameter(s) are available in the GUI of SPMF and also in
+    the example(s) <strong><span class="highlight">&quot;MainTestCEPB.java&quot;</span></strong> provided in the source code of SPMF.</p>
+  <p>The parameter(s) can be also used in the command line with the Jar
+    file. If you want to use these optional parameter(s) in the command
+    line, it can be done as follows. Consider this example:<br>
+    <span class="highlight">java -jar spmf.jar run<strong> CEPB </strong><strong> example_CEPB</strong>.txt
+      output.txt 2 50 0.1 10 <br>
+    </span>This command means to apply the algorithm on the file
+    &quot;example_CEPB.txt&quot; and output the results to &quot;output.txt&quot;.
+    Moreover, it specifies that the user wants to find patterns for<em> minsup = 2, </em><em>maxcost = 50,</em> <em>minoccupancy = 0.1</em>, and patterns must have a maximum length of 10 items.</p>
+
+  <h2>Implementation details </h2>
+  <p>This is the original implementation of the algorithm. </p>
+
+  <h2>Optional feature: giving names to items </h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>example_CEPB.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+      @FILETYPE=&quot;Sequence database with cost and binary utility&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      @ITEM=1=homework<br>
+      @ITEM=2=lesson<br>
+      @ITEM=3=anotherlesson<br>
+      @ITEM=4=groupwork<br>
+      @ITEM=5=selfstudy<br>
+@ITEM=-1=|<br>
+      1[4] -1 2[2] -1 5[4] -1 3[4] -1 4[5] -1 -2 SUtility:1<br>
+      2[3] -1 3[2] -1 6[1] -1 4[1] -1 5[2] -1 -2 SUtility:1<br>
+      1[2] -1 6[2] -1 5[1] -1 3[3] -1 4[5] -1 -2 SUtility:1<br>
+      1[2] -1 2[2] -1 3[1] -1 6[2] -1 -2 SUtility:1</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then the second and third lines indicate the file type and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;homework&quot;. The fifth line indicates that the item 2 is called &quot;lesson&quot;, and so on.  The 9th line indicates that the symbol &quot;-1&quot; must be replaced by &quot;|&quot;. Then the following lines define four sequences in the SPMF format. </p>
+  <p>Then, if we apply the algorithm using this file using the user interface of SPMF or the command line, the output file looks like this: <br>
+    <br>
+    @FILETYPE=&quot;Cost-efficient Sequential patterns&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+homework | -2 #SUP: 3 #AVGCOST: 2.667 #OCCUP: 0.108<br>
+    lesson | -2 #SUP: 3 #AVGCOST: 2.333 #OCCUP: 0.108<br>
+    selfstudy | -2 #SUP: 3 #AVGCOST: 2.333 #OCCUP: 0.100<br>
+    anotherlesson | -2 #SUP: 4 #AVGCOST: 2.500 #OCCUP: 0.106<br>
+    groupwork | -2 #SUP: 3 #AVGCOST: 3.667 #OCCUP: 0.100<br>
+    6 | -2 #SUP: 3 #AVGCOST: 1.667 #OCCUP: 0.108<br>
+    homework | lesson | -2 #SUP: 2 #AVGCOST: 5.000 #OCCUP: 0.450<br>
+    homework | selfstudy | -2 #SUP: 2 #AVGCOST: 5.500 #OCCUP: 0.400<br>
+    homework | anotherlesson | -2 #SUP: 3 #AVGCOST: 5.333 #OCCUP: 0.433<br>
+    homework | groupwork | -2 #SUP: 2 #AVGCOST: 8.000 #OCCUP: 0.400<br>
+    homework | 6 | -2 #SUP: 2 #AVGCOST: 4.000 #OCCUP: 0.450<br>
+    lesson | selfstudy | -2 #SUP: 2 #AVGCOST: 5.500 #OCCUP: 0.400<br>
+    lesson | anotherlesson | -2 #SUP: 3 #AVGCOST: 4.667 #OCCUP: 0.433<br>
+    lesson | groupwork | -2 #SUP: 2 #AVGCOST: 5.500 #OCCUP: 0.400<br>
+    lesson | 6 | -2 #SUP: 2 #AVGCOST: 4.000 #OCCUP: 0.450<br>
+    selfstudy | anotherlesson | -2 #SUP: 2 #AVGCOST: 6.000 #OCCUP: 0.400<br>
+    selfstudy | groupwork | -2 #SUP: 2 #AVGCOST: 7.500 #OCCUP: 0.400<br>
+    anotherlesson | groupwork | -2 #SUP: 3 #AVGCOST: 6.667 #OCCUP: 0.400<br>
+    anotherlesson | 6 | -2 #SUP: 2 #AVGCOST: 3.000 #OCCUP: 0.450<br>
+    6 | selfstudy | -2 #SUP: 2 #AVGCOST: 3.000 #OCCUP: 0.400<br>
+    6 | groupwork | -2 #SUP: 2 #AVGCOST: 4.500 #OCCUP: 0.400<br>
+    homework | lesson | anotherlesson | -2 #SUP: 2 #AVGCOST: 7.500 #OCCUP: 0.675<br>
+    homework | selfstudy | anotherlesson | -2 #SUP: 2 #AVGCOST: 9.000 #OCCUP: 0.600<br>
+    homework | selfstudy | groupwork | -2 #SUP: 2 #AVGCOST: 10.500 #OCCUP: 0.600<br>
+    homework | anotherlesson | groupwork | -2 #SUP: 2 #AVGCOST: 11.500 #OCCUP: 0.600<br>
+    lesson | anotherlesson | groupwork | -2 #SUP: 2 #AVGCOST: 8.500 #OCCUP: 0.600<br>
+    lesson | anotherlesson | 6 | -2 #SUP: 2 #AVGCOST: 5.500 #OCCUP: 0.675<br>
+    selfstudy | anotherlesson | groupwork | -2 #SUP: 2 #AVGCOST: 11.000 #OCCUP: 0.600<br>
+    homework | selfstudy | anotherlesson | groupwork | -2 #SUP: 2 #AVGCOST: 14.000 #OCCUP: 0.800</p>
+  <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. </p>
+  <p><strong>Note</strong> that what is described above is the normal way of using item names in SPMF. But the CEPB algorithm also allows to directly replace the items like 1 and 2 with strings in the input file like this:</p>
+  <p>homework[4] -1 selfsttudy [2] -1 -2 SUtility:1 </p>
+  <p>This will achieve a similar result.</p>
+
+  <h2>Where can I get more information about the <strong>CEPB</strong> algorithm?</h2>
+  <p>The <strong>CEPB</strong> algorithm is described in this article:</p>
+  <p> Fournier-Viger, P., Li, J., Lin, J. C., Chi, T. T., Kiran, R. U. (2019). <a href="COST_UTILITY_PATTERNS.pdf">Mining Cost-Effective Patterns in Event Logs</a>. Knowledge-Based Systems (KBS), Elsevier, </p>
+  <p>Besides, you may read this<a href="https://www.philippe-fournier-viger.com/dspr-paper5.pdf"> survey of sequential pattern mining</a>, which gives an overview of sequential pattern mining algorithms.</p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

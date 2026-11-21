@@ -1,0 +1,83 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View compressing sequential patterns with the Visual Pattern Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style2 {
+	color: #00CC00;
+	font-weight: bold;
+}
+.style4 {color: #0000FF; font-weight: bold; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View compressing sequential patterns with the  Visual Pattern Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><span class="style2">Compressing sequential patterns </span>are a type of patterns that can be produced by different algorithms offered in SPMF.</p>
+<p>This page  explains how to <strong>visualize</strong> the <strong class="style2">compressing sequential patterns </strong>found by an algorithm using the <strong>Visual Pattern Viewer</strong>. </p>
+<h2>How to run this example? </h2>
+<p>If you want to run this example using the graphical user interface of SPMF, follow these steps.</p>
+<p>1) First, select an <span class="style2">compressing sequential pattern</span> mining algorithm offered in SPMF. Several algorithms are offered and are described in the documentation of SPMF.</p>
+<p>2) Then, in the user interface of SPMF, after  selecting an algorithm and setting its input file path, output file path, and parameters,  click on the combo-box besides &quot;<span class="style1"><strong>Open output file using</strong></span>:&quot;, and select &quot;<span class="style1"><strong>Visualize_compressing_sequential_patterns</strong></span>&quot; so that the discovered patterns will be opened with the visual pattern viewer. </p>
+<p><img src="Visualize_CompressingSequentiaPatterns_SELECT.png" alt="visualize compressing sequential patterns selection" width="769" height="592"> </p>
+<p>3) Then click on &quot;<strong>Run algorithm</strong>&quot; to run the algorithm. </p>
+<p>After the algorithm terminates, the discovered patterns will be displayed using the <strong>Visual Pattern Viewer</strong>:</p>
+<p><img src="Visualize_CompressingSequentiaPatterns_VIEW.png" alt="visualize rules viewer" width="1198" height="539"> </p>
+<p>The Visual Pattern Viewer interface is quite intuitive. It displays each pattern with its value for each evaluation measure using a colored bar.  </p>
+<p>The Visual Pattern Viewer offers several features such as:</p>
+<ul>
+  <li>Viewing patterns using different layouts (grid, horizontal and vertical layout).</li>
+  <li>Sorting patterns by size and measure values.</li>
+  <li>Searching and filtering using measure values</li>
+  <li>Displaying statistics about the number of patterns found.</li>
+</ul>
+<h2>Other ways of running the Visual Pattern Viewer </h2>
+  <p>It is also possible to run the Visual Pattern Viewer as an algorithm from the GUI of SPMF..</p>
+  <p>In this case, in the user interface of SPMF, select  &quot;<span class="style1"><strong>Visualize_compressing_sequential_patterns</strong></span>&quot; as algorithm. Then, select a file containing <span class="style2"><strong>compressing sequential patterns</strong></span> as input file. Then, click &quot;run algorithm&quot;.</p>
+  <p>This will display the patterns from the file using the Visual Pattern Viewer.</p>
+  <p>Besides, it  is also possible to call the Visual Pattern Viewer from the command line interface of SPMF. To open a file called <strong>patternsCompressingSequentialPatterns.txt</strong>, this syntax can be used:<br>
+    <br>
+    <span class="style4">java -jar spmf.jar run Visualize_compressing_sequential_patterns patternsCompressingSequentialPatterns.txt </span> in a folder containing <span class="highlight">spmf.jar</span> and the input file.</p>
+  <h2>What is the input file format?</h2>
+  <p>The algorithm  takes as input a file containing<strong><span class="style2"> compressing sequential patterns</span></strong>.</p>
+  <p>The <strong> file format</strong> is defined as follows. It
+    is a text file, where each line represents an <strong class="style2">compressing sequential pattern</strong>.    </p>
+  <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. On each line, the compressing sequential pattern is first indicated. Then, the keyword "#SUP" appears followed by a real number indicating the contribution of the pattern in the compression. For example, here is a small pattern file: </p>
+  <div>
+    <div>
+      <p>@FILETYPE=&quot;Compressing sequential patterns&quot;<br>
+        @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+        support vector machin  #SUP: 1922.0710148279322<br>
+        real world  #SUP: 598.4753133154009<br>
+        machin learn  #SUP: 514.3586664227769<br>
+        state art  #SUP: 412.9730013575172<br>
+        high dimension  #SUP: 362.7776787300827<br>
+        reproduc hilbert space  #SUP: 359.42939766764175<br>
+        neural network  #SUP: 210.35608129308093<br>
+        experiment result  #SUP: 187.4169747827109<br>
+        compon analysi  #SUP: 176.54417917714454<br>
+        supervis learn  #SUP: 160.87427082075737<br>
+        support vector  #SUP: 148.74911007808987<br>
+        well known  #SUP: 138.22464635269716<br>
+        hilbert space  #SUP: 21.132125171017833</p>
+      </div>
+  </div>
+  <p>The first line indicates that the compressing sequential pattern is <em>support vector machin</em> followed by the #SUP tag indicating the compression contribution of this pattern. The last two lines shows the compressed size and uncompressed size of the data in the number of bits, the compression ratio and the running times in seconds.</p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

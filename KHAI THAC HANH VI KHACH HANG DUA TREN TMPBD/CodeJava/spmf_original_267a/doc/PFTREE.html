@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Example: Mining Periodic Frequent Patterns using the PFTree algorithm (SPMF - Java)</title>
+    <link rel="stylesheet" href="docstyle.css"/>
+  </head>
+  <body>
+    <div width="100%" class="container">
+      <div class="content">
+        <!----------START------>
+<h1>Mining Periodic Frequent Patterns using the PFTree algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+<p>This example explains how to run the <strong>PFTree algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">PFTree</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextPFPM.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;)
+    (4) set the maximum periodicity and the minimum support (percentage), respectively to <span class="highlight">4</span> and <span class="highlight">50%</span> and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong> PFTree</strong> contextPFPM.txt output.txt 4 50</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextPFPM.txt</span>. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>to
+    run <strong>PFTree</strong><strong>, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestPFTree.java&quot;</span></strong> in
+    the package <span class="highlight"><strong>ca.pfv.spmf.tests</strong></span>. </li>
+</ul>
+
+<h2>What is PFTree?</h2>
+<p><strong>PFTree</strong> is an algorithm for discovering periodic frequent
+    itemsets in a sequence of transactions (a transaction database). It was proposed by Tanbeer et al. (2009). PFTree discovers patterns that periodically appear in a sequence of transactions. Periodic pattern mining has many applications such as discovering periodic behavior of customers, and finding recurring events.</p>
+
+<h2>What is the input of the PFTree algorithm?</h2>
+<p>The input is a <strong>transaction database</strong> (a sequence of transactions) and two parameters that are set by the user: </p>
+    
+  <ul>
+    <li>a maximum periodicity threshold <em>maxPer (a positive integer)</em></li>
+    <li>a minimum support threshold <em>minSup% (a percentage value between 0 and 100)</em></li>
+  </ul>
+
+<p>Note that two optional parameters are also offered to specify constraints on the minimum and maximum number of items that patterns should contain (positive integers).</p>
+
+<p>A <strong>transaction database</strong> is a set of
+  transactions. Each <strong>transaction</strong> is a set of items. For
+  example, consider the following transaction database. It contains 7
+  transactions (t1, t2, ..., t7) and 5 items (1, 2, 3, 4, 5). For example,
+  the first transaction represents the set of items 3 and 1. This
+  database is provided as the file <strong>contextPFPM.txt</strong> in the SPMF distribution. It is important to note that an item is not
+  allowed to appear twice in the same transaction and that items are
+  assumed to be sorted by lexicographical order in a transaction. </p>
+
+<table align="center" border="1" width="316">
+  <tbody>
+    <tr>
+      <td width="144"><strong>Transaction id</strong></td>
+      <td width="156"><strong>Items</strong></td>
+    </tr>
+    <tr>
+      <td><strong>t1</strong></td>
+      <td>{1, 3}</td>
+    </tr>
+    <tr>
+      <td><strong>t2</strong></td>
+      <td>{5}</td>
+    </tr>
+    <tr>
+      <td><strong>t3</strong></td>
+      <td>{1, 2, 3, 4, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t4</strong></td>
+      <td>{2, 3, 4, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t5</strong></td>
+      <td>{1, 3, 4}</td>
+    </tr>
+    <tr>
+      <td><strong>t6</strong></td>
+      <td>{1, 3, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t7</strong></td>
+      <td>{2, 3, 5}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>What is the output of the algorithm?</h2>
+<p><strong>PFTree</strong> is an algorithm for discovering periodic frequent patterns, which are also called <strong>periodic frequent itemsets</strong>. An itemset is a group of items. The PFTree algorithm finds itemsets that appear periodically in a sequence of transactions. To measure if an itemset is periodic, the algorithm calculates its periods. To explain this in more details, it is necessary to introduce a few definitions.</p>
+
+<p>The set of transactions containing an itemset X is denoted as g(X). For example, consider the itemset {1, 3}. The set g({1,3}) is equal to {t1, t3, t5, t6}. In other words, the itemset {1, 3} appears in the transactions t1, t3, t5 and t6. It is also said that these are four occurrences of the itemset {1,3}.</p>
+
+<p>Now, to assess the <strong>periodicity</strong> of an itemset X, its list of periods is calculated. A <strong>period</strong> is the time in terms of number of transactions between two occurrences of an itemset in the database (see the paper for the formal definition). For example, the periods of the itemset {1, 3} are {1, 2, 2, 1, 1}. The first period of {1,3} is 1 because {1,3} appears in the first transaction after the creation of the database. The second period of {1,3} is 2 because the itemset appears in transaction t3, which is two transactions after t1. The third period of {1,3} is 2 because the itemset appears in transaction t5, which is two transactions after t3. Then, the fourth period of {1,3} is 1 because the itemset appears in t6, which is one transaction after t5. Finally, the fifth period of {1,3} is 1 because there is one transaction appearing after the last occurrence of {1,3} in the database (in t6).</p>
+
+<p>The PFTree algorithm utilizes the list of periods of an itemset X to calculate its <strong>maximum periodicity</strong>. The <strong>maximum periodicity</strong> is the largest period among all the periods of the itemset.</p>
+
+<p>The PFTree algorithm finds all the itemsets that have a <strong>support</strong> (number of transactions where they appear) that is not less than the <em>minSup%</em> threshold and a <strong>maximum periodicity</strong> that is not greater than the <em>maxPer</em> threshold, both set by the user.</p>
+
+<p>For example, if <strong>PFTree</strong> is run on the previous
+    transaction database with <em>maxPer = 4 </em> and <em>minSup% = 50%</em> (which corresponds to 4 transactions), the <strong>PFTree</strong> algorithm finds 5 periodic frequent itemsets.</p>
+
+<table align="center" border="1" width="424">
+  <tbody>
+    <tr>
+      <td width="114"><strong>itemset</strong></td>
+      <td width="69"><strong>support (number of transactions where the itemset appears)</strong></td>
+      <td width="69"><strong>maximum periodicity</strong></td>
+    </tr>
+    <tr>
+      <td>{3}</td>
+      <td>6</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{5}</td>
+      <td>5</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{1}</td>
+      <td>4</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{1, 3}</td>
+      <td>4</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{3, 5}</td>
+      <td>4</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>How should I interpret the results?</h2>
+<p>Each periodic frequent itemset is annotated with its support (number of transactions where it appears) as well as its maximum periodicity. For example, the itemset {1, 3} has a support of 4 because
+    it appears in four transactions (t1, t3, t5 and t6). The maximum periodicity of {1,3} is 2, which means that the largest gap between consecutive occurrences of {1,3} is 2 transactions. This indicates that {1, 3} appears quite periodically and never has a gap larger than 2 transactions.</p>
+
+<h2>Input file format</h2>
+<p>The <strong>input file format</strong> used by PFTree is defined
+    as follows. It is a text file. An item is represented by a positive
+    integer. A transaction is a line in the text file. In each line
+    (transaction), items are separated by a single space. It is assumed
+    that all items within a same transaction (line) are sorted according to
+    a total order (e.g. ascending order) and that no item can appear twice
+    within the same line.</p>
+
+<p>For example, for the previous example, the input file is defined
+    as follows:</p>
+
+<p>@FILETYPE=&quot;Simple transaction database&quot;<br>
+  @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+  3 1<br>
+  5<br>
+  3 5 1 2 4<br>
+  3 5 2 4<br>
+  3 1 4<br>
+  3 5 1<br>
+  3 5 2</p>
+<p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then, the following lines contain the transactions. The first
+    transaction represents the set of items 3 and 1.</p>
+<p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the
+    ARFF format.
+    Most features of the ARFF format are supported except that (1) the
+    character &quot;=&quot; is forbidden and (2) escape characters are not
+    considered. Note that when the ARFF format is used, the performance of
+    the data mining algorithms will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+<h2>Output file format</h2>
+<p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line represents a periodic frequent itemset. On each
+    line, the items of the itemset are first listed. Each item is
+    represented by an integer and it is followed by a single space. After
+    all the items, the keyword &quot;#SUP:&quot; appears, which is followed by an
+    integer indicating the support of the itemset, expressed as a number of
+    transactions. Then, the keyword #MAXPER: appears and is followed by a space and an integer indicating the maximum periodicity of the itemset.</p>
+
+<p>For example, here is the output file for this example.
+    The first line indicates that the itemset {3} is a periodic frequent itemset, having a support of 6 transactions and a maximum periodicity of 2 transactions.</p>
+
+<p>@FILETYPE=&quot;Periodic frequent itemsets&quot;<br>
+  @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+  3 #SUP: 6 #MAXPER: 2<br>
+    5 #SUP: 5 #MAXPER: 2<br>
+    1 #SUP: 4 #MAXPER: 2<br>
+    1 3 #SUP: 4 #MAXPER: 2<br>
+    5 3 #SUP: 4 #MAXPER: 3</p>
+
+<p>Note that if the ARFF format is used as input instead of the
+    default input format, the output format will be the same except that
+    items will be represented by strings instead of integers.</p>
+
+<h2>Optional feature: giving names to items</h2>
+<p>Some users have requested the feature of giving names to items instead of using numbers. This feature is offered in the <strong>user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextPFPM.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+  <br>
+  @CONVERTED_FROM_TEXT<br>
+  @FILETYPE=&quot;Simple transaction database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+  @ITEM=1=apple<br>
+  @ITEM=2=orange<br>
+  @ITEM=3=tomato<br>
+  @ITEM=4=milk<br>
+  @ITEM=5=bread<br>
+  3 1<br>
+  5<br>
+  3 5 1 2 4<br>
+  3 5 2 4<br>
+  3 1 4<br>
+  3 5 1<br>
+  3 5 2</p>
+
+<p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second and third line indicate the type of file and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. Then, the following lines define  transactions in the SPMF format.</p>
+
+<p>Then, if we apply the algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+  <br>
+  tomato #SUP: 6 #MAXPER: 2<br>
+  bread #SUP: 5 #MAXPER: 2<br>
+  apple #SUP: 4 #MAXPER: 2<br>
+  apple tomato #SUP: 4 #MAXPER: 2<br>
+  bread tomato #SUP: 4 #MAXPER: 3</p>
+
+<p>Note that this feature could be also used from the <strong>source code</strong> of SPMF using the ResultConverter class. However, there is currently no example provided for using it from the source code.</p>
+
+<h2>Performance</h2>
+<p>PFTree is an efficient algorithm for mining periodic frequent itemsets in a transaction database. It uses a compact tree-based data structure (the PF-tree) to store transaction information and a pattern-growth approach to mine patterns efficiently. Another algorithm called PFPM is also offered in SPMF for mining periodic frequent patterns with additional periodicity measures (minimum periodicity and average periodicity) and thus provides more flexibility than this algorithm.</p>
+
+<h2>Where can I get more information about the PFTree algorithm?</h2>
+<p>This is the article proposing the PFTree algorithm:</p>
+<p><em>Syed Khairuzzaman Tanbeer, Chowdhury Farhan, Byeong-Soo Jeong, and Young-Koo Lee, “Discovering Periodic-Frequent Patterns in Transactional Databases”, PAKDD 2009, https://doi.org/10.1007/978-3-642-01307-2_24</em></p>
+
+<!----------END------>
+        <div class="footer">
+          <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+          <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

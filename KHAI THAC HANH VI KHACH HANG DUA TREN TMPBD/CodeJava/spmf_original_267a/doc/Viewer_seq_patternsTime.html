@@ -1,0 +1,76 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View frequent sequential patterns (with timestamps) with the Visual Pattern Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style2 {
+	color: #00CC00;
+	font-weight: bold;
+}
+.style4 {color: #0000FF; font-weight: bold; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View frequent sequential patterns (with timestamps) with the  Visual Pattern Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><span class="style2">Frequent sequential patterns (with timestamps) </span>are a type of patterns that can be produced by different algorithms offered in SPMF.</p>
+<p>This page  explains how to <strong>visualize</strong> the <strong class="style2">frequent sequential patterns (with timestamps) </strong>found by an algorithm using the <strong>Visual Pattern Viewer</strong>. </p>
+<h2>How to run this example? </h2>
+<p>If you want to run this example using the graphical user interface of SPMF, follow these steps.</p>
+<p>1) First, select an <span class="style2">frequent sequential pattern (with timestamps) </span> mining algorithm offered in SPMF. Several algorithms are offered and are described in the documentation of SPMF.</p>
+<p>2) Then, in the user interface of SPMF, after  selecting an algorithm and setting its input file path, output file path, and parameters,  click on the combo-box besides &quot;<span class="style1"><strong>Open output file using</strong></span>:&quot;, and select &quot;<span class="style1"><strong>Visualize_frequent_sequential_patterns_with_timestamps</strong></span>&quot; so that the discovered patterns will be opened with the visual pattern viewer. </p>
+<p><img src="Visualize_SequentiaPatternsTime_SELECT.png" alt="visualize frequent sequential patterns (with timestamps) selection" width="765" height="588"> </p>
+<p>3) Then click on &quot;<strong>Run algorithm</strong>&quot; to run the algorithm. </p>
+<p>After the algorithm terminates, the discovered patterns will be displayed using the <strong>Visual Pattern Viewer</strong>:</p>
+<p><img src="Visualize_SequentiaPatternsTime_VIEW.png" alt="visualize rules viewer" width="1039" height="430"> </p>
+<p>The Visual Pattern Viewer interface is quite intuitive. It displays each pattern with its value for each evaluation measure using a colored bar.  </p>
+<p>The Visual Pattern Viewer offers several features such as:</p>
+<ul>
+  <li>Viewing patterns using different layouts (grid, horizontal and vertical layout).</li>
+  <li>Sorting patterns by size and measure values.</li>
+  <li>Searching and filtering using measure values</li>
+  <li>Displaying statistics about the number of patterns found.</li>
+</ul>
+<h2>Other ways of running the Visual Pattern Viewer </h2>
+  <p>It is also possible to run the Visual Pattern Viewer as an algorithm from the GUI of SPMF..</p>
+  <p>In this case, in the user interface of SPMF, select  &quot;<span class="style1"><strong>Visualize_frequent_sequential_patterns_with_timestamps</strong></span>&quot; as algorithm. Then, select a file containing <span class="style2"><strong>frequent sequential patterns (with timestamps) </strong></span> as input file. Then, click &quot;run algorithm&quot;.</p>
+  <p>This will display the patterns from the file using the Visual Pattern Viewer.</p>
+  <p>Besides, it  is also possible to call the Visual Pattern Viewer from the command line interface of SPMF. To open a file called <strong>patternsSequentialPatternsWithTime.txt</strong>, this syntax can be used:<br>
+    <br>
+    <span class="style4">java -jar spmf.jar run Visualize_frequent_sequential_patterns_with_timestamps patternsSequentialPatternsWithTime.txt </span> in a folder containing <span class="highlight">spmf.jar</span> and the input file.</p>
+  <h2>What is the input file format?</h2>
+  <p>The algorithm  takes as input a file containing<strong><span class="style2"> frequent sequential patterns (with timestamps) </span></strong>.</p>
+  <p>The <strong> file format</strong> is defined as follows. It
+    is a text file, where each line represents an <strong class="style2">frequent sequential pattern (with timestamps) </strong>.    </p>
+  <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. Each line starts by listing the itemsets of the sequential pattern, where each itemset has a relative timestamp represented by a positive integer between the "&lt;" and "&gt; symbol. Then the timestamp is followed by each item in the itemset, each represented by a positive integer. The items of the itemset appear separated by single spaces and the symbol "-1" indicates the end of an itemset. Finally, after all the itemsets of a sequential pattern, the keyword "#SUP:" is followed by an integer indicating the support of the pattern as a number of sequences. For example, here is a small pattern file: </p>
+  <div>
+    <div>
+      <p>@FILETYPE=&quot;Frequent sequential patterns with timestamps&quot;<br>
+        @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+        &lt;0&gt; 1 -1 &lt;1&gt; 3 -1 &lt;2&gt; 3 -1  #SUP: 2<br>
+        &lt;0&gt; 1 -1 &lt;1&gt; 3 -1 &lt;2&gt; 1 3 -1  #SUP: 2<br>
+        &lt;0&gt; 1 -1 &lt;1&gt; 3 -1 &lt;2&gt; 1 -1  #SUP: 2<br>
+        &lt;0&gt; 1 -1 &lt;1&gt; 3 -1  #SUP: 2<br>
+        &lt;0&gt; 1 -1 &lt;1&gt; 2 -1 &lt;2&gt; 3 -1  #SUP: 2<br>
+        &lt;0&gt; 1 -1 &lt;1&gt; 2 -1 &lt;2&gt; 1 3 -1  #SUP: 2</p>
+      </div>
+  </div>
+  <p>Consider the first line. It represents a sequential pattern having the itemset {1, 2} with a relative timestamp of 0, followed by the itemset {1, 3} one time unit later. This pattern has a support of 2 sequences. The second line follow the same format.</p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

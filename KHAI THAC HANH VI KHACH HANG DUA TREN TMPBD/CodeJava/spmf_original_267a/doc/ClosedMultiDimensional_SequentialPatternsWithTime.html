@@ -1,0 +1,316 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: (Closed) Multi-dimensional Sequential Patterns Mining with Time Constraints  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<!---------------------- (2) Change the title of the example in the <a> tag: --->
+<h1><a href="documentation.html"> </a>(Closed) Multi-dimensional Sequential Patterns Mining with Time Constraints (<a href="documentation.html">SPMF documentation)</a>
+</h1>
+<p>This example explains how to run the <strong>Fournier08 algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">SeqDim_(BIDE+AprioriClose)+time</span>&quot; </strong>algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">ContextMDSequence</span><span class="highlight">.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    (4) set <em>minsup = 50%, mininterval=0, maxinterval=1000,
+      minwholeinterval=0, maxwholeinterval=1000 </em>and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run
+      SeqDim_(BIDE+AprioriClose)+time<strong> ContextMDSequence</strong>.txt
+      output.txt 50% 0 1000 0 1000</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">ContextMDSequence.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestSequentialPatternsMining4.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this algorithm?</h2>
+<p>The <a href="https://www.philippe-fournier-viger.com/fournier-viger_sequential_patterns_micai08.pdf">Fournier-Viger
+    et al., 2008</a> algorithm is a sequential pattern mining algorithm
+    combining features from several other sequential pattern mining
+    algorithms. It offers also some original features. In this example, we
+    show how it can be used to discover <strong>multi-dimensional
+      sequential patterns with time-constraints. </strong></p>
+  <p><strong>Multi-dimensional sequential pattern mining </strong>is
+    an extension of the problem of sequential pattern mining that consider
+    the context of each sequences. We have taken the SeqDIM algorithm for
+    multi-dimensional sequential pattern mining and modified it to use
+    features of the Hirate &amp; Yamana (2008) algorithms so that it only
+    discovers patterns that respect time constraints set by the user.</p>
+
+  <h2>What is the input?</h2>
+  <p>The input is a <strong>multidimensional time-extended sequence</strong> <strong>database</strong>. We here only provide a brief explanation.
+    Please refer to the article by <a href="https://www.philippe-fournier-viger.com/fournier-viger_sequential_patterns_micai08.pdf">Fournier-Viger
+      et al., 2008</a> for more details and a formal definition.</p>
+
+
+  <p>A <strong>time-extended multidimensional sequence database</strong> is a set of time-extended multi-dimensional sequences. A <strong>time-extended
+    multi-dimensional sequence</strong> (here called MD-Sequence) is a
+    time-extended sequence (as defined by Hirate &amp; Yamana) but with
+    dimensional information (as defined by <a href="pinto01.pdf" rel="nofollow">Pinto et al. 2001</a>). The set of dimensional values
+    for an MD-Sequence is called an <strong>MD-Pattern</strong>. For a
+    multi-dimensional database, there is a fix set of dimensions. Each
+    dimensions can take a symbolic value or the value &quot;*&quot; which means any
+    value. In the following MD-Database, there is four MD-Sequences named
+    S1, S2, S3, S4. </p>
+
+<table align="center" border="1" width="100%">
+  <tbody>
+    <tr>
+      <td colspan="5"><div align="center"><strong>MD-Sequences</strong></div></td>
+    </tr>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td colspan="3"><strong>MD-Patterns</strong></td>
+      <td><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td width="37"><br></td>
+      <td width="36"><strong>d1</strong></td>
+      <td width="29"><strong>d2</strong></td>
+      <td width="40"><strong>d3</strong></td>
+      <td width="397"><br></td>
+    </tr>
+    <tr>
+      <td><strong>S1</strong></td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>(<strong>0</strong>, 2 4), (<strong>1</strong>, 3), (<strong>2</strong>,
+        2), (<strong>3</strong>, 1)</td>
+    </tr>
+    <tr>
+      <td><strong>S2</strong></td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>(<strong>0</strong>, 2 6), (<strong>1</strong>, 3 5), (<strong>2</strong>,
+        6 7)</td>
+    </tr>
+    <tr>
+      <td><strong>S3</strong></td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>(<strong>0</strong>, 1 8), (<strong>1</strong>, 1), (<strong>2</strong>,
+        2), (<strong>3</strong>, 6)</td>
+    </tr>
+    <tr>
+      <td><strong>S4</strong></td>
+      <td>*</td>
+      <td>3</td>
+      <td>3</td>
+      <td>(<strong>0</strong>, 2 5), (<strong>1</strong>, 3 5)</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>The task of multi-dimensional sequential pattern mining consists
+    of finding MD-Sequences that have a support higher than a minimum
+    support threshold <strong>minsup</strong> for a MD-Database.
+    Furthermore, in the <strong>Fournier-Viger algorithm</strong>, we
+    offers the possibility to mine <strong>only frequent closed
+      MD-Sequences,</strong> by implementing the idea of <a href="songram06.pdf" rel="nofollow">Songram et al. 2006</a>. A
+    frequent closed MD-Sequence is a frequent MD-Sequence that is not
+    included in any other MD-Sequence having the same support.</p>
+  <p>This algorithm has five parameters:</p>
+
+<ul>
+  <li> <em>minsup</em> (a value in [0,1] representing a percentage), </li>
+  <li><em>mininterval</em> (the minimum amount of time between two
+    consecutive itemsets in the patterns to be found) (an integer&gt;=0), </li>
+  <li><em>maxinterval</em> (the maximum amount of time between two
+    consecutive itemsets in the patterns to be found) (an integer&gt;=1)</li>
+  <li><em>minwholeinterval</em>(the minimum time duration of patterns
+    to be found) (an integer&gt;=0)</li>
+  <li><em>maxwholeinterval </em>(the maximum time duration of the
+    patterns to be found) (an integer&gt;=1)</li>
+</ul>
+<h2>What is the output?</h2>
+<p>The output is the set of <strong>frequent closed MD-Sequences</strong> contained in the database (see the Fournier-Viger, 2008 paper for a
+    formal definition).</p>
+  <p>For example, if we mine <strong>frequent closed MD-Sequences </strong>from
+    the previous database with a <em>minsup</em> of 50% <em>mininterval=0,
+      maxinterval=1000, minwholeinterval=0, maxwholeinterval=1000</em>, we
+    obtain the following result:</p>
+
+<table align="center" border="1" width="100%">
+  <tbody>
+    <tr>
+      <td colspan="5"><div align="center"><strong>Frequent Closed MD-Sequences</strong></div></td>
+    </tr>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td colspan="3"><strong>MD-Patterns</strong></td>
+      <td><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td><br></td>
+      <td><strong>d1</strong></td>
+      <td><strong>d2</strong></td>
+      <td><strong>d3</strong></td>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td><strong>P1</strong></td>
+      <td>*</td>
+      <td>*</td>
+      <td>*</td>
+      <td>(<strong>0</strong>, 2)</td>
+    </tr>
+    <tr>
+      <td><strong>P2</strong></td>
+      <td>1</td>
+      <td>*</td>
+      <td>1</td>
+      <td>(<strong>0</strong>, 1)</td>
+    </tr>
+    <tr>
+      <td><strong>P3</strong></td>
+      <td>1</td>
+      <td>2</td>
+      <td>*</td>
+      <td>(<strong>0</strong>, 6)</td>
+    </tr>
+    <tr>
+      <td><strong>P4</strong></td>
+      <td>*</td>
+      <td>*</td>
+      <td>*</td>
+      <td>(<strong>0</strong>, 2), (<strong>1</strong>, 3 5)</td>
+    </tr>
+    <tr>
+      <td><strong>P5</strong></td>
+      <td>*</td>
+      <td>*</td>
+      <td>*</td>
+      <td>(<strong>0</strong>, 2), (<strong>1</strong>, 3)</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>If we mine <strong>frequent MD-sequences</strong> instead of <strong>frequent
+    closed MD-Sequences</strong>, we will obtain <strong>23 frequent
+      MD-Sequences</strong> instead.</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a <strong>multi-dimensional
+      time-extended sequence </strong>from a <strong>multi-dimensional
+        time-extended sequence</strong> <strong>database</strong>. Each line
+    consists of two parts.</p>
+  <ul>
+    <li>The first part is a list of dimension values separated by
+      single spaces. A dimension value is a positive integer or the symbol
+      &quot;*&quot; meaning &quot;any values&quot;. Finally, the value &quot;-3&quot; indicates the end of
+      the first part. Note that each line should have the same number of
+      dimension values.</li>
+    <li>The second part is a list of itemsets, where each itemset has a
+      timestamp represented by a positive integer and each item is
+      represented by a positive integer. Each itemset is first represented by
+      its timestamp between the &quot;&lt;&quot; and &quot;&gt; symbols. Then, the items of
+      the itemset appear separated by single spaces. Finally, the end of an
+      itemset is indicated by &quot;-1&quot;. After all the itemsets, the end of a
+      sequence (line) is indicated by the symbol &quot;-2&quot;. Note that it is
+      assumed that items are sorted according to a total order in each
+      itemset and that no item appears twice in the same itemset.</li>
+  </ul>
+  <p>For example, the input file &quot;<strong><span class="highlight">ContextMDSequence</span>.txt</strong>&quot;
+    contains the following four lines (four sequences).</p>
+  
+    <p>@FILETYPE=&quot;Multi-dimensional sequence database with timestamps&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1 1 1 -3 &lt;0&gt; 2 4 -1 &lt;1&gt; 3 -1 &lt;2&gt; 2 -1 &lt;3&gt; 1 -1 -2<br>
+      1 2 2 -3 &lt;0&gt; 2 6 -1 &lt;1&gt; 3 5 -1 &lt;2&gt; 6 7 -1 -2<br>
+      1 2 1 -3 &lt;0&gt; 1 8 -1 &lt;1&gt; 1 -1 &lt;2&gt; 2 -1 &lt;3&gt; 6 -1 -2<br>
+      * 3 3 -3 &lt;0&gt; 2 5 -1 &lt;1&gt; 3 5 -1 -2</p>
+  
+  <p>The first two lines are metadata indicating the type of file and the source of the data. Then, the following lines are the sequences (records). Consider the second line of data. It indicates that the second multi-dimensional time-extended sequence of this database has the dimension values 1, 2 and 2. Furthermore, the first itemset is {2, 4} with a timestamp of 0. Then, the item 3 appears with a timestamp of 1. Then the item 2 appears with a timestamp of 2. Finally, the item 1 appears with a timestamp of 3. The other sequence follows the same format. Note that timestamps do not need to be consecutive integers. But they should increase for each succesive itemset within a same sequence.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. Each line is a frequent (closed) MD sequential pattern.
+    Each line is separated into three parts: (1) a MD-pattern, (2) a
+    sequence and (3) the support of the MD sequential pattern formed by the
+    first and second part. </p>
+  <ul>
+    <li>The first part is a list of dimension values separated by
+      single spaces between the symbols &quot;[&quot; and &quot;]&quot;. A dimension value is a
+      positive integer or the symbol &quot;*&quot; meaning &quot;any values&quot;. Note that each
+      line have the same number of dimension values.</li>
+    <li>The second part of each line is a sequence. A sequence is a
+      list of itemset. Each itemset is represented by {t=x, ...} where x is
+      an integer indicating that the itemset has the relative timestamp &quot;x&quot;
+      and where &quot;...&quot; is a list of items separated by single spaces. Each
+      item in an itemset is represented by a postive integers. Note that it
+      is assumed that items within a same itemset are sorted according to a
+      total order and that no item can appear twice in the same itemset. </li>
+    <li>The third part is the keyword &quot;#SUP:&quot; followed by an integer
+      indicating the support of the pattern as a number of sequences.</li>
+  </ul>
+  <p>For example, here is the output file for this example: </p>
+  
+    <div>
+      <div>
+        <p>@FILETYPE=&quot;Multi-dimensional frequent closed sequential patterns&quot;<br>
+        @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+          [ * * * ]{t=0, 2 }{t=1, 3 5 } #SUP: 2<br>
+      [ * * * ]{t=0, 2 }{t=1, 3 } #SUP: 3<br>
+      [ 1 * * ]{t=0, 2 }{t=1, 3 } #SUP: 2<br>
+      [ * * * ]{t=0, 2 } #SUP: 4<br>
+      [ 1 * * ]{t=0, 2 } #SUP: 3<br>
+      [ 1 * 1 ]{t=0, 1 } #SUP: 2<br>
+      [ 1 2 * ]{t=0, 6 } #SUP: 2</p>
+      </div>
+    </div>
+    <p>Consider the first line. It presents a MD-sequential pattern
+    having the dimension values 1, 2 and *. Furthemore, the line indicates
+    that the sequence of this MD sequential pattern is the itemset {2}
+    followed by the itemset {6} and that the MD-Sequential-pattern has a
+    support of 2 transactions. The next lines follow the same format.</p>
+
+  <h2>Implementation details</h2>
+  <p>This algorithm can run using AprioriClose or Charm. To use Charm instead of AprioriClose within this algorithm in the graphical user interface, select the algorithm &quot;<span class="highlight">SeqDim_(BIDE+Charm)+time</span>&quot;. From the command line, Charm can be used in this example using the command: <br>
+    <span class="highlight">java -jar spmf.jar run
+      SeqDim_(BIDE+Charm)+time<strong> ContextMDSequence</strong>.txt
+      output.txt 50% 0 1000 0 1000</span></p>
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The algorithm is described in this paper:</p>
+  <p><em> Fournier-Viger, P., Nkambou, R &amp; Mephu Nguifo, E. (2008),<a href="https://www.philippe-fournier-viger.com/fournier-viger_sequential_patterns_micai08.pdf"> A Knowledge Discovery Framework for Learning Task Models from User
+    Interactions in Intelligent Tutoring Systems</a>. Proceedings of the
+    7th Mexican International Conference on Artificial Intelligence (MICAI
+    2008). LNAI 5317, Springer, pp. 765-778.</em></p>
+  <p>The idea of using time-constraints is based on this paper</p>
+  <p><em>Hirate &amp; Yamana (2006) <a href="hirateyamana.pdf" rel="nofollow">Generalized Sequential Pattern Mining with Item
+    Intervals. JCP 1(3): 51-60</a>.</em></p>
+  <p>The idea of multi-dimensional pattern mining is based on this
+    paper: </p>
+  <p><em>H. Pinto, J. Han, J Pei, K. Wang, Q. Chen, U. Dayal: <a href="https://www.philippe-fournier-viger.com/spmf/pinto01.pdf" rel="nofollow">Multi-Dimensional Sequential Pattern Mining</a>. CIKM
+    2001: 81-88</em></p>
+  <p>The idea of closed multi-dimensional pattern mining is based on
+    this paper: </p>
+  <p><em>P. Songram, V. Boonjing, S. Intakosum: <a rel="nofollow" href="https://www.philippe-fournier-viger.com/spmf/songram06.pdf">Closed
+    Multi-dimensional Sequential-Pattern Minin</a>.</em> Proc. of ITNG 2006.</p>
+  <p>The idea of mining closed sequential pattern is based on this
+    paper:</p>
+  <p><em>J. Wang, J. Han: <a href="https://www.philippe-fournier-viger.com/spmf/icde04_bide.pdf" rel="nofollow">BIDE: Efficient Mining of Frequent Closed Sequences</a>.
+    ICDE 2004: 79-90</em></p>
+  <p>Besides, you may read this<a href="https://www.philippe-fournier-viger.com/dspr-paper5.pdf"> survey of sequential pattern mining</a>, which gives an overview of sequential pattern mining algorithms.</p>
+
+			<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

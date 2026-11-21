@@ -1,0 +1,115 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example:  Calculate Statistics for a Sequence Database with Utility Information   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+                <!----------START------>
+                <h1>Calculate Statistics for a Sequence Database with Utility Information(<a href="documentation.html">SPMF documentation</a>)</h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+                <p>This example explains how to <strong> calculate statistics for a Sequence Database with Utility Information </strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+                <!--------------(4) Insert the example here:------------->
+                <h2>How to run this example? </h2>
+                <ul>
+                  <li><strong>If you are using the graphical interface, </strong>(1)
+                    choose the <strong>&quot;<span class="highlight style1">Calculate_stats_for_a_sequence_database_with_utility</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the input file <span class="style1"><strong>DataBase_HUSRM.txt</strong></span> (3) click &quot;<span class="style1">Run algorithm</span>&quot;.</li>
+                  <li><strong>If you want to execute this example from the command line</strong>,
+                    then execute this command: <br>
+        <span class="style1"><strong>java -jar spmf.jar run Calculate_stats_for_a_sequence_database_with_utility DataBase_HUSRM.txt no_output_file</strong></span> in a folder containing <span class="highlight">spmf.jar</span> and the input file <span class="style1"><strong>DataBase_HUSRM.txt</strong></span>.</li>
+                  <li><strong>If you are using the source code version of SPMF, </strong>launch
+                    the file <strong><span class="highlight">&quot;</span><span class="style1">MainTestStatsSequenceDatabaseUtility.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+                </ul>
+                <h2>What is this tool?</h2>
+                <p>This tool is a tool for generating statistics about a sequence database with utility information, as used by algorithms such as HUSRM and USpan.</p>
+                <h2>What is the input?</h2>
+                <p>The input is a sequence database with utility information. </p>
+                <p>Let's consider the following sequence database consisting of 4 sequences of transactions (s1,s2, s3, s4) and 7 items (1, 2, 3, 4, 5, 6, 7). This database is provided in the text file "<strong>DataBase_HUSRM.txt</strong>" in the package <strong>ca.pfv.spmf.tests </strong>of the SPMF distribution<strong>.</strong></p>
+                <table align="center" border="1" width="595">
+                  <tbody>
+                    <tr>
+                      <td width="63"><br></td>
+                      <td width="350"><strong>Sequence</strong></td>
+                      <td width="160"><strong>Sequence utility</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>s1</strong></td>
+                      <td>{1[1],2[4]},{3[10]},{6[9]},{7[2]},{5[1]}</td>
+                      <td>27</td>
+                    </tr>
+                    <tr>
+                      <td><strong>s2</strong></td>
+                      <td>{1[1],4[12]},{3[20]},{2[4]},{5[1],7[2]}</td>
+                      <td>40</td>
+                    </tr>
+                    <tr>
+                      <td><strong>s3</strong></td>
+                      <td>{1[1]},{2[4]},{6[9]},{5[1]}</td>
+                      <td>15</td>
+                    </tr>
+                    <tr>
+                      <td><strong>s4</strong></td>
+                      <td>{1[3],2[4],3[5]},{6[3],7[1]}</td>
+                      <td>16</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>Each line of the <strong>database</strong> is a sequence:</p>
+                <ul>
+                  <li>each sequence is an ordered list of transactions, such that transactions are enclosed by {} in this Example</li>
+                  <li>each transaction contains a set of items represented by integers</li>
+                  <li>each item is annotated with a utility value (e.g. sale profit), indicated between squared brackets</li>
+                  [ ].
+                  <li>the sum of the utilities (e.g. profit) of all items in the sequence is also indicated (the "sequence utility" column)</li>
+                </ul>
+                <p>What are real-life examples of such a database? A typical example is a database containing sequences of customer transactions. Imagine that each sequence represents the transactions made by a customer. The first customer named "<strong>s1</strong>" bought items 1 and 2, and those items respectively generated a profit of 1$ and 4$. Then, the customer bought item 3 for 10$. Then, the customer bought item 6 for 9 $. Then, the customer bought items 7 for 2$. Then the customer bought item 5 for 1 $.</p>
+                <h2>What is the output?</h2>
+                <p>The output is statistics about the  database. For example,
+                  if we use the tool on the previous database given as example,
+                  we get the following statistics:</p>
+                <p><span class="style1">============  SEQUENCE UTILITY DATABASE STATS ==========<br>
+                File size (MB): 0.00<br>
+                Number of sequences : 4<br>
+                Max item: 7<br>
+                Average number of itemsets per sequence : 3.75 standard deviation: 1.0897247358851685 variance: 1.1875000000000002<br>
+                Average number of items per itemset : 1.4 standard deviation: 0.6110100926607788 variance: 0.37333333333333346<br>
+                Average utility per item: 4.666666666666667 standard deviation: 4.734205151099645 variance: 22.41269841269841<br>
+                Average utility per sequence: 24.5 standard deviation: 10.111874208078342 variance: 102.25</span></p>
+                <h2>What is the input file format? </h2>
+                <p>The input file format is defined as follows. It is a text file.</p>
+                <ul>
+                  <li>Each line represents a sequence of transactions.</li>
+                  <li>Each transaction is separated by the keyword -1.</li>
+                  <li>A transaction is a list of items (positive integers) separated by single spaces and where each item is annotated with a generated sale profit indicated between square brackets [ ]. The sale profit is a positive integer.</li>
+                  <li>In a transaction, it is assumed that items are sorted according to some order (eg. alphabetical order).</li>
+                  <li>Each sequence ends by the keyword "-2". Then, it is followed by the keyword "SUtility:" followed by the sum of the utility (profit) of all items in that sequence.</li>
+                </ul>
+                <p>For example, for the previous example, the input file is defined as follows:</p>
+                <p>@FILETYPE=&quot;Sequence database with utility values&quot;<br>
+                  @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+                  1[1] 2[4] -1 3[10] -1 6[9] -1 7[2] -1 5[1] -1 -2 SUtility:27<br>
+                  1[1] 4[12] -1 3[20] -1 2[4] -1 5[1] 7[2] -1 -2 SUtility:40<br>
+                  1[1] -1 2[4] -1 6[9] -1 5[1] -1 -2 SUtility:15<br>
+                1[3] 2[4] 3[5] -1 6[3] 7[1] -1 -2 SUtility:16</p>
+                <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. consider the first line of data. It means that the first customer bought items 1 and 2, and those items respectively generated a profit of 1$ and 4$. Then, the customer bought item 3 for 10$. Then, the customer bought item 6 for 9 $. Then, the customer bought items 7 for 2$. Then the customer bought item 5 for 1 $. Thus, this customer has made 5 transaction. The total utility (profit) generated by that sequence of transactions is 1$ + 4$ + 10$ + 9$ + 2$ + 1$ = 27 $.</p>
+                <p><br>
+                  <!----------END------>
+                </p>
+                <div class="footer">
+                  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+                  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+                </div>
+			  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

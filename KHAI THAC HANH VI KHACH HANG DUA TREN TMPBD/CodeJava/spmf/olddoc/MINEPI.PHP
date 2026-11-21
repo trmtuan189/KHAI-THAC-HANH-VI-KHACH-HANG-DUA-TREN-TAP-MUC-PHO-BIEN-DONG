@@ -1,0 +1,167 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Frequent Episodes in a Complex Event Sequence using the MINEPI Algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining Frequent Episodes in a Simple Event Sequence using the MINEPI Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>MINEPI algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">MINEPI</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextMINEPI</span><span class="highlight">.txt"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight">output.txt</span>")
+    (4) set the minimum support,  maximum window and the boolean parameter indicating that timestamps are  provided respectively to 2, 2, false and and
+    (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run MINEPI contextMINEPI.txt output.txt 2 2 false</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextMINEPI.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestMINEPI.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is MINEPI?</h2>
+<p><strong>MINEPI </strong> (Mannila et al., 1997) is the first algorithm for mining<strong> frequent episodes </strong>in a<strong> sequence of event</strong>s.  A <strong>frequent episode </strong>is a subsequence that appear frequently whithin some time window in a long sequence of events. </p>
+  <p>Various algorithms have been proposed to find<strong> frequent episodes</strong> in data. It is to be noted that different algorithms do not count the support (occurrence frequency) of an episode in the same way. The MINEPI algorithm count the support using the concept of minimal occurrences.</p>
+  <p>It should also be noted that this implementation of <strong>MINEPI</strong> does not allow simultaneous events. Other algorithms for frequent episode mining, offered in SPMF like EMMA and MINEPI+ allow simultaneous events.</p>
+
+  <h2>What is the input?</h2>
+  <p><strong>MINEPI</strong> takes as input <strong>an event sequence </strong>with a minimum support, a maximum window and a boolean parameter  self_increment, that must be set to true if the input dataset has no timestamps  or otherwise false. Let’s consider following sequence consisting of 10 time  points (t1, t2, …, t10) and 4 events type (1, 2, 3, 4). This database is provided  in the text file <strong>&quot;contextMINEPI.txt</strong>&quot; in the package ca.pfv.spmf.tests  of the SPMF distribution.</p>
+  <table border="1" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="277" valign="top"><p>Time points</p></td>
+      <td width="277" valign="top"><p> Event</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>t1</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>t2</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>t3</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>t4</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>t5</p></td>
+      <td width="277" valign="top"><p>4</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>t6</p></td>
+      <td width="277" valign="top"><p>3</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>t7</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>t8</p></td>
+      <td width="277" valign="top"><p>3</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>t9</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>t10</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+  </table>
+  <p>Each line of the sequence is called an  event set and consists of:</p>
+  <ol>
+    <li>a time point (first column)</li>
+    <li>an event (second column)</li>
+  </ol>
+  <p>What are real-life examples of such a database? There are
+      several applications in real life. One application is to analyse text data. For example, the events could represents words in a text. Another applications is to analyse a sequence of events in a computer network. </p>
+
+  <h2>What is the output?</h2>
+  <p> The<strong> output of MINEPI</strong> is the set of<strong> frequent  episodes</strong> having a support no less than a minSup threshold (a positive integer)  set by the user. To explain what is a frequent episodes, it is necessary to  review some definitions.</p>
+  <p>The <strong>support of an episod</strong>e is the number of  its minimal occurrence. A minimal occurrence of an epiosde is a time-interval  that there is no other sub-time-interval that contains this episode, and that time interval is no greater than the maximum window parameter. For example, consider the episode &lt;(1), (2)&gt; which means that event 1 was followed by event 2. The minimal occurrences of &lt;(1), (2)&gt; are [t1, t2] and [t3, t4]. It can be oserved that [t1, t3]  also contains &lt;(1), (2)&gt;, but [t1, t3] is not a minimal occurrence of  &lt;(1), (2)&gt;, because there exist a sub-time-interval [t1, t2] that contains &lt;(1), (2)&gt;. A minimal occurrence should satisfy the maximum window  threshold provided by user.</p>
+  <p>A <strong>frequent epiosde </strong>is an episode having a support that is no  less than minSup. For example, if set minSup = 2 and maxWindow = 2. We obtain 6  frequent episodes.</p>
+  <table border="1" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="277" valign="top"><p>Frequent episode</p></td>
+      <td width="277" valign="top"><p>Support</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>&lt;(1)&gt;</p></td>
+      <td width="277" valign="top"><p>3</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>&lt;(2)&gt;</p></td>
+      <td width="277" valign="top"><p>4</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>&lt;(3)&gt;</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>&lt;(1), (2)&gt;</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>&lt;(2), (1)&gt;</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>&lt;(3), (2)&gt;</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+  </table>
+  <p>For instance, the last episode indicating that event 3 was followed by event 2, has a support of 2. </p>
+
+  <h2>Input file format</h2>
+  <p>The input format  is a text file. An item (event) is represented  by a positive integer.<strong> <span class="highlight">A line must contains not more than one item (event</span>). This is a restriction for this implementation of MINEPI. </strong> An item is followed by the character &quot;|&quot; and then the timestamp of this line. Note  that it is possible to run MINEPI on a database that has no timestamps. In that  case, the boolean parameter (the third parameter of the algorithm) should be set to true to  indicate that the dataset has no timestamps.<br>
+In the previous example, the input file is  defined as follows:</p>
+  <p>1|1<br>
+    2|2<br>
+    1|3<br>
+    2|4<br>
+    4|5<br>
+    3|6<br>
+    2|7<br>
+    3|8<br>
+    2|9<br>
+  1|10</p>
+  <p>Consider the third line. It means that at  the third time point, the event 1 occurred.  The other lines follow the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The<strong> output file format </strong>is defined as  follows. It is a text file, where each line represents a <strong>frequent episode</strong>. Each  event in frequent episodes is a positive number. The value &quot;-1&quot;  indicates the end of an event. On each line, the episode is first indicated.  Then, the keyword &quot;#SUP:&quot; appears followed by an integer indicating  the support of the episode (a positive integer). For example, the output file is shown below for this example: </p>
+  <p align="left">1 -1  #SUP: 3<br>
+    2 -1  #SUP: 4<br>
+    3 -1  #SUP: 2<br>
+    1 -1 2 -1  #SUP: 2<br>
+    2 -1 1 -1  #SUP: 2<br>
+    3 -1 2 -1  #SUP: 2</p>
+  <p>For instance, the last line indicates that the frequent episode &lt;(3),(2)&gt;, that is event 3 followed by event 2, has a support of 2. The other lines follow the same format. </p>
+
+  <h2>Performance</h2>
+  <p>MINEPI is the first algorithm for mining frequent episodes. It is not the fastest algorithm as it use a breadth-first search. Moreover, it is here limited to processing sequences without simultaneous events. But MINEPI is interesting because it uses a concept of minimal occurrences. Other algorithms like EMMA and MINEPI+ allows to process simultaneous events, and use a different ways of counting the support, which was argued to be more useful by the authors of EMMA. These algorithms are also offered in SPMF </p>
+
+  <h2>Where can I get more information about the MINEPI algorithm?</h2>
+  <p>The MINEPI algorithm is described in this  article:</p>
+  <p>    Mannila H, Toivonen H, Verkamo AI (1997)  Discovery of frequent episodes in event sequences. Data Mining Knowl Discov  1(3):259–289</p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

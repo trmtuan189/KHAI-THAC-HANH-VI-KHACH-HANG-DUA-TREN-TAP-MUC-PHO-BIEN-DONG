@@ -1,0 +1,114 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example:  Calculate Statistics for a Sequence Database   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<h1>Calculate Statistics for a Sequence Database (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to <strong> calculate statistics for a sequence database</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Calculate_stats_for_a_sequence_database</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the input file <span class="highlight"><strong>contextPrefixSpan</strong>.txt</span> (3) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong> Calculate_stats_for_a_sequence_database</strong><strong> </strong> <strong>contextPrefixSpan</strong>.txt
+      no_output_file</span> in a folder containing <span class="highlight">spmf.jar</span> and the input file <span class="highlight"><strong>contextPrefixSpan</strong>.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestGenerateSequenceDatabaseStats.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this tool?</h2>
+<p>This tool is a tool for generating statistics about a sequence
+    database. It can be used to know for example if the database is dense
+    or sparse before applying a data mining algorithms.</p>
+
+<h2>What is the input?</h2>
+<p>The input is a sequence database. A sequence database is a set of
+    sequence. Each sequence is an ordered list of itemsets. An itemset is
+    an unordered list of items (symbols). For example, consider the
+    following database. This database is provided in the file &quot;<strong>contextPrefixSpan.txt</strong>&quot;
+    of the SPMF distribution<strong>.</strong> It contains 4 sequences. The
+    second sequence represents that the set of items {1 4} was followed by
+    {3}, which was followed by {2, 3}, which were followed by {1, 5}. It is
+    a <em>sequence database </em>(as defined in <a href="prefixspan.pdf" rel="nofollow">Pei et al., 2004</a>). </p>
+
+<table align="center" border="1" width="100%">
+  <tbody>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td>S1</td>
+      <td>(1), (1 2 3), (1 3), (4), (3 6)</td>
+    </tr>
+    <tr>
+      <td>S2</td>
+      <td >(1 4), (3), (2 3), (1 5)</td>
+    </tr>
+    <tr>
+      <td>S3</td>
+      <td>(5 6), (1 2), (4 6), (3), (2)</td>
+    </tr>
+    <tr>
+      <td>S4</td>
+      <td>(5), (7), (1 6), (3), (2), (3)</td>
+    </tr>
+  </tbody>
+</table>
+<h2>What is the output?</h2>
+<p>The output is statistics about the sequence database. For example,
+    if we use the tool on the previous sequence database given as example,
+    we get the following statistics:</p>
+
+<ul>
+  <li>the number of distinct items in this database: 7</li>
+  <li>the largest item id: 7</li>
+  <li>the average number of itemsets per sequence: 5</li>
+  <li>the average number of distinct items per sequence: 5.5</li>
+  <li>the average number of occurences in a sequence for each item
+    appearing in a sequence: 1.41</li>
+  <li>the average number of items per itemset: 1.55</li>
+</ul>
+<h2>Input file format</h2>
+<p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a sequence from a sequence
+    database. Each item from a sequence is a positive integer and items
+    from the same itemset within a sequence are separated by single space.
+    Note that it is assumed that items within a same itemset are sorted
+    according to a total order and that no item can appear twice in the
+    same itemset. The value &quot;-1&quot; indicates the end of an itemset. The value
+    &quot;-2&quot; indicates the end of a sequence (it appears at the end of each
+    line). For example, the input file &quot;contextPrefixSpan.txt&quot; contains the
+    following four lines (four sequences).</p>
+  
+    <p>@FILETYPE=&quot;Simple sequence database&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+      1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+      5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+      5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. The first line of data represents a sequence where the itemset {1} is
+    followed by the itemset {1, 2, 3}, followed by the itemset {1, 3},
+    followed by the itemset {4}, followed by the itemset {3, 6}. The next
+    lines follow the same format.</p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

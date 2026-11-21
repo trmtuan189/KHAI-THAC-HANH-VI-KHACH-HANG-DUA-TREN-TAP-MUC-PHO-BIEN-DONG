@@ -1,0 +1,145 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining frequent sequential patterns with periodic wilcard gaps in a sequence of characters with the MAPD algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0033CC}
+.style3 {color: #0033CC; font-weight: bold; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining frequent sequential patterns with periodic wilcard gaps in a sequence of characters with the MAPD algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>MAPD algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> "<span class="highlight style1">MAPD</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;</strong><span class="style3">contextMAPD.txt</span><strong><span class="highlight">"</span></strong>,
+    (3) set the output file name (e.g. "<span class="style3"><strong>output.txt</strong></span>")
+    (4) set the minimum threshold, the max pattern length, the minimum gap,  the maximum gap, and charset, respectively to <span class="style3">0.2, 3, 0, 3, actg </span>and (4) click    &quot;Run algorithm&quot;.</li>
+  <li><strong>If you want to execute this example from the command
+    line</strong>, then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run MAPD contextMAPD.txt output.txt 0.2 3 0 3 actg </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="style3">contextMAPD.txt</span></li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"</span><span class="style3">MainTestMAPD.java</span><span class="highlight">"</span></strong> in the package <span class="style3"><strong>ca.pfv.SPMF.tests</strong></span></li>
+</ul>
+<h2>What is MAPD?</h2>
+<p><strong>MAPD</strong> is an algorithm for discovering
+    <strong>nonoverlapping sequential patterns in</strong> a sequence of characters. This algorithm was proposed by Wu et al.
+    (2014). This algorithm is designed to find patterns that contain wildcards between characters and where the number of wildcards between any two consecutive characters is similar. </p>
+  <p>This is a Java version, converted from the original C++ implementation by Youxi Wu et al. (available at : <a href="https://github.com/wuc567/Pattern-Mining">https://github.com/wuc567/Pattern-Mining</a>) </p>
+
+  <h2>What is the input of MAPD?</h2>
+  <p>The input is a <strong>sequence of symbols </strong>(e.g. events or characters) and five parameters that are set by the user: </p>
+  <ul>
+    <li>a pre-specified threshold  <em >threshold</em>   </li>
+    <li>the maximum pattern length <em>maxLength</em> </li>
+    <li>the minimum gap constraint  <em>minGap</em></li>
+    <li>the maximum gap constraint  <em >maxGap</em></li>
+    <li>the character set (e.g. acgt) </li>
+  </ul>
+  <p>      A <strong>sequence</strong> for this algorithm is an ordered list of characters that are taken from a character set.</p>
+  <p>To run the MAPD algorithm, an input file must be given, which contains a sequence. For example, the file <span class="style3">contextMAPD.txt</span> of the SPMF distribution contains the sequence <span class="style3">ttcctccgcg</span>. </p>
+  <p>This sequence can represent for example a biological sequence, indicating that the symbol T, was followed by T, then followed by C, by C, by T, by C, by C, by G, by C, and by G. </p>
+  <p> In the input file format, the sequence is simply provided as a line in a text file: </p>
+  <p class="style3">ttcctccgcg</p>
+  <p>In that format, each symbol is a single character such as : a, c, g, t.... This sequence from the file <span class="highlight"><strong>contextMAPD.txt </strong></span>swill be used for this example.</p>
+
+  <h2>What is the output of MAPD?</h2>
+  <p>The output of MAPD is  the set of <strong>frequent patterns with periodic wildcard gaps</strong><strong>.</strong></p>
+  <p>To try to give a more precise explanation of what is the output of MAPD, it is necessary to review some definitions. </p>
+  <p>Let <strong>&#931;</strong> bet the set of possible <strong>characters</strong> that can appear in a sequence. For example, in this example<strong> &#931; = {c,g,t}.</strong></p>
+  <p>A pattern <strong>P </strong>is a sequence of characters that can appear several times in a sequence. For example, a pattern P containing <strong>m</strong> characters can be denoted as <strong>P</strong> <strong>= p0 p1 p2 p3 ... pm</strong> indicating that <strong>p0</strong> was followed by <strong>p1</strong>, then followed by <strong>p2</strong>... and so on. <br>
+    <br>
+  The goal of MAPD is to find patterns that appear many times, and where some characters might be skipped when matching a pattern with the input sequence. </p>
+  <p>In other words, the  MAPD algorithm is designed to find patterns of the above form where the characters do not need to appear contiguously in the input sequence. MAPD allows to match a pattern with a sequence by using some <em>wildcards, </em>which means to skip one or more characters.</p>
+  <p>    More precisely, MAPD is designed to find what is called <strong>patterns with periodic wildcard gaps. </strong>Such pattern has  the form: <strong>P</strong> = p0 p1 p2 p3 ... pm and require that the gaps between any pair of consecutive characters in the pattern have the same minimum and maximum number of wildcards (characters that are skipped).</p>
+  <p> The algorithm allows to set a threshold, which is the minimum number of occurrences that a pattern should have to be output, the minimum and maximum size of the gaps in terms of number of wildcards, and the maximum length of the patterns that are output. </p>
+  <p>For example, <strong>for the sequence </strong>ttcctccgcg, if we set the minimum threshold = 1, maxlength = 20, mingap = 0, maxgap =2, the set of <strong>frequent patterns with periodic wildcard gaps</strong><strong> is: </strong></p>
+  <table border="1" cellspacing="0" >
+    <tr>
+      <td width="553" valign="top" >        Frequent patterns </td>
+      <td width="553" valign="top" ><p >Support </p></td>
+    </tr>
+    <tr>
+      <td width="553" valign="top" ><p >c </p></td>
+      <td width="553" valign="top" ><p >0.5</p></td>
+    </tr>
+    <tr>
+      <td width="553" valign="top" ><p >g </p></td>
+      <td width="553" valign="top" ><p >0.3</p></td>
+    </tr>
+    <tr>
+      <td width="553" valign="top" ><p >t</p></td>
+      <td width="553" valign="top" ><p >0.2</p></td>
+    </tr>
+    <tr>
+      <td width="553" valign="top" ><p >c*c</p></td>
+      <td width="553" valign="top" ><p >0.8</p></td>
+    </tr>
+    <tr>
+      <td valign="top" >c*g</td>
+      <td valign="top" >0.6</td>
+    </tr>
+    <tr>
+      <td valign="top" >t*c</td>
+      <td valign="top" >0.8</td>
+    </tr>
+  </table>
+  <p>For instance, the last line t*c of this table indicates that t followed by c after some gap has a support of 0.8 in this sequence. The support of a pattern is its number of non-overlapping occurrences divided by the length of the sequence, and it is required to be no less than the threshold taken as parameter. In this example, t*c has 8 non-overlapping occurrences in this sequence of length 10, and hence its support is 0.8. </p>
+  <p>Since the definition used in this paper is relatively complex,<strong> for a more precise and formal definition </strong>of the output,<strong> please see the research paper describing the MAPD algorithm (Wu et al., 2014). </strong></p>
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is a text file. For example, the file contextMAPD.txt contains this content:</p>
+  <p>@FILETYPE=&quot;String sequence&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    ttcctccgcg<br>
+  <br>
+    The two first lines are metadata indicating the type of file and the source of the data. Then the third line line contain a sequence of character.</p>
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line is a frequent  pattern, which is a list of characters. Then, the keyword "#SUP:" appears followed
+    by an integer indicating the support of the pattern as a number of
+    occurrences. For example, a few lines from the output file from the
+    previous example are shown below:</p>
+  <div>
+    <div>
+      <p>@FILETYPE=&quot;Sequential patterns with periodic wilcard gaps&quot;<br>
+        @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+        c #SUP: 0.5<br>
+        t #SUP: 0.3<br>
+        g #SUP: 0.2<br>
+        cc #SUP: 0.8<br>
+        cg #SUP: 0.6<br>
+        tc #SUP: 0.8</p>
+      </div>
+  </div>
+  <p>The fourth line is the frequent  pattern
+    consisting of the symbol &quot;c&quot; followed by the symbol &quot;c&quot; and indicates that it has a
+    support of 0.2.</p>
+
+  <h2>Performance</h2>
+  <p> This is the original implementation of MAPD. By using the NetTree data structure, MAPD can avoid redundant calculations and process long sequences to find patterns (see performance experiments in the paper, for example). </p>
+
+  <h2>Where can I get more information about MAPD?</h2>
+  <p>The MAPD algorithm is described in this article:</p>
+  <p>Youxi Wu, Yao Tong, Xingquan Zhu, Xindong Wu: 
+    MAPD: Nonoverlapping Sequence Pattern Mining With Gap Constraints. IEEE Trans. Cybern. 48(10): 2809-2822 (2018)</p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

@@ -1,0 +1,78 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View itemsets using the Itemsets-Item Matrix Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style2 {
+	color: #00CC00;
+	font-weight: bold;
+}
+.style4 {color: #0000FF; font-weight: bold; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View Itemsets using the Itemsets-Item Matrix Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This page explain how to use the tool  called the Itemsets-Item Matrix Viewer to visualize a set of itemsets produced by an itemset mining algorithm. </p>
+<h2>How to run this example? </h2>
+<p>If you want to run this example using the graphical user interface of SPMF, follow these steps.</p>
+<p>1) First, select an <span class="style2">itemset  mining algorithm</span> offered in SPMF such as Apriori and FP-Growth. Several algorithms are offered and are described in the documentation of SPMF.</p>
+<p>2) Then, in the user interface of SPMF, after  selecting an algorithm and setting its input file path, output file path, and parameters,  click on the combo-box besides &quot;<span class="style1"><strong>Open output file using</strong></span>:&quot;, and select &quot;<span class="style1"><strong>Visualize_With_ItemItemset_Matrix</strong></span>&quot; so that the discovered patterns will be opened with the <strong>Itemset-Item Matrix Viewer</strong>. </p>
+<p>3) Then click on &quot;<strong>Run algorithm</strong>&quot; to run the algorithm. After the algorithm terminates, the discovered patterns will be displayed using the <strong>Itemset-Item Matrix Viewer</strong>:</p>
+<p>The interface of the<strong> Itemset-Item Matrix Viewer </strong>is like this: </p>
+<p><img src="matrix_viewer.png" alt="matrix viewer" width="1464" height="813"></p>
+<p>On the right, there is a <strong>matrix view </strong>where the rows are itemsets, and the columns indicate <strong>measures</strong> for describing the itemsets and which <strong>items</strong> are contained in those itemsets. For example, the last line of the matrix in this example is for the itemset {bread, orange, tomato},. where the second column indicates that this itemset has a value of <strong>2</strong> for a measure called SUP and a value of <strong>false</strong> for another measure called GEN. Then, the four last columns visually indicate that the items bread, orange and tomato are part of this itemset. This matrix view is useful for visualizing results as it allows to quickly see similarities and differences between itemsets.</p>
+<p>On the left side of the window, there is also a small panel providing options for <strong>serarching and filtering itemsets</strong>. By using the field &quot;<strong>Items</strong>&quot; below, we can type a list of items separated by space and only the itemsets containing these items will be displayed. For instance, if we type the items &quot;bread orange&quot; in the field &quot;items&quot;, only the itemsets {bread orange} and {bread orange tomato} are displayed.: </p>
+<p><img src="matrix_viewer_search.png" alt="matrix saarch" width="1318" height="382"> </p>
+<p>The interface also allows to filter itemsets by size. For example, to visualize only itemsets having a size ranging from 2 to 3, we enter the value 2 and 3 below: </p>
+<p><img src="matrix_viewer_size.png" alt="size matrix viewer" width="1318" height="613"></p>
+<p>Another useful feature of the Matrix Viewer is to display the <strong>subsets</strong> and <strong>supersets</strong> of the<strong> selected itemset.</strong> For example, we can click on Row 3 of the matrix representing the itemset {bread orange} and then click on the checkboxes &quot;Highlight subsets&quot; and &quot;Highlight supersets&quot; to obtain this vie where the subsets and supersets of this itemset are highlighted: </p>
+<p><img src="matrix_viewer_subset.png" alt="matrix viewer subset superset feature" width="1051" height="590"></p>
+<p>There is also a <strong>SORT</strong> option that is provided in the interface for sorting itemsets according to different orders such as by ascending on descending size, lexicographical order, or by the measures used to describe the itemsets. For example, in the picture below, the sorting order is set to be the ascending lexicographical order, which means the alphabetical order. </p>
+<p><img src="matrix_viewer_sort.png" alt="matrix sort" width="991" height="559"></p>
+<p>Lastly, another feature is to display the size distribution of the currently displayed itemsets:</p>
+<p><img src="matrix_size_dist.png" alt="matrix size viewer" width="355" height="262"></p>
+<p>For instance,  this histogram indicates that there are more itemsets of size 1 and 2 than size 3, and that there is only one itemset of size 3 in the results. </p>
+<h2>Other ways of running the Itemset-Item Matrix Viewer </h2>
+  <p>It is also possible to run the Itemset-Item Matrix Viewerr as an algorithm from the GUI of SPMF..</p>
+  <p>In this case, in the user interface of SPMF, select  &quot;<span class="style1"><strong>Visualize_With_ItemItemset_Matrix</strong></span>&quot; as algorithm. Then, select a file containing <span class="style2"><strong>itemsets</strong></span> as input file. Then, click &quot;run algorithm&quot;.</p>
+  <p>This will display the patterns from the file using the Itemset-Item Matrix Viewer </p>
+  <p>Besides, it  is also possible to call the Visual Pattern Viewer from the command line interface of SPMF using the following syntax. To open a file called: <span class="style4">patternsFrequentItemsets.txt</span><strong>, </strong>the command is: <br>
+    <br>
+    <span class="style4">java -jar spmf.jar run <strong>Visualize_With_ItemItemset_Matrix</strong> patternsFrequentItemsets.txt </span> in a folder containing <span class="highlight">spmf.jar</span> and the input file<strong>.</strong></p>
+  <h2>What is the input file format?</h2>
+  <p>The algorithm  takes as input a file containing itemsets in SPMF format. This format can vary slightly depending on the algorithms that are used to generate <strong><span class="style2"> </span></strong>the itemsets. Hence, you may look at the documentation of the algorithms that you are interested in using for more details about the output format. In the above example, this file was viewed with the Itemset-Item matrix viewer:</p>
+  <div>
+    <div>
+      <p>@FILETYPE=&quot;Frequent itemsets&quot;<br>
+        @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+        apple #SUP: 3 #GEN: true<br>
+        orange #SUP: 4 #GEN: true<br>
+        tomato #SUP: 4 #GEN: true<br>
+        bread #SUP: 4 #GEN: true<br>
+        tomato bread #SUP: 3 #GEN: true<br>
+        orange tomato #SUP: 3 #GEN: true<br>
+        orange bread #SUP: 4 #GEN: true<br>
+        apple tomato #SUP: 3 #GEN: true<br>
+        orange tomato bread #SUP: 3 #GEN: false</p>
+      </div>
+  </div>
+  The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. Each line is an itemset containing several items, separated by space. Then, each measure starts by # followed by its name and the corresponding value. For instance, the first line is the itemset {apple}, which has value 3 for the measure SUP, and value true for the measure GEN. 
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

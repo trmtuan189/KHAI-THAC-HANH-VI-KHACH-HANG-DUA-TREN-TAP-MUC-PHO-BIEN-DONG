@@ -1,0 +1,87 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View a multi-dimensional sequence database file with the MD Sequence Database Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View a multi-dimensional sequence database file with the  MD Sequence Database Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><strong>Multi-dimensional sequence  databases </strong>are a type of data taken as input by some algorithms  offered in SPMF such as<strong> SEQ-DIM and DIM-SEQ </strong><strong></strong>.</p>
+<p>Put simply, a multi-dimensional sequence database is a set of sequences that are annotated with some attributes (called dimensions) </p>
+<p>SPMF offers a tool to view the content of a <strong>multi-dimensional sequence database</strong>. This tool is called the <strong>SPMF MD Sequence Database Viewer</strong>. </p>
+<p>This page explains how to use this tool with an example. </p>
+<h2>How to run this example? </h2>
+<p><strong>If you want to run this example from the</strong> <strong>graphical interface of SPMF, </strong>(1)
+      choose the algorithm <strong>&quot;<span class="style1">Open_md_sequence_database_with_viewer</span>&quot;</strong><strong>, </strong> (2) choose the <strong class="style1">ContextMDSequenceNoTime.txt</strong> file as input,   and then (3) click &quot;<strong>run algorithm</strong>&quot; . </p>
+<p align="center"><img src="mdsequence_notime_PICTURE.png" alt="graph viewer open" width="805" height="213"></p>
+  <ul>
+    <li><strong>If you want to run this example from the source code of SPMF, run the file <span class="style1">MainTestMDSequenceDatabaseViewerNoTime</span>, which is located in the package <span class="style1">ca.pfv.spmf.tests </span></strong></li>
+    <li><strong>If you want to execute this example from the</strong> <strong>command line interface of SPMF</strong>, then execute this command: <br>
+      <br>
+        <span class="highlight style1"><strong>java -jar spmf.jar run Open_md_sequence_database_with_viewer </strong><strong class="style1">ContextMDSequenceNoTime.txt</strong><strong> </strong></span> <br>
+      <br>
+      in a folder containing <span class="style1"><strong>spmf.jar</strong></span> and the file <strong><span class="style1"> </span></strong><strong class="style1">ContextMDSequenceNoTime</strong><strong><span class="style1">.txt</span></strong> which is included with SPMF. </li>
+    </ul>
+  <h2>What is displayed?</h2>
+  <p>After running the example, the content of the file will be displayed by the tool. The picture below shows the user interface of this viewer. </p>
+  <p>The <strong>window A</strong>) show in the picture below is the main window. It displays the <strong> multi-dimensional sequence database</strong> using a table. The table has four rows in this example. Each row is a multi-dimensional sequence that contains two parts: dimension values (called an MD-pattern) and a sequence. </p>
+  <p>Take the first row as example. It represents a multi-dimensional sequence <br>
+    The cell in the first column indicates that the values for the three dimensions of this multi-dimensional sequence are 1, 1 and 1, respectively.<br>
+    The cell in the second column indicates that the sequence is defined as follows. First, two items 2 and 4 were observed, followed by the item 3, followed by the item 2, and finally followed by the item 1.
+</p>
+  <p>The other multi-dimensional sequences follow the same format.</p>
+  <p>Besides, there are  buttons that provides additional features: </p>
+  <ul>
+    <li>By clicking on the button &quot;<strong>View sequence length distribution </strong>&quot;, a new window is opened, presented as <strong>window B)</strong> in the picture below. This window displays the frequency histogram of the different sequence lengths in the current file. The number of sequences is the Y axis and the different sequence lengths are the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    <li>By clicking on the button &quot;<strong>View item frequency distribution </strong>&quot;, a new window is opened, presented as <strong>window C)</strong> in the picture below. This window displays the frequency histogram for the frequency of the different items in the current file. The number of occurrences (or support) is the Y axis and the different items are displayed on the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    </ul>
+  <p align="center"><img src="md_md_md_md_bis.png" alt="graph viewer database graph" width="1306" height="861"></p>
+  <h2>What is the input?</h2>
+  <p>The algorithm  takes as input <strong>a multi-dimensional sequence database, </strong>as used by algorithm such <strong>SEQ-DIM </strong>and<strong> DIM-SEQ </strong>.</p>
+  <p>    The database used in this example is provided  in the text file &quot;<strong class="style1">ContextMDSequenceNoTime</strong><strong><span class="style1">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution. </p>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a multi-dimensional sequence
+    from a sequence database. Each line is separated into two parts: (1) a
+    MD-pattern (values for some dimensions) and (2) a sequence. </p>
+  <ul>
+    <li>The first part is a list of dimension values separated by
+      single spaces. A dimension value is a positive integer or the symbol
+      "*" meaning "any values". Finally, the value "-3" indicates the end of
+      the first part. Note that each line should have the same number of
+      dimension values.</li>
+    <li>The second part of each line is a sequence. Each item in a
+      sequence is represented by a postive integers and items from the same
+      itemset within a sequence are separated by single space. Note that it
+      is assumed that items within a same itemset are sorted according to a
+      total order and that no item can appear twice in the same itemset. The
+      value "-1" indicates the end of an itemset. The value "-2" indicates
+      the end of a sequence (it appears at the end of each line). </li>
+  </ul>
+  <p>For example, this is the content of the example file &quot;<strong class="style1">ContextMDSequenceNoTime</strong><strong><span class="style1">.txt</span>&quot;</strong>:</p>
+  <p>@FILETYPE=&quot;Multi-dimensional sequence database&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1 1 1 -3 2 4 -1 3 -1 2 -1 1 -1 -2<br>
+    1 2 2 -3 2 6 -1 3 5 -1 6 7 -1 -2<br>
+    1 2 1 -3 1 8 -1 1 -1 2 -1 6 -1 -2<br>
+    * 3 3 -3 2 5 -1 3 5 -1 -2 </p>
+  <p>The first two lines are metadata indicating the type of file and the source of the data. Then, the following lines are the MD sequences (records). This file contains four MD-sequences (four lines). Each line has 3 dimensions in each MD-Pattern. For example, consider the second line. It represents a MD-sequence where the value for the three dimensions are respectively 1, 2 and 2. Then, the sequence in this MD-Sequence is the itemset {2, 6} followed by the itemset {3, 5}, followed by the itemset {6, 7}.</p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

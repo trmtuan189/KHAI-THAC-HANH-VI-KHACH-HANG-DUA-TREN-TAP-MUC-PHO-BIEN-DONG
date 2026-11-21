@@ -1,0 +1,119 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Calculate Statistics for a Product Transaction Database   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0033FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1> Calculate Statistics for a ProductTransaction Database (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to  <strong> calculate statistics for a product transaction database</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="style1">Calculate_stats_for_a_product_transaction_database</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the input file <span class="style1"><strong>contextVME.txt</strong></span> (3) click &quot;<span class="style1">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command
+    line</strong>, then execute this command: <br>
+    <span class="style1">java -jar spmf.jar run Calculate_stats_for_a_product_transaction_database contextVME.txt
+      no_output_file</span> in a folder containing <span class="highlight">spmf.jar</span> and the input file <span class="style1"><strong>contextVME</strong>.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;</span><span class="style1">MainTestStatsTransactionDBProduct.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this tool?</h2>
+<p>This tool is a tool for generating statistics about a product
+    transaction database, as used by algorithms such as VME. This tool can be used to know for example if the
+    database is dense or sparse before applying a data mining algorithm.</p>
+
+<h2>What is the input?</h2>
+<p>The input is a product transaction database (aka formal context). A product is defined as a set of items that are used to assemble the product. Moreover each product is annotated with a profit (a positive integer) that indicates how much money this product generate for the company. For example, let's consider the following product database, consisting of 6 products and 7 items (this example is taken from the article of <a href="https://www.philippe-fournier-viger.com/spmf/erasable_itemsets.pdf" rel="nofollow">Deng &amp; Xu, 2010</a>). Each product is annotated with the profit information. For example, the first line indicates that the product 1 generate a total profit of 50 $ for the company and that its assembly requires parts 2, 3, 4 and 6. This product database is provided in the file "<strong>contextVME.txt</strong>" of the SPMF distribution<strong>.</strong>:</p>
+  <table align="center" border="1" width="332">
+    <tbody>
+      <tr>
+        <td width="74"><br></td>
+        <td width="47"><strong>profit</strong></td>
+        <td width="61"><strong>items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>product1</strong></td>
+        <td>50$</td>
+        <td>{2, 3, 4, 6}</td>
+      </tr>
+      <tr>
+        <td><strong>product2</strong></td>
+        <td>20$</td>
+        <td>{2, 5, 7}</td>
+      </tr>
+      <tr>
+        <td><strong>product3</strong></td>
+        <td>50$</td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>product4</strong></td>
+        <td>800$</td>
+        <td>{1, 2, 4}</td>
+      </tr>
+      <tr>
+        <td><strong>product5</strong></td>
+        <td>30$</td>
+        <td>{6, 7}</td>
+      </tr>
+      <tr>
+        <td><strong>product6</strong></td>
+        <td>50$</td>
+        <td>{3, 4}</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <h2>What is the output?</h2>
+  <p>The output is statistics about the <strong>product transaction database</strong>. For
+    example, if we use the tool on the previous product transaction database given as
+    example, we get the following statistics:</p>
+  <p><span class="style1">============  TRANSACTION DATABASE STATS ==========<br>
+    Number of transactions : 6<br>
+    File C:\Users\Phil\Desktop\test_files\contextVME.txt<br>
+    Number of distinct items: 7<br>
+    Smallest item id: 1<br>
+    Largest item id: 7<br>
+    Average number of items per transaction: 3.0 standard deviation: 0.816496580927726 variance: 0.6666666666666666<br>
+    Average profit per product (transaction): 166.66666666666666 standard deviation: 283.4705550062573 variance: 80355.55555555555<br>
+    Average item support in the database: 2.5714285714285716 standard deviation: 0.7284313590846836 variance: 0.5306122448979592 min value: 2 max value: 4<br>
+    Database density: 42.857142857142854 %
+    </span><br>
+  </p>
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> is defined as follows. It is a text file. Each lines represents a transaction. Each line is composed of two sections, as follows.</p>
+  <ul>
+    <li>First, the profit of the transaction is indicated by an integer number, followed by a single space.</li>
+    <li>Second, the items in the transaction are listed. An item is represented by a positive integer. Each item is separated from the following item by a space. It is assumed that items are sorted according to a total order and that no item can appear twice in the same transaction.</li>
+  </ul>
+  <p>For example, for the previous example, the input file is defined as follows:</p>
+  <p>50 2 3 4 6<br>
+    20 2 5 7<br>
+    50 1 2 3 5<br>
+    800 1 2 4<br>
+    30 6 7<br>
+    50 3 4</p>
+  <p>Consider the first line. It means that the transaction {2, 3, 4, 6} has a profit of 50 and it contains the items 2, 3, 4 and 6. The following lines follow the same format.</p>
+  <!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

@@ -1,0 +1,133 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Open a graph file using the SPMF Graph Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Open a graph file using the SPMF Graph Viewer   (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to <strong>open a graph file using the SPMF Graph Viewer </strong><a href="https://www.philippe-fournier-viger.com/spmf/"></a>.</p>
+<p>The <strong>SPMF graph viewer</strong> is a simple tool to visualize the content of a  file containing graphs. </p>
+<p>The <strong>Graph Viewe</strong>r is designed mainly to:</p>
+<ol>
+  <li> read <strong>input files </strong>that contain one or more <strong>graphs</strong> that follow the input format of the <strong>gSpan</strong>, <strong>cgSpan </strong>and <strong>TKG </strong>algorithms, or similar algorithms</li>
+  <li>read <strong>output files</strong> that contain <strong>subgraphs</strong> found by the <strong>gSpan</strong>, <strong>cgSpan </strong>and <strong>TKG </strong>algorithms, or similar algorithms </li>
+</ol>
+<p>Below, I will explain these two cases. </p>
+<!--------------(4) Insert the example here:------------->
+<h2><strong> Example 1: Visualizing a graph database file</strong></h2>
+  <h3>How to run this example? </h3>
+  <ul>
+    <li><strong>If you are using the</strong> <strong>graphical interface </strong>of SPMF<strong>, </strong>(1)
+      choose the <strong>&quot;Open_graph_file_with_SPMF_graph_viewer&quot;</strong> algorithm<strong>, </strong> (2) choose the <strong>contextTKG.txt</strong> file as input,   (3) set the parameter &quot;Show text&quot; to true, and then (4) click &quot;run algorithm&quot; </li>
+  </ul>
+  <p><img src="graphviewer111.png" alt="graph viewer open" width="722" height="558"></p>
+  <ul>
+    <li><strong>If you want to execute this example from the</strong> <strong>command
+</strong>, then execute this command: <br>
+          <br>
+        <span class="highlight style1"><strong>java -jar spmf.jar run Open_graph_database_file_with_graph_viewer contextTKG.txt </strong></span> <br>
+          <br>
+      in a folder containing <span class="highlight">spmf.jar</span> and some graph file <strong>such as contextTKG .txt</strong> which is included with SPMF. </li>
+  </ul>
+  <h3>What will be displayed?</h3>
+  <p>After running the example, the content of the file will be displayed by the Graph Viewer. The picture below show the results and explain the different functions of the Graph viewer. Then, after that, I will explain the file format. </p>
+  <p><img src="graphviewer1122221.png" alt="graph viewer database graph" width="1130" height="793">  </p>
+  <h3>What is the input?</h3>
+  <p>The <strong> input file format</strong> is defined as
+    follows. It is a text file which contains one or more graphs.  A graph is defined by a few lines of text that follow the following format:</p>
+  <ul>
+    <li><strong>t # N </strong>   This is the first line of a graph. It indicates that this is the N-th graph in the file</li>
+    <li><strong>v M L</strong>     This line defines the M-th vertex of the current graph, which has a label L</li>
+    <li><strong>e P Q L  </strong> This line defines an edge, which connects the P-th vertex with the Q-th vertex. This edge has the label L</li>
+  </ul>
+  <p>For the above example, the input file is defined
+    as follows:</p>
+  <p>t # 0<br>
+    v 0 10<br>
+    v 1 11<br>
+    v 2 10<br>
+    v 3 11<br>
+    e 0 1 20<br>
+    e 1 2 23<br>
+    e 1 3 22</p>
+  <p>t # 1<br>
+    v 4 10<br>
+    v 5 11<br>
+    e 4 5 20</p>
+  <p>t # 2<br>
+    v 6 10<br>
+    v 7 10<br>
+    v 8 11<br>
+    v 9 11<br>
+    e 6 7 21<br>
+    e 7 8 23<br>
+    e 7 9 20<br>
+    e 8 9 22</p>
+  <p>The first graph is displayed in the example picture above by the Graph Viewer. </p>
+  <h2><strong>Example 2: Visualizing a file containing subgraphs </strong>discovered by a frequent subgraph mining algorithm </h2>
+  <h3>How to run this example? </h3>
+  <ul>
+    <li><strong>If you are using the</strong> <strong>graphical interface </strong>of SPMF<strong>, </strong>(1)
+      choose the <strong>&quot;Open_graph_file_with_SPMF_graph_viewer&quot;</strong> algorithm<strong>, </strong> (2) choose the <strong>patterns.txt</strong> file as input,   (3) set the parameter &quot;Show text&quot; to true, and then (4) click &quot;run algorithm&quot; </li>
+  </ul>
+  <p><img src="graphviewer111.png" alt="graph viewer open" width="722" height="558"></p>
+  <ul>
+    <li><strong>If you want to execute this example from the</strong> <strong>command </strong>, then execute this command: <br>
+        <br>
+        <span class="highlight style1"><strong>java -jar spmf.jar run Open_graph_database_file_with_graph_viewer patterns.txt </strong></span> <br>
+        <br>
+      in a folder containing <span class="highlight">spmf.jar</span> and some graph file <strong>such as patterns.txt</strong> which is included with SPMF. </li>
+  </ul>
+  <h3>What will be displayed?</h3>
+  <p>After running the example, the content of the file will be displayed by the Graph Viewer. The picture below show the results and explain the different functions of the Graph viewer. Then, after that, I will explain the file format. </p>
+  <p><img src="graphviewer13333333221.png" alt="graph viewer database graph" width="1130" height="793"> </p>
+  <h3>What is the input?</h3>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file, listing subgraphs found by an algorithm. A frequent subgraph is defined by a few lines of text that follow the following format:</p>
+  <ul>
+    <li><strong>t # N * Z </strong>   This is the first line of a subgraph. It indicates that this is the N-th subgraph in the file and that its support is Z. </li>
+    <li><strong>v M L</strong>     This line defines the M-th vertex of the current subgraph, which has a label L</li>
+    <li><strong>e P Q L  </strong> This line defines an edge, which connects the P-th vertex with the Q-th vertex. This edge has the label L</li>
+    <li>x X1 X2 ... This lines lists the identifiers of all the graphs X1, X2 ... that contains the current subgraph. </li>
+  </ul>
+  <p>For the above example, the input file is defined
+    as follows:</p>
+  <p>t # 0 * 3<br>
+    v 0 10<br>
+    v 1 11<br>
+    e 0 1 20<br>
+    x 0 1 2</p>
+  <p>t # 1 * 3<br>
+    v 0 11<br>
+    x 0 1 2</p>
+  <p>t # 2 * 3<br>
+    v 0 10<br>
+    x 0 1 2</p>
+  <p>The first graph is displayed in the example picture above by the Graph Viewer. </p>
+  <h2><strong>Other ways of launching the Graph Viewer </strong></h2>
+  <p>When running a subgraph mining algorithm like TKG in SPMF using the graphical user interface, it is possible to choose to open the output file produced by the algorithm using the GraphViewer using this option of the graphical user interface:</p>
+  <p><img src="graphviewer134444444221.png" alt="graph viewer save" width="705" height="542"><br>
+    <br>
+    <!----------END------>
+	  </p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

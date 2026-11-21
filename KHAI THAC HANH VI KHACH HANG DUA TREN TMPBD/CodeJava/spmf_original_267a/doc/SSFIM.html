@@ -1,0 +1,229 @@
+﻿	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Frequent Itemsets using the SSFIM Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Frequent Itemsets using the SSFIM Algorithm (<a href="https://www.philippe-fournier-viger.com/spmf/index.php?link=documentation.php">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>SSFIM algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> &quot;<span class="highlight">SSFIM</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextPasquier99.txt&quot;</span></strong>, (3) set the
+    output file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;) (4)
+    set minsup to <span class="highlight">40% </span>and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> SSFIM </span></strong>contextPasquier99.txt
+      output.txt 40%</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextPasquier99.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestSSFIM.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is SSFIM?</h2>
+<p><strong>SSFIM</strong> is an algorithm for discovering frequent
+    itemsets in a transaction database. SSFIM was proposed by Djenouri (2017). It  is a brute force algorithms that generates all posibilities. Thus, it   performs well on datasets with a very small search space. On eight standard benchmark datasets (see performance section below), it run out of memory on 7 out of 8 datasets for minsup = 0.99, while some algorithms like FPGrowth can finish sometimes in less than 1 second with just 50 Mb of Memory on thresholds as low as minsup = 0.01. Only for datasets where the search space is small like Chess, the SSFIM algorithm can run efficiently. See the &quot;performance&quot; section below for more details. </p>
+
+<h2>What is the input of the SSFIM algorithm?</h2>
+<p>The input is a <strong>transaction database</strong> (aka binary
+    context) and a threshold named <em><strong>minsup</strong></em> (a
+    value between 0 and 100 %). </p>
+  <p>A <strong>transaction database</strong> is a set of transactions.
+    Each <strong>transaction</strong> is a set of items. For example,
+    consider the following transaction database. It contains 5 transactions
+    (t1, t2, ..., t5) and 5 items (1,2, 3, 4, 5). For example, the first
+    transaction represents the set of items 1, 3 and 4. This database is
+    provided as the file <strong>contextPasquier99.txt</strong> in the
+    SPMF distribution. It is important to note that an item is not allowed
+    to appear twice in the same transaction and that items are assumed to
+    be sorted by lexicographical order in a transaction.</p>
+  <table align="center" border="1" width="316">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 3, 4}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{2, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>What is the output of the SSFIM algorithm?</h2>
+  <p><strong>SSFIM</strong> is an algorithm for discovering itemsets
+    (group of items) occurring frequently in a transaction database (<strong>frequent
+      itemsets</strong>). A frequent itemset is an itemset appearing in at
+    least <em>minsup </em>transactions from the transaction database,
+    where <em>minsup </em>is a parameter given by the user. </p>
+  <p>For example, if<strong> SSFIM</strong> is run on the previous
+    transaction database with a minsup of 40 % (2 transactions),<strong> SSFIM </strong>produces the following result:</p>
+
+<table align="center" border="1" width="199">
+  <tbody>
+    <tr>
+      <td width="114"><strong>itemsets</strong></td>
+      <td width="69"><strong>support</strong></td>
+    </tr>
+    <tr>
+      <td>{1}</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{2}</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{3}</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{5}</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{1, 2}</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{1, 3}</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{1, 5}</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{2, 3}</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{2, 5}</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{3, 5}</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{1, 2, 3}</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{1, 2, 5}</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{1, 3, 5}</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{2, 3, 5}</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{1, 2, 3, 5}</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+<h2>How should I interpret the results?</h2>
+<p>In the results, each itemset is annotated with its support. The <strong>support</strong> of an itemset is how many times the itemset appears in the transaction
+    database. For example, the itemset {2, 3 5} has a support of 3 because
+    it appears in transactions t2, t3 and t5. It is a frequent itemset
+    because its support is higher or equal to the <em>minsup </em>parameter.</p>
+
+<h2>Input file format</h2>
+<p>The <strong> input file format</strong> used by SSFIM is defined
+    as follows. It is a text file. An item is represented by a positive
+    integer. A transaction is a line in the text file. In each line
+    (transaction), items are separated by a single space. It is assumed
+    that all items within a same transaction (line) are sorted according to
+    a total order (e.g. ascending order) and that no item can appear twice
+    within the same line.</p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>1 3 4<br>
+    2 3 5<br>
+    1 2 3 5<br>
+    2 5 <br>
+    1 2 3 5</p>
+  <p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the
+    ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+    Most features of the ARFF format are supported except that (1) the
+    character &quot;=&quot; is forbidden and (2) escape characters are not
+    considered. Note that when the ARFF format is used, the performance of
+    the data mining algorithms will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file, where each line represents a frequent itemset. On each
+    line, the items of the itemset are first listed. Each item is
+    represented by an integer and it is followed by a single space. After,
+    all the items, the keyword &quot;#SUP:&quot; appears, which is followed by an
+    integer indicating the support of the itemset, expressed as a number of
+    transactions. For example, here is the output file for this example.
+    The first line indicates the frequent itemset consisting of the item 1
+    and it indicates that this itemset has a support of 3 transactions.</p>
+  <p>1 #SUP: 3<br>
+    2 #SUP: 4<br>
+    3 #SUP: 4<br>
+    5 #SUP: 4<br>
+    1 2 #SUP: 2<br>
+    1 3 #SUP: 3<br>
+    1 5 #SUP: 2<br>
+    2 3 #SUP: 3<br>
+    2 5 #SUP: 4<br>
+    3 5 #SUP: 3<br>
+    1 2 3 #SUP: 2<br>
+    1 2 5 #SUP: 2<br>
+    1 3 5 #SUP: 2<br>
+    2 3 5 #SUP: 3<br>
+    1 2 3 5 #SUP: 2 </p>
+  <p>Note that if the ARFF format is used as input instead of the
+    default input format, the output format will be the same except that
+    items will be represented by strings instead of integers.</p>
+
+  <h2>Where can I get more information about the SSFIM algorithm?</h2>
+  <p>This is the conference article describing SSFIM: </p>
+  <p> Djenouri, Y., Comuzzi, M. and Djenouri, D., 2017, May. SS-FIM: Single Scan for Frequent Itemsets Mining in Transactional Databases. In Pacific-Asia Conference on Knowledge Discovery and Data Mining (pp. 644-654). Springer.</p>
+
+
+  <p>Also, for a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="https://www.philippe-fournier-viger.com/spmf/index.php?link=documentation.php">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"2bcc3c95617b4c1189b14ccf6dfe9af2","r":1}' crossorigin="anonymous"></script>
+</body>
+	</html>

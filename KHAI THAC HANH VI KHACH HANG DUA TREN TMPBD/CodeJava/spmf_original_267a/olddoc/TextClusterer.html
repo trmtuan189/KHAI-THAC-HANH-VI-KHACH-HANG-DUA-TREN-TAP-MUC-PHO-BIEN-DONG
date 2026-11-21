@@ -1,0 +1,116 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Clustering Texts with a text clusterer  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Clustering Texts with a text clusterer  (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>text clusterer </strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">TextClusterer</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">input_text_clustering.txt</span><span class="highlight">&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    (4) set <strong>&quot;<span class="highlight">Perform stemming:</span>&quot;</strong> to true, (5) set <strong>&quot;<span class="highlight">Remove stopwords:</span>&quot;</strong> to true, and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> TextClusterer </span></strong><strong>input_text_clustering</strong>.txt
+      output.txt true true</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>input_text_clustering</strong>.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestTextClusterer.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this algorithm? </h2>
+<p>The algorithm is a <strong>text clusterer </strong>implemented
+    by <strong>Sabarish Ragh</strong>u. It can group texts automatically
+    into clusters. Furthermore, it offers the possiblity of performing
+    stemming and removing stop words before performing clustering.</p>
+  <p>The text clusterer works as follows:<br>
+    1. Load the input file<br>
+    2. Remove the stopwords (optional)<br>
+    3. Stem the words (optional)<br>
+    4. Calculate <strong>tf*idf</strong> value for each record in the
+    input file.<br>
+    5. Calculate similarity matrix by using the tfidf values of the records.<br>
+    6. Take most similar records per each record and make them as clusters
+    initially.<br>
+    7. Use the transitive rule A,B are most similar and B,C are most
+    similar; A and C are likely to be similar. This imply that A, B, C are
+    in the same cluster.<br>
+    8. Merge the clusters based on the above rule for all the records.<br>
+    9. Write the final output i.e,; final sets of clusters to the output
+    file.</p>
+  <p><strong>StopWords</strong><br>
+    Words that are insignificant to identify the clusters. This algorithm
+    by defauly uses the list of most popular stopwords. Anyways we can
+    define our own stopword list or even not remove any word.</p>
+  <p><strong>Stemming</strong><br>
+    Stemming is deriving the base word of a word. <br>
+    For example: Identification is stemmed to Identity</p>
+  <p> For stemming, we use the famous Porter stemmer algorithm, which
+    uses rules given by Porter to stem the words. This implementation is
+    taken from Brian Goetz's implementation from the internet.</p>
+  <p><strong>tf:term frequency</strong><br>
+    Term frequency defines how frequently a term occur in a document</p>
+  <p> <strong>Idf:Inverse document frequency</strong><br>
+    Inverse document frequency is the frequency of a word in the whole set
+    of documents.</p>
+  <p> <strong>similarity matrix:</strong><br>
+    2 dimensional matrix representation of a record's similarity with all
+    other records.</p>
+
+  <h2>What is the input?</h2>
+  <p>The input is a text file.</p>
+  <p>Each line of the text file represents a text.</p>
+  <p>A line starts with an integer id. Then, it is followed by a tab,
+    and then a text where words are separated by spaces.</p>
+  <p>An example of input is provided in the file &quot;<span class="highlight"><strong>input_text_clustering</strong>.txt</span>&quot;
+    of the SPMF distribution. It contains 100 texts (100 lines). For
+    example, here are two lines from this file:</p>
+  
+    <p>692770 inventory taker description team members required
+      physically count inventory various retailers enter information
+      equipment inventory counted varies depending type store audited items
+      may located floor tables shelves various heights items generally
+      counted shelves may moved required inventories take approximately hours
+      complete however may take longer depending size store level inventory
+      counted </p>
+    <p>574319 leading hotel furniture supplier seeking project managers
+      manage national international accounts bid packages unique exciting
+      opportunity right individuals qualified applicants should send resumes
+      talli globalallies com phone calls please </p>
+  
+
+    <h2>What is the output?</h2>
+    <p>The output is a set of clusters of similar texts. </p>
+  <p>The <strong>output file format </strong>is defined as follows.
+    The first line indicates the file format. Then, each following line
+    contains a text id followed by a cluster id. For example, here are the
+    first five lines of the output file obtained by applying the text
+    clusterer on the sample input file:</p>
+  <p>RecordId Clusternum<br>
+    171056 0<br>
+    770853 0<br>
+    247263 1<br>
+    870007 1</p>
+  <p>Results can be interpreted as follows. The texts with ids &quot;171056&quot;
+    and &quot;770853&quot; both belongs to the same cluster, having the id &quot;0&quot;.
+    Moreover, the texts with ids &quot;247263&quot; and &quot;870007&quot; both belongs to the
+    same cluster, having the id &quot;1&quot;.</p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

@@ -1,0 +1,14 @@
+Algorithm: CHARM_COMPACT
+Minsup: 0.4000
+Run: 2
+Closed itemsets: 124
+Elapsed time (ms): 176.810
+Sampled peak heap (MiB): 22.000
+Dataset: MUSHROOM
+Input: D:\KHAI THAC HANH VI KHACH HANG DUA TREN TMPBD\Data\BenchmarkDatasets\mushrooms.txt
+SPMF version: 2.67a
+Algorithm source: SPMF 2.67a CHARM modified: compact frequent-item matrix
+CHARM triangular matrix: true
+Matrix implementation: compact frequent-item matrix
+JVM arguments: [-Xms256m, -Xmx1024m, -Dfile.encoding=UTF-8, -Dstdout.encoding=UTF-8, -Dstderr.encoding=UTF-8, -XX:+ShowCodeDetailsInExceptionMessages]
+Java version: 21.0.13

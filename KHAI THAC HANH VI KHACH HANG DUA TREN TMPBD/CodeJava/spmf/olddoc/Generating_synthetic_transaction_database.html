@@ -1,0 +1,121 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Generating a Synthetic Transaction Database   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Generating a Synthetic Transaction Database  (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to  <strong> generate a synthetic transaction database</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Generate_a_transaction_database</span>&quot;</strong> algorithm<strong>, </strong> (2) set the output file name (e.g. "<span class="highlight"><strong>output</strong>.txt</span>") (3) choose 100
+    transactions, 1000 maximum distinct items and 10 items per transaction
+    (4) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run <strong>Generate_a_transaction_database</strong>  output.txt 100 1000 10</span> in a folder containing <span class="highlight">spmf.jar</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestGenerateTransactionDatabase.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this tool?</h2>
+<p>This tool is a random generator of <strong>transaction databases</strong>.
+    It can be used to <strong>generate synthetic transaction databases
+      with timestamps </strong>to compare the performance of data mining
+    algorithms that takes a transaction database as input.</p>
+  <p>Synthetic databases are often used in the data mining litterature
+    to evaluate algorithms. In particular, they are useful for comparing
+    the scalability of algorithms. For example, one can generate sequence
+    databases having various size and see how the algorithms react in terms
+    of execution time and memory usage with respect to the database size.</p>
+
+  <h2>What is the input?</h2>
+  <p>The <strong>tool for generating a transaction </strong>takes
+    three prameters as input:</p>
+  
+    
+      <p>1) the number of transactions to be generated (an integer
+        &gt;= 1)</p>
+      <p>2) the maximum number of distinct item that the database
+        should contain (an integer &gt;= 1),</p>
+      <p>3) the number of items that each transaction should contain
+        (an integer &gt;= 1)</p>
+    
+  
+
+      <h2>What is the output?  </h2>
+      <p>The algorithm outputs a transaction database database respecting
+    the parameters provided. A random number generator is used to generate
+    the database.</p>
+      <p>A <strong>transaction database</strong> is a set of transactions.
+    Each <strong>transaction</strong> is a set of items. For example,
+    consider the following transaction database. It contains 5 transactions
+    (t1, t2, ..., t5) and 5 items (1,2, 3, 4, 5). For example, the first
+    transaction represents the set of items 1, 3 and 4. It is important to
+    note that an item is not allowed to appear twice in the same
+    transaction and that items are assumed to be sorted by lexicographical
+    order in a transaction.</p>
+  <table align="center" border="1" width="316">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 3, 4}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{2, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Output file format</h2>
+  <p>The <strong> output file format</strong> is defined as follows.
+    It is a text file. An item is represented by a positive integer. A
+    transaction is a line in the text file. In each line (transaction),
+    items are separated by a single space. It is assumed that all items
+    within a same transaction (line) are sorted according to a total order
+    (e.g. ascending order) and that no item can appear twice within the
+    same line.</p>
+  <p>For example, for the previous example, an output file could be the
+    following:</p>
+  <p>1 3 4<br>
+    2 3 5<br>
+    1 2 3 5<br>
+    2 5 <br>
+    1 2 3 5</p>
+
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

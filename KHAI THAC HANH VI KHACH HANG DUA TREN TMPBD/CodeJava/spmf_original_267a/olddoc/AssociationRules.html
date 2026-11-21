@@ -1,0 +1,241 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining All Association Rules  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<h1> Mining All Association Rules (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how mine <strong>all association rules</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> &quot;<span class="highlight">FPGrowth_association_rules</span>&quot; </strong>algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextIGB</span><span class="highlight">.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    (4) set minsup = 50 %, minconf= 60% (5) click &quot;<span class="highlight">Run
+      algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> FPGrowth_association_rules</span></strong><strong> contextIGB</strong>.txt output.txt 50% 60%</span> in a folder
+    containing <span class="highlight">spmf.jar</span> and the example input
+    file <span class="highlight">contextIGB.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    this file <strong><span class="highlight">&quot;MainTestAllAssociationRules_FPGrowth_saveToMemory.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is this algorithm?</h2>
+<p>It is an algorithm for discovering all association rules in a
+    transaction database, following the two steps approach proposed by
+    Agrawal &amp; Srikant (1993). The first step is to discover frequent
+    itemsets. The second step is to generate rules by using the frequent
+    itemsets. The main difference with Agrawal &amp; Srikant in this
+    implementation is that FPGrowth is used to generate frequent itemsets
+    instead of Apriori because FPGrowth is more efficient.</p>
+
+<h2>What is the input?</h2>
+<p>The input is a transaction database (aka binary context) and two
+    thresholds named <em>minsup</em> (a value between 0 and 1) and <em>minconf </em>(a value between 0 and 1)<em>.</em></p>
+  <p>A <strong>transaction database</strong> is a set of transactions.
+    Each <strong>transaction</strong> is a set of distinct items. For
+    example, consider the following transaction database. It contains 6
+    transactions (t1, t2, ..., t5, t6) and 5 items (1,2, 3, 4, 5). For
+    example, the first transaction represents the set of items 1, 2, 4 and
+    5. This database is provided as the file <strong>contextIGB.txt</strong> in the SPMF distribution. It is important to note that an item is not
+    allowed to appear twice in the same transaction and that items are
+    assumed to be sorted by lexicographical order in a transaction.</p>
+  <table align="center" border="1" width="100%">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t6</strong></td>
+        <td>{2, 3, 4}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>What is the output?</h2>
+  <p>The output of an association rule mining algorithm is a set of
+    association rules respecting the user-specified <em>minsup</em> and <em>minconf</em> thresholds. To explain how this algorithm works, it is necessary to
+    review some definitions. An<strong> association rule</strong> X==&gt;Y
+    is a relationship between two itemsets (sets of items) X and Y such
+    that the intersection of X and Y is empty. The <strong>support of a
+      rule</strong> is the number of transactions that contains X&#8746;Y. The <strong>confidence
+        of a rule </strong>is the number of transactions that contains X&#8746;Y
+    divided by the number of transactions that contain X.</p>
+  <p>If we apply an association rule mining algorithm, it will return
+    all the rules having a support and confidence respectively no less than <em>minsup</em> and <em>minconf</em>. </p>
+  <p>For example, by applying the algorithm with minsup = 0.5 (50%),
+    minconf = 0.6 (60%), we obtains <strong>55 associations rules </strong>(<strong>run
+      the example in the SPMF distribution to see the result</strong>).</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> is a text file containing
+    transactions. Each lines represents a transaction. The items in the
+    transaction are listed on the corresponding line. An item is
+    represented by a positive integer. Each item is separated from the
+    following item by a space. It is assumed that items are sorted
+    according to a total order and that no item can appear twice in the
+    same transaction. For example, for the previous example, the input file
+    is defined as follows:</p>
+  
+    <p>1 2 4 5<br>
+      2 3 5<br>
+      1 2 4 5<br>
+      1 2 3 5<br>
+      1 2 3 4 5<br>
+      2 3 4</p>
+  
+  <p>Consider the first line. It means that the first transaction is
+    the itemset {1, 2, 4 and 5}. The following lines follow the same format.</p>
+  <p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the
+    ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+    Most features of the ARFF format are supported except that (1) the
+    character &quot;=&quot; is forbidden and (2) escape characters are not
+    considered. Note that when the ARFF format is used, the performance of
+    the data mining algorithms will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file, where each line represents an <strong>association rule</strong>.
+    On each line, the items of the rule antecedent are first listed. Each
+    item is represented by an integer, followed by a single space. After,
+    that the keyword &quot;==&gt;&quot; appears followed by a space. Then, the items
+    of the rule consequent are listed. Each item is represented by an
+    integer, followed by a single space. Then, the keyword &quot; #SUP: &quot;
+    appears followed by the support of the rule represented by an integer.
+    Then, the keyword &quot; #CONF: &quot; appears followed by the confidence of the
+    rule represented by a double value (a value between 0 and 1,
+    inclusively). For example, here is a few lines from the output file for
+    this example:</p>
+  <p> 1 ==&gt; 2 4 5 #SUP: 3 #CONF: 0,75<br>
+    5 ==&gt; 1 2 4 #SUP: 3 #CONF: 0,6<br>
+    4 ==&gt; 1 2 5 #SUP: 3 #CONF: 0,75</p>
+  <p>For example, the first line indicates that the association rule
+    {1} --&gt; {2, 4, 5} has a support of 3 transactions and a confidence
+    of 75 %. The other lines follow the same format.</p>
+  <p>Note that if the ARFF format is used as input instead of the
+    default input format, the output format will be the same except that
+    items will be represented by strings instead of integers.</p>
+
+  <h2>Optional feature: giving names to items</h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextIGB.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+      @ITEM=1=apple<br>
+      @ITEM=2=orange<br>
+      @ITEM=3=tomato<br>
+      @ITEM=4=milk<br>
+      @ITEM=5=bread<br>
+      1 2 4 5<br>
+      2 3 5<br>
+      1 2 4 5<br>
+      1 2 3 5<br>
+      1 2 3 4 5<br>
+  2 3 4</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second line indicates that the item 1 is called &quot;apple&quot;. The third line indicates that the item 2 is called &quot;orange&quot;. Then the following lines define transactions in the SPMF format.</p>
+  <p>Then, if we apply the algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+      <br>
+      apple ==&gt; milk bread #SUP: 3 #CONF: 0.75<br>
+      tomato bread ==&gt; orange #SUP: 3 #CONF: 1.0<br>
+      orange bread ==&gt; tomato #SUP: 3 #CONF: 0.6<br>
+  orange tomato ==&gt; bread #SUP: 3 #CONF: 0.75</p>
+  <p>Note that this feature could be also used from the <strong>source code</strong> of SPMF using the ResultConverter class. However, there is currently no example provided for using it from the source code.</p>
+
+  <h2>Optional feature: constraints on the size of association rules </h2>
+  <p>Sometimes, there may be just too many association rules, and rules containing many items may not be interesting. Thus, it is also possible to specify two optional parameters in the <strong>user</strong> <strong>interface of SPMF:</strong></p>
+
+<ul>
+  <li><strong>Max antecedent length</strong>: This parameter allows to set a maximum number of items to appear on the left side of a rule. By default, this parameter is equal to the infinity if it is not set. </li>
+  <li><strong>Max consequent length</strong>: This parameter allows to set a maximum number of items to appear on the right side of a rule. By default, this parameter is equal to the infinity if it is not set. </li>
+</ul>
+
+  <p>If you are using the command line interface of SPMF, it is also possible to use these optional parameters by adding them at the end of the command. For example: <br>
+    <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> FPGrowth_association_rules</span></strong><strong> contextIGB</strong>.txt output.txt 50% 60% 2 3</span><br>
+  means to run the above example with a maximum antecedent length of 2 items and a maximum consequent length of 3 items. </p>
+
+  <h2>Implementation details</h2>
+  <p>Association rule mining is traditionally performed in two steps :
+    (1) mining frequent itemset and (2) generating association rules by
+    using frequent itemsets. In this implementation, we use the <strong>FPGrowth</strong> algorithm for Step 1 because it is very efficient. For Step 2, we use
+    the algorithm that was proposed by Agrawal &amp; Srikant (1994). </p>
+  <p>Note that in SPMF, we offer also the alternative of choosing <strong>Apriori</strong> instead of FPGrowth for Step1. This is called the <strong>&quot;<span class="highlight">Apriori_association_rules</span>&quot; </strong>algorithm
+    in the graphical user interface or command line interface. For example, the command to run <strong>Apriori</strong> is:<br>
+    <span class="highlight">java -jar spmf.jar run<strong> Apriori_association_rules</strong><strong> contextIGB</strong>.txt output.txt 50% 60%</span></p>
+  <p><a name="cfpgrowth_ar"></a>Lastly, note that we offer also the
+    alternative of choosing <strong>CFPGrowth++</strong> instead of
+    FPGrowth for Step1. This is called the <strong>&quot;<span class="highlight">CFPGrowth++_association_rules</span>&quot; </strong>algorithm in the graphical user interface or command line
+    interface. <strong>CFPGrowth++</strong> allows to use multiple minimum
+    support threshold instead of a single minsup thresholds so the input
+    and output are slightly different (see the example about <strong>CFPGrowth++</strong>    for more details about this algorithm). The CFPGrowth++ algorithm can be run using commands such as:<br>
+    <span class="highlight">java -jar spmf.jar run<strong> CFPGrowth++_association_rules contextCFPGrowth</strong>.txt
+      output.txt MIS.txt 60%<br>
+      </span>which means to run CFPGrowth for association rule extraction with a support file called MIS.txt and a minimum confidence of 60%.<br>
+      Another example is :
+      <br>
+      <span class="highlight">java -jar spmf.jar run<strong> CFPGrowth++_association_rules_with_lift contextCFPGrowth</strong>.txt
+      output.txt MIS.txt 60% 0.2 </span><br>
+      which means to run CFPGrowth for association rule extraction with a support file called MIS.txt and a minimum confidence of 60% and minimum lift of 0.2.</p>
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p> The following technical report published in 1994 describes how to
+    generate association rules from frequent itemsets (Step 2):</p>
+  <p><em>R. Agrawal and R. Srikant. <a href="https://www.philippe-fournier-viger.com/spmf/apriori_longer.pdf" rel="nofollow">Fast algorithms for mining association rules in large
+    databases</a>. Research Report RJ 9839, IBM Almaden Research Center,
+    San Jose, California, June 1994.</em></p>
+  <p>You can also read <a rel="nofollow" href="http://www-users.cs.umn.edu/%7Ekumar/dmbook/ch6.pdf">chapter 6
+    of the book &quot;introduction to data mining&quot;</a> which provide a nice and
+    easy to understand introduction to how to discover frequent itemsets
+    and generate association rules.</p>
+  <p>The following article describes the FPGrowth algorithm for mining
+    frequent itemsets:</p>
+  <p><em>Jiawei Han, Jian Pei, Yiwen Yin, Runying Mao: <a rel="nofollow" href="https://www.philippe-fournier-viger.com/spmf/fpgrowth_04.pdf">Mining
+    Frequent Patterns without Candidate Generation: A Frequent-Pattern Tree
+    Approach</a>. Data Min. Knowl. Discov. 8(1): 53-87 (2004)</em></p>
+
+
+  <p>For a good overview of <strong> itemset mining and association rule mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+				
+	
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

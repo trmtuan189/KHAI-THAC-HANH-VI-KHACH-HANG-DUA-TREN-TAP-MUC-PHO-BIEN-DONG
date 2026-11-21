@@ -1,0 +1,296 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining
+      Quantiative High Utility Itemsets using the TKQ Algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+    <h1>Mining
+      Quantiative High Utility Itemsets using the TKQ Algorithm (<a href="documentation.html">SPMF documentation)</a></h1>
+    <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+    <p>This example explains how to run the <strong>TKQ algorithm</strong>
+      using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF
+        open-source data mining library</a>.</p>
+    <!--------------(4) Insert the example here:------------->
+    <h2>How to run this example?</h2>
+    <ul>
+      <li><strong>If you are using the graphical interface, </strong>(1) choose
+        the <strong>&quot;<span class="highlight">TKQ</span>&quot;</strong> algorithm<strong>,
+        </strong>(2) select the input file <strong>&quot;<span class="highlight">dbHUQI</span><span
+
+            class="highlight">.txt&quot;</span></strong>, (3) set the output file name
+        (e.g. &quot;<span class="highlight">output.txt</span>&quot;) (4) set k = 13,
+        relativecoefficient = 3, method = COMBINEALL (5) set the profit file to
+        <strong>&quot;<span class="highlight">dbHUQI_p</span><span class="highlight">.txt&quot;</span></strong>
+        nd (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+      <li><strong>If you want to execute this example from the command line</strong>,
+        then execute this command: <br>
+        <span class="highlight">java -jar spmf.jar run<strong><span class="highlight">
+              TKQ dbHUQI</span></strong><strong><span class="highlight"></span></strong>.txt
+          output.txt dbHUQI_p.txt 13 3 COMBINEMALL </span> in a folder
+        containing <span class="highlight">spmf.jar</span> and the example input
+        file <span class="highlight"><strong><span class="highlight">dbHUQI</span></strong>.txt</span>
+        and <strong><span class="highlight">dbHUQI_p.txt.</span></strong></li>
+      <li><strong>If you are using the source code version of SPMF, </strong>launch
+        the file <strong><span class="highlight">&quot;MainTest</span><span class="highlight">TKQ</span>
+          <span class="highlight">.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.
+      </li>
+    </ul>
+    <h2>What is TKQ?</h2>
+    <p><strong>TKQ</strong>&nbsp;is a fast algorithm for mining the <strong>top-k</strong>
+        <strong>quantitative high utility </strong>itemsets proposed by <strong>Nouioua
+          et al. (2021) </strong>. The advantage of this algorithm over
+        algorithms such as FHUQI-Miner is that the user can directly select the
+        number of patterns <strong>k </strong>to be found instead of using a
+        minimum utility threshold.</p>
+      <p><strong>Note</strong>: the algorithm can return more than <strong>k</strong>
+        patterns if several patterns have exactly the same utility, or less than
+        <strong>k </strong>patterns if the database is small and k is too
+        large. </p>
+    
+      <h2>What is the input?</h2>
+      <p>The input of&nbsp;<strong>TKQ</strong>&nbsp;is a transaction database
+        with purchase quantities (internal utility) and unit profit information
+        (external utility). Moreover, three other parameter must be set:</p>
+    
+    <ul>
+      <li>a parameter <strong>k</strong> indicating the number of itemsets to
+        be found. </li>
+      <li>a <strong>relative coefficient</strong> ( a positive integer)</li>
+      <li>a <strong>method</strong> for combining itemsets (either COMBINEMIN,
+        COMBINEMAX or COMBINEALL). </li>
+    </ul>
+    
+      <p>For details about the meaning of these parameters, please see the <a href="https://www.philippe-fournier-viger.com/TKQ_15pages.pdf">TKQ
+          research paper.</a></p>
+      <p>A&nbsp;transaction database&nbsp;is a set of transactions, where each
+        transaction is a list of distinct items (symbols). For example, let's
+        consider the following transaction database. It consists of 4
+        transactions (t1, t2, ..., t4) and 4 items (1, 2, 3, 4). For instance,
+        transaction t1 is the set of items {1, 2, 3, 4}. In a transaction
+        database, each item has a corresponding purchase quantity. For examle,
+        in the first transaction, the quantity of item 1 is 3, the quantity of
+        item 2 is 3, the quantity of item 2 is 6, and the quantity of item 4 is
+        5. This database is provided in the file &quot;<span class="highlight"><strong><span
+
+              class="highlight">dbHUQI</span></strong>.txt</span>&quot; of the SPMF
+        distribution. It is important to note that an item is not allowed to
+        appear twice in the same transaction, and that items are assumed to be
+        sorted according to some order (e.g. ascending order of numbers).</p>
+      <table width="747" cellspacing="3" cellpadding="0" border="1">
+        <tbody>
+          <tr>
+            <td width="236"><strong> Transaction ID </strong></td>
+            <td width="250">
+              <p align="center"><strong>Items </strong></p>
+            </td>
+            <td width="249" valign="top">
+              <p align="center"><strong>Quantities</strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p align="center">t1 </p>
+            </td>
+            <td>
+              <p align="center">1 2 3 4 </p>
+            </td>
+            <td valign="top">
+              <p align="center">3 3 2 5 </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p align="center">t2 </p>
+            </td>
+            <td>
+              <p align="center">1 2 3 </p>
+            </td>
+            <td valign="top">
+              <p align="center">2 3 3 </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p align="center">t3 </p>
+            </td>
+            <td>
+              <p align="center">1 2 4 </p>
+            </td>
+            <td valign="top">
+              <p align="center">7 6 4 </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p align="center">t4 </p>
+            </td>
+            <td>
+              <p align="center">1 2 3 4 </p>
+            </td>
+            <td valign="top">
+              <p align="center">7 8 9 6 </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Besides a table indicating the unit profit of each item is required.
+        For example, consider the following table:</p>
+      <table width="747" cellspacing="3" cellpadding="0" border="1">
+        <tbody>
+          <tr>
+            <td width="236"><strong> Item </strong></td>
+            <td width="250">
+              <p align="center"><strong>Unit profit </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p align="center">1 </p>
+            </td>
+            <td>
+              <p align="center">42 </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p align="center">2 </p>
+            </td>
+            <td>
+              <p align="center">87</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p align="center">3 </p>
+            </td>
+            <td>
+              <p align="center">94</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p align="center">4 </p>
+            </td>
+            <td>
+              <p align="center">97</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>It indicates that the unit profit yield by selling the items 1, 2, 3
+        and 4 are 42, 87, 94 and 97, respectively. This table is provided in the
+        file &quot;<span class="highlight"><strong><span class="highlight">dbHUQI_p</span></strong>.txt</span>&quot;.</p>
+      <p>Note that in research papers, unit profit is often called &quot;external
+        utility&quot; while purchase quantities are called &quot;internal utility&quot;. This
+        is the terminology used by researchers. Although in the above example,
+        utility is used to represent quantities and profit, it could be more
+        generally be used to represent the relative importance of items to the
+        user in terms of various factors besides money. Thus, it can be also
+        applied to other types of data besides shopping databases. </p>
+    
+      <h2>What is the output?</h2>
+      <p><em> </em>The&nbsp;<strong>output file format</strong><strong>&nbsp;</strong>is
+        defined as follows. It is a text file, where each line represents
+        a&nbsp;<strong>quantitative high utility itemset</strong>. An itemset
+        contains several items. Each item is represented in the form (x,y) where
+        x is the item and y is its purchase quantity, or by the form (x,y,z)
+        indicating that from y to z units of item x where purchased. At the end
+        of each line, the utility of the itemset is indicated after the keyword
+        #UTIL: For example, here is a few line of the output file for the above
+        example: </p>
+      <p>(4,5,6) #UTIL: 1067<br>
+        (3,9) (1,7) #UTIL: 1140<br>
+        (2,6) (4,4) (1,7) #UTIL: 1204<br>
+        (4,4,6) #UTIL: 1455<br>
+        (3,9) (4,6) #UTIL: 1428<br>
+        (3,9) (2,8) #UTIL: 1542<br>
+        (2,8) (4,6) #UTIL: 1278<br>
+        (4,4,6) (1,7) #UTIL: 1558<br>
+        (3,9) (2,8) (4,6) #UTIL: 2124<br>
+        (3,9) (2,8) (1,7) #UTIL: 1836<br>
+        (3,9) (2,8) (4,6) (1,7) #UTIL: 2418<br>
+        (3,9) (4,6) (1,7) #UTIL: 1722<br>
+        (2,8) (4,6) (1,7) #UTIL: 1572</p>
+      <p>For example, the second line indicates that the item containing 9 units
+        of item 3 and 7 units of item 1 yields a profit of 1140 $. Another
+        example is the eigth line, which indicates that the itemset containing 4
+        to 6 units of item 6 and 7 units of item 1 yields a profit of 1558 $. </p>
+    
+      <h2>Input file format</h2>
+      <p align="left">TKQ&nbsp;takes two files as input, defined as follows.</p>
+      <p align="left"> The&nbsp;first file&nbsp;(e.g. <strong>dbHUQI.txt</strong>)
+        is a text file containing transactions. Each lines represents a
+        transaction. Each line is a list of positive numbers where an item is
+        followed by a space and then its quantity. Then, the next item appears,
+        followed by a space, followed by its quantity, and so on... This is the
+        file <strong>dbHUQI.txt</strong> used in the example. </p>
+      
+        <p>1,3 2,3 3,2 4,5<br>
+          1,2 2,3 3,3<br>
+          1,7 2,6 4,4<br>
+          1,7 2,8 3,9 4,6</p>
+        <p>The&nbsp;second file&nbsp;is a text file (e.g. <strong>dbHUQI.txt</strong>)
+          which provides the unit profit of each item. Each is an item, followed
+          by a space, followed by its unit profit. This is the file dbHUQI_p.txt
+          used in the above example. </p>
+        <p>1, 42<br>
+          2, 87<br>
+          3, 94<br>
+          4, 97</p>
+      
+        <h2>Output file format</h2>
+        <p>The <strong>output file format</strong> is defined as follows. It is
+          a text file, where each line represents a&nbsp;<strong>quantitative
+            high utility itemset</strong>. An itemset contains several items.
+          Each item is represented in the form (x,y) where x is the item and y
+          is its purchase quantity, or by the form (x,y,z) indicating that from
+          y to z units of item x where purchased. At the end of each line, the
+          utility of the itemset is indicated after the keyword #UTIL: For
+          examle, here is a few line of the output file for the above example: </p>
+        <p>(4,5,6) #UTIL: 1067<br>
+          (3,9) (1,7) #UTIL: 1140<br>
+          (2,6) (4,4) (1,7) #UTIL: 1204<br>
+          (4,4,6) #UTIL: 1455<br>
+          (3,9) (4,6) #UTIL: 1428<br>
+          (3,9) (2,8) #UTIL: 1542<br>
+          (2,8) (4,6) #UTIL: 1278<br>
+          (4,4,6) (1,7) #UTIL: 1558<br>
+          (3,9) (2,8) (4,6) #UTIL: 2124<br>
+          (3,9) (2,8) (1,7) #UTIL: 1836<br>
+          (3,9) (2,8) (4,6) (1,7) #UTIL: 2418<br>
+          (3,9) (4,6) (1,7) #UTIL: 1722<br>
+          (2,8) (4,6) (1,7) #UTIL: 1572</p>
+      
+    
+        <h2>Implementation details</h2>
+        <p>This is the original implementation of the algorithm.</p>
+    
+        <h2>Where can I get more information about the TKQ algorithm?</h2>
+        <p>This is the reference of the article describing the TKQ algorithm:</p>
+      <p>Nouioua, M., Fournier-Viger, P., Gan, W., Wu, Y., Lin, J. C.-W.,
+        Nouioua, F. (2021).&nbsp;<a href="https://www.philippe-fournier-viger.com/TKQ_15pages.pdf">TKQ:
+          Top-K Quantitative High Utility Itemset Mining</a>.&nbsp;Proc. 16th
+        Intern. Conference on Advanced Data Mining and Applications (ADMA 2021)
+        Springer LNAI, 12 pages [<a href="https://www.philippe-fournier-viger.com/TKQ_quantitative.pdf">ppt</a>]</p>
+    
+    
+      <p>Besides, for a general overview of <strong> high utility itemset
+          mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_high_utility_itemset2019_draft.pdf">survey
+          paper</a>. </p>
+ 				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

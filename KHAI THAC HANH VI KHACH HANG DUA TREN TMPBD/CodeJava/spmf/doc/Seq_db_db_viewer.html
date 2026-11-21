@@ -1,0 +1,105 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View a sequence database file with the Sequence Database Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View a sequence database file with the  Sequence Database Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><strong>Sequence databases </strong>are a type of data taken as input by many data mining algorithms  offered in SPMF such as<strong> TKS, CM-SPAM </strong>and<strong> PrefixSpan </strong>.</p>
+<p>SPMF offers a tool to view the content of a <strong>sequence database</strong>. This tool is called the <strong>SPMF Sequence Database Viewer</strong>. </p>
+<p>This page explains how to use this tool with an example. </p>
+<h2>How to run this example? </h2>
+<p><strong>If you want to run this example from the</strong> <strong>graphical interface of SPMF, </strong>(1)
+      choose the algorithm <strong>&quot;<span class="style1">Open_sequence_database_file_with_sequence_db_viewer</span>&quot;</strong><strong>, </strong> (2) choose the <strong class="style1">contextPrefixSpan.txt</strong> file as input,   and then (3) click &quot;<strong>run algorithm</strong>&quot; . </p>
+<p align="center"><img src="pppp_sdb_viewer.png" alt="graph viewer open" width="801" height="234"></p>
+  <ul>
+    <li><strong>If you want to run this example from the source code of SPMF, run the file <span class="style1">MainTestSequenceDatabaseViewer</span>, which is located in the package <span class="style1">ca.pfv.spmf.tests </span></strong></li>
+    <li><strong>If you want to execute this example from the</strong> <strong>command line interface of SPMF</strong>, then execute this command: <br>
+      <br>
+        <span class="highlight style1"><strong>java -jar spmf.jar run Open_sequence_database_file_with_sequence_db_viewer </strong><strong class="style1">contextPrefixSpan.txt</strong><strong> </strong></span> <br>
+      <br>
+      in a folder containing <span class="style1"><strong>spmf.jar</strong></span> and the file <strong><span class="style1"> </span></strong><strong class="style1">contextPrefixSpan</strong><strong><span class="style1">.txt</span></strong> which is included with SPMF. </li>
+    </ul>
+  <h2>What is displayed?</h2>
+  <p>After running the example, the content of the file will be displayed by the tool. The picture below shows the user interface of this viewer. </p>
+  <p>The <strong>window A</strong>) show in the picture below is the main window. It displays the <strong> sequence database</strong> using a table. The table has four rows in this example. Each row is a sequence from the sequence database. </p>
+  <p>Take the first row as example. <br>
+    The cell in the first column of the first row indicates that the ID of this sequence is 0. <br>
+    The cell in the second column indicates that the first itemset of that sequence contains the item 1. <br>
+    The cell in the third column indicates that the second itemset of that sequence contains the items 1, 2 and 3. <br>
+    The fourth cell in that row indicates that the third itemset contains the items 1 and 3.<br>
+    The fifth cell in that row indicates that the fourth itemset contains the item 4. <br>
+    The sixth cell in that row indicates that the fifth itemset contains the item 3 and 6.  </p>
+  <p>The other sequences follow the same format.</p>
+  <p>This view as a table can be useful to understand the content of a  sequence database file. </p>
+  <p>Besides, there are  buttons that provides additional features: </p>
+  <ul>
+    <li>By clicking on the button &quot;<strong>View sequence length distribution </strong>&quot;, a new window is opened, presented as <strong>window B)</strong> in the picture below. This window displays the frequency histogram of the different sequence lengths in the current file. The number of sequences is the Y axis and the different sequence lengths are the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    <li>By clicking on the button &quot;<strong>View item frequency distribution </strong>&quot;, a new window is opened, presented as <strong>window C)</strong> in the picture below. This window displays the frequency histogram for the frequency of the different items in the current file. The number of occurrences (or support) is the Y axis and the different items are displayed on the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    </ul>
+  <p align="center"><img src="dbsequence_yes.png" alt="graph viewer database graph" width="1291" height="872"></p>
+  <h2>What is the input?</h2>
+  <p>The algorithm  takes as input <strong>a sequence database, </strong>as used by algorithm such <strong>TKS, CM-SPAM </strong>and <strong>PrefixSpan</strong>.</p>
+  <p>    The database used in this example is provided  in the text file &quot;<strong class="style1">contextPrefixSpan</strong><strong><span class="style1">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution. </p>
+  <p>The file format is defined as follows. It is a text file containing multiple sequences, where each line represents a sequence. Each item from a sequence is a positive integer and items
+    from the same itemset within a sequence are separated by single space.
+    Note that it is assumed that items within a same itemset are sorted
+    according to a total order and that no item can appear twice in the
+    same itemset. The value &quot;-1&quot; indicates the end of an itemset. The value
+    &quot;-2&quot; indicates the end of a sequence (it appears at the end of each
+    line). For example, the input file &quot;contextPrefixSpan.txt&quot; contains the
+    following four lines (four sequences).</p>
+  <p>For example, this is the content of the example file &quot;<strong class="style1">contextPrefixSpan</strong><strong><span class="style1">.txt</span>&quot;</strong>:</p>
+  <p>@FILETYPE=&quot;Simple sequence database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. The first line of data represents a sequence where the itemset {1} is
+    followed by the itemset {1, 2, 3}, followed by the itemset {1, 3},
+    followed by the itemset {4}, followed by the itemset {3, 6}. The next
+    lines follow the same format.</p>
+  <h2>Optional feature: giving names to items </h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextPrefixSpan.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple sequence database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+@ITEM=6=noodle<br>
+@ITEM=7=rice<br>
+@ITEM=-1=|<br>
+1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  <p>In this file called <strong>contextPrefixSpanWithNames.txt</strong>, the first line indicates, that it is a file where names are given to items. Then, the second and third line indicate the type of file and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. The 11th line indicates that the symbol &quot;-1&quot; must be replaced by &quot;|&quot;. Then the following lines define four sequences in the SPMF format.</p>
+  <p>    Using the Sequence Database Viewer with this file, we obtain the following view: </p>
+  <p><img src="view_sdb_with_names.png" alt="view sdb with names" width="768" height="320"></p>
+  <p>&nbsp;</p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

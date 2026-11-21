@@ -1,0 +1,180 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Frequent Time Interval Related Patterns Using the FastTIRP Algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining Frequent Time Interval Related Patterns Using the FastTIRP Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>FastTIRP algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<p>To run the <strong>FastTIRP</strong> algorithm:</p>
+  <ul>
+    <li><strong>If you are using the graphical interface, </strong>(1)
+      choose the <strong> &quot;<span class="highlight">FastTIRP</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">test</span><span class="highlight">.csv&quot;</span></strong>,
+      (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+      (4) set <em>minVertSup = 50%, minHorSup = 10%, Epsilon = 1, minGap = 0, maxGap = 5, MaxPatternLength = 3, MaxDuration = 10 </em>and <em>DetailedOutput = false </em> and (5) click &quot;<span class="highlight">Run
+        algorithm</span>&quot;.</li>
+    <li><strong>If you want to execute this example from the command
+      line</strong>, then execute this command: <br>
+      <span class="highlight">java -jar spmf.jar run<span class="highlight"> FastTIRP</span> testTIRP.txt
+        output.txt 50% 10% 1 0 5 3 10 false </span><br> 
+        in a folder containing <span class="highlight"><strong>spmf.jar</strong></span> and the example input file <span class="highlight">testTIRP.txt</span>.</li>
+    <li><strong>If you are using the source code version of SPMF, </strong>launch
+      the file <strong><span class="highlight">&quot;MainTestFastTIRP.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+    </ul>
+  <h2>What is FastTIRP?</h2>
+  <p><strong>FastTIRP</strong> is an algorithm for discovering
+    <strong>time interval related patterns </strong>in databases containing multiple event sequences, and where each event is represented by a time interval (an event has a start time and end time, and thus a duration). The FastTIRP algorithm is an improved version of the <strong>VertTIRP</strong> algorithm, which was proposed in 2022 by Fournier-Viger et al.. </p>
+
+  <h2>What is the input data of FastTIRP?</h2>
+  <p>The input of <strong>FastTIRP</strong> is a <strong>time-interval sequence database</strong>. </p>
+  <p>A time-interval sequence database is a set of sequences, where each sequence contains multiple events. Each event is represented by a time interval, that is a start time and an end time. In other words, each event has a duration.</p>
+  <p>For example, here is a picture of a <strong>time interval sequence database </strong>containing three sequences, here called S1, S2 and S3:.</p>
+  <p><img src="timeintervalseqdb.png" alt="time interval sequence database" width="775" height="286">  </p>
+  <p>The first sequence (S1) indicates that an event of type C started at time 8 and ended at time 11, that an event of type A started at time 8 and ended at time 12, and an event of type B started at time 10 and ended at time 12. </p>
+  <p>The second sequence (S2) indicates that an event of type C started at time 8 and ended at time 12, that an event of type A started at time 10 and ended at time 16, and an event of type B started at time 15 and ended at time 18. </p>
+  <p>The third sequence (S3) indicates that an event of type C started at time 10 and ended at time 16, that an event of type A started at time 15 and ended at time 19,  an event of type B started at time 14 and ended at time 16, and another event of type B started at time 14 and ended at time 19.</p>
+  <p>Time interval sequence databases can be used inmany applications. For example, it can be used to encode data about daily activities (A = having a meeting, B = making a phone call, C = eating).</p>
+  <p>The above example is provided in the file <strong>testTIRP.txt</strong> of the SPMF distribution. The content is as follows:<br>
+    <br>
+    @FILETYPE=&quot;Simple time interval sequence database&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    8,12,1;10,12,2;8,11,3;<br>
+    8,12,3;10,16,1;15,18,2;<br>
+    10,16,3;14,19,2;15,19,1;14,16,2;</p>
+  <p>The first two lines of the file are optional metadata indicating the filetype and the source of the data. Then the following lines contain the interval sequences. <br>
+    In this format, each <strong>event type</strong> is an integer (A = 1, B = 2, C =3).</p>
+  <p>Then, each line is a <strong>sequence.</strong> This file has three lines and thus three sequences. <br>
+    <br>
+    In a sequence (line), each <strong>event</strong> is represented using the format X,Y,Z; where X is the start time, Y is the end time, and Z is the event type.</p>
+  <p>For instance, the first line indicates that an event of type 1 (which was called A in the above example) has started at time 8 and ended at time 12, that an event of type 2 (which was called B in the above example) started at time 10 and ended at time 12, and that an event of type 3 (called C in the above example) started at time 8 and ended at time 11. The other lines follow the same format. </p>
+  <h2>What are the input parameters of FastTIRP?</h2>
+  <p>The FastTIRP algorithm is designed to find patterns in such data. To apply FastTIRP, we need to set some input parameters. </p>
+  <p>Here is an intuitive explanation of these parameters:</p>
+  <ul>
+    <li><em>minVertSup = 50%, </em> // This parameter indicates that we want to find patterns that appear in at least 50% of the sequences of the input file </li>
+    <li><em>minHorSup = 10%, </em> // This parameter indicates that we want to find patterns with a mean horizontal support of at least 10%. The mean horizontal support is the number of occurrences of the pattern in the database divided by the number of sequences where it appears. </li>
+    <li><em>Epsilon = 1, </em> // This parameter is for noise tolerance. For example, it is set to 1, it means that events may have appeared more or less 1 time unit before of after</li>
+    <li> <em>minGap = 0, </em> // This parameter indicates that any events in a pattern should be separated by at least 0 time unit. </li>
+    <li><em>maxGap = 5, </em> <em> </em> // This parameter indicates that any event in a pattern should be separated by no more than 5 time units.</li>
+    <li><em>MaxPatternLength = 3, </em><em> </em> <em> </em> // This parameter indicates that we do not want to find patterns containing more than 3 events. Using this parameter can greatly reduce the number of patterns that are discovered </li>
+    <li><em>MaxDuration = 10 </em> <em> </em><em> </em> <em> </em> // This parameter that a pattern containing multiple events should not have a duration that is more than 10 time units </li>
+    <li><em>DetailedOutput = false </em> // This is Boolean parameter that indicates whether detailed results should be provided or not. It can be set to true or false. </li>
+  </ul>
+  <h2>What is the output of FastTIRP?</h2>
+<p><strong>FastTIRP</strong> discovers patterns that appear <strong>frequently</strong> in a <strong>time interval sequence database</strong>. </p>
+<p>These patterns called <strong>TIRP</strong> (time interval related patterns represents) contain 1 or more events and can reveal <strong>temporal relationships</strong> that frequently appear between events. </p>
+<p>Generally, speaking, there are seven possible relationships between two events (the 7 core Allen relationships), which are illustrated below: </p>
+<p><img src="allen_rels.png" alt="allen relationships" width="301" height="233"></p>
+<p>These relationships are called <strong>b</strong> (before), <strong>m</strong> (meets), <strong>o</strong> (overlap), <strong>c</strong> (contains)  ,<strong> f</strong> (finish by), <strong>e </strong>(equal) and <strong>s</strong> (starts).</p>
+<p>If we set the input parameters as in the above example, the <strong>following output</strong> is produced:</p>
+<p>@FILETYPE=&quot;Frequent time interval sequential patterns&quot;<br>
+  @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+  [1] #SUP: 3 #MD: 4.666666666666667 #MHS: 1.0<br>
+  [1, 2] #SUP: 2 #MD: 6.0 #MHS: 1.0<br>
+  [2] #SUP: 3 #MD: 3.0 #MHS: 1.3333333333333333<br>
+  [3] #SUP: 3 #MD: 4.333333333333333 #MHS: 1.0<br>
+  [3, 1] #SUP: 2 #MD: 8.5 #MHS: 1.0<br>
+  [3, 2] #SUP: 3 #MD: 7.25 #MHS: 1.3333333333333333</p>
+<p>In this output, the first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the pattern section and each line is a pattern. Here, the output file contains six patterns. </p>
+<ul><li>The first line means represents a pattern consisting of only the event type 1 (which means A in this example). This pattern has a vertical support of 3 (appears in 3 sequences), has a mean duration of 4.6 time units when it is observed, and that has a mean horizontal support of 1 (which means that the number of occurrences of that pattern divided by the number of sequences where it is observed is 3 / 3 = 1).</li>
+  <li>The second line is a pattern consisting of the event types 1 and 2 (which means A and B in this example). This pattern indicates that A and B often together. They have a vertical suport of 2 (they appear together in 2 sequences), their occurrences together have a mean duration of 6 time unit, and the mean horizontal support of their occurrences is 1 (which means that the number of occurrences of that pattern divided by the number of sequences where it is observed is 2 / 2 = 1). </li>
+  <li>The other lines follow the same format.</li>
+</ul>
+<p><strong>Detailed output </strong></p>
+<p>Now, if we want to get more details about the patterns that are discovered, we can changed the parameter <strong>detailed output</strong> of the algorithm and set it to <strong>true</strong>. Then, the result will be an output file that contains much more details about each pattern that is discovered. The output will then be as follows:</p>
+<p>@FILETYPE=&quot;Frequent time interval sequential patterns&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+[1] #SUP: 3 #MD: 4.666666666666667 #MHS: 1.0<br>
+#SID: 0 	 #EID: 1 	 #START: 8 	 #END: 12 	 #SOURCEINTERVALS: [8,12] 	 #RELATIONS:  	 #DURATION: 4<br>
+#SID: 1 	 #EID: 1 	 #START: 10 	 #END: 16 	 #SOURCEINTERVALS: [10,16] 	 #RELATIONS:  	 #DURATION: 6<br>
+#SID: 2 	 #EID: 3 	 #START: 15 	 #END: 19 	 #SOURCEINTERVALS: [15,19] 	 #RELATIONS:  	 #DURATION: 4<br>
+[1, 2] #SUP: 2 #MD: 6.0 #MHS: 1.0<br>
+#SID: 0 	 #EID: 2 	 #START: 8 	 #END: 12 	 #SOURCEINTERVALS: [8,12][10,12] 	 #RELATIONS: F  	 #DURATION: 4<br>
+#SID: 1 	 #EID: 2 	 #START: 10 	 #END: 18 	 #SOURCEINTERVALS: [10,16][15,18] 	 #RELATIONS: M  	 #DURATION: 8<br>
+[2] #SUP: 3 #MD: 3.0 #MHS: 1.3333333333333333<br>
+#SID: 0 	 #EID: 2 	 #START: 10 	 #END: 12 	 #SOURCEINTERVALS: [10,12] 	 #RELATIONS:  	 #DURATION: 2<br>
+#SID: 1 	 #EID: 2 	 #START: 15 	 #END: 18 	 #SOURCEINTERVALS: [15,18] 	 #RELATIONS:  	 #DURATION: 3<br>
+#SID: 2 	 #EID: 1 	 #START: 14 	 #END: 16 	 #SOURCEINTERVALS: [14,16] 	 #RELATIONS:  	 #DURATION: 2<br>
+#SID: 2 	 #EID: 2 	 #START: 14 	 #END: 19 	 #SOURCEINTERVALS: [14,19] 	 #RELATIONS:  	 #DURATION: 5<br>
+[3] #SUP: 3 #MD: 4.333333333333333 #MHS: 1.0<br>
+#SID: 0 	 #EID: 0 	 #START: 8 	 #END: 11 	 #SOURCEINTERVALS: [8,11] 	 #RELATIONS:  	 #DURATION: 3<br>
+#SID: 1 	 #EID: 0 	 #START: 8 	 #END: 12 	 #SOURCEINTERVALS: [8,12] 	 #RELATIONS:  	 #DURATION: 4<br>
+#SID: 2 	 #EID: 0 	 #START: 10 	 #END: 16 	 #SOURCEINTERVALS: [10,16] 	 #RELATIONS:  	 #DURATION: 6<br>
+[3, 1] #SUP: 2 #MD: 8.5 #MHS: 1.0<br>
+#SID: 1 	 #EID: 1 	 #START: 8 	 #END: 16 	 #SOURCEINTERVALS: [8,12][10,16] 	 #RELATIONS: O  	 #DURATION: 8<br>
+#SID: 2 	 #EID: 3 	 #START: 10 	 #END: 19 	 #SOURCEINTERVALS: [10,16][15,19] 	 #RELATIONS: M  	 #DURATION: 9<br>
+[3, 2] #SUP: 3 #MD: 7.25 #MHS: 1.3333333333333333<br>
+#SID: 0 	 #EID: 2 	 #START: 8 	 #END: 12 	 #SOURCEINTERVALS: [8,11][10,12] 	 #RELATIONS: F  	 #DURATION: 4<br>
+#SID: 1 	 #EID: 2 	 #START: 8 	 #END: 18 	 #SOURCEINTERVALS: [8,12][15,18] 	 #RELATIONS: B  	 #DURATION: 10<br>
+#SID: 2 	 #EID: 1 	 #START: 10 	 #END: 16 	 #SOURCEINTERVALS: [10,16][14,16] 	 #RELATIONS: F  	 #DURATION: 6<br>
+#SID: 2 	 #EID: 2 	 #START: 10 	 #END: 19 	 #SOURCEINTERVALS: [10,16][14,19] 	 #RELATIONS: O  	 #DURATION: 9</p>
+<p>In this detailed output, we have additional information about each pattern that can be interesting. Lets take the example of the first pattern, described by the first four lines:</p>
+<p>[1] #SUP: 3 #MD: 4.666666666666667 #MHS: 1.0<br>
+#SID: 0 	 #EID: 1 	 #START: 8 	 #END: 12 	 #SOURCEINTERVALS: [8,12] 	 #RELATIONS:  	 #DURATION: 4<br>
+#SID: 1 	 #EID: 1 	 #START: 10 	 #END: 16 	 #SOURCEINTERVALS: [10,16] 	 #RELATIONS:  	 #DURATION: 6<br>
+#SID: 2 	 #EID: 3 	 #START: 15 	 #END: 19 	 #SOURCEINTERVALS: [15,19] 	 #RELATIONS:  	 #DURATION: 4</p>
+<ul>
+  <li>The first line has the same format as previously described. It indicates that it is describing a pattern consisting of only the event type 1 (which means A in this example). This pattern has a vertical support of 3 (appears in 3 sequences), has a mean duration of 4.6 time units when it is observed, and that has a mean horizontal support of 1 (which means that the number of occurrences of that pattern divided by the number of sequences where it is observed is 3 / 3 = 1).</li>
+  <li>The second line indicates that this pattern has an occurrence in the first sequence (#SID:0 means the first sequence) and more precisely in the second event of that sequence (#EID:1: means the second event), that the start time of that occurrence is 8 and the end time of that occurrence is 12. It also indicates that this occurrence appears in the interval [8,12] and has a duration of 4 time units (since 12 - 8 = 4). </li>
+  <li>The third line indicates that this pattern has an occurrence in the second sequence (#SID:1 means the second sequence) and more precisely in the second event of that sequence (#EID:1: means the second event), that the start time of that occurrence is 10 and the end time of that occurrence is 16. It also indicates that this occurrence appears in the interval [10,16] and has a duration of 6 time units (since 16 - 10 = 6). </li>
+  <li>The fourth line indicates that this pattern has an occurrence in the third sequence (#SID:2 means the third sequence) and more precisely in the fourth event of that sequence (#EID:3: means the fourth event), that the start time of that occurrence is 10 15 the end time of that occurrence is 19. It also indicates that this occurrence appears in the interval [15,19] and has a duration of 4 time units (since 19 - 15 = 4). </li>
+</ul>
+<p>Now lets look at another example:</p>
+<p>[1, 2] #SUP: 2 #MD: 6.0 #MHS: 1.0<br>
+#SID: 0 	 #EID: 2 	 #START: 8 	 #END: 12 	 #SOURCEINTERVALS: [8,12][10,12] 	 #RELATIONS: F  	 #DURATION: 4<br>
+#SID: 1 	 #EID: 2 	 #START: 10 	 #END: 18 	 #SOURCEINTERVALS: [10,16][15,18] 	 #RELATIONS: M  	 #DURATION: 8</p>
+<ul>
+  <li>The first line is a pattern consisting of the event types 1 and 2 (which means A and B in this example). This line indicates that A and B often together. They have a vertical suport of 2 (they appear together in 2 sequences), their occurrences together have a mean duration of 6 time unit, and the mean horizontal support of their occurrences is 1 (which means that the number of occurrences of that pattern divided by the number of sequences where it is observed is 2 / 2 = 1).</li>
+  <li>The second line indicates that this pattern has an occurrence in the first sequence (#SID: 0 means the first sequence) and more precisely this occurrence ends at the 3 event of that sequence (EID: 2 means the third event). Moreover, this line tells us that the start of that occurrence is time 8 and the end is at time 12, and that the intervals containing A and B are [8,12] and [10,12]. Moreover, it is said that the <strong>Allen relationship between A and B is F (finish by</strong>), and that the duration of that occurrence is 4.</li>
+  <li>The third line indicates that this pattern has an occurrence in the second sequence (#SID: 1 means the second sequence) and more precisely this occurrence ends at the 3 event of that sequence (EID: 2 means the third event). Moreover, this line tells us that the start of that occurrence is time 10 and the end is at time 18, and that the intervals containing A and B are [10,16] and [15,18]. Moreover, it is said that the <strong>Allen relationship between A and B is M (meets</strong>), and that the duration of that occurrence is 8.</li>
+  </ul>
+<p>The other lines of the output file follow the same format.</p>
+<p><strong>Another example </strong></p>
+<p>Now let's see what happens if we find patterns that contain more than two events. For this, we need to run the example again, but change the parameter<strong> minVertSUP to 0.2</strong> and use <strong>detailed output = true. </strong>Then, the output file will contain several patterns including this pattern:<br>
+  <br>
+  [3, 2, 2] #SUP: 1 #MD: 9.0 #MHS: 1.0<br>
+#SID: 2 	 #EID: 2 	 #START: 10 	 #END: 19 	 #SOURCEINTERVALS: [10,16][14,16][14,19] 	 #RELATIONS: F O S  	 #DURATION: 9   </p>
+<p>The first line of this pattern indicates that this is the pattern 3, 2, 2 which means the events C, B and B in the example.</p>
+<p>The second line indicates that this pattern appears in the third sequence (#SID: 2) and ends in the third event (#EID: 2), and that the occurrence starts at 10 and end at 19. It is also said that the intervals of C, B and B in that occurrences are [10,16][14,16] and [14,19], respectively. Moreover, it is said that the temporal relationships between C, B and B in that occurrence are F O S, which means:</p>
+<ul>
+  <li>C finishes B (relationship F) </li>
+  <li>C overlaps with B (relationship O)</li>
+  <li>B starts with B (relationship S)</li>
+  </ul>
+<p>Generally, if a pattern has a set of events {e1, e2, e3... en-1, en} the relationships will be listed in this order: relationship between e1 and e2, relationship between e1 and e3, ... relationship between e1 and en-1, relationship between e1 and en, relationship between e2 and e3, ... relationship between e2 and en-1, relationship between e2 and en, ... etc.</p>
+<p>That is the general idea about the output of FastTIRP.</p>
+<h2>Optional parameter(s)</h2>
+  <p>If you are using the source code version of SPMF, you also have the option to indicate which temporal relations you want to find. By uncommenting the following lines, you can remove some relations. Then, FastTIRP will ignore them. </p>
+  <p>//		algo.removeRelation(Relation.B);<br>
+    //		algo.removeRelation(Relation.M);<br>
+    //		algo.removeRelation(Relation.O);<br>
+    //		algo.removeRelation(Relation.F);<br>
+    //		algo.removeRelation(Relation.S);<br>
+    //		algo.removeRelation(Relation.L);<br>
+    //		algo.removeRelation(Relation.C);<br>
+    //		algo.removeRelation(Relation.E);</p>
+  <p>For example, if you uncomment the first line, then FastTIRP will ignore all the relationships of type &quot;B&quot; (before). This feature is interesting as you can focus on finding only some types of relationships instead of all of them, according to your needs. </p>
+  <h2>Performance</h2>
+  <p><strong>FastTIRP </strong>is one of the fastest algorithm for TIRP mining. It was shown to be faster than other state-of-the-art algorithms such as VertTIRP.</p>
+
+  <h2>Where can I get more information about FastTIRP?</h2>
+  <p>The FastTIRP algorithm is described in this article:</p>
+  <p>Fournier-Viger, P. Li, Y., Nawaz, M. S., He, Y. (2022) <a href="https://www.philippe-fournier-viger.com/BDA2022_FASTTIRP.pdf">FastTIRP: Efficient discovery of Time-Interval Related Patterns</a>. Proc. of 10th Intern. Conf. on Big Data Analytics (BDA 2022).</p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

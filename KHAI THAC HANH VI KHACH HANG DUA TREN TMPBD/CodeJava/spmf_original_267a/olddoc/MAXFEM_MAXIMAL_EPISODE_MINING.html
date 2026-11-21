@@ -1,0 +1,176 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Maximal Frequent Episodes in a Complex Event Sequence using the MaxFEM Algorithm   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Maximal Frequent Episodes in a Complex Event Sequence using the MaxFEM Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>MaxFEM algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">MaxFEM</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextMaxFEM</span><span class="highlight">.txt"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight">output.txt</span>")
+    (4) set the minimum support,  maximum window and the boolean parameter indicating that timestamps are  not provided respectively to 2, 2, false and 
+    (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run MaxFEM contextMaxFEM.txt  output.txt 2 2 false </span><br>
+    in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextMaxFEM.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestMaxFEM.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is MaxFEM?</h2>
+<p><strong>MaxFEM </strong> (Fournier-Viger et al., 2022) is an
+    algorithm for discovering<strong> maximal frequent episodes </strong>in a
+    <strong>complex event sequence</strong>. In simple words, frequent episode mining means to look for subsequences that appear frequently in a long sequence of events, where some events may be simultaneous. <strong>Frequent episode mining</strong> has many possible applications as data from many domains can be encoded as sequences of events. Various algorithms have been proposed to find frequent episodes in data. They generally use different ways of counting the support (number of occurrences) of episodes in a sequence.</p>
+<p>A problem with many episode mining algorithms is that they can produce a lot of episodes as output. Hence, the MaxFEM algorithm was proposed to find only the maximal episodes. Maximal episodes are the largest episodes that are frequent and are not included in another frequent episodes.. </p>
+<p> The <strong>MaxFEM</strong> algorithm can be applied on datasets that have timestamps or that do not have timestamps by setting the third parameter of the algorithm to false or true, respectively. </p>
+  <h2>What is the input?</h2>
+  <p>The algorithm  takes as input <strong>an event sequence</strong>  with a <strong>minimum support</strong> <strong>threshold</strong>, a <strong>maximum window length </strong>and a boolean parameter  <strong>self_increment</strong>, that must be set to true if the input dataset has no timestamps  or otherwise false. Let’s consider following sequence consisting of 11 time  points (t1, t2, …, t10) and 4 events type (1, 2, 3, 4). This database is provided  in the text file &quot;<strong><span class="highlight">contextMaxFEM</span><span class="highlight">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution.</p>
+  <table border="1" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="277" valign="top"><p><strong>Time points</strong></p></td>
+      <td width="277" valign="top"><p><strong>Itemset</strong> <strong>(event set)</strong> </p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>1</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>2</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>3</p></td>
+      <td width="277" valign="top"><p>1 2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>6</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>7</p></td>
+      <td width="277" valign="top"><p>1 2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>8</p></td>
+      <td width="277" valign="top"><p>3</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>9</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>11</p></td>
+      <td width="277" valign="top"><p>4</p></td>
+    </tr>
+  </table>
+  <p>Each line of the sequence is called an  event set and consists of:</p>
+  <ul>
+    <li>a time point (first column)</li>
+    <li>an event set (second column)</li>
+  </ul>
+  <p>For example, in the above example, at time point 1, the event 1 occurred. Then at time point 2, the event 1 occurred again. Then at time point 3, the events 1 and 2 occurred simultaneously. And so on. </p>
+
+  <h2>What is the output?</h2>
+  <p> The<strong> output of MaxFEM </strong>is the set of <strong>frequent  episodes </strong>having a support no less than a minSup threshold (a positive integer)  set by the user, and that are maximal. To explain what is a frequent episode, it is necessary to  review some definitions</p>
+  
+    <p>An <strong>episode</strong> is a sequence of events. It is said to appear in a time interval [ti,tj] (where ti and tj are time points) if all the events from the episode appear in the same order in the input sequence in that time interval. For example, consider the episode &lt;(1),(2)&gt;, which means event 1 followed by event 2. This episode appears in the time interval [t2,t3] because in that interval the event 1 appears (at time point t2) followed by event 2 (at time point t3). Moreover, it is important to note that each time interval is required to have a time duration (tj - ti) that is smaller than the maximum window parameter set by the user. </p>
+    <p>Given an episode, it is possible to find all the time intervals where it appears in the input sequence. For an interval <strong>[ti,tj]</strong>, <strong>ti</strong> is said to be the <strong>starting point</strong> of the time interval. The <strong>support of an episode</strong> is the number of different starting points of intervals that contains this episode. For example, for a maximum window of 2, the episode &lt;(1),(2)&gt; appears in the ime intervals  [t2,3] and [t6,t7]. Because that episode has two different starting points (t2 and t6), its support is 2.<br>
+      If we change the maximum window parameter to 3, then &lt;(1),(2)&gt; appears in  time intervals   [t1,t3] [t2,t3], [t6,t7]and [t7,t9]. Because that episode has four different starting points t1,t2,t6,t7), its support is 4.</p>
+    <p>Another example is the episode &lt;(1,2)&gt; which means that events 1 and 2 appeared at the same time. This episode appears in two time intervals that are [t3,t3] and [t7,t7]. These time intervals have two different starting points (t3 and t7). Thus the support of that episode is 2. </p>
+    <p>A <strong>frequent episode</strong> is an episode that has a support no  less than minSup. </p>
+    <p>A <strong>maximal frequent episode</strong> is a frequent episode that is not included in a larger frequent episode (see the paper for a more formal definition) </p>
+    <p>For example, if set minSup = 2 and maxWindow = 2, and apply an algorithm like <strong>EMMA</strong> to find all frequent episodes, we would obtain 6  frequent episodes with the following support values: </p>
+    <table border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="277" valign="top"><p><strong>Frequent episode</strong></p></td>
+        <td width="277" valign="top"><p><strong>Support</strong></p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>&lt;(1)&gt;</p></td>
+        <td width="277" valign="top"><p>5</p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>&lt;(2)&gt;</p></td>
+        <td width="277" valign="top"><p>3</p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>&lt;(1, 2)&gt;</p></td>
+        <td width="277" valign="top"><p>2</p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>&lt;(1), (1)&gt;</p></td>
+        <td width="277" valign="top"><p>3</p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>&lt;(1), (2)&gt;</p></td>
+        <td width="277" valign="top"><p>2</p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>&lt;(1), (1, 2)&gt;</p></td>
+        <td width="277" valign="top"><p>2</p></td>
+      </tr>
+    </table>
+  
+    <p>For instance, the last episode &lt;(1), (1, 2)&gt; ( indicating that event 1 was followed by event 1 and 2 at the same time) has a support of 2. </p>
+    <p>But it can be observed that many of these episodes are not maximal. For example, the episode &lt;(1, 2)&gt; is not maximal because it is included in &lt;(1),(1, 2)&gt;</p>
+    <p>If we apply <strong>MaxFEM</strong>, we find that there is actually only one <strong>maximal frequent episode</strong>:</p>
+    <table border="1" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="277" valign="top"><p><strong>Frequent episode</strong></p></td>
+        <td width="277" valign="top"><p><strong>Support</strong></p></td>
+      </tr>
+
+      <tr>
+        <td width="277" valign="top"><p>&lt;(1), (1, 2)&gt;</p></td>
+        <td width="277" valign="top"><p>2</p></td>
+      </tr>
+    </table>
+    <h2>Input file format</h2>
+    <p>The <strong>input file format </strong>of that algorithm is a text file. An <strong>item (event) </strong>is represented  by a positive integer. A <strong>transaction (event set) </strong>is a line in the text file. In each line  (event set), items are separated by a single space. It is assumed that all  items (events) within a same transaction line) are sorted according to a total order  (e.g. ascending order) and that no item can appear twice within the same event set.  Each line is optionally followed by the character &quot;|&quot; and then the timestamp of the  event set (line). Note that it is possible to run MaxFEM on a database that has no  timestamps. In that case, the boolean parameter (the third parameter) should be  set to true to indicate that the dataset has no timestamps. If there is not timestamps and the parameter is set to true, the algorithm will assume that each line has a timestamp that is increasing by 1. <br>
+In the previous example, the input file is  defined as follows:</p>
+  <p align="left">1|1<br>
+    1|2<br>
+    1 2|3<br>
+    1|6<br>
+    1 2|7<br>
+    3|8<br>
+    2|9<br>
+  4|1</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format </strong>is defined as  follows. It is a text file. Each line is a <strong>frequent episode.</strong> Each event in a  <strong>frequent episode</strong> is a positive integer and items from the same event set within  an <strong>episode</strong> are separated by single spaces. The value &quot;-1&quot; indicates  the end of an event set. On each line, the <strong>episode</strong> is first indicated. Then,  the keyword <strong>&quot;#SUP:</strong>&quot; appears followed by an integer indicating the support  of the pattern (a positive integer). For example, a few lines from the output  file from the previous example are shown below:</p>
+  <p>    1 -1 1 2-1  #SUP : 2</p>
+  <p align="left">For instance, the last line indicates that event 1 followed by events 1 and 2 simultaneously, has a support of 2. </p>
+
+  <h2>Performance</h2>
+  <p>This is the original implementation of MaxFEM. In the paper proposing MaxFEM, its performance was compared with EMMA and was shown to have good performance, while reducing the number of patterns presented to users. </p>
+  <p>There also exists a version of MaxFEM for finding all frequent episodes. This version is called AFEM and it is also offered in SPMF. </p>
+  <h2>Implementation details</h2>
+  <p>The version implemented here contains all the optimizations
+    described in the paper proposing MaxFEM. </p>
+
+  <h2>Where can I get more information about the MaxFEM algorithm?</h2>
+  <p>The MaxFEM algorithm is described in this  article:</p>
+  <p>Fournier-Viger, P., Nawaz, M. S., He, Y., Wu, Y., Nouioua, F., Yun, U. (2022). MaxFEM: Mining Maximal Frequent Episodes in Complex Event Sequences. Proc. of the 15th Multi-disciplinary International Conference on Artificial Intelligence (MIWAI 2022), 12 pages, Springer LNAI, to appear.  </p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

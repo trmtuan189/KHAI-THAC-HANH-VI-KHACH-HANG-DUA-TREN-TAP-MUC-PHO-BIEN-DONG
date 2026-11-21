@@ -1,0 +1,240 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Closed Association Rules (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<h1>Mining Closed Association Rules (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to mine <strong> closed association</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Closed_association_rules</span>&quot;</strong> algorithm <strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextZart</span><span class="highlight">.txt"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight"><strong>output</strong>.txt</span>")
+    (4) set<strong> minsup = 60 %, minconf= 60%</strong> (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run Closed_association_rules(using_fpclose) contextZart.txt output.txt 60% 60%</span> in a folder
+    containing <span class="highlight">spmf.jar</span> and the example input
+    file <span class="highlight">contextZart.txt</span>.</li>
+  <li><strong>To run this example with the source code version of SPMF,</strong> launch the file <strong><span class="highlight">"MainTestClosedAssociationRulesWithFPClose_saveToMemory.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is this algorithm?</h2>
+<p>It is an algorithm for mining "<strong>closed association rules</strong>",
+    which are a concise subset of all association rules.</p>
+
+<h2>What is the input of this algorithm?</h2>
+<p>The input is a <strong>transaction database</strong> (aka binary
+    context) and two thresholds named <em><strong>minsup </strong></em>(a
+    value in [0,1] that represents a percentage) and <strong><em>minconf</em></strong> (a value in [0,1] that represents a percentage). </p>
+  <p>A <strong>transaction database</strong> is a set of transactions.
+    Each <strong>transaction</strong> is a set of distinct items. For
+    example, consider the following transaction database. It contains 5
+    transactions (t1, t2, ..., t5) and 5 items (1,2, 3, 4, 5). For example,
+    the first transaction represents the set of items 1, 2, 4 and 5. This
+    database is provided as the file <strong>contextZart.txt</strong> in
+    the SPMF distribution. It is important to note that an item is not
+    allowed to appear twice in the same transaction and that items are
+    assumed to be sorted by lexicographical order in a transaction.</p>
+  <table align="center" border="1" width="100%">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{1, 3}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>What is the output of this algorithm?</h2>
+  <p>Given the minimum support threshold (<strong>minsup</strong>) and
+    minimum confidence threshold (<strong>minconf</strong>) set by the
+    user, the algorithm returns the set of closed association rules that
+    respect these thresholds. To explain what is a closed association rule,
+    it is necessary to review some definitions.</p>
+  <p>An <strong>itemset</strong> is an unordered set of distinct
+    items. The<strong> support of an itemset </strong>is the number of
+    transactions that contain the itemset divided by the total number of
+    transactions. For example, the itemset {1, 2} has a support of 60%
+    because it appears in 3 transactions out of 5 (it appears in t1, t2 and
+    t5). A <strong>closed itemset</strong> is an itemset that is strictly
+    included in no itemset having the same support. </p>
+  <p>An <strong>association rule </strong> X==&gt;Y is a relationship
+    between two itemsets (sets of items) X and Y such that the intersection
+    of X and Y is empty. The <strong>support</strong> of a rule X==&gt;Y
+    is the number of transactions that contains X&#8746;Y divided by the total
+    number of transactions. The <strong>confidence</strong> of a rule
+    X==&gt;Y is the number of transactions that contains X&#8746;Y divided by the
+    number of transactions that contain X. A <strong>closed association
+      rule</strong> is an association rule of the form X ==&gt; Y such that
+    the union of X and Y is a closed itemset.</p>
+  <p>The algorithm returns all closed association rules such that their
+    support and confidence are respectively higher or equal to the <em>minsup </em>and <em>minconf</em> thresholds set by the user.</p>
+  <p>For instance, by applying this algorithm with minsup = 60 %,
+    minconf= 60%, we obtains <strong>16 closed associations rules:</strong></p>
+  <p>1 ==&gt; 3 #SUP: 3 #CONF: 0.75 // which means that this rule has a
+    support of 3 transactions and a confidence of 75 %<br>
+    3 ==&gt; 1 #SUP: 3 #CONF: 0.75 // which means that this rule has a
+    support of 3 transactions and a confidence of 75 %<br>
+    2 ==&gt; 5 #SUP: 4 #CONF: 1.0 // which means that this rule has a
+    support of 4 transactions and a confidence of 100 %<br>
+    5 ==&gt; 2 #SUP: 4 #CONF: 1.0 // ...<br>
+    2 5 ==&gt; 1 #SUP: 3 #CONF: 0.75<br>
+    1 5 ==&gt; 2 #SUP: 3 #CONF: 1.0<br>
+    1 2 ==&gt; 5 #SUP: 3 #CONF: 1.0<br>
+    1 ==&gt; 2 5 #SUP: 3 #CONF: 0.75<br>
+    2 ==&gt; 1 5 #SUP: 3 #CONF: 0.75<br>
+    5 ==&gt; 1 2 #SUP: 3 #CONF: 0.75<br>
+    3 5 ==&gt; 2 #SUP: 3 #CONF: 1.0<br>
+    2 3 ==&gt; 5 #SUP: 3 #CONF: 1.0<br>
+    2 5 ==&gt; 3 #SUP: 3 #CONF: 0.75<br>
+    5 ==&gt; 2 3 #SUP: 3 #CONF: 0.75<br>
+    3 ==&gt; 2 5 #SUP: 3 #CONF: 0.75<br>
+    2 ==&gt; 3 5 #SUP: 3 #CONF: 0.75</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> is a text file containing
+    transactions. Each lines represents a transaction. The items in the
+    transaction are listed on the corresponding line. An item is
+    represented by a positive integer. Each item is separated from the
+    following item by a space. It is assumed that items are sorted
+    according to a total order and that no item can appear twice in the
+    same transaction. </p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>@FILETYPE=&quot;Simple transaction database&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1 2 4 5<br>
+      1 3<br>
+      1 2 3 5<br>
+      2 3 5<br>
+      1 2 3 5<br>
+  <br>
+      The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section listing the transactions, one by line. </p>
+    <p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the
+    ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+    Most features of the ARFF format are supported except that (1) the
+    character "=" is forbidden and (2) escape characters are not
+    considered. Note that when the ARFF format is used, the performance of
+    the data mining algorithms will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file, where each line represents an <strong>association rule</strong>.
+    On each line, the items of the rule antecedent are first listed. Each
+    item is represented by an integer, followed by a single space. After,
+    that the keyword "==&gt;" appears followed by a space. Then, the items
+    of the rule consequent are listed. Each item is represented by an
+    integer, followed by a single space. Then, the keyword " #SUP: "
+    appears followed by the support of the rule represented by an integer.
+    Then, the keyword " #CONF: " appears followed by the confidence of the
+    rule represented by a double value (a value between 0 and 1,
+    inclusively). For example, here is the output file for this example:</p>
+  
+    <p>@FILETYPE=&quot;Closed association rules&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1 ==&gt; 3 #SUP: 3 #CONF: 0.75<br>
+      3 ==&gt; 1 #SUP: 3 #CONF: 0.75<br>
+      2 ==&gt; 5 #SUP: 4 #CONF: 1.0<br>
+      5 ==&gt; 2 #SUP: 4 #CONF: 1.0<br>
+      1 2 ==&gt; 5 #SUP: 3 #CONF: 1.0<br>
+      2 5 ==&gt; 1 #SUP: 3 #CONF: 0.75<br>
+      1 5 ==&gt; 2 #SUP: 3 #CONF: 1.0<br>
+      5 ==&gt; 1 2 #SUP: 3 #CONF: 0.75<br>
+      2 ==&gt; 1 5 #SUP: 3 #CONF: 0.75<br>
+      1 ==&gt; 2 5 #SUP: 3 #CONF: 0.75<br>
+      2 5 ==&gt; 3 #SUP: 3 #CONF: 0.75<br>
+      2 3 ==&gt; 5 #SUP: 3 #CONF: 1.0<br>
+      3 5 ==&gt; 2 #SUP: 3 #CONF: 1.0<br>
+      5 ==&gt; 2 3 #SUP: 3 #CONF: 0.75<br>
+      2 ==&gt; 3 5 #SUP: 3 #CONF: 0.75<br>
+      3 ==&gt; 2 5 #SUP: 3 #CONF: 0.75 </p>
+  
+    <p>For example, the last line indicates that the association rule {3}
+    --&gt; {2, 5} has a support of 3 transactions and a confidence of 75 %.
+    The other lines follow the same format.</p>
+  <p>Note that if the ARFF format is used as input instead of the
+    default input format, the output format will be the same except that
+    items will be represented by strings instead of integers.</p>
+
+  <h2>Optional feature: giving names to items</h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database "<strong>contextZart.txt</strong>". Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple transaction database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+1 2 4 5<br>
+1 3<br>
+1 2 3 5<br>
+2 3 5<br>
+1 2 3 5</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second and third line indicate the type of file and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. Then, the following lines define transactions in the SPMF format.</p>
+  <p>Then, if we apply the algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+      <br>
+      bread ==&gt; apple orange #SUP: 3 #CONF: 1.0<br>
+      orange ==&gt; apple bread #SUP: 3 #CONF: 0.75<br>
+  apple ==&gt; orange bread #SUP: 3 #CONF: 0.75</p>
+  <p>Note that this feature could be also used from the <strong>source code</strong> of SPMF using the ResultConverter class. However, there is currently no example provided for using it from the source code.</p>
+
+  <h2>Implementation details and performance</h2>
+  <p><strong>There are two versions of this algorithms implemented in SPMF.</strong> The first one uses CHARM for finding the frequent closed itemsets before generating the rules. The second one uses FPClose for finding the frequent closed itemsets before generating the rules. <strong>The version based on FPClose is generally faster than the version based on CHARM.</strong></p>
+  <p><strong>In the release version of SPMF</strong>, the algorithm &quot;<strong>Closed_association_rules(using_fpclose)</strong>&quot; denotes the version using FPClose, while &quot;<strong>Closed_association_rules</strong>&quot; denotes the version based on CHARM. The latter can be run from the command line this  command for the above example:<br>
+    <span class="highlight">java -jar spmf.jar run Closed_association_rules contextZart.txt
+      output.txt 60% 60%</span></p>
+  <p><strong>In the source code version of SPMF</strong>, the files &quot;MainTestClosedAssociationRulesWithFPClose_saveToMemory&quot; and &quot;MainTestClosedAssociationRulesWithFPClose_saveToFile&quot; denotes respectively the version using FPClose which saves the result to memory or to a file. Moreover, the files &quot;MainTestClosedAssociationRules_saveToMemory&quot; and &quot;MainTestClosedAssociationRules_saveToFile&quot; denotes respectively the version using CHARM which saves the result to memory or to a file.</p>
+
+  <h2>Where can I get more information about closed association rules?</h2>
+  The following Ph.D. thesis proposed "closed association
+  rules".
+  <p> Szathmary, L. (2006). Symbolic Data Mining Methods with the Coron
+    Platform. Szathmary, L. PhD thesis, University Henri Poincar&eacute; &#8212; Nancy
+    1, France.</p>
+
+
+  <p>For a good overview of <strong> itemset mining and association rule mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

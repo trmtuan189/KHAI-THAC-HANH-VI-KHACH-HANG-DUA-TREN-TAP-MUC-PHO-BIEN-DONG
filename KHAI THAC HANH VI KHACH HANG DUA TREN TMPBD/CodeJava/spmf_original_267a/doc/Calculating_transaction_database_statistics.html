@@ -1,0 +1,121 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Calculate Statistics for a Transaction Database   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0033FF}
+.style2 {color: #FFFFFF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1> Calculate Statistics for a Transaction Database (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to  <strong> calculate statistics for a transaction database</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight style1">Calculate_stats_for_a_transaction_database</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the input file <span class="style1"><strong>contextPasquier99.txt</strong></span> (3) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command
+    line</strong>, then execute this command: <br>
+    <span class="style1">java -jar spmf.jar run Calculate_stats_for_a_transaction_database contextPasquier99.txt
+      no_output_file</span> in a folder containing <span class="highlight">spmf.jar</span> and the input file <span class="style1"><strong>contextPasquier99</strong>.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;</span><span class="style1">MainTestGenerateTransactionDatabaseStats.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this tool?</h2>
+<p>This tool is a tool for generating statistics about a
+    transaction database. It can be used to know for example if the
+    database is dense or sparse before applying a data mining algorithms.</p>
+
+<h2>What is the input?</h2>
+<p>The input is a transaction database (aka formal context). A
+    transaction database is a set of transactions. Each transactions an
+    unordered set of items (symbols) represented by positive integers. For
+    example, consider the following database. This database is provided in
+    the file &quot;<strong class="style1">contextPasquier99.txt</strong>&quot; of the SPMF
+    distribution<strong>.</strong> It contains five transactions. The first
+    transactions contains the set of items {1, 3, 4}.</p>
+  <table align="center" border="1" width="100%">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 3, 4}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{2, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>What is the output?</h2>
+  <p>The output is statistics about the transaction database. For
+    example, if we use the tool on the previous  database given as
+    example, we get the following statistics:</p>
+  <ul>
+    <li>The number of transactions is 5</li>
+    <li>File
+      C:\Users\ph\Desktop\SPMF\ca\pfv\spmf\test\contextPasquier99.txt</li>
+    <li>The number of distinct items is 5</li>
+    <li>The smallest item id is 1</li>
+    <li>The largest item id is 5</li>
+    <li>The average number of items per transactions is 3 (standard
+      deviation: 0.7 variance: 0.5)</li>
+    <li>The average support of items in this database is : 2.4
+      (standard deviation: 0.8 variance: 0.64 min value: 1 max value: 3)<br>
+    </li>
+  </ul>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> is defined as follows. It
+    is a text file. An item is represented by a positive integer. A
+    transaction is a line in the text file. In each line (transaction),
+    items are separated by a single space. It is assumed that all items
+    within a same transaction (line) are sorted according to a total order
+    (e.g. ascending order) and that no item can appear twice within the
+    same line.</p>
+  <p>For example, for the previous example, an output file could be the
+    following:</p>
+  <p>@FILETYPE=&quot;Simple transaction database&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1 3 4<br>
+    2 3 5<br>
+    1 2 3 5<br>
+    2 5 <br>
+    1 2 3 5 </p>
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then, the following lines contain the transactions. </p>
+  <!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

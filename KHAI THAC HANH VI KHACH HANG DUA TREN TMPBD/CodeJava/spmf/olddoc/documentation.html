@@ -1,0 +1,1177 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>SPMF: A Java Open-Source Data Mining Library</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+<link rel="stylesheet" href="assets/css/main.css" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.png">
+<link rel="icon" sizes="57x57" href="favicon-32x32.png">
+<link rel="icon" sizes="57x57" href="favicon-57x57.png">
+<link rel="icon" sizes="72x72" href="favicon-72x72.png">
+<link rel="icon" sizes="76x76" href="favicon-76x76.png">
+<link rel="icon" sizes="114x114" href="favicon-114x114.png">
+<link rel="icon" sizes="120x120" href="favicon-120x120.png">
+<link rel="icon" sizes="144x144" href="favicon-144x144.png">
+<link rel="icon" sizes="152x152" href="favicon-152x152.png">
+<meta name="msapplication-TileColor" content="#FFFFFF">	
+<meta name="msapplication-TileImage" content="favicon-144x144.png">
+<meta name="application-name" content="Website Title">
+</head>
+<body class="is-preload">
+<div id="content">
+ <div class="inner">
+  <article class="box post post-excerpt">
+   <style type="text/css">
+<!--
+.style12 {color: #0000FF}
+-->
+</style>
+<h2>Documentation</h2>
+    This section provides <strong> examples</strong> of how to use the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF
+      open-source data mining library</a> to perform various data mining tasks.
+    If you have any question or if you want to <strong>report a bug</strong>,you
+    can check the <a href="https://www.philippe-fournier-viger.com/spmf/index.php?link=FAQ.html">FAQ</a>,post
+    in the <a href="https://forum2.philippe-fournier-viger.com/index.html">forum</a> or <a
+
+      href="https://www.philippe-fournier-viger.com">contact me</a>.You can also
+    have a look at the various articles that I have referenced on the <a href="https://www.philippe-fournier-viger.com/spmf/index.php?link=algorithms.html">algorithms</a>
+    page of this website to learn more about each algorithm. Moreover, you can
+    have a look at the page about <a href="videos.html">videos </a>and <a href="resources.html">other
+      resources related to SPMF</a>, including a <a href="https://www.philippe-fournier-viger.com/spmf/download-book.html">textbook
+      in Thai language</a>.
+    <h3><strong>Itemset Mining (Frequent Itemsets</strong><strong>, Rare
+        Itemsets, etc.</strong>) </h3>
+    <ul>
+      <li><a href="Apriori.html">Example
+           : Mining Frequent Itemsets by Using the Apriori
+          Algorithm</a></li>
+      <li><a href="AprioriTID.html">Example
+          1 : Mining Frequent Itemsets by Using the AprioriTID
+          Algorithm</a></li>
+      <li><a href="FPGrowth.html">Example
+          2 : Mining Frequent Itemsets by Using the FP-Growth
+          Algorithm</a></li>
+      <li><a href="Relim.html">Example
+          3 : Mining Frequent Itemsets by Using the Relim
+          Algorithm</a></li>
+      <li><a href="Eclat_dEclat.html">Example
+          4 : Mining Frequent Itemsets by Using the Eclat /
+          dEclat Algorithm</a></li>
+      <li><a href="HMine.html">Example
+          5 : Mining Frequent Itemsets by Using the H-Mine
+          Algorithm</a></li>
+      <li><a href="FIN.html">Example
+          6 : Mining Frequent Itemsets by Using the FIN
+          Algorithm</a></li>
+      <li><a href="DFIN.html">Example
+          7 : Mining Frequent Itemsets by Using the DFIN
+          Algorithm</a></li>
+      <li><a href="NegFIN.html">Example
+          8 : Mining Frequent Itemsets by Using the NegFIN
+          Algorithm</a></li>
+      <li><a href="PrePost.html">Example
+          9 : Mining Frequent Itemsets by Using the PrePost /
+          PrePost+ Algorithm</a></li>
+      <li><a href="LCMFreq.html">Example
+          10 : Mining Frequent Itemsets by Using the LCMFreq
+          Algorithm</a></li>
+      <li><a href="DIC.html">Example 11 : Mining Frequent Itemsets by Using the DIC
+      Algorithm</a></li>
+      <li><a href="TM_itemset.html">Example 12 : Mining Frequent Itemsets by Using the TM
+      Algorithm</a></li>
+      <li><a href="LinearTableAlgorithm.html">Example 13 : Mining Frequent Itemsets by Using the LinearTable
+      Algorithm</a></li>
+      <li><a href="SAM_itemset.html">Example 14 : Mining Frequent Itemsets by Using the SAM
+      Algorithm</a></li>
+      <li><a href="AprioriClose.html">Example
+          15 : Mining Frequent Closed Itemsets Using the
+          AprioriClose or AprioriTIDClose Algorithms</a></li>
+      <li><a href="DCI_Closed.html">Example
+          16 : Mining Frequent Closed Itemsets Using the
+          DCI_Closed Algorithm</a> </li>
+      <li><a href="Charm_dCharm.html">Example
+          17 : Mining Frequent Closed Itemsets Using the Charm /
+          dCharm Algorithm</a></li>
+      <li><a href="LCM.html">Example
+          18 : Mining Frequent Closed Itemsets Using the LCM
+          Algorithm</a></li>
+      <li><a href="FPClose.html">Example
+          19 : Mining Frequent Closed Itemsets Using the FPClose
+          Algorithm</a></li>
+      <li><a href="NAFCP.html">Example
+          20 : Mining Frequent Closed Itemsets Using the NAFCP
+          Algorithm</a></li>
+      <li><a href="NEclatClosed.html">Example
+          21 : Mining Frequent Closed Itemsets Using the
+          NEclatClosed Algorithm</a></li>
+      <li><a href="Carpenter.html">Example 22 : Mining Frequent Closed Itemsets Using the
+      CARPENTER Algorithm</a></li>
+      <li><a href="NEWCharm.html">Example 23 : Mining Frequent Closed Itemsets Using the
+      NEWCharm Algorithm</a></li>
+      <li><a href="DBVMiner.html">Example 24 : Mining Frequent Closed Itemsets Using the
+      DBVMiner Algorithm</a></li>
+      <li><a href="FPMax.html">Example
+          25 : Mining Frequent Maximal Itemsets Using the FPMax
+          Algorithm</a></li>
+      <li><a href="Charm-MFI.html">Example
+          26 : Mining Frequent Maximal Itemsets Using the
+          Charm-MFI Algorithm</a></li>
+      <li><a href="CarpenterMax.html">Example 27 : Mining Frequent Closed Itemsets Using the
+      CARPENTER-MAX Algorithm</a></li>
+      <li><a href="GENMAX_maximal.html">Example 28 : Mining Frequent Maximal Itemsets Using the GENMAX
+      Algorithm</a></li>
+      <li><a href="DefMe.html">Example
+          29 : Mining Frequent Generator Itemsets Using the
+          DefMe Algorithm</a></li>
+      <li><a href="TalkyG_generators.html">Example 30 : Mining Frequent Generator Itemsets Using the
+        TalkyG Algorithm</a></li>
+      <li><a href="Pascal.html">Example
+          31 : Mining Frequent Itemsets and Identify the
+          Generators Using the Pascal Algorithm</a></li>
+      <li><a href="Zart.html">Example
+          32 : Mining Frequent Closed Itemsets and Minimal
+          Generators Using the Zart Algorithm </a></li>
+      <li><a href="AprioriRare.html">Example
+          33 : Mining Minimal Rare Itemsets Using the
+          AprioriRare or AprioriTIDRare Algorithms</a></li>
+      <li><a href="AprioriInverse.html">Example
+          34 : Mining Perfectly Rare Itemsets Using the
+          AprioriInverse or AprioriTIDInverse Algorithms</a></li>
+      <li><a href="CORI.html">Example
+          35 : Mining Rare Correlated Itemsets Using the CORI
+          Algorithm</a></li>
+      <li><a href="rpgrowthalgo.html">Example
+          36 : Mining Rare Itemsets Using the RP-Growth
+          Algorithm</a></li>
+      <li><a href="CloStream.html">Example
+          37 : Mining Closed Itemsets from a Data Stream Using
+          the CloStream Algorithm</a> (source code version only)</li>
+      <li><a href="estDec.html">Example
+          38 : Mining Recent Frequent Itemsets from a Data
+          Stream Using the estDec Algorithm</a> (source code version only)</li>
+      <li><a href="estDecPlus.html">Example
+          39 : Mining Recent Frequent Itemsets from a Data
+          Stream Using the estDec+ Algorithm</a> (source code version only)</li>
+      <li><a href="uapriori.html">Example
+          40 : Mining Frequent Itemsets from Uncertain Data with
+          the UApriori Algorithm</a></li>
+      <li><a href="UVEclat.html">Example 41 : Mining Frequent Itemsets from Uncertain Data with
+      the UVEclat Algorithm</a></li>
+      <li><a href="UHMINE_UNCERTAIN.html">Example 42 : Mining Frequent Itemsets from Uncertain Data with
+      the UH-Mine Algorithm</a></li>
+      <li><a href="TUFP.html">Example 43 : Mining the Top-K Frequent Itemsets from Uncertain Data with
+      the TUFP Algorithm</a></li>
+      <li><a href="vme.html">Example
+          44 : Mining Erasable Itemsets from a Product Database
+          with the VME algorithm</a></li>
+      <li><a href="META.html">Example 45 : Mining Erasable Itemsets from a Product Database
+      with the META algorithm</a></li>
+      <li><a href="MEI.html">Example 46 : Mining Erasable Itemsets from a Product Database
+      with the MEI algorithm</a></li>
+      <li><a href="MERITPlus.html">Example 47 : Mining Erasable Itemsets from a Product Database
+      with the MERIT+ algorithm</a></li>
+      <li><a href="dMERITPlus.html">Example 48 : Mining Erasable Itemsets from a Product Database
+      with the dMERIT+ algorithm</a></li>
+      <li><a href="itemset_tree.html">Example
+          49 : Building, updating incrementally and using an
+          Itemset-Tree to generate targeted frequent itemsets and association
+          rules</a> (source code version only)</li>
+      <li><a href="memory_efficient_itemset_tree.html">Example
+          50 : Building, updating incrementally and using a
+          Memory-Efficient Itemset-Tree to generate targeted frequent itemsets
+          and association rules</a> (source code version only)</li>
+      <li><a href="MsApriori.html">Example
+          51 : Mining Frequent Itemsets with Multiple Support
+          Thresholds Using the MSApriori Algorithm</a></li>
+      <li><a href="CFPGrowth.html">Example
+          52 : Mining Frequent Itemsets with Multiple Support
+          Thresholds Using the CFPGrowth++ Algorithm</a></li>
+      <li><a href="FFIMiner.html">Example
+          53 : Mining Fuzzy Frequent Itemsets in a quantitative
+          transaction database using the FFI-Miner algorithm </a></li>
+      <li><a href="MFFIMiner.html">Example
+          54 : Mining Multiple Fuzzy Frequent Itemsets in a
+          quantitatve transaction database using the MFFI-Miner algorithm </a></li>
+      <li><a href="LevelWise.html">Example
+          55 : Deriving Frequent Itemsets from Frequent Closed
+          Itemsets using the LevelWise algorithm </a></li>
+      <li><a href="DFI-Growth.html">Example
+          56 : Deriving Frequent Itemsets from Frequent Closed
+          Itemsets using the DFI-Growth algorithm </a></li>
+      <li><a href="DFI-List.html">Example
+          57 : Deriving Frequent Itemsets from Frequent Closed
+          Itemsets using the DFI-List algorithm </a></li>
+      <li><a href="OPUSMINER.html">Example
+          58 : Mining Self-Sufficient Itemsets using the
+          Opus-Miner algorithm </a></li>
+      <li><a href="Apriori_top_k.html">Example 59 : Mining the Top-K Frequent Itemsets by Using the Apriori(top-k)
+        Algorithm</a></li>
+      <li><a href="FPGrowth_the_top_k.html">Example 60 : Mining the Top-K Frequent Itemsets by Using the FP-Growth(top-k)
+        Algorithm</a></li>
+      <li><a href="HTK_Miner.html">Example 61 : Mining the Top-K Frequent Itemsets by Using the HTK_Miner
+      Algorithm</a></li>
+      <li><a href="HTKNEGFIN.html">Example 62 : Mining the Top-K Frequent Itemsets by Using the HTK_negFIN
+      Algorithm</a></li>
+      <li><a href="MDL_KRIMP.html">Example 63 : Mining Compressing Itemsets using the Krimp
+      Algorithm</a></li>
+      <li><a href="SLIM_compress.html">Example 64 : Mining Compressing Itemsets using the SLIM
+      Algorithm</a></li>
+      <li><a href="GRIMP.html">Example 65 : Mining Compressing Itemsets using the GRIMP
+      Algorithm</a></li>
+      <li><a href="HMPSimulatedAnnealing.html">Example 66 : Mining Compressing Itemsets using the HMP-SA
+      Algorithm</a></li>
+      <li><a href="HMPHillClimbing.html">Example 67 : Mining Compressing Itemsets using the HMP-HC
+      Algorithm</a></li>
+      <li><a href="WFIM.html">Example 68 : Mining Frequent Weighted Itemsets using the WFIM Algorithm</a></li>
+      <li><a href="WIT_FWI.html">Example 69 : Mining Frequent Weighted Itemsets using the WIT-FWI, WIT-FWI-MOD or WIT-FWI-DIFF Algorithms</a></li>
+      <li><a href="NFWI.html">Example 70 : Mining Frequent Weighted Itemsets using the  NFWI Algorithm</a></li>
+      <li><a href="NFWCI_CLOSED.html">Example 71 : Mining Frequent Weighted Itemsets using the NFWCI Algorithm</a></li>
+    </ul>
+    <h3><strong>High-Utility Pattern Mining</strong></h3>
+    <ul>
+      <li><a href="Two-Phase.html">Example
+          72 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the Two-Phase Algorithm</a></li>
+      <li><a href="FHM.html">Example
+          73 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the FHM Algorithm</a></li>
+      <li><a href="EFIM.html">Example
+          74 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the EFIM Algorithm</a></li>
+      <li><a href="HUI-Miner.html">Example
+          75 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the HUI-Miner Algorithm</a></li>
+      <li><a href="HUP-Miner.html">Example
+          76 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the HUP-Miner Algorithm</a></li>
+      <li><a href="UPGrowthPlus.html">Example
+          77 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the UP-Growth / UP-Growth+
+          Algorithm</a></li>
+      <li><a href="IHUP.html">Example
+          78 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the IHUP Algorithm</a></li>
+      <li><a href="mHUIMiner.html">Example
+          79 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the mHUIMiner Algorithm</a></li>
+      <li><a href="HMiner.html">Example
+          80 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the HMiner Algorithm</a></li>
+      <li><a href="HUIM-SU_speedminer.html">Example 81 : Mining High-Utility Itemsets from a Transaction
+        Database with Utility Information using the HUIM-SU Algorithm</a> </li>
+      <li><a href="ULBMiner.html">Example
+          82 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the ULB-Miner Algorithm</a></li>
+      <li><a href="UFH.html">Example
+          83 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the UFH Algorithm</a></li>
+      <li><a href="d2HUP.html">Example
+          84 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information using the d2HUP Algorithm</a></li>
+      <li><a href="FHIM_alg1.html">Example 85 : Mining High-Utility Itemsets from a Transaction
+      Database with Utility Information using the FHIM Algorithm</a></li>
+      <li><a href="UPHist.html">Example 86 : Mining High-Utility Itemsets from a Transaction
+      Database with Utility Information using the UPHist Algorithm</a></li>
+      <li><a href="MEHUIM.html">Example 87 : Mining High-Utility Itemsets from a Transaction
+      Database with Utility Information using the MEHUIM Algorithm</a></li>
+      <li><a href="RMiner_utility.html">Example 88 : Mining High-Utility Itemsets from a Transaction
+      Database with Utility Information using the RMiner Algorithm</a></li>
+      <li><a href="ScentedMiner_utility.html">Example 89 : Mining High-Utility Itemsets from a Transaction
+      Database with Utility Information using the ScentedUtilityMiner Algorithm</a></li>
+      <li><a href="FHMPlus.html">Example
+          90 : Mining High-Utility Itemsets from a Transaction
+          Database with Utility Information while considering Length
+      Constraints, using the FHM+ algorithm</a></li>
+      <li><a href="CLHMiner_cross.html">Example
+          91 : Mining Cross-Level High-Utility Itemsets from a
+          Transaction Database with Utility Information using the CLH-Miner
+          algorithm</a></li>
+      <li><a href="cross_FEACP.html">Example
+          92: Mining Cross-Level High-Utility Itemsets from a
+          Transaction Database with Utility Information using the FEACP
+          algorithm</a></li>
+      <li><a href="MLHUIMiner_cross.html">Example
+          93 : Mining the Multi-Level High-Utility Itemsets from
+          a Transaction Database with Utility Information using the MLHUI-Miner
+          algorithm</a></li>
+      <li><a href="FCHMbond.html">Example
+          94 : Mining Correlated High-Utility Itemsets in a
+          Transaction Database with Utility Information using the FCHM_bond
+          algorithm </a></li>
+      <li><a href="FCHMallconfidence.html">Example
+          95 : Mining Correlated High-Utility Itemsets in a
+          Transaction Database with Utility Information using the
+          FCHM_allconfidence algorithm </a></li>
+      <li><a href="ECHUM_correlation.html">Example 96 : Mining Correlated High-Utility Itemsets in a
+          Transaction Database with Utility Information using the
+      ECHUM algorithm </a></li>
+      <li><a href="FHMFreq.html">Example
+          97 : Mining Frequent High-Utility Itemsets from a
+          Transaction Database with Utility Information using the FHMFreq
+          Algorithm</a></li>
+      <li><a href="FHN.html">Example
+          98 : Mining High-Utility Itemsets from a Transaction
+          Database with Positive or Negative Unit Profit using the FHN Algorithm</a></li>
+      <li><a href="HUINIVMine.html">Example
+          99 : Mining High-Utility Itemsets from a Transaction
+          Database with Positive or Negative Unit Profit using the HUINIV-Mine
+          Algorithm</a></li>
+      <li><a href="FOSHU.html">Example
+          100 : Mining On-Shelf High-Utility Itemsets from a
+          Transaction Database using the FOSHU Algorithm</a></li>
+      <li><a href="TS-HOUN.html">Example
+          101 : Mining On-Shelf High-Utility Itemsets from a
+          Transaction Database using the TS-HOUN Algorithm</a></li>
+      <li><a href="EIHI.html">Example
+          102 : Incremental High-Utility Itemset Mining in a
+          Transaction Database with utility information using the EIHI Algorithm</a>
+        (source code version only)</li>
+      <li><a href="HUI-LIST_INS.html">Example
+          103 : Incremental High-Utility Itemset Mining in a
+          Transaction Database with utility information using the HUI-LIST-INS
+          Algorithm</a> (source code version only)</li>
+      <li><a href="INCREMENT_CHUI.html">Example 104 : Incremental Closed High-Utility Itemset Mining in a
+      Transaction Database with utility information using the INCCHUI Algorithm</a> (source code version only)</li>
+      <li><a href="EFIM-Closed.html">Example
+          105 : Mining Closed High-Utility Itemsets from a
+          transaction database with utility information using the EFIM-Closed
+          Algorithm</a></li>
+      <li><a href="CHUI-Miner.html">Example
+          106 : Mining Closed High-Utility Itemsets from a
+          transaction database with utility information using the CHUI-Miner
+          Algorithm</a></li>
+      <li><a href="CHUI-MinerMax.html">Example
+          107 : Mining Closed High-Utility Itemsets from a
+          transaction database with utility information using the
+          CHUI-Miner(Max) Algorithm</a></li>
+      <li><a href="CHUD.html">Example
+          108 : Mining Closed High-Utility Itemsets from a
+          transaction database with utility information using the CHUD Algorithm</a></li>
+      <li><a href="Closed_CLS.html">Example 109 : Mining Closed High-Utility Itemsets from a
+      transaction database with utility information using the CLS-Miner Algorithm</a></li>
+      <li><a href="Closed_Hminer.html">Example 110 : Mining Closed High-Utility Itemsets from a
+      transaction database with utility information using the HMiner-Closed Algorithm</a> </li>
+      <li><a href="MEHUIM-Closed.html">Example 111 : Mining Closed High-Utility Itemsets from a
+          transaction database with utility information using the EFIM-Closed
+      Algorithm</a></li>
+      <li><a href="GHUIMiner.html">Example
+          112 : Mining Generators of High-Utility Itemsets from a
+          transaction database with utility information using the GHUI-Miner
+          Algorithm</a></li>
+      <li><a href="HUG-Miner.html">Example
+          113 : Mining High-Utility Generator Itemsets from a
+          transaction database with utility information using the HUG-Miner
+          Algorithm</a></li>
+      <li><a href="HUCI_Miner_all_them.html">Example 114: Mining Closed High Utility Itemsets and High-Utility Generator Itemsets from a transaction database with utility information using the HUCI_Miner Algorithm</a></li>
+      <li><a href="MinFHM.html">Example
+          115 : Mining Minimal High-Utility Itemsets from a
+          transaction database with utility information using the MinFHM
+          Algorithm</a></li>
+      <li><a href="SkyMine.html">Example
+          116 : Mining Skyline High-Utility Itemsets in a
+          transaction database with utility information using the SkyMine
+          Algorithm</a></li>
+      <li><a href="the_SFUI_UF_algo.html">Example
+          117 : Mining Skyline Frequent High-Utility Itemsets in
+          a transaction database with utility information using the SFUI_UF
+          Algorithm</a></li>
+      <li><a href="skyline_SFUCE_alg.html">Example
+          118 : Mining Skyline Frequent High-Utility Itemsets in
+          a transaction database with utility information using the SFU-CE
+          Algorithm</a></li>
+      <li><a href="HUSRM.html">Example
+          119 : Mining High-Utility Sequential Rules from a
+          Sequence Database with utility information using the HUSRM Algorithm</a></li>
+      <li><a href="USpan.html">Example
+          120 : Mining High-Utility Sequential Patterns from a
+          Sequence Database with utility information using the USPAN Algorithm</a></li>
+      <li><a href="PHUSPM.html">Example
+          121 : Mining High-Utility Probability Sequential
+          Patterns from a Sequence Database with utility and probability
+          information using the PHUSPM Algorithm</a></li>
+      <li><a href="UHUSPM.html">Example
+          122 : Mining High-Utility Probability Sequential
+          Patterns from a Sequence Database with utility information and
+          probability using the UHUSPM Algorithm</a></li>
+      <li><a href="HUIM-BPSO.html">Example
+          123 : Mining High-Utility Itemsets based on Particle
+          Swarm Optimization with the HUIM-BPSO algorithm</a></li>
+      <li><a href="HUIM-GA.html">Example
+          124 : Mining High Utility Itemsets Using a Genetic
+          Algorithm with the HUIM-GA algorithm</a></li>
+      <li><a href="HUIM-ACO_bees.html">Example 125 : Mining High Utility Itemsets Using Ant Colony Optimization
+      Algorithm with the HUIM-ACO algorithm</a></li>
+      <li><a href="HUIM-Hill-climbing.html">Example
+          126 : Mining High Utility Itemsets Using Hill-Climbing
+          with the HUIM-HC algorithm</a></li>
+      <li><a href="HUIM-simulated-annealing.html">Example
+          127 : Mining High Utility Itemsets Using Simulated
+          Annealing with the HUIM-SA algorithm</a></li>
+      <li><a href="HUIM-BPSO-tree.html">Example
+          128 : Mining High-Utility Itemsets based on Particle
+          Swarm Optimization with the HUIM-BPSO-tree algorithm</a></li>
+      <li><a href="HUIM-GA-tree.html">Example
+          129 : Discovery of High Utility Itemsets Using a
+          Genetic Algorithm with the HUIM-GA-tree algorithm</a></li>
+      <li><a href="HUIF-PSO.html">Example
+          130 : Mining High-Utility Itemsets based on Particle
+          Swarm Optimization with the HUIF-PSO algorithm</a></li>
+      <li><a href="HUISetPSO.html">Example
+          131 : Mining High-Utility Itemsets based on Particle
+          Swarm Optimization with the HUIM-SPSO algorithm</a></li>
+      <li><a href="HUIF-GA.html">Example
+          132 : Mining High-Utility Itemsets Using a Genetic
+          Algorithm with the HUIF-GA algorithm</a></li>
+      <li><a href="HUIF-BA.html">Example
+          133 : Mining High-Utility Itemsets Using a Bat
+          Algorithm with the HUIF-BA algorithm</a></li>
+      <li><a href="HUIM-AF.html">Example
+          134 : Mining High-Utility Itemsets Using Artificial
+          Fish Swarm Algorithm with the HUIM-AF algorithm</a></li>
+      <li><a href="HUIM-ABC.html">Example
+          135 : Mining High-Utility Itemsets Using a Artificial
+          Bee Colony Algorithm with the HUIF-ABC algorithm</a></li>
+      <li><a href="SFUPMinerUemax.html">Example
+          136 : Mining Skyline Frequent-Utility Patterns using
+          the SFUPMinerUemax algorithm</a></li>
+      <li><a href="EMSFUI_B_utility.html">Example 137 : Mining Skyline Frequent-Utility Patterns using
+      the EMSFUI_B algorithm</a></li>
+      <li><a href="EMSFUI_D_frequent.html">Example 138 : Mining Skyline Frequent-Utility Patterns using
+      the EMSFUI_D algorithm</a></li>
+      <li><a href="TKU.html">Example
+          139 : Mining the Top-k high-utility itemsets using the
+          TKU algorithm</a></li>
+      <li><a href="TKO.html">Example
+          140 : Mining the Top-k high-utility itemsets using the
+          TKO (basic) algorithm</a></li>
+      <li><a href="THUI_for_top.html">Example 141 : Mining the Top-k high-utility itemsets using the
+      THUI algorithm</a></li>
+      <li><a href="TKUCE_heuristic.html">Example 142 : Mining the Top-k high-utility itemsets using the TKU-CE algorithm</a></li>
+      <li><a href="top-k-TKUCEP.html">Example
+          143 : Mining the Top-k high-utility itemsets using the
+          TKU-CE+ algorithm<span style="color: black;"></span></a></li>
+      <li><a href="FHMDS.html">Example
+          144 : Mining the Top-k high-utility itemsets in a data
+          stream using the FHMDS algorithm</a></li>
+      <li><a href="HAUI-Miner.html">Example
+          145 : Mining High Average-Utility Itemsets in a
+          Transaction Database with Utility Information using the HAUI-Miner
+          Algorithm</a></li>
+      <li><a href="EHAUPM.html">Example
+          146 : Mining High Average-Utility Itemsets in a
+          Transaction Database with Utility Information using the EHAUPM
+          Algorithm</a></li>
+      <li><a href="HAUIM_GMU_average.html">Example
+          147 : Mining High Average-Utility Itemsets in a
+          Transaction Database with Utility Information using the HAUIM-GMU
+          Algorithm</a></li>
+      <li><a href="HAUI-MMAU.html">Example
+          148 : Mining High Average-Utility Itemsets with
+          Multiple Thresholds in a Transaction Database using the HAUI-MMAU
+          Algorithm</a></li>
+      <li><a href="MEMU.html">Example
+          149 : Mining High Average-Utility Itemsets with
+          Multiple Thresholds in a Transaction Database using the MEMU Algorithm</a></li>
+      <li><a href="the_top-k_average_utility.html">Example 150 : Mining the Top-K High Average-Utility Itemsets in a Transaction Database using the ETAUIM Algorithm</a></li>
+      <li><a href="VHUQI.html">Example
+          151 : Mining Quantitative High Utility Itemsets in a
+          Transaction Database using the VHUQI Algorithm</a></li>
+      <li><a href="fhuqiminer_quantitative.html">Example
+          152 : Mining Quantitative High Utility Itemsets in a
+          Transaction Database using the FHUQI-Miner Algorithm</a></li>
+      <li><a href="tkq_quantitative_top_k.html">Example
+          153 : Mining the Top-K Quantitative High Utility
+          Itemsets in a Transaction Database using the TKQ Algorithm</a></li>
+      <li><a href="chuqiminer_quantitative_correlation.html">Example
+          154 : Mining the Correlated Quantitative High Utility
+          Itemsets in a Transaction Database using the CHUQI-Miner Algorithm</a></li>
+      <li><a href="PHM_irregular.html">Example
+          155 : Mining Irregular High-Utility Itemsets using the
+          PHM_irregular algorithm</a></li>
+      <li><a href="LHUIMiner.html">Example
+          156 : Mining Local High Utility Itemsets in a
+          Transaction Database using the LHUI-Miner Algorithm</a></li>
+      <li><a href="PHUIMiner.html">Example
+          157 : Mining Peak High Utility Itemsets in a
+          Transaction Database using the PHUI-Miner Algorithm</a></li>
+      <li><a href="LTHUIMiner_algorithm.html">Example
+          158 : Mining Locally Trending High Utility Itemsets in
+          a Transaction Database using the LTHUI-Miner Algorithm</a></li>
+      <li><a href="LCIM_COST.html">Example 159 : Mining Low-cost High Utility Itemsets using the LCIM algorithm </a></li>
+      <li><a href="HGB_rules_non.html">Example 160 : Mining High Utility Association Rules using the HGB / HGB-ALL Algorithm</a></li>
+    </ul>
+    <h3><strong>Association Rule Mining</strong></h3>
+    <ul>
+      <li><a href="AssociationRules.html">Example
+          161 : Mining All Association Rules </a></li>
+      <li><a href="AssociationRulesWithLift.html">Example
+          162 : Mining All Association Rules with the lift
+          measure </a></li>
+      <li><a href="AssociationRulesGCD.html">Example
+          163 : Mining All Association Rules using the GCD
+          algorithm</a></li>
+      <li><a href="IGBAssociationRules.html">Example
+          164 : Mining the IGB basis of Association Rules</a></li>
+      <li><a href="PerfectlySporadicAssociationRules.html">Example
+          165 : Mining Perfectly Sporadic Association Rules</a></li>
+      <li><a href="ClosedAssociationRules.html">Example
+          166 : Mining Closed Association Rules</a></li>
+      <li><a href="MinimalNonRedundantAssociationRules.html">Example
+          167 : Mining Minimal Non Redundant Association Rules</a></li>
+      <li><a href="IndirectAssociationRules.html">Example
+          168 : Mining Indirect Association Rules with the
+          INDIRECT algorithm</a></li>
+      <li><a href="SensitiveAssociationRules.html">Example
+          169 : Hiding Sensitive Association Rules with the FHSAR
+          algorithm.</a></li>
+      <li><a href="TopKAssociationRules.html">Example
+          170 : Mining the Top-K Association Rules using the TopKRules algorithm</a></li>
+      <li><a href="ETARMtopk.html">Example 171 : Mining the Top-K Association Rules using the ETARM algorithm</a></li>
+      <li><a href="topkFTARM.html">Example 172 : Mining the Top-K Association Rules using the FTARM algorithm</a></li>
+      <li><a href="TopKClassAssociationRules.html">Example
+          173 : Mining the Top-K Class Association Rules
+          (association rules with a fixed consequent) </a></li>
+      <li><a href="TopKNonRedundantAssociationRules.html">Example
+          174 : Mining the Top-K Non-Redundant Association Rules</a></li>
+      <li><a href="NARMiner.html">Example 175 : Mining Negative Association Rules with the NAR-Miner algorithm</a></li>
+      <li><a href="PNAR_Rules.html">Example 176 : Mining Positive and Negative Association Rules with PNAR-Eclat or PNAR-AprioriTID</a> </li>
+    </ul>
+    <h3><strong>Clustering</strong></h3>
+    <ul>
+      <li><a href="KMeans.html">Example
+          177 : Clustering using the K-Means algorithm</a></li>
+      <li><a href="KMeans_plus_plus.html">Example 178 : Clustering using the K-Means++ algorithm</a></li>
+      <li><a href="DBScan.html">Example
+          179 : Clustering using the DBScan algorithm</a></li>
+      <li><a href="AEDBScan_clustering.html">Example 180 : Clustering using the AEDBScan algorithm</a></li>
+      <li><a href="DPC_clusters.html">Example 181 : Clustering using the DPC algorithm</a></li>
+      <li><a href="Optics.html">Example
+          182 : Using Optics to extract a cluster-ordering of
+          points and DB-Scan style clusters</a></li>
+      <li><a href="BisectingKMeans.html">Example
+          183 : Clustering using the Bisecting K-Means algorithm</a></li>
+      <li><a href="HierarchicalClustering.html">Example
+          184 : Clustering using a Hierarchical Clustering
+          algorithm</a></li>
+      <li><a href="clustering_data_generator.html">Example 185 : Generate a synthetic clustering dataset </a></li>
+      <li><a href="ClusterViewer.html">Example
+          186 : Visualizing clusters using the Cluster Viewer</a></li>
+      <li><a href="InstanceViewer.html">Example
+          187 : Visualizing instances using the Instance Viewer</a></li>
+    </ul>
+    <h3><strong>Sequential Pattern Mining </strong></h3>
+    <ul>
+      <li><a href="PrefixSpan.html">Example
+          188 : Mining Frequent Sequential Patterns Using the
+          PrefixSpan Algorithm</a></li>
+      <li><a href="GSP.html">Example
+          189 : Mining Frequent Sequential Patterns Using the GSP
+          Algorithm</a></li>
+      <li><a href="SPADE.html">Example
+          190 : Mining Frequent Sequential Patterns Using the
+          SPADE Algorithm</a></li>
+      <li><a href="CM-SPADE.html">Example
+          191 : Mining Frequent Sequential Patterns Using the
+          CM-SPADE Algorithm</a></li>
+      <li><a href="SPAM.html">Example
+          192 : Mining Frequent Sequential Patterns Using the
+          SPAM Algorithm</a></li>
+      <li><a href="CM-SPAM.html">Example
+          193 : Mining Frequent Sequential Patterns Using the
+          CM-SPAM Algorithm</a></li>
+      <li><a href="FAST.html">Example
+          194 : Mining Frequent Sequential Patterns Using the
+          FAST Algorithm</a></li>
+      <li><a href="LAPIN.html">Example
+          195 : Mining Frequent Sequential Patterns Using the
+          LAPIN Algorithm</a></li>
+      <li><a href="ClaSP.html">Example
+          196 : Mining Frequent Closed Sequential Patterns Using
+          the ClaSP Algorithm</a></li>
+      <li><a href="CM-ClaSP.html">Example
+          197 : Mining Frequent Closed Sequential Patterns Using
+          the CM-ClaSP Algorithm</a></li>
+      <li><a href="CLOFAST.html">Example
+          198 : Mining Frequent Closed Sequential Patterns Using
+          the CloFAST Algorithm</a></li>
+      <li><a href="CloSpan.html">Example
+          199 : Mining Frequent Closed Sequential Patterns Using
+          the CloSpan Algorithm</a></li>
+      <li><a href="BIDEPlus.html">Example
+          200 : Mining Frequent Closed Sequential Patterns Using
+          the BIDE+ Algorithm</a></li>
+      <li><a href="SPAM_PrefixSpan_Closed.html">Example
+          201 : Mining Frequent Closed Sequential Patterns by
+          Post-Processing using SPAM or PrefixSpan</a></li>
+      <li><a href="MaxSP.html">Example
+          202 : Mining Frequent Maximal Sequential Patterns Using
+          the MaxSP Algorithm</a></li>
+      <li><a href="VMSP.html">Example
+          203 : Mining Frequent Maximal Sequential Patterns using
+          the VMSP Algorithm</a></li>
+      <li><a href="FEAT.html">Example
+          204 : Mining Frequent Sequential Generator Patterns
+          Using the FEAT Algorithm</a></li>
+      <li><a href="FSGP.html">Example
+          205 : Mining Frequent Sequential Generator Patterns
+          Using the FSGP Algorithm</a></li>
+      <li><a href="VGEN.html">Example
+          206 : Mining Frequent Sequential Generator Patterns
+          Using the VGEN Algorithm</a></li>
+      <li><a href="NOSEP.html">Example
+          207: Mining Nonoverlapping Sequential Patterns in One
+          or Many Sequences Using the NOSEP Algorithm </a></li>
+      <li><a href="GoKrimp.html">Example
+          208 : Mining Compressing Sequential Patterns Using the
+          GoKrimp Algorithm</a></li>
+      <li><a href="TKS.html">Example
+          209 : Mining Frequent Top-K Sequential Patterns Using
+          the TKS Algorithm</a></li>
+      <li><a href="TSP.html">Example
+          210 : Mining Frequent Top-K Sequential Patterns Using
+          the TSP Algorithm</a></li>
+      <li><a href="MultiDimensional_SequentialPatterns.html">Example
+          211 : Mining Frequent Multi-dimensional Sequential
+          Patterns Using SeqDIM (with PrefixSpan and Apriori</a>)</li>
+      <li><a href="ClosedMultiDimensional_SequentialPatterns.html">Example
+          212 : Mining Frequent Closed Multi-dimensional
+          Sequential Patterns Using SeqDIM/Songram (with Bide+ and AprioriClose)</a></li>
+      <li><a href="HirateYamana.html">Example
+          213 : Mining Sequential Patterns with Time Constraints
+          from a Time-Extended Sequence Database</a></li>
+      <li><a href="mooc_SPM_FC_L.html">Example 214 : Mining Sequential Patterns with flexible constraints from a Time-Extended Sequence Database with the SPM-FC-L algorithm</a></li>
+      <li><a href="SPM_FC_P_mooc.html">Example 215 : Mining Sequential Patterns with flexible constraints from a Time-Extended Sequence Database with the SPM-FC-P algorithm</a></li>
+      <li><a href="ClosedSequentialPatterns_TimeConstraints.html">Example
+          216 : Mining Closed Sequential Patterns with Time
+          Constraints from a Time-Extended Sequence Database</a></li>
+      <li><a href="SequentialPatterns_TimeConstraintsValuesItems.html">Example
+          217 : Mining Sequential Patterns with Time Constraints
+          from a Time-Extended Sequence Database containing Valued Items</a>
+        (source code version only)</li>
+      <li><a href="ClosedMultiDimensional_SequentialPatternsWithTime.html">Example
+          218 : Mining Closed Multi-dimensional Sequential
+          Patterns from a Time-Extended Sequence Database</a></li>
+      <li><a href="ProSecCo.html">Example
+          219 : Mining Progressive Sequential Patterns using the
+          ProSecCo algorithm </a></li>
+      <li><a href="OCCUR.html">Example
+          220 : Finding all occurrences of some sequential
+          pattern(s) by post-processing using the Occur algorithm </a></li>
+      <li><a href="QCSP_alg.html">Example
+          221 : the QCSP algorithm for mining the top-k quantive
+          cohesive sequential patterns in a single sequence or in multiple
+          sequences (thanks to Lens Fereman et al.) </a></li>
+      <li><a href="CEPBalgo">Example
+          222: Mining Cost-Efficient Sequential Patterns Using
+          CEPB Algorithm </a></li>
+      <li><a href="CORCEPB.html">Example
+          223: Mining Cost-Efficient Sequential Patterns Using
+          CorCEPB Algorithm </a></li>
+      <li><a href="CEPNcost.html">Example
+          224: Mining Cost-Efficient Sequential Patterns Using
+          CEPN Algorithm </a></li>
+      <li><a href="fasttirp_intervals.html">Example 225: Mining Frequent Time Interval Related Patterns Using the FastTIRP Algorithm</a></li>
+      <li><a href="verttirp_time.html">Example 226: Mining Frequent Time Interval Related Patterns Using the VertTIRP Algorithm</a></li>
+      <li><a href="SKOPUS.html">Example 227: Mining Top-K Sequential Patterns with Leverage Using the SKOPUS Algorithm</a></li>
+      <li><a href="HMG_heuristic.html">Example 228: Mining Compressing Patterns in Genome Sequences using the HMG Algorithm</a></li>
+    </ul>
+    <h3><strong>Sequential Rule Mining </strong></h3>
+    <ul>
+      <li><a href="CMRules.html">Example
+          229 : Mining Sequential Rules Common to Several
+          Sequences with the CMRules algorithm</a></li>
+      <li><a href="CMDeo.html">Example
+          230 : Mining Sequential Rules Common to Several
+          Sequences with the CMDeo algorithm</a></li>
+      <li><a href="RuleGrowth.html">Example
+          231 : Mining Sequential Rules Common to Several
+          Sequences with the RuleGrowth algorithm</a></li>
+      <li><a href="ERMiner.html">Example
+          232 : Mining Sequential Rules Common to Several
+          Sequences with the ERMiner algorithm</a></li>
+      <li><a href="RuleGen.html">Example
+          233 : Mining Sequential Rules between Sequential
+          Patterns with the RuleGen algorithm</a></li>
+      <li><a href="TRuleGrowth.html">Example
+          234 : Mining Sequential Rules Common to Several
+          Sequences with the Window Size Constraint using TRuleGrowth </a></li>
+      <li><a href="TopSeqRules.html">Example
+          235 : Mining the Top-K Sequential rules</a></li>
+      <li><a href="TopSeqClassRules.html">Example
+          236: Mining the Top-K Class Sequential
+          rules (sequential rules with a fixed consequent)</a></li>
+      <li><a href="TopKNonRedundantSequentialRules.html">Example
+          237 : Mining the Top-K Non-Redundant Sequential rules</a></li>
+    </ul>
+    <h3><strong>Sequence Prediction</strong> (source code version only)</h3>
+    <ul>
+      <li><a href="CPTPlus.html">Example
+          238 : Perform Sequence Prediction using the CPT+
+          Sequence Prediction Model</a></li>
+      <li><a href="CPT.html">Example
+          239 : Perform Sequence Prediction using the CPT
+          Sequence Prediction Model</a></li>
+      <li><a href="PPM.html">Example
+          240 : Perform Sequence Prediction using the PPM
+          Sequence Prediction Model</a></li>
+      <li><a href="DG.html">Example
+          241 : Perform Sequence Prediction using the DG Sequence
+          Prediction Model</a></li>
+      <li><a href="AKOM.html">Example
+          242 : Perform Sequence Prediction using the AKOM
+          Sequence Prediction Model</a></li>
+      <li><a href="TDAG.html">Example
+          243 : Perform Sequence Prediction using the TDAG
+          Sequence Prediction Model</a></li>
+      <li><a href="LZ78.html">Example
+          244 : Perform Sequence Prediction using the LZ78
+          Sequence Prediction Model</a></li>
+      <li><a href="CompareSequencePredictionModels.html">Example
+          245 : Comparing Several Sequence Prediction Models</a></li>
+    </ul>
+    <h3><strong>Periodic pattern mining</strong></h3>
+    <ul>
+      <li><a href="PFPM.html">Example
+          246 : Mining Periodic Frequent Patterns using the PFPM
+          algorithm</a></li>
+      <li><a href="PFTREE.html">Example 247 : Mining Periodic Frequent Patterns using the PFTree
+        algorithm</a></li>
+      <li><a href="MTKPP.html">Example 248 : Mining the Top-K Periodic Frequent Patterns using the MTKPP
+      algorithm</a></li>
+      <li><a href="TRCT.html">Example 249 : Mining the Top-K Periodic Frequent Patterns using the TRCT
+      algorithm</a></li>
+      <li><a href="Local-periodic.html">Example
+          250 : Mining Local Periodic Frequent Patterns using the
+          LPP-Growth, LPPM_breadth or LPPM_depth algorithm</a></li>
+      <li><a href="SPPGrowth.html">Example 251 : Mining Stable Periodic Frequent Patterns using
+        the SPP-Growth algorithm</a></li>
+      <li><a href="TSPIN_periodic.html">Example
+          252 : Mining the Top-k Stable Periodic Frequent
+          Patterns using the TSPIN algorithm</a></li>
+      <li><a href="period_SRPFPM_itemset.html">Example 253 : Mining Self-Reliant Periodic Frequent Patterns using the SRPFPM algorithm</a></li>
+      <li><a href="PPFP_periodic_patterns.html">Example 254 : Mining Productive Periodic Frequent Patterns using the PPFP algorithm</a></li>
+      <li><a href="periodic_NPFPM.html">Example 255 : Mining Non-Redundant Periodic Frequent Patterns using the NPFPM algorithm</a></li>
+      <li><a href="PHM.html">Example
+          256 : Mining Periodic High-Utility Itemsets using the
+          PHM algorithm</a></li>
+      <li><a href="PHMN-periodic-PHMN.html">Example 257 : Mining Periodic High-Utility Itemsets with positive or negative utility values using the
+      PHMN algorithm</a></li>
+      <li><a href="PHMNPlus-periodic-PHMNPlus.html">Example 258 : Mining Periodic High-Utility Itemsets </a><a href="PHMN-periodic-PHMN.html">with positive or negative utility values </a><a href="PHMNPlus-periodic-PHMNPlus.html">using the
+      PHMN+ algorithm</a></li>
+      <li><a href="MPFPS.html">Example
+          259 : Mining Periodic Patterns in Multiple Sequences
+          using the MPFPS-BFS or MPFPS-DFS algorithms</a></li>
+      <li><a href="MRCPPS.html">Example
+          260 : Mining Rare Correlated Periodic Patterns in
+          Multiple Sequences using the MRCPPS algorithm</a></li>
+    </ul>
+    <h3><strong>Episode Mining </strong></h3>
+    <ul>
+      <li><a href="TKEepisodes.html">Example
+          261 : Mining the Top-K Frequent Episodes in a Complex
+          Sequence using the TKE algorithm</a></li>
+      <li><a href="EMMA.html">Example
+          262 : Mining Frequent Episodes in a Complex Sequence
+          using the EMMA algorithm, which counts the support based on the head
+          frequency</a></li>
+      <li><a href="AFEM_temporal.html">Example 263 : Mining Frequent Episodes in a Complex Sequence
+          using the AFEM algorithm, which counts the support based on the head
+      frequency</a></li>
+      <li><a href="MINEPI_PLUS_EPISODE.html">Example
+          264 : Mining Frequent Episodes in a Complex Sequence
+          using the MINEPI+ algorithm, which counts the support based on the
+          head frequency</a></li>
+      <li><a href="MINEPI.PHP">Example
+          265 : Mining Frequent Episodes in a Complex Sequence
+          using the MINEPI algorithm, which counts the support based on minimal
+          occurrences</a></li>
+      <li><a href="MAXFEM_MAXIMAL_EPISODE_MINING.html">Example 266 : Mining Maximal Frequent Episodes in a Complex Sequence
+        using the MaxFEM algorithm, which counts the support based on the head
+      frequency</a></li>
+      <li><a href="POERM_episode_rules.html">Example
+          267 : Mining Partially-Ordered Episode Rules in a
+      Complex Sequence using the POERM, or POERM-ALL algorithms</a></li>
+      <li><a href="Head_POERM_episode_rules.html">Example
+          268 : Mining Partially-Ordered Episode Rules in a
+          Complex Sequence using the POERMH algorithm </a></li>
+      <li><a href="standard_episode_rules.html">Example
+          269: Mining Episode Rules in a Complex Sequence using
+          the TKE, MINEPI+, AFEM, or EMMA algorithm</a></li>
+      <li><a href="NONEPI_episode_rules.html">Example 270: Mining Episode Rules in a Complex Sequence with the Non-Overlapping Frequency using the NONEPI algorithm</a></li>
+      <li><a href="EMDO_episode_and_rules.html">Example 271: Mining Frequent Episodes and Rules in a Complex Sequence using the EMDO or EMDO-Rules algorithms</a></li>
+      <li><a href="HUE_SPAN.html">Example
+          272 : Mining High Utility Episodes using the HUE-SPAN
+          algorithm</a></li>
+      <li><a href="UP_SPAN.html">Example
+          273 : Mining High Utility Episodes using the UP-SPAN
+          algorithm</a></li>
+      <li><a href="TUP.html">Example
+          274 : Mining the Top-K High Utility Episodes using the
+          TUP algorithm</a></li>
+      <li><a href="MAPD_string.html">Example 275: Mining frequent sequential patterns with periodic wilcard gaps in a sequence of characters with the MAPD algorithm </a></li>
+      <li><a href="OWSPMiner_string.html">Example 276: Mining self-adaptive one-off weak-gap strong sequential patterns in a sequence of characters with the OWSP-Miner algorithm</a></li>
+    </ul>
+    <h3><strong>Graph Pattern Mining</strong></h3>
+    <ul>
+      <li><a href="TKG.html">Example
+          277 : Mining the Top-K Frequent Subgraphs in a Graph Database using the TKG algorithm </a></li>
+      <li><a href="GSPAN_subgraph.html">Example
+          278 : Mining Frequent Subgraphs </a><a href="GSPAN.html">in
+          a Graph Database </a><a href="GSPAN_subgraph.html">using the
+          gSpan algorithm</a></li>
+      <li><a href="closed_cgspan_mining.html">Example
+          279 : Mining Frequent Closed Subgraphs  in a   Graph Database  using the cgSpan algorithm</a></li>
+      <li><a href="TSEQMINER.html">Example
+          280 : Mining Significant Trend Sequence in a Dynamic
+          Attributed Graph using the TSeqMiner algorithm</a></li>
+      <li><a href="AERMiner.html">Example 281 :Mining Frequent Subgraphs using the AERMiner Algorithm</a></li>
+      <!-- <li><a href="TSEQMINER.html">Example 282 : Mining Significant Trend Sequences in a Dynamic Attributed Graph using the TSeqMiner algorithm</a></li> -->
+    </ul>
+    <h3><strong>Text Mining</strong></h3>
+    <ul>
+      <li><a href="TextClusterer.html">Example
+          283 : Clustering Texts with a text clusterer</a></li>
+      <li><a href="TextClassifierNaiveBayes.html">Example
+          284 : Classifying Text documents using a Naive Bayes
+          approach</a> (source code version only)</li>
+    </ul>
+    <h3><strong>Time Series Mining</strong></h3>
+    <ul>
+      <li><a href="TimeSeriesViewer.html">Example
+          285 : Vizualize time series using the time series
+          viewer</a></li>
+      <li><a href="TimeSeriesPriorMovingAverage.html">Example
+          286 : Calculate the prior moving average of time series</a></li>
+      <li><a href="TimeSeriesCumulativeMovingAverage.html">Example
+          287 : Calculate the cumulative moving average of time
+          series</a></li>
+      <li><a href="TimeSeriesCentralMovingAverage.html">Example
+          288 : Calculate the central moving average of time
+          series</a></li>
+      <li><a href="TimeSeriesMinMaxNormalization.html">Example
+          289 : Calculate the min max normalization of a time
+          series</a></li>
+      <li><a href="TimeSeriesStandardization.html">Example
+          290 : Calculate the standardization of a time series</a></li>
+      <li><a href="MedianSmoothing.html">Example
+          291 : Calculate the median smoothing of a time series</a></li>
+      <li><a href="TimeSeriesExponentialSmoothing.html">Example
+          292 : Calculate the exponential smoothing of a time
+          series</a></li>
+      <li><a href="TimeSeriesFirstOrderDifferencing.html">Example
+          293 : Calculate the first order differencing of a time
+          series</a></li>
+      <li><a href="TimeSeriesSecondOrderDifferencing.html">Example
+          294 : Calculate the second order differencing of a time
+          series</a></li>
+      <li><a href="TimeSeriesPiecewiseAggregateApproximation.html">Example
+          295 : Calculate the piecewise aggregate approximation
+          of time series</a></li>
+      <li><a href="TimeSeriesAutocorellation.html">Example
+          296 : Calculate the autocorelation function of a time
+          series</a></li>
+      <li><a href="TimeSerieRegressionLineLeastSquare.html">Example
+          297 : Calculate the regression line of a time series
+          using the least square method, and perform time series forecasting </a></li>
+      <li><a href="SplitTimeSeriesByLength.html">Example
+          298 : Split time series by length</a></li>
+      <li><a href="SplitTimeSeriesByNumberOfSegments.html">Example
+          299 : Split time series by number of segments</a></li>
+      <li><a href="SAXTimeSeries.html">Example
+          300 : Convert time series to sequences using the SAX
+          algorithm</a> (useful to be able to apply sequential pattern mining/rule
+        algorithms to time series)<br>
+        <br>
+        Besides the above example for time series mining, clustering algorithms
+        such as K-Means can also be applied to time-series. </li>
+    </ul>
+    <h3><strong>Classification</strong></h3>
+    <ul>
+      <li><a href="ID3.html">Example
+          301 : How to train the ID3 classifier to perform
+          classification </a> (source code version only) </li>
+      <li><a href="KNNclass.html">Example
+          302 : How to train the KNN classifier to perform
+          classification </a> (source code version only) </li>
+      <li><a href="CMAR.html">Example
+          303 : How to train the CMAR classifier to perform
+          classification </a> (source code version only)</li>
+      <li><a href="ACAC.html">Example 304 : How to train the ACAC classifier to perform
+      classification </a> (source code version only)</li>
+      <li><a href="ACCF.html">Example
+          305 : How to train the ACCF classifier to perform
+          classification </a> (source code version only)</li>
+      <li><a href="ACNrules.html">Example
+          306 : How to train the ACN classifier to perform
+          classification</a> (source code version only)</li>
+      <li><a href="ADTclassification.html">Example
+          307 : How to train the ADT classifier to perform
+          classification</a> (source code version only)</li>
+      <li><a href="CBA_class_rules.html">Example
+          308 : How to train the CBA classifier to perform
+          classification</a> (source code version only)</li>
+      <li><a href="CBA2_for_classification.html">Example
+          309 : How to train the CBA2 classifier to perform
+          classification</a> (source code version only)</li>
+      <li><a href="CMAR_rules.html">Example
+          310 : How to train the CMAR classifier to perform
+          classification</a> (source code version only)</li>
+      <li><a href="L3Classification.html">Example
+          311 : How to train the L3 classifier to perform
+          classification</a> (source code version only)</li>
+      <li><a href="CMARClassification.html">Example
+          312 : How to train the CMAR classifier to perform
+          classification</a> (source code version only)</li>
+      <li><a href="MACMAC.html">Example
+          313 : How to train the MAC classifier to perform
+          classification</a> (source code version only) </li>
+      <li><a href="Evaluator_classifier.html">Example
+          314 : Run an experiment to compare many classifiers
+          such as ID3, CMAR, ACCF, CBA and CBA2. </a>(source code version only)</li>
+      <li><a href="UBTGen.html">Example 315 : Transform a CSV dataset into a Transaction Database with Utility Information for Classification using the UBTGen Algorithm</a></li>
+      <li><a href="THUIsl.html">Example 316 : Mining Top-k High Utility Itemsets based on the Information Gain for Supervised Learning using the THUIsl Algorithm </a></li>
+    </ul>
+    <h3><strong>Dataset transformation tools</strong></h3>
+    <ul>
+      <li><a href="Converting_a_sequence_database_to_SPMF.html">Example
+          317 : Converting a sequence database to SPMF format
+          (CSV, KOSARAK, IBM, BMS, Snake...)</a></li>
+      <li><a href="Converting_a_transaction_database_to_SPMF.html">Example
+          318 : Converting a transaction database to SPMF format
+          (CSV...)</a></li>
+      <li><a href="Converting_a_sequence_database_to_transaction_database.html">Example
+          319 : Converting a sequence database to a transaction
+          database</a></li>
+      <li><a href="Converting_a_transaction_database_to_sequence_database.html">Example
+          320 : Converting a transaction database to a sequence
+          database</a></li>
+      <li><a href="Converting_a_cost_sequence_database_to_cost_transaction_database.html">Example
+          321 : Converting a sequence database with cost values
+          to a transaction database with cost values </a></li>
+      <li><a href="Generating_synthetic_sequence_database.html">Example
+          322 : Generating a synthetic sequence database</a></li>
+      <li><a href="Generating_synthetic_sequence_database_with_timestamps.html">Example
+          323 : Generating a synthetic sequence database with
+          timestamps</a></li>
+      <li><a href="Generating_synthetic_transaction_database.html">Example
+          324 : Generating a synthetic transaction database</a></li>
+      <li><a href="Generating_synthetic_utility_values.html">Example
+          325 : Generating synthetic utility values for a
+          transaction database without utility values</a></li>
+      <li><a href="Generating_item_weights.html">Example 326 : Generating a a file or random item weights for a transaction database</a></li>
+      <li><a href="Add_consecutive_timestamps.html">Example 327 : Add consecutive timestamps to a sequence database
+        without timestamps</a></li>
+      <li><a href="Using_the_ARFF_format.html">Example 328 : Using the ARFF format in the source code version
+        of SPMF</a></li>
+      <li><a href="Using_a_TEXT_file_as_input.html">Example 329 : Using a TEXT file as input in the source code
+        version of SPMF</a></li>
+      <li><a href="Fix_a_transaction_database.html">Example 330 : Fix a transaction database</a></li>
+      <li><a href="sequence_database_fix.html">Example 331 : Fix a sequence database</a></li>
+      <li><a href="Fix_item_ids_in_a_transaction_database.html">Example 332 : Fix item ids in a transaction database</a></li>
+      <li><a href="Fix_item_ids_in_transaction_database_with_utility.html">Example 333 : Fix item ids in a transaction database with utility information </a></li>
+      <li><a href="Fix_a_transaction_database_with_utility_time.html">Example 334 : Fix a transaction database with utility and time
+        information</a></li>
+      <li><a href="Remove_utility_information.html">Example 335 : Remove utility information from a transaction
+        database</a></li>
+      <li><a href="Resize_a_database.html">Example 336 : Resize a database in SPMF format (a text file)</a></li>
+      <li><a href="SampleRecords.html">Example 337 : Sample records from a database in SPMF format (a text file)</a></li>
+      <li><a href="Remove_Duplicate_Records.html">Example 338 : Remove duplicate records from a database in SPMF format (a text file)</a></li>
+    </ul>
+    <h3><strong>Dataset statistics tools </strong></h3>
+    <ul>
+      <li><a href="Calculating_sequence_database_statistics.html">Example
+        339 : Calculating statistics for a sequence database</a></li>
+      <li><a href="Calculating_transaction_database_statistics.html">Example
+        340 : Calculating statistics for a transaction database</a></li>
+      <li><a href="Calculating_transaction_database_utility_statistics.html">Example
+        341 : Calculating statistics for a transaction database
+        with utility information </a></li>
+      <li><a href="a_graph_databasestats.html">Example 342 : Calculating statistics for a graph database</a></li>
+      <li><a href="Calculating_product_tdb.html">Example 343 : Calculating statistics for a product transaction database</a></li>
+      <li><a href="Stats_SDB_cost_Binary_utility.html">Example 344 : Calculating statistics for a  sequence database with cost and binary utility</a></li>
+      <li><a href="Stats_SDB_cost_numeric_utility.html">Example 345 : Calculating statistics for a sequence database with cost and numeric utility</a></li>
+      <li><a href="Calculating_stats_sdb_utility.html">Example 346 : Calculating statistics for a sequence database with utility</a></li>
+      <li><a href="Calculate_stats_time_extended_sdb.html">Example 347 : Calculating statistics for a time-extended sequence database</a></li>
+      <li><a href="Calculating_stats_utdb_ut.html">Example 348 : Calculating statistics for an uncertain transaction database</a></li>
+      <li><a href="Calculating_tdb_cost_statistics.html">Example 349 : Calculating statistics for a transaction database with cost and utility</a></li>
+      <li><a href="CalcStats_Utility_with_periods.html">Example 350 : Calculating statistics for a transaction database with utility and period information</a></li>
+      <li><a href="CalcStats_Utility_time.html">Example 351 : Calculating statistics for a transaction database with utility and timestamps</a></li>
+      <li><a href="Calc_stats_event_seq.html">Example 352 : Calculating statistics for an event sequence</a></li>
+      <li><a href="Calculating_interval_stats.html">Example 353 : Calculating statistics for an interval sequence database</a></li>
+      <li><a href="CalcStats_MD_SDB.html">Example 354 : Calculating statistics for a multi-dimensional sequence database </a></li>
+      <li><a href="CalcStats_MD_SDB_time_time.html">Example 355 : Calculating statistics for a multi-dimensional sequence database with timestamps </a></li>
+      <li><a href="CalcStats_for_double_vectors.html">Example 356 : Calculating statistics for a file with double vectors (instances) for clustering </a></li>
+      <li><a href="CalcStats_for_time_series.html">Example 357 : Calculating statistics for  time series</a></li>
+    </ul>
+    <h3><strong>Dataset viewer tools</strong></h3>
+    <ul>
+      
+      <li><a href="ARFF_basic_viewer.html">Example 358 : View the content of an ARFF file using the ARFF Viewer</a></li>
+      <li><a href="CSV_basic_viewer.html">Example 359 : View the content of an CSV file using the CSV Viewer</a></li>
+      <li><a href="FASTA_basic_viewer.html">Example 360 : View the content of an FASTA file using the FASTA Viewer</a></li>
+      <li><a href="Cost_and_Utility_TDB_View.html"></a><a href="SPMF_Graph_Viewer.html">Example 361 : View a graph database file with the Graph Viewer</a></li>
+      <li><a href="event_seq_view.html">Example 362 : View an event sequence with the Event Sequence Viewer</a></li>
+      <li><a href="event_seq_view.html"></a><a href="Seq_db_db_viewer.html">Example 363 : View a sequence database file with the Sequence Database Viewer</a></li>
+      <li><a href="Seq_with_cost_binary_utility_db_viewer.html">Example 364 : View a sequence database cost binary utility file with the Sequence Database Cost Binary Utility Viewer</a></li>
+      <li><a href="Seq_with_cost_numeric_utility_db_viewer.html">Example 365 : View a sequence database cost numeric utility file with the Sequence Database Cost Numeric Utility Viewer</a></li>
+      <li><a href="Time-extended-viewer-tool.html">Example 366 : View a time-extended sequence database with the Time-Extended Sequence Database Viewer</a></li>
+<li><a href="Cost_sequence_db_viewer.html"></a><a href="MDSequence_viewer_noTime.html">Example 367 : View an MD sequence database with the MD Sequence Database Viewer</a></li>
+<li><a href="Time_with_MDSequence_viewer.html">Example 368 : View an MD time sequence database with the MD Time Sequence Database Viewer</a></li>
+<li><a href="Sdb_interval_viewer.html"></a><a href="Seq_with_utility_db_viewer.html">Example 369 : View a sequence utility database file with the Sequence Utility Database Viewer</a></li>
+<li><a href="Time-extended-viewer-tool.html"></a><a href="Trans_Viewer.html">Example 370 : View a transaction database file with the Transaction Database Viewer</a></li>
+<li><a href="uncertain_transactions_view.html">Example 371 : View an uncertain transaction database file with the Uncertain Transaction Database Viewer</a></li>
+<li><a href="Utility_TDB_View.html">Example 372 : View a utility transaction database file with the Utility Transaction Database Viewer</a></li>
+<li><a href="Time_with_Utility_TDB_View.html">Example 373 : View a utility time transaction database file with the Utility Time Transaction Database Viewer</a></li>
+<li><a href="Period_data_with_Utility_TDB_View.html">Example 374 : View a utility period transaction database file with the Utility Period Transaction Database Viewer</a></li>
+<li><a href="profit_tdb_view.html">Example 375 : View a product transaction database file with the Profit Transaction Database Viewer</a></li>
+<li><a href="Cost_and_Utility_TDB_View.html">Example 376 : View a cost utility transaction database file with the Cost Utility Transaction Database Viewer</a></li>
+<li><a href="Sdb_interval_viewer.html">Example 377 : View a Time-Interval Sequence Database with the Time Interval Sequence Database Viewer</a></li>
+<li><a href="TaxonomyViewer.html">Example 378 : View a taxonomy file with the Taxonomy Viewer</a></li>
+</ul>
+<h3><strong>Pattern viewer tools</strong></h3>
+<ul>
+  <li>Example379 :  <a href="Item_Itemset_MatrixViewer.html">View itemsets using the Itemsets-Item Matrix Viewer</a></li>
+  <li>Example 380 : <a href="View_association_rules.html">Visualize association rules</a></li>
+  <li>Example 381 : <a href="View_closed_association_rules.html">Visualize closed association rules</a></li>
+   <li>Example 382 : <a href="View_association_rules_LIFT.html">Visualize association rules with lift</a></li>
+  <li>Example 383 : <a href="View_arules_LIFTMultiThreshold.html">Visualize association rules with lift and multiple support thresholds</a></li>
+  <li>Example 384 : <a href="View_TopK_association_rules.html">Visualize Top-K Association rules</a></li>
+  <li>Example 385 : <a href="View_TopK_Class_association_rules.html">Visualize Top-K Class Association rules</a></li>
+  <li>Example 386 : <a href="Visualize_Sporadic_Association_rules.html">Visualize Sporadic Association rules</a></li>
+  <li>Example 387 : <a href="ViewTNR_rules.html">Visualize Top-K NonRedundant Association rules</a></li>
+  <li>Example 388 : <a href="ViewMinNRArules.html">Visualize Top-K Minimal NonRedundant Association rules</a></li>
+  <li>Example 389 : <a href="View_HighUtilityassociation_rules.html">Visualize High-utility Association rules</a></li>
+  <li>Example 390 : <a href="View_frequent_itemsets.html">Visualize Frequent itemsets</a></li>
+  <li>Example 391 : <a href="Visualize_Frequent_generator_itemsets.html">Visualize Frequent generator itemsets</a></li>
+  <li>Example 392 : <a href="Visualize_High_Utility_itemsets.html">Visualize High Utility itemsets</a></li>
+  <li>Example 393 : <a href="Visualize_Closed_High_Utility_itemsets.html">Visualize Closed High Utility itemsets</a></li>
+  <li>Example 394 : <a href="Visualize_Correlated_High_Utility_itemsets.html">Visualize Correlated High Utility itemsets</a></li>
+  <li>Example 395 : <a href="Visualize_Frequent_High_Utility_itemsets.html">Visualize Frequent High Utility itemsets</a></li>
+  <li>Example 396 : <a href="Visualize_Frequent_closed_itemsets.html">Visualize Frequent closed itemsets</a></li>
+  <li>Example 397 : <a href="Visualize_Frequent_maximal_itemsets.html">Visualize Frequent maximal itemsets</a></li>
+  <li>Example 398 : <a href="Visualize_Minimal_rare_itemsets.html">Visualize Frequent minimal rare itemsets</a></li>
+  <li>Example 399 : <a href="Visualize_Perfectly_rare_itemsets.html">Visualize Perfectly rare itemsets</a></li>
+  <li>Example 400 : <a href="Visualize_Maximal_High_Utility_itemsets.html">Visualize Maximal High Utility itemsets</a></li>
+  <li>Example 401 : <a href="Visualize_Minimal_High_Utility_itemsets.html">Visualize Minimal High Utility itemsets</a></li>
+  <li>Example 402 : <a href="Visualize_Top-K_High_Utility_itemsets.html">Visualize Top-K High Utility itemsets</a></li>
+  <li>Example 403 : <a href="Visualize_High_Average_Utility_itemsets.html">Visualize High Average Utility itemsets</a></li>
+  <li>Example 404 : <a href="Visualize_High_Utility_Generators.html">Visualize High Utility Generators</a></li>
+  <li>Example 405 : <a href="Visualize_Gen_HUIs.html">Visualize Generator High Utility itemsets</a></li>
+  <li>Example 406 : <a href="Visualize_GHUIS_generators.html">Visualize Generators of High Utility itemsets</a></li>
+  <li>Example 407 : <a href="Visualize_Erasable_itemsets.html">Visualize Erasable itemsets</a></li>
+  <li>Example 408 : <a href="Visualize_Rare_correlated_itemsets.html">Visualize Rare correlated itemsets</a></li>
+  <li>Example 409 : <a href="Visualize_Uncertain_frequent_itemsets.html">Visualize Uncertain frequent itemsets</a></li>
+  <li>Example 410 : <a href="Visualize_Self_sufficient_itemsets.html">Visualize Self sufficient itemsets</a></li>
+  <li>Example 411 : <a href="View_frequent_itemsets_multi_thres.html">Visualize Frequent itemsets with multi thresholds</a></li>
+  <li>Example 412 : <a href="Visualize_Frequent_fuzzy_itemsets.html">Visualize Frequent fuzzy itemsets</a></li>
+  <li>Example 413 : <a href="Visualize_Frequent_Weighted_Itemsets.html">Visualize Frequent weighted itemsets</a></li>
+  <li>Example 414 : <a href="Visualize_Multi_frequent_fuzzy_itemsets.html">Visualize Multi frequent fuzzy itemsets</a></li>
+  <li>Example 415 : <a href="Visualize_Periodic_frequent_itemsets.html">Visualize Periodic frequent itemsets</a></li>
+  <li>Example 416 : <a href="Visualize_stable_periodic_itemsets.html">Visualize Stable periodic itemsets</a></li>
+  <li>Example 417 : <a href="Visualize_TopKStablePeriodic.html">Visualize Top-K Stable periodic itemsets</a></li>
+  <li>Example 418 : <a href="Visualize_High_Periodic_Utility_itemsets.html">Visualize Periodic High Utility itemsets</a></li>
+  <li>Example 419 : <a href="Visualize_ProdPer_frequent_itemsets.html">Visualize Productive periodic frequent itemsets</a></li>
+  <li>Example 420 : <a href="Visualize_RareCoreMultiSeq.html">Visualize Rare correlated itemsets MultiSequences</a></li>
+  <li>Example 421 : <a href="Visualize_LocalPerItemsets.html">Visualize Local periodic frequent itemsets</a></li>
+  <li>Example 422 : <a href="Visualize_peak.html">Visualize Peak high Utility itemsets</a></li>
+  <li>Example 423 : <a href="Visualize_localHUIs.html">Visualize Local high Utility itemsets</a></li>
+  <li>Example 424 : <a href="Visualize_locally_trending_HUIs.html">Visualize locally trending HUIs</a></li>
+  <li>Example 425 : <a href="Visualize_Skyline_frequent_HUIs.html">Visualize Skyline frequent HUIs</a></li>
+  <li>Example 426 : <a href="Visualize_Skyline_HUIs.html">Visualize Skyline HUIs</a></li>
+  <li>Example 427 : <a href="Visualize_OnshelfHUIs.html">Visualize Onshelf High Utility itemsets</a></li>
+  <li>Example 428 : <a href="Visualize_CrossLevelHUIs.html">Visualize Crosslevel High Utility itemsets</a></li>
+  <li>Example 429 : <a href="Visualize_MultiLevelHUIs.html">Visualize Multilevel High Utility itemsets</a></li>
+  <li>Example 430 : <a href="Visualize_NonRedundantPeriodic.html">Visualize Nonredundant Periodic itemsets</a></li>
+  <li>Example 431 : <a href="Visualize_quantitative_huis.html">Visualize Quantitative high Utility itemsets</a></li>
+  <li>Example 432 : <a href="Visualize_High_Utility_itemsetsFHMPLUS.html">Visualize High Utility itemsets with length constraint</a></li>
+  <li>Example 433 : <a href="View_frequent_itemsets_with_generators.html">Visualize Frequent itemsets and generators</a></li>
+  <li>Example 434 : <a href="View_frequent_itemsetsMultiSEQ.html">Visualize Periodic Frequent itemsets from multiple sequences</a></li>
+  <li>Example 435 : <a href="Visualize_FrequentSequential_rules.html">Visualize Sequential rules</a></li>
+  <li>Example 436 : <a href="Visualize_TopKSeqRules.html">Visualize Top-K Frequent Sequential rules</a></li>
+  <li>Example 437 : <a href="Visualize_TKNRSequential_rules.html">Visualize Top-K non redundant sequential rules</a></li>
+  <li>Example 438 : <a href="Visualize_HUSeqRules.html">Visualize High utility sequential rules</a></li>
+  <li>Example 439 : <a href="Visualize_FrequentSequential_rulesString.html">Visualize Sequential rules with strings</a></li>
+  <li>Example 440 : <a href="Visualize_frequent_episodes.html">Visualize frequent episodes</a></li>
+  <li>Example 441 : <a href="Visualize_top-k_frequent_episodes.html">Visualize top-k frequent episodes</a></li>
+  <li>Example 442 : <a href="Visualize_HUepisodes.html">Visualize high utility episodes</a></li>
+  <li>Example 443 : <a href="Visualize_top-k_high_utility_episodes.html">Visualize top-k high utility episodes</a></li>
+  <li>Example 444 : <a href="Visualize_Episode_rules.html">Visualize Episode rules</a></li>
+  <li>Example 445 : <a href="Visualize_Freq_Episode_rules.html">Visualize Frequent episode rules</a></li>
+  <li>Example 446 : <a href="Viewer_for_seq_patterns.html">Visualize frequent sequential patterns</a></li>
+  <li>Example 447 : <a href="Visualize_TopKFreqSeq.html">Visualize top-k frequent sequential patterns</a></li>
+  <li>Example 448 : <a href="Visualize_ClosedFreqSeq.html">Visualize closed frequent sequential patterns</a></li>
+  <li>Example 449 : <a href="Visualize_MaxFreqSeq.html">Visualize maximal frequent sequential patterns</a></li>
+  <li>Example 450 : <a href="Visualize_GeneratorFreqSeq.html">Visualize generator frequent sequential patterns</a></li>
+  <li>Example 451 : <a href="Viewer_HUseq_patterns.html">Visualize high utility sequential patterns</a></li>
+  <li>Example 452 : <a href="Visualize_CostSeqPatterns.html">Visualize cost efficient sequential patterns</a></li>
+  <li>Example 453 : <a href="Visualize_CompressingSeqPat.html">Visualize compressing sequential patterns</a></li>
+  <li>Example 454 : <a href="Viewer_for_seq_patternsOCCUR.html">Visualize frequent sequential patterns with occurrences</a></li>
+  <li>Example 455 : <a href="Viewer_seq_patternsTime.html">Visualize frequent sequential patterns with timestamps</a></li>
+  <li>Example 456 : <a href="Viewer_closedseq_patternsTime.html">Visualize closed frequent sequential patterns with timestamps</a></li>
+  <li>Example 457 : <a href="Viewer_HUProbSeqPat.html">Visualize high utility probability sequential patterns</a></li>
+  <li>Example 458 : <a href="Viewer_for_ProSeCo.html">Visualize progressive frequent sequential patterns</a></li>
+  <li>Example 459 : <a href="Visualize_TopKFreqSeqLeverage.html">Visualize top-k frequent sequential patterns with leverage</a></li>
+  <li>Example 460 : <a href="Viewer_OWSPMiner.html">Visualize self adaptive one off weakgap strong sequential pattern</a></li>
+  <li>Example 461 : <a href="Viewer_MAPD.html">Visualize sequential patterns with wildcard gaps</a></li>
+  <li>Example 462 : <a href="Visualize_FrequentSubgraphs.html">Visualize frequent subgraphs </a></li>
+</ul>
+<h3><strong>Other GUI tools </strong></h3>
+<ul><li><a href="SPMF_Algorithm_Explorer.html">Example 463 : Open the Algorithm Explorer to view informations about algorithms </a></li>
+      <li><a href="Workflows.html">Example 464 : Create a workflow using the SPMF Workflow editor</a> </li>
+      <li><a href="memory_Usage_chart.html">Example 465 : Monitor the JVM's Memory using the Memory Viewer </a></li>
+      <li><a href="SPMF_Pattern_visualizer.html">Example 466 : Visualize patterns in a text file with the Pattern Viewer </a></li>
+      <li><a href="SPMF_Text_Editor.html">Example 467 : Open a text file using the SPMF text editor </a></li>
+      <li><a href="System_Text_Editor.html">Example 468 : Open a text file with the System Text Editor</a></li>
+      <li><a href="dev_tools_of_spmf.html">Example 469 : Open the SPMF developers tools </a></li>
+      <li><a href="dev_tools_of_spmf.html">Example 470 : Download an offline copy of the SPMF documentation on your computer </a></li>
+      <li><a href="SPMF_Algorithm_GraphVizualizer.html">Example 471 : Visualize algorithms from SPMF as a graph using the Algorithm Graph Visualizer </a></li>
+      <li><a href="Pattern_Diff_Analyzer.html">Example 472 : Compare two pattern files with the SPMF Pattern Diff Analyzer </a></li>
+</ul>
+    <h3><strong>Other  tools </strong></h3>
+    <ul>
+      <li><a href="Export_algorithms_list_to_JSON.html">Example 473 : Export the list of algorithms from SPMF as a JSON file</a> </li>
+    </ul>
+    <h3><strong>Experiments</strong></h3>
+    <ul>
+      <li><a href="ExperimenterPerformance.html">Example 474 : Run experiments to compare the performance of one or more algorithms on a dataset (one parameter is varied) </a></li>
+      <li><a href="ExperimenterScalability.html">Example 475 : Run experiments to compare the scalability of one or more algorithms on a dataset (dataset size is varied, input parameters are fixed) </a></li>
+    </ul>
+    <p>Copyright &amp;copy; 2008-2026        <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>.
+        All rights reserved.</p>
+  </article>
+ </div>
+</div>
+<div id="sidebar"> <a href="https://www.philippe-fournier-viger.com/spmf/"><img src="spmf.png" alt="SPMF"></a>
+<p align="center" class="style4">An Open-Source Data Mining Library
+<p>
+<nav id="nav">
+ <ul><li> <a href="index.html">Introduction</a> </li><li> <a href="index.php?link=algorithms.html">Algorithms</a> </li><li> <a href="index.php?link=download.html">Download</a> </li><li class="current"> <a href="index.php?link=documentation.html">Documentation</a> </li><li> <a href="index.php?link=datasets.html">Datasets</a> </li><li> <a href="index.php?link=FAQ.html">FAQ</a> </li><li> <a href="index.php?link=license.html">License</a> </li><li> <a href="index.php?link=contributors.html">Contributors</a> </li><li> <a href="index.php?link=citations.html">Citations</a> </li><li> <a href="index.php?link=performance.html">Performance</a> </li><li> <a href="index.php?link=developers.html">Developers's guide</a> </li><li> <a href="index.php?link=videos.html">Videos</a> </li><li> <a href="index.php?link=resources.html">Other resources</a> </li><li> <a href="index.php?link=spmfwrappers.html">Wrappers</a> </li>   <li><a href="https://github.com/philfv9/spmf-software" target="_blank">GitHub</a></li>
+    <li><a href="https://github.com/philfv9/spmf-software/discussions" target="_blank">Forum</a></li>
+   <li><a href="https://data-mining.philippe-fournier-viger.com/" target="_blank">Blog</a></li>
+   <li><a href="http://www.philippe-fournier-viger.com/COURSES/Pattern_mining/index.html" target="_blank">The Pattern Mining Course</a></li>
+ </ul>
+ </nav>
+<section class="box text-style2">
+
+  <div class="inner">
+   <h6>
+    <span class="counter" style="padding: 1px 1px 1px 1px;background: #1b252a;border: 0px solid #cccccc;"><span  style="font: 13px;color: #f4f4f4; :link, :visited, :active, :link:hover, :visited:hover, :active:hover font: 13px;color: #f4f4f4;">12412435</span></span>
+</h6>
+  </div>
+ </section>
+<ul id="copyright"> 
+  <li class="title style1">Copyright &copy; 2008-2026 </li>
+  <li class="title style1"><a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a></li>
+  <li class="title style1">All rights reserved.</li>
+ </ul>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

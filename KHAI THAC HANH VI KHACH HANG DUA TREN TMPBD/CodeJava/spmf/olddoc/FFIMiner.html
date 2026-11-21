@@ -1,0 +1,130 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Fuzzy Frequent Itemsets in a quantitatve transaction database using the FFI-Miner algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Fuzzy Frequent Itemsets in a quantitative transaction database using the FFI-Miner algorithm   (<a href="documentation.html">SPMF documentation</a>) </h1>
+<h2><strong>How to run this example?</strong></h2>
+<ul type="disc">
+  <li>If you are using the graphical interface, (1) choose the &quot;<strong>FFI-Miner</strong>&quot;       algorithm, (2) select the input file &quot;<strong>contextFFIMiner.txt</strong>&quot;,       (3) set the output file name (e.g. &quot;<strong>output.txt</strong>&quot;), (4) set the minsup parameter to 2, and (5) click       &quot;<strong>Run algorithm</strong>&quot;.</li>
+  <li><strong>If you want to       execute this example from the command line</strong>, then execute this command:&nbsp;<br>
+    <strong>java -jar spmf.jar run&nbsp;FFI-Miner&nbsp;contextFFIMiner.txt       output.txt 2 </strong>in a folder containing&nbsp;<strong>spmf.jar</strong>&nbsp;and the       example input file&nbsp;<strong>contextFFIMiner.txt</strong>&nbsp;.</li>
+  <li><strong> If you are using the source code version of SPMF,&nbsp;</strong>launch the file&nbsp;<strong>&quot;MainTestFFIMiner_saveToFile.java&quot;</strong>&nbsp;in       the package&nbsp;<strong>ca.pfv. SPMF.tests</strong>.</li>
+</ul>
+<h2><strong>What is FFI-Miner?</strong></h2>
+<p><strong>FFI-Miner</strong> is an algorithm for  mining fuzzy frequent itemsets in quantitative transactional database. In  simple words, a quantitative transactional database is a database where items  have quantities.</p>
+
+<h2> <strong>What is the input?</strong></h2>
+<p><strong>FFI-Miner</strong> takes as input (1)  a transaction database with quantity information and a minimum support  threshold&nbsp;<em>minSupport</em><em>&nbsp;</em>(a positive integer)<em>.</em>&nbsp;Let's consider the following database  consisting of 8 transactions (t1, t2, ..., t8) and 5 items (1, 2, 3, 4, 5).  This database is provided in the text file &ldquo;<strong>contextFFIMiner.txt</strong>&nbsp;&rdquo;in the package&nbsp;<strong>ca.pfv.spmf.tests</strong><strong>&nbsp;</strong>of the SPMF distribution.  Moreover, consider the membership function, shown below, which defines three  ranges (low, medium, high). </p>
+  <div align="center">
+    <table border="1" cellspacing="3" cellpadding="0" width="600">
+      <tr>
+        <td width="168"><br>
+          <strong>Transaction ID</strong></td>
+        <td width="211"><p align="center"><strong>Items</strong></p></td>
+        <td width="209" valign="top"><p align="center"><strong>Quantities</strong></p></td>
+      </tr>
+      <tr>
+        <td><p align="center"><strong>t1</strong></p></td>
+        <td><p align="center">1 3 4 5 </p></td>
+        <td valign="top"><p align="center">5 10 2 9</p></td>
+      </tr>
+      <tr>
+        <td><p align="center"><strong>t2</strong></p></td>
+        <td><p align="center">1 2 3 </p></td>
+        <td valign="top"><p align="center">8 2 3 </p></td>
+      </tr>
+      <tr>
+        <td><p align="center"><strong>t3</strong></p></td>
+        <td><p align="center">2 3 </p></td>
+        <td valign="top"><p align="center">3 9 </p></td>
+      </tr>
+      <tr>
+        <td><p align="center"><strong>t4</strong></p></td>
+        <td><p align="center">1 2 3 5 </p></td>
+        <td valign="top"><p align="center">5 3 10 3 </p></td>
+      </tr>
+      <tr>
+        <td><p align="center"><strong>t5</strong></p></td>
+        <td><p align="center">1 3 4 </p></td>
+        <td valign="top"><p align="center">7 9 3 </p></td>
+      </tr>
+      <tr>
+        <td><p align="center"><strong>t6</strong></p></td>
+        <td><p align="center">2 3 4 </p></td>
+        <td valign="top"><p align="center">2 8 3 </p></td>
+      </tr>
+      <tr>
+        <td><p align="center"><strong>t7</strong></p></td>
+        <td><p align="center">1 2 3 </p></td>
+        <td valign="top"><p align="center">5 2 5 </p></td>
+      </tr>
+      <tr>
+        <td><p align="center"><strong>t8</strong></p></td>
+        <td><p align="center">1 3 4 5 </p></td>
+        <td valign="top"><p align="center">3 10 2 2 </p></td>
+      </tr>
+    </table>
+    <p><img src="fuzzy.png" width="658" height="259" alt=""/></p>
+    <p>Fuzzy membership function</p>
+  </div>
+
+  <h2><strong>Why FFI-Miner is useful?</strong></h2>
+  <p>In real-life situations, it is difficult to handle quantitative  databases using crisp sets. Fuzzy-set theory is useful to handle quantitative  databases. Based on the fuzzy-set theory, the fuzzy frequent itemset mining  algorithm FFI-Miner was proposed. It relies on a designed fuzzy-list structure  to discover fuzzy itemsets. Compared to previous works, FFI-Miner has excellent  performance for the discovery of fuzzy itemsets.</p>
+
+  <h2><strong>Input file format</strong></h2>
+  <p>The&nbsp;<strong>input file format</strong><strong>&nbsp;</strong>of<strong>&nbsp;</strong><strong>FFI-Miner</strong>&nbsp;is defined as follows. It is a text  file. Each line represents a transaction. Each line is composed of three  sections, as follows.</p>
+  <ul type="disc">
+    <li>First,       the items contained in the transaction are listed. An item is represented       by a positive integer. Each item is separated from the next item by a       single space. It is assumed that all items within a same transaction       (line) are sorted according to a total order (e.g. ascending order) and       that no item can appear twice within the same transaction.</li>
+    <li>Second,       the symbol &quot;:&quot; appears and is followed by the sum of the       quantities in that transaction.</li>
+    <li>Third,       the symbol &quot;:&quot; appears and is followed by the quantity of each       item in this transaction (an integer), separated by single spaces.</li>
+  </ul>
+  <p>For example, for the previous  example, the input file is defined as follows:</p>
+  <p align="left">1 3 4 5:26:5 10 2 9<br>
+    1 2 3:13:8 2 3<br>
+    2 3:12:3 9<br>
+    1 2 3 5:21:5 3 10 3<br>
+    1 3 4:19:7 9 3<br>
+    2 3 4:13:2 8 3<br>
+    1 2 3:12:5 2 5<br>
+    1 3 4 5:19:3 10 2 2</p>
+  <p align="left">Consider  the first line. It means that the transaction {1, 3, 4, 5} has a total quantity of 26 and that  items1, 3, 4 and 5 respectively have a quantity of 5, 10, 2 and 9 in this  transaction. The following lines follow the same format.</p>
+
+  <h2><strong>Output file format</strong></h2>
+  <p>The&nbsp;output  file format&nbsp;of&nbsp;FFI-Miner&nbsp;is  defined as follows. It is a text file, where each line represents a&nbsp;fuzzy frequent itemset. On each line, the  items of the itemset are first listed. Each item is represented by an integer,  followed by &ldquo;.&rdquo; and either the letter &ldquo;L&rdquo;, &ldquo;M&rdquo; or &ldquo;H&rdquo;. These letters are used  to indicate if an item is in the low-range, medium-range or high range in terms  of the fuzzy membership function. After, all the items, the keyword &quot;#FLV:&quot;  appears, which is followed by a float value indicating the fuzzy value of that  itemset.<br>
+    1.M #FVL: 4.2 <br>
+    1.M 2.L #FVL: 2.0 <br>
+    1.M 3.H #FVL:  2.6000001 <br>
+    2.L #FVL: 3.6 <br>
+    4.L #FVL: 2.8 <br>
+    4.L 3.H #FVL:  2.6000001 <br>
+    3.H #FVL: 4.0000005</p>
+  <p align="left">For  example, the first line indicates that the itemset 1 has a fuzzy value of 4.2 and is in the medium range of  the fuzzy membership function. The other lines follow the same format. </p>
+
+  <h2><strong>Performance</strong></h2>
+  <p align="left">FFI-Miner&nbsp;is a very efficient algorithm. It uses a designed fuzzy-list structure to identify  unpromising candidates early, and thus speed up the discovery of fuzzy itemsets.</p>
+
+  <h2><strong>Where can I get more information about the  algorithm?</strong></h2>
+  <p> This is the reference of the article describing the <strong>FFI-Miner</strong> algorithm:</p>
+  <p><em>Jerry Chun-Wei Lin, Ting Li, Philippe Fournier-Viger, and Tzung-Pei Hong. A Fast Algorithm for Mining Fuzzy Frequent Itemsets[J]. Journal of Intelligent &amp; Fuzzy Systems, 2015, 29(6):2373-2379. </em></p>
+
+
+  <p>For a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

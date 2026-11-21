@@ -1,0 +1,119 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Fix a Sequence Database (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Fix a Sequence Database  (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to <strong>fix a sequence database</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+
+  <h2>How to run this example? </h2>
+  <ul>
+    <li><strong>If you are using the graphical interface, </strong>(1)
+      choose the <strong>&quot;<span class="highlight">Fix_a_sequence_database</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the input file <span class="highlight"><strong>sequence_broken</strong>.txt</span> (3) set the output file to &quot;output.txt&quot;, and then (4) click "<span class="highlight">Run algorithm</span>".</li>
+    <li><strong>If you want to execute this example from the command
+      line</strong>, then execute this command: <br>
+      <span class="highlight">java -jar spmf.jar run <strong>Fix_a_sequence_database</strong><strong> </strong><strong>sequence_broken.txt</strong> output.txt</span> in a folder containing <span class="highlight">spmf.jar</span> and the
+      input file <span class="highlight"><strong>sequence_broken</strong>.txt</span>.</li>
+    <li><strong>If you are using the source code version of SPMF, </strong>launch
+      the file <strong><span class="highlight">"MainTestFixSequenceDatabase.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+  </ul>
+  <h2>What is this tool?</h2>
+  <p>The tool "<strong>Fix_a_sequence_database</strong>" is a small program that
+      fix some common problems that may be found in a sequence database file in SPMF format.      </p>
+  <p>The tool fixes two common problems: (1) an item appears more than once
+    in an itemset of a sequence, (2) items from an itemset in a sequence are not sorted. </p>
+  <p>To fix the first
+    problem the tool will keep only one occurrence of each item in an itemset. So if an items appears more than once in an itemset of a sequence, it
+    will appears only once after applying the tool. </p>
+  <p>To fix the second
+    problem, the tool sorts each itemset in a sequence according to the
+    lexicographical ordering (because it is required by most sequential pattern mining algorithms).</p>
+  <h2>What is the input?</h2>
+  <p>The input is a sequence database. A sequence database is a set of
+    sequence. Each sequence is an ordered list of itemsets. An itemset is
+    an unordered list of items (symbols). For example, consider the
+    following database. This database is provided in the file &quot;<strong>sequence_broken.txt</strong>&quot;
+    of the SPMF distribution<strong>.</strong> It contains 2 sequences. The
+    second sequence represents that the set of items {7} was followed by itemset
+    {8}, which was followed by itemset {9, 8, 7}. It is
+    a <em>sequence database </em>(as defined in <a href="prefixspan.pdf" rel="nofollow">Pei et al., 2004</a>). </p>
+  
+  <table align="center" border="1" width="481">
+    <tbody>
+      <tr>
+        <td><strong>ID</strong></td>
+        <td><strong>Sequence</strong></td>
+      </tr>
+      <tr>
+        <td width="144"><strong>s1</strong></td>
+        <td width="321">{4, 4, 4, 5, 5},{4, 5, 6}</td>
+      </tr>
+      <tr>
+        <td><strong>s2</strong></td>
+        <td>{7},{8},{9，8，7}</td>
+      </tr>
+    </tbody>
+  </table>
+  <h2>What is the output?</h2>
+  <p>The output is a sequence database where each itemset in a sequence is
+      sorted and no item appears more than once. For example, the output
+      using the above example is:</p>
+    <table align="center" border="1" width="316">
+      <tbody>
+        <tr>
+          <td width="144"><strong>ID</strong></td>
+          <td width="156"><strong>Sequence</strong></td>
+        </tr>
+        <tr>
+          <td><strong>s1</strong></td>
+          <td>{4,5},{4, 5, 6}</td>
+        </tr>
+        <tr>
+          <td><strong>s2</strong></td>
+          <td>{7},{8},{7,8,9}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+
+    <h2>Input file format</h2>
+    <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a sequence from a sequence
+    database. Each item from a sequence is a positive integer and items
+    from the same itemset within a sequence are separated by single space.
+    Note that it is assumed that items within a same itemset are sorted
+    according to a total order and that no item can appear twice in the
+    same itemset. The value &quot;-1&quot; indicates the end of an itemset. The value
+    &quot;-2&quot; indicates the end of a sequence (it appears at the end of each
+    line). For example, the input file &quot;sequence_broken.txt&quot; contains the
+    following two lines (two sequences).</p>
+    <p>4 4 4 5 5 -1 4 5 6 -1 -2<br>
+    7 -1 8 -1 9 8 7 -1 -2</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong> output file format</strong> is the same as the input
+    format. But the problems contained in the input file have been fixed.</p>
+  <p>4 5 -1 4 5 6 -1 -2<br>
+    7 -1 8 -1 7 8 9 -1 -2<br>
+  </p>
+
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

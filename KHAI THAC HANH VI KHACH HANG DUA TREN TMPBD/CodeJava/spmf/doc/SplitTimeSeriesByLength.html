@@ -1,0 +1,182 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Split time series by length  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Split time series by length  (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to <strong>split a time series by length</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Split_time_series_by_length</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextSAX.txt&quot;</span></strong>, (3) set the separator to the comma ',' (4) set the size of segment to 3, and then (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run Split_time_series_by_length contextSAX.txt output.txt 3 , </span><br>
+    in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>contextSAX</strong>.txt</span>. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>to
+    run respectively <strong>this example</strong><strong>, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestSplitTimeSeriesByLength_FileToFile.java&quot;</span></strong>in
+    the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this algorithm<strong></strong>?</h2>
+<p>This algorithm takes one or more time series as input. Then it split each time series into several time series. The criteria for spliting the time series is a maximum number of data points per time series (called the &quot;segment size&quot;). For example, if a time series contains 9 data points and the maximum number of data points is set to 3, the time series will be split into three time series of 3 data points each.</p>
+  <p>This simple algorithm is useful for spliting very long time series into several time series. For example, if one has a temperature reading time series for several years, it would be possible to split the time series by periods of 30 days.</p>
+
+  <h2>What is the input of this algorithm?</h2>
+  <p>The input is one or more time series. A <strong>time series </strong>is a sequence of floating-point decimal numbers (double values). <strong></strong>A time-series can also have a name (a string).</p>
+  <p>Time series are used in many applications. An example of time series is the price of a stock on the stock market over time. Another example is a sequence of temperature readings collected using sensors.</p>
+  <p>For this example, consider the four following <strong>time series</strong>:</p>
+  
+    
+      <table width="414" border="1">
+        <tbody>
+          <tr>
+            <td width="161"><strong>Name</strong></td>
+            <td width="237"><strong>Data points</strong></td>
+          </tr>
+          <tr>
+            <td>ECG1</td>
+            <td>1,2,3,4,5,6,7,8,9,10</td>
+          </tr>
+          <tr>
+            <td>ECG2</td>
+            <td>1.5,2.5,10,9,8,7,6,5</td>
+          </tr>
+          <tr>
+            <td>ECG3</td>
+            <td>-1,-2,-3,-4,-5</td>
+          </tr>
+          <tr>
+            <td>ECG4</td>
+            <td>-2.0,-3.0,-4.0,-5.0,-6.0 </td>
+          </tr>
+        </tbody>
+      </table>
+    
+  
+  <p>This example <strong>time series database </strong>is provided in the file <strong>contextSAX.txt </strong>of the SPMF distribution.</p>
+  <p>In SPMF, to read a time-series file, it is  necessary to indicate the &quot;separator&quot;, which is the character used to separate data points in the input file. In this example, the &quot;separator&quot; is the comma ',' symbol.</p>
+  <p>To split the data, it is required to provide a maximum number of data points per time series (segment size) for spliting the time series. For example, if a time series contains 9 data points and the maximum number of data points is set to 3, the time series will be split into three time series of 3 data points each.</p>
+
+  <h2>What is the output?</h2>
+  <p>The output is the set of time series that has been obtained by splitting the time series taken as input.</p>
+  <p>For example, in the above example, if the number of segments (data points) is set to 3 data points, the result is:</p>
+  
+    <table width="558" border="1">
+      <tbody>
+        <tr>
+          <td width="161"><strong>Name</strong></td>
+          <td width="381"><strong>Data points</strong></td>
+        </tr>
+        <tr>
+          <td>ECG1_PART0</td>
+          <td>1.0,2.0,3.0</td>
+        </tr>
+        <tr>
+          <td>ECG1_PART1</td>
+          <td>4.0,5.0,6.0</td>
+        </tr>
+        <tr>
+          <td>ECG1_PART2</td>
+          <td>7.0,8.0,9.0</td>
+        </tr>
+        <tr>
+          <td>ECG1_PART3</td>
+          <td>10.0</td>
+        </tr>
+        <tr>
+          <td>ECG2_PART0</td>
+          <td>1.5,2.5,10.0</td>
+        </tr>
+        <tr>
+          <td>ECG2_PART1</td>
+          <td>9.0,8.0,7.0</td>
+        </tr>
+        <tr>
+          <td>ECG2_PART2</td>
+          <td>6.0,5.0</td>
+        </tr>
+        <tr>
+          <td>ECG3_PART0</td>
+          <td>-1.0,-2.0,-3.0</td>
+        </tr>
+        <tr>
+          <td>ECG3_PART1</td>
+          <td>-4.0,-5.0</td>
+        </tr>
+        <tr>
+          <td>ECG4_PART0</td>
+          <td>-2.0,-3.0,-4.0</td>
+        </tr>
+        <tr>
+          <td>ECG4_PART1</td>
+          <td>-5.0,-6.0</td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <p>To see the result visually, it is possible to use the <strong>SPMF time series viewer</strong>, described in another example of this documentation. Here is the result:</p>
+  <p><img src="splitLength.png" width="661" height="831" alt=""/></p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> used by this algorithm is efined
+    as follows. It is a text file.  The text file contains one or more time series. Each time series is represented by two lines in the input file. The first line contains the string &quot;@NAME=&quot; followed by the name of the time series. The second line is a list of data points, where data points are floating-point decimal numbers separated by a separator character (here the ',' symbol). </p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>@FILETYPE=&quot;Time series database&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    @NAME=ECG1<br>
+    1,2,3,4,5,6,7,8,9,10<br>
+    @NAME=ECG2<br>
+    1.5,2.5,10,9,8,7,6,5<br>
+    @NAME=ECG3<br>
+    -1,-2,-3,-4,-5<br>
+    @NAME=ECG4<br>
+    -2.0,-3.0,-4.0,-5.0,-6.0</p>
+  <p>The first two lines are metadata indicating the type of file and the source of the data. Then, the following lines are the data. Consider the first two lines of data. It indicates that the first time series name is &quot;ECG1&quot; and that it consits of the data points: 1, 2, 3, 4, 5, 6, 7, 8, 9, and 10. Then, three other time series are provided in the same file, which follows the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is the same as the input format.</p>
+  <p>@FILETYPE=&quot;Time series database&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    @NAME=ECG1_PART0<br>
+    1.0,2.0,3.0<br>
+    @NAME=ECG1_PART1<br>
+    4.0,5.0,6.0<br>
+    @NAME=ECG1_PART2<br>
+    7.0,8.0,9.0<br>
+    @NAME=ECG1_PART3<br>
+    10.0<br>
+    @NAME=ECG2_PART0<br>
+    1.5,2.5,10.0<br>
+    @NAME=ECG2_PART1<br>
+    9.0,8.0,7.0<br>
+    @NAME=ECG2_PART2<br>
+    6.0,5.0<br>
+    @NAME=ECG3_PART0<br>
+    -1.0,-2.0,-3.0<br>
+    @NAME=ECG3_PART1<br>
+    -4.0,-5.0<br>
+    @NAME=ECG4_PART0<br>
+    -2.0,-3.0,-4.0<br>
+    @NAME=ECG4_PART1<br>
+    -5.0,-6.0  </p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

@@ -1,0 +1,97 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example:  Export the list of algorithms from SPMF as JSON file (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0033CC}
+.style3 {color: #0033CC; font-weight: bold; }
+.style12 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<h1>Export the list of algorithms from SPMF as JSON file  (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to <strong> export the list of algorithm from SPMF as a JSON file </strong>using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="style12">Export_algorithms_list_to_JSON</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the output file as SPMF.json and (3) click &quot;<span class="style3">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="style3">java -jar spmf.jar run <strong><span class="style12">Export_algorithms_list_to_JSON</span></strong> spmf.json </span>in a folder containing <span class="highlight"><strong>spmf.jar</strong></span></li>
+  </ul>
+<h2>What is this tool?</h2>
+<p>This tool is a tool to export the list of algorithms from SPMF to JSON format. This can be useful to build software that interact with spmf.jar and wish to obtain the list of algorithms, for example. </p>
+
+<h2>What is the output?</h2>
+<p>The output is a file that looks like this and contains a description of all algorithms from SPMF: </p>
+<div>
+  <div>{</div>
+  <div>&#160; &#160; "exported_on": "2025-12-06T17:47:53.253908200+08:00[Asia/Shanghai]",</div>
+  <div>&#160; &#160; "algorithms": [</div>
+  <div>&#160; &#160; &#160; &#160; {</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "name": "Apriori_association_rules",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "implementationAuthorNames": "Philippe Fournier-Viger",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "algorithmCategory": "ASSOCIATION RULE MINING",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "documentationURL": "http://www.philippe-fournier-viger.com/spmf/AssociationRules.php",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "algorithmType": "DATA_MINING",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "inputFileTypes": [</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "Database of instances",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "Transaction database",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "Simple transaction database"</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; ],</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "outputFileTypes": [</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "Patterns",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "Association rules"</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; ],</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "parameters": [</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; {</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "name": "Minsup (%)",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "example": "(e.g. 0.5 or 50%)",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "parameterType": "class java.lang.Double",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "isOptional": "false"</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; },</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; {</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "name": "Minconf (%)",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "example": "(e.g. 0.6 or 60%)",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "parameterType": "class java.lang.Double",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "isOptional": "false"</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; }</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; ],</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "numberOfMandatoryParameters": "2"</div>
+  <br>
+  <div>&#160; &#160; &#160; &#160; },</div>
+  <div>&#160; &#160; &#160; &#160; {</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "name": "CFPGrowth++_association_rules",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "implementationAuthorNames": "Azadeh Soltani, Philippe Fournier-Viger",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "algorithmCategory": "ASSOCIATION RULE MINING",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "documentationURL": "http://www.philippe-fournier-viger.com/spmf/AssociationRules.php",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "algorithmType": "DATA_MINING",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; "inputFileTypes": [</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "Database of instances",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "Transaction database",</div>
+  <div>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; "Simple transaction database"</div>
+</div>
+<p><span class="style1"><br>
+=================================================<br>
+</span></p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

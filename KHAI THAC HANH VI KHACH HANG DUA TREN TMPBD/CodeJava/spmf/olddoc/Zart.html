@@ -1,0 +1,375 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Frequent Closed Itemsets and Frequent Generator Itemsets using the Zart Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Frequent Closed Itemsets and Frequent Generator Itemsets using the Zart Algorithm (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>Zart algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Zart</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextZart.txt&quot;</span></strong>, (3) set the output
+    file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;) (4) set
+    minsup to <span class="highlight">40% </span>and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> Zart </span></strong>contextZart.txt output.txt 40%</span> in a folder containing <span class="highlight">spmf.jar</span> and the
+    example input file <span class="highlight">contextZart.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestZart.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is Zart?</h2>
+<p><strong>Zart</strong> is an algorithm for discovering <strong> frequent closed itemsets and their corresponding generators </strong>in
+    a transaction database. <br>
+    <br>
+    Zart is an Apriori-based algorithm. Why is it useful to discover closed
+    itemsets and their generators at the same time? One reason is that this
+    information is necessary to generate some special kind of association
+    rules such as the IGB basis of association rules (see the example for
+    IGB for more information about IGB association rules).</p>
+
+<h2>What is the input of the Zart algorithm?</h2>
+<p>The input is a <strong>transaction database</strong> (aka
+      binary context) and a threshold named <em><strong>minsup</strong></em> (a value between 0 and 100 %). </p>
+    <p>A <strong>transaction database</strong> is a set of
+      transactions. Each <strong>transaction</strong> is a set of items. For
+      example, consider the following transaction database. It contains 5
+      transactions (t1, t2, ..., t5) and 5 items (1,2, 3, 4, 5). For example,
+      the first transaction represents the set of items 1, 2, 4 and 5. This
+      database is provided as the file <strong>contextZart.txt</strong> in
+      the SPMF distribution. It is important to note that an item is not
+      allowed to appear twice in the same transaction and that items are
+      assumed to be sorted by lexicographical order in a transaction.</p>
+  
+  <table align="center" border="1" width="316">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{1, 3}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>What is the output of the Zart algorithm?</h2>
+  <p>The output of the <strong>Zart</strong> algorithm for a
+    transaction database and a minimum support threshold <em>minsup </em>is
+    the set of all frequent closed itemsets and their support, and the
+    associated generator(s) for each closed frequent itemset.</p>
+  <p>To explain what is a frequent closed itemset and a generator, it
+    is necessary to review a few definitions. </p>
+  <p> An <strong>itemset</strong> is a unordered set of distinct
+    items. The <strong>support of an itemset</strong> is the number of
+    transactions that contain the itemset. For example, the itemset {1, 3}
+    has a support of 3 because it appears in three transactions from the
+    database (t2, t3 and t5). A <strong>frequent itemset</strong> is an
+    itemset that appears in at least <em>minsup </em>transactions from
+    the transaction database. A <strong>frequent closed itemset </strong>is
+    a frequent itemset that is not included in a proper superset having the
+    same support. A generator Y of a closed itemset X is an itemset such
+    that (1) it has the same support as X and (2) it does not have any
+    subset having the same support.</p>
+  <p>By running <strong>Zart</strong> with the previous transaction
+    database and a minsup of 40% (2 transactions), we obtain the following
+    result:</p>
+
+<table align="center" border="1" width="404">
+  <tbody>
+    <tr>
+      <td><strong>itemsets</strong></td>
+      <td><strong>support</strong></td>
+      <td><strong>is closed?</strong></td>
+      <td><strong>minimal generators</strong></td>
+    </tr>
+    <tr>
+      <td>{}</td>
+      <td>5</td>
+      <td><strong>yes</strong></td>
+      <td>{}</td>
+    </tr>
+    <tr>
+      <td>{1}</td>
+      <td>4</td>
+      <td><strong>yes</strong></td>
+      <td>{1}</td>
+    </tr>
+    <tr>
+      <td>{2}</td>
+      <td>4</td>
+      <td colspan="2">no</td>
+    </tr>
+    <tr>
+      <td>{3}</td>
+      <td>4</td>
+      <td><strong>yes</strong></td>
+      <td>{3}</td>
+    </tr>
+    <tr>
+      <td>{5}</td>
+      <td>4</td>
+      <td colspan="2">no</td>
+    </tr>
+    <tr>
+      <td>{1, 2}</td>
+      <td>3</td>
+      <td colspan="2">no</td>
+    </tr>
+    <tr>
+      <td>{1, 3}</td>
+      <td>3</td>
+      <td><strong>yes</strong></td>
+      <td>{1,3}</td>
+    </tr>
+    <tr>
+      <td>{1, 5}</td>
+      <td>3</td>
+      <td colspan="2">no</td>
+    </tr>
+    <tr>
+      <td>{2, 3}</td>
+      <td>3</td>
+      <td colspan="2">no</td>
+    </tr>
+    <tr>
+      <td>{2, 5}</td>
+      <td>4</td>
+      <td><strong>yes</strong></td>
+      <td>{2}, {5}</td>
+    </tr>
+    <tr>
+      <td>{3, 5}</td>
+      <td>3</td>
+      <td colspan="2">no</td>
+    </tr>
+    <tr>
+      <td>{1, 2, 3}</td>
+      <td>2</td>
+      <td colspan="2">no</td>
+    </tr>
+    <tr>
+      <td>{1, 2, 5}</td>
+      <td>3</td>
+      <td><strong>yes</strong></td>
+      <td>{1, 2}, {1, 5}</td>
+    </tr>
+    <tr>
+      <td>{1, 3, 5}</td>
+      <td>2</td>
+      <td colspan="2">no</td>
+    </tr>
+    <tr>
+      <td>{2, 3, 5}</td>
+      <td>3</td>
+      <td><strong>yes</strong></td>
+      <td>{2, 3}, {3, 5}</td>
+    </tr>
+    <tr>
+      <td>{1, 2, 3, 5}</td>
+      <td>2</td>
+      <td><strong>yes</strong></td>
+      <td>{1, 2, 3}, {1, 3, 5}</td>
+    </tr>
+  </tbody>
+</table>
+<h2>How should I interpret the results?</h2>
+<p>In the results, all frequent itemsets are shown. Each frequent
+    itemset that is a closed itemset is marked as such (&quot;yes&quot;). For each
+    closed itemset, its support is indicated and its list of generators.
+    For example, the itemset {1,2,3,5} has a support of 2 because it
+    appears in 2 transactions (t3 and t5). It is a closed itemset because
+    it has no proper superset having the same support. Moreover is has two
+    generators: {1, 2, 3} and {1, 3, 5}. By definition, these generators
+    have the same support as {1, 2, 3, 5}.</p>
+  <p>Another example. The itemset {1, 3, 5} is not closed and it has a
+    support of 2. It is not closed because it has a proper superset {1, 2,
+    3, 5} that has the same support.</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> used by <strong>Zart </strong> is defined as follows. It is a text file. An item is represented by a
+    positive integer. A transaction is a line in the text file. In each
+    line (transaction), items are separated by a single space. It is
+    assumed that all items within a same transaction (line) are sorted
+    according to a total order (e.g. ascending order) and that no item can
+    appear twice within the same line.</p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>1 2 4 5<br>
+    1 3<br>
+    1 2 3 5<br>
+    2 3 5<br>
+    1 2 3 5</p>
+  <p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the
+    ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+    Most features of the ARFF format are supported except that (1) the
+    character &quot;=&quot; is forbidden and (2) escape characters are not
+    considered. Note that when the ARFF format is used, the performance of
+    the data mining algorithms will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file, containing two sections. </p>
+  <p>The first section starts with &quot;======= List of closed itemsets and
+    their generators ============&quot; on the first line of the file. Then,
+    each closed itemset is indicated on a single line as follows. A closed
+    itemset is represented by a line starting with &quot;CLOSED :&quot; followed by
+    the itemset itself and then the support of the itemset. An itemset is
+    represented by a list of integers, where each integer represents an
+    item and where integers (items) are separated by single spaces. The
+    support of a closed itemset is indicated by an integer immediately
+    following the special keyword &quot;#SUP:&quot; on the same line. The support is
+    expressed as a number of transactions. On the lines immediately
+    following a closed itemset, the keyword &quot;GENERATORS :&quot; appears. Then,
+    on the immediately following line, the generators of the itemsets are
+    listed, one per line. A generator is represented by the keyword &quot;=&quot;
+    followed by the itemset representing the generator. If a generator is
+    the empty set, then it is represented by the keyword EMPTYSET.</p>
+  <p>The second sections starts with &quot;======= List of frequent itemsets
+    ============&quot; on a single line. Then all frequent itemsets are listed
+    on the following lines, one per line. On each line, the keyword
+    &quot;ITEMSET :&quot; appears followed by the items of the itemset. Each item is
+    represented by an integer and it is followed by a single space. After,
+    all the items, the special keyword &quot;#SUP:&quot; appears, which is followed
+    by an integer indicating the support of the itemset, expressed as a
+    number of transactions. </p>
+  <p>For example, we show below the output file for the previous
+    example.</p>
+  ======= List of closed itemsets and their generators ============<br> 
+  CLOSED : <br>   
+  EMPTYSET #SUP: 5<br>   
+  GENERATOR(S) :<br>    
+  EMPTYSET<br> 
+  CLOSED : <br>   
+  1  #SUP: 4<br>   
+  GENERATOR(S) :<br>    
+  1 <br> 
+  CLOSED : <br>   
+  3  #SUP: 4<br>   
+  GENERATOR(S) :<br>    
+  3 <br> 
+  CLOSED : <br>   
+  1 3  #SUP: 3<br>   
+  GENERATOR(S) :<br>    
+  1 3 <br> 
+  CLOSED : <br>   
+  2 5  #SUP: 4<br>   
+  GENERATOR(S) :<br>     
+  2 <br>     
+  5 <br> 
+  CLOSED : <br>   
+  1 2 5  #SUP: 3<br>   
+  GENERATOR(S) :<br>     
+  1 2 <br>     
+  1 5 <br> 
+  CLOSED : <br>   
+  2 3 5  #SUP: 3<br>   
+  GENERATOR(S) :<br>     
+  2 3 <br>     
+  3 5 <br> 
+  CLOSED : <br>   
+  1 2 3 5  #SUP: 2<br>   
+  GENERATOR(S) :<br>     
+  1 2 3 <br>     
+  1 3 5 <br>
+  ======= List of frequent itemsets ============<br> 
+  ITEMSET : EMPTYSET #SUP: 5<br> 
+  ITEMSET : 1  #SUP: 4<br> 
+  ITEMSET : 2  #SUP: 4<br> 
+  ITEMSET : 3  #SUP: 4<br> 
+  ITEMSET : 5  #SUP: 4<br> 
+  ITEMSET : 1 2  #SUP: 3<br> 
+  ITEMSET : 1 3  #SUP: 3<br> 
+  ITEMSET : 2 3  #SUP: 3<br> 
+  ITEMSET : 1 5  #SUP: 3<br> 
+  ITEMSET : 2 5  #SUP: 4<br> 
+  ITEMSET : 3 5  #SUP: 3<br> 
+  ITEMSET : 1 2 3  #SUP: 2<br> 
+  ITEMSET : 1 2 5  #SUP: 3<br> 
+  ITEMSET : 1 3 5  #SUP: 2<br> 
+  ITEMSET : 2 3 5  #SUP: 3<br> 
+  ITEMSET : 1 2 3 5  #SUP: 2<br>
+  <br>
+  <pre>&nbsp;  </pre>
+  <p>In this example, the first lines of the first section indicates
+    that the empty set is a closed itemset with a support of 5 and that it
+    is the generator of itself. The following lines indicates that the
+    itemset {3} is closed, has a support of 4 and is the generator of
+    itself. The following lines indicates that the itemset {1, 3} is
+    closed, has a support of 3 and that the itemset {1} is the only
+    generator for that itemset. The following lines of this section
+    indicates in the same way the remaining closed itemsets and their
+    associated generators.</p>
+  <p>In the same example, the first lines of the second sections
+    indicates that the empty set is a frequent itemset with a support of 5
+    transactions, that the itemset 1 is frequent with a support of 3
+    transactions and that the itemset {2} is frequent with a support of 4
+    transactions. In the same way, the following lines indicates all the
+    other frequent itemsets.</p>
+  <p>Note that if the ARFF format is used as input instead of the
+    default input format, the output format will be the same except that
+    items will be represented by strings instead of integers.</p>
+
+  <h2>Implementation details</h2>
+  <p> In the source code version of SPMF, there are two versions of <strong>Zart. </strong>The version &quot;<span class="highlight">MainTestZart.java</span>&quot;
+    keeps the result into memory. The version named &quot;<span class="highlight">MainTestZart_saveToFile.java</span>&quot;
+    saves the result to a file. In the graphical user interface and command
+    line interface only the second version is offered.</p>
+
+  <h2>Performance</h2>
+  <p>The <strong>Zart</strong> algorithm is not a very efficient
+    algorithm because it is based on Apriori. If someone only want to
+    discover closed itemsets and do not need the information about
+    generators, then he should instead use <strong>DCI_Closed or</strong> <strong>Charm</strong>,
+    which are more efficient for closed itemset mining. However, in some
+    cases it is desirable to discover closed itemset and their
+    corresponding generators (for example to generate IGB association
+    rules). For these cases, Zart is an appropriate algorithm.</p>
+
+  <h2>Where can I get more information about the Zart algorithm?</h2>
+  <p>The <strong>Zart</strong> algorithm is described in this paper:</p>
+  <p><em>L. Szathmary, A. Napoli, S. O. Kuznetsov. <a rel="nofollow" href="https://www.philippe-fournier-viger.com/spmf/zart.pdf">ZART: A
+    Multifunctional Itemset Mining Algorithm</a>. Laszlo Szathmary, Amedeo
+    Napoli, Sergei O. Kuznetsov In: CLA, 2007.</em></p>
+
+
+  <p>Also, for a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

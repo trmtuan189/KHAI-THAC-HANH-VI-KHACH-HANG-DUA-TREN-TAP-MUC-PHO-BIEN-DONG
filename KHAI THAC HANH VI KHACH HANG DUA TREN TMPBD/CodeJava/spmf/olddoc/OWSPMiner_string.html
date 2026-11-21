@@ -1,0 +1,140 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining self-adaptive one-off weak-gap strong sequential patterns in a sequence of characters with the OWSP-Miner algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0033CC}
+.style4 {color: #0033CC; font-weight: bold; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining self-adaptive one-off weak-gap strong sequential patterns in a sequence of characters with the OWSP-Miner algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>OWSP-Miner algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> "<span class="highlight style1">OWSPMiner</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="style1">contextMAPD.txt</span><span class="highlight">"</span></strong>,
+    (3) set the output file name (e.g. "<span class="style1"><strong>output.txt</strong></span>")
+    (4) set the minimum support threshold, the weak character set, and char count to read, respectively to <span class="style4">2</span>,<span class="style4"> g </span>, and <span class="style4">20000</span> and (4) click  &quot;Run algorithm&quot;.</li>
+  <li><strong>If you want to execute this example from the command
+    line</strong>, then execute this command: <br>
+    <span class="style4">java -jar spmf.jar run OWSPMiner contextMAPD.txt
+      output.txt 2 g 20000 </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="style4">contextMAPD.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"</span><span class="style4">MainTestOWSP-Miner.java</span><span class="highlight">"</span></strong> in the package <span class="style4"><strong>ca.pfv.SPMF.tests</strong></span></li>
+</ul>
+<h2>What is OWSP-Miner?</h2>
+<p><strong>OWSP-Miner</strong> is an algorithm one-off weak-gap strong sequential patterns in a sequence of characters, proposed by Wu et al.
+    (2022).</p>
+  <p>This is a Java version, converted from the original C++ implementation by Youxi Wu et al. (available at : <a href="https://github.com/wuc567/Pattern-Mining">https://github.com/wuc567/Pattern-Mining</a>) </p>
+
+  <h2>What is the input of OWSP-Miner?</h2>
+  <p>The  input is a sequence of symbols (e.g. events or characters) and five parameters that are set by the user:</p>
+
+<ul>
+  <li>the given minimum support threshold  <em>minsup</em> (e.g. 2 in tihs example) </li>
+  <li>a weak character set (e.g. {g} in this example) </li>
+  <li>the maximum length constraint  <em>maxlen</em> (e.g. 20000 in this example) </li>
+  </ul>
+
+  <p>A <strong>sequence</strong> for this algorithm is an ordered list of characters that are taken from a character set.</p>
+  <p>To run this algorithm, an input file must be given, which contains a sequence. For example, the file <span class="style4">contextMAPD.txt</span> of the SPMF distribution contains the sequence <span class="style4">ttcctccgcg</span>. </p>
+  <p>This sequence can represent for example a biological sequence, indicating that the symbol T, was followed by T, then followed by C, by C, by T, by C, by C, by G, by C, and by G. </p>
+  <p> In the input file format, the sequence is simply provided as a line in a text file: </p>
+  <p class="style4">ttcctccgcg</p>
+  <p>In that format, each symbol is a single character such as : a, c, g, t.... </p>
+  <h2>What is the output of OWSP-Miner?</h2>
+  <p>The output of <strong>OWSP-Miner </strong>is  all <strong>self-adaptive One-off Weak-gap Strong Patterns</strong> (OSWPs). Those are subsequences that occur in more than <em>threshold</em> sequences of the database and respect some conditions.</p>
+  <p> To try to explain more clearly what is the output of OWSP-Miner, it is necessary to review some definition. </p>
+  <p> Let say that we have a set of characters (<strong>&#931;</strong>), and that it is divided into two sets: <strong>the strong characters (&#915;</strong>) and the <strong>weak characters</strong> (<strong>&#937;</strong>).</p>
+  <p>In this example, the set of character is <strong>&#931; = {c,t,g}, </strong>the weak characters are <strong>&#937;</strong> = {g} and the remaining characters are the strong characters, i.e. <strong>&#915;</strong>= {c,t}.</p>
+  <p>A pattern <strong>P </strong>is a sequence of characters that can appear several times in a sequence. For example, a pattern P containing <strong>m</strong> characters can be denoted as <strong>P</strong> <strong>= p0 p1 p2 p3 ... pm</strong> indicating that <strong>p0</strong> was followed by <strong>p1</strong>, then followed by <strong>p2</strong>... and so on. </p>
+  <p>The output of OWSP-Miner is all the subsequences that appear at least <em>minsup </em>times in the input sequence and respect the constraints set by the user. For example, in the above example, it can be intuitively observed that the subsequence T,C and C,C appear several times in the input sequence. And itcan be observed from this example that sometimes the occurrences will have some gaps (this means that some symbols can be skipped). For instance, the last occurrence of C,C is separated by the character G, which could be skipped. Thus, in this example, we search for patterns by setting {g} as a weak character that can be skipped.. </p>
+  <p>A <strong> self-adaptive strong pattern of length </strong><em>m</em> can be expressed as <strong>p</strong>=<em>p</em>1[0,+&#8734;)…<em>p</em><em >j</em>[0,+&#8734;)...<em>p</em><em>m</em> or <strong>p</strong>=<em>p</em>1*…<em>p</em><em >j</em>*...<em>p</em><em>m</em> (<em>p</em><em>j</em>&#8712;&#915;, 1≤<em>j</em>≤<em>m</em>). <br>
+    Given a sequence <strong>s</strong>=<em >s</em>1<em >s</em>2…<em >s</em><em >n</em> and pattern <strong >p</strong>=<em> p</em>1*…<em>p</em><em >j</em>*...<em>p</em><em>m</em>. Suppose <em>occ</em>=&lt;<em>l</em>1, <em>l</em>2, …, <em >l</em><em >j</em>, … <em>l</em><em>m</em>&gt; (<img width="47" height="41" src="OWSPMiner_string_wps13.jpg" >=<em >p</em><em >j</em>, 1≤<em>j</em>≤<em >m</em> and 1≤<em >l</em><em >j</em>≤<em>n</em>) is an occurrence of pattern <strong>p </strong>in sequence <strong>s</strong>. <em>occ</em> is a weak-gap occurrence if and only if for all <em>s</em><em>y</em><img width="41" height="20" src="OWSPMiner_string_wps14.jpg" >&#937;(<em>l</em><em>j</em>-1&lt;<em>y</em>&lt;<em>l</em><em>j</em> and 2≤<em>j</em>≤<em>m</em>). Suppose <img width="58" height="20" src="OWSPMiner_string_wps15.jpg" >=&lt;<img width="43" height="20" src="OWSPMiner_string_wps16.jpg" >, <img width="43" height="20" src="OWSPMiner_string_wps17.jpg" >, …, <img width="41" height="41" src="OWSPMiner_string_wps18.jpg" >,…<img width="50" height="20" src="OWSPMiner_string_wps19.jpg" >&gt; is another weak-gap occurrence. <em >occ</em> and <img width="59" height="20" src="OWSPMiner_string_wps20.jpg" > are two one-off weak-gap occurrences, if and only if <em >l</em><em >i</em><img width="58" height="41" src="OWSPMiner_string_wps21.jpg" > (1≤<em >i</em>,<em > j</em>≤<em >m</em>). <br>
+    The one-off support of strong pattern <strong>p </strong>in sequence <strong>s</strong> is the number of one-off weak-gap occurrences, denoted by <em >sup </em>(<strong>p</strong>, <strong>s</strong>). If <em >sup </em>(<strong>p</strong>, <strong>s</strong>) is no less than the support threshold, then <strong>p </strong>is called an OWSP. </p>
+  <p>For example, in the above example, if we set threshold = 2, weak character set = {g} and maxlen = 20000, the following patterns are found: </p>
+
+<table width="505" border="1">
+    <tr>
+      <td width="186">Pattern</td>
+      <td width="303">Support (number of occurrences)</td>
+    </tr>
+    <tr>
+      <td>c</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td> t </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>cc</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>tc</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>tcc</td>
+      <td>2</td>
+    </tr>
+  </table>
+  <p>For example, the last line is the pattern indicating that event t is followed by c, and then followed by c. The line indicates that it has two (non-overlapping) occurrences in the sequence. <br>
+    Since the definition used in this paper is relatively complex,<strong> for a more precise and formal definition </strong>of the output,<strong> please see the research paper describing the MAPD algorithm (Wu et al., 2018). </strong></p>
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is a text file. A line contain a sequence of character.</p>
+  
+    <p>For example, the file contextMAPD.txt contains this content:</p>
+    <p>ttcctccgcg </p>
+    <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. Each line is a frequent sequential pattern. Each symbol
+    from a sequential pattern is a positive integer. The value
+    "-1" is used to separate symbols . On each line, the sequential
+    pattern is first indicated. Then, the keyword "#SUP:" appears followed
+    by an integer indicating the support of the pattern as a number of
+    occurrences. For example, a few lines from the output file from the
+    previous example are shown below:</p>
+  
+    <div>
+      <div>
+        <p>c #SUP:5<br>
+          t #SUP:3<br>
+          cc #SUP:2<br>
+          tc #SUP:2<br>
+        tcc #SUP:2</p>
+      </div>
+    </div>
+    <p>The last line indicates that the frequent sequential pattern
+    consisting of the symbol <strong>t</strong> followed by the symbol <strong>c, </strong>followed by <strong>c </strong>has a
+    support of 2 (two occurrences in the input sequence).</p>
+
+    <h2>Performance</h2>
+  <p> OWSP-Miner is an efficient algorithm for discovering this type of pattern. This is a conversion to Java of the original implementation. </p>
+
+  <h2>Where can I get more information about OWSP-Miner?</h2>
+  <p>The OWSP-Miner algorithm is described in this article:</p>
+  <p>Youxi Wu, Yao Tong, Xingquan Zhu, Xindong Wu: 
+    <a href="NOSEP.pdf">OWSP-Miner: Nonoverlapping Sequence Pattern Mining With Gap Constraints.</a> IEEE Trans. Cybern. 48(10): 2809-2822 (2018)</p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

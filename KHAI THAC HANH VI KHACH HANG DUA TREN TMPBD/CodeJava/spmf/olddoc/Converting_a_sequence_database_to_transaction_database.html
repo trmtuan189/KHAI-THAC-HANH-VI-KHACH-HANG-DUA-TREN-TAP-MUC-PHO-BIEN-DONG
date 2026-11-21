@@ -1,0 +1,160 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Converting a Sequence Database to a Transaction Database (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Converting a Sequence Database to a Transaction Database  (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to  <strong> convert a sequence database to a transaction database</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Convert_sequence_database_to_transaction_database</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextPrefixspan</span><span class="highlight">.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    and <em>sequence count = </em><span class="highlight">5</span> (5) click
+    &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong> Convert_sequence_database_to_transaction_database </strong><strong>contextPrefixspan</strong>.txt
+      output.txt 5</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>contextPrefixspan</strong>.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestConvertSeqDBToTransDB.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span></li>
+</ul>
+<h2>What is this tool?</h2>
+<p>This tool converts a sequence database to a transaction database
+    by removing the ordering between items. This tool is useful if you have
+    a sequence database and you want to apply an algorithm that is designed
+    to be applied on a transaction database. For example, you could take a
+    sequence database and convert it to a transaction database to then
+    apply and association rule mining algorithm.</p>
+
+<h2>What is the input?</h2>
+<p>The <strong>tool</strong> takes two prameters as input:</p>
+  <ul>
+    <li>an input file (the sequence database),</li>
+    <li>the number of lines of the input file to be converted</li>
+  </ul>
+  <p>A <strong>sequence database</strong> is a set of sequences where
+    each sequence is a list of itemsets. An itemset is an unordered set of
+    items. For example, the table shown below contains four sequences. The
+    first sequence, named S1, contains 5 itemsets. It means that item 1 was
+    followed by items 1 2 and 3 at the same time, which were followed by 1
+    and 3, followed by 4, and followed by 3 and 6. It is assumed that items
+    in an itemset are sorted in lexicographical order. This database is
+    provided in the file &quot;<strong><span class="highlight">contextPrefixspan.txt</span></strong>&quot;
+    of the SPMF distribution<strong>.</strong> Note that it is assumed that
+    no items appear twice in the same itemset and that items in an itemset
+    are lexically ordered.</p>
+
+<table align="center" border="1" width="461">
+  <tbody>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td>S1</td>
+      <td>(1), (1 2 3), (1 3), (4), (3 6)</td>
+    </tr>
+    <tr>
+      <td>S2</td>
+      <td >(1 4), (3), (2 3), (1 5)</td>
+    </tr>
+    <tr>
+      <td>S3</td>
+      <td>(5 6), (1 2), (4 6), (3), (2)</td>
+    </tr>
+    <tr>
+      <td>S4</td>
+      <td>(5), (7), (1 6), (3), (2), (3)</td>
+    </tr>
+  </tbody>
+</table>
+<h2>What is the output?</h2>
+<p>The output is a transaction database in SPMF format. A transaction
+    database is a set of transactions. Each transaction an unordered set of
+    items (symbols) represented by positive integers. For example, consider
+    the following database. The output for this example would be the
+    following transaction database<strong>.</strong> It contains five
+    transactions. The first transaction contains the set of items {1, 3, 4,
+    6}.</p>
+  <table align="center" border="1" width="316">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 2, 3, 4, 6}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{1, 2, 3, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 3, 4, 5, 6}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{1, 2, 3, 5, 6, 7}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a sequence from a sequence
+    database. Each item from a sequence is a positive integer and items
+    from the same itemset within a sequence are separated by single space.
+    Note that it is assumed that items within a same itemset are sorted
+    according to a total order and that no item can appear twice in the
+    same itemset. The value &quot;-1&quot; indicates the end of an itemset. The value
+    &quot;-2&quot; indicates the end of a sequence (it appears at the end of each
+    line). For example, the input file &quot;contextPrefixSpan.txt&quot; contains the
+    following four lines (four sequences).</p>
+  
+    <p>1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+      1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+      5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+      5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  
+  <p>The first line represents a sequence where the itemset {1} is
+    followed by the itemset {1, 2, 3}, followed by the itemset {1, 3},
+    followed by the itemset {4}, followed by the itemset {3, 6}. The next
+    lines follow the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong> output file format</strong> is defined as follows.
+    It is a text file. An item is represented by a positive integer. A
+    transaction is a line in the text file. In each line (transaction),
+    items are separated by a single space. It is assumed that all items
+    within a same transaction (line) are sorted according to a total order
+    (e.g. ascending order) and that no item can appear twice within the
+    same line.</p>
+  <p>For example, for the previous example, the output file is defined
+    as follows:</p>
+  <p>1 2 3 4 6 <br>
+    1 2 3 4 5 <br>
+    1 2 3 4 5 6 <br>
+    1 2 3 5 6 7 </p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

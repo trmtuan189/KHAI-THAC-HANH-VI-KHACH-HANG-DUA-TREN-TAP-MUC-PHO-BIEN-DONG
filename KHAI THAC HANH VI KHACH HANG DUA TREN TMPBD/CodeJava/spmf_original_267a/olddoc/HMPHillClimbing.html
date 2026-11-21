@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Example: Mining Compressing Itemsets using the HMP-HC Algorithm (SPMF - Java)</title>
+<link rel="stylesheet" href="docstyle.css"/>
+<style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style3 {color: #0000FF; font-weight: bold; }
+-->
+        </style>
+</head>
+<body>
+<div width="100%" class="container">
+<div class="content">
+<!----------START------>
+<!---------------------- (2) Change the title of the example in the <a> tag: --->
+<h1><a href="documentation.html"> </a> Mining Compressing Itemsets using the HMP-HC Algorithm (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>HMP-HC algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the &quot;<span class="style1 highlight"><strong>HMP-HC</strong></span>&quot; algorithm<strong>, </strong> (2) select the input file <span class="style1"><strong>&quot;contextPasquier99.txt</strong>&quot;</span><strong>,</strong> (3) set the
+    output file name (e.g.<span class="highlight"> &quot;</span><span class="style1">output.txt</span><span class="highlight">&quot;</span>) (4), set the maximum number of patterns you want (e.g.<span class="style1 highlight"><strong> 3</strong></span>) and click &quot;<span class="style1"><strong>Run algorithm</strong></span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight style1"><strong>java -jar spmf.jar run HMP-HC
+    contextPasquier99.txt output.txt 3 </strong></span>in a folder containing <span class="style3"><strong>spmf.jar</strong></span> and the example input file <span class="style3">contextPasquier99.txt.</span></li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong class="style1"><span class="highlight">&quot;MainTestHMPHC.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong>.</span> </li>
+</ul>
+<h2>What is HMP-HC?</h2>
+<p><strong>HMP-HC </strong> is an algorithm for discovering compressing
+  itemsets in transaction databases. It was proposed by Enze et al. (2025). It is designed to find the itemsets that best describes the input database. These itemsets are called &quot;compressing itemsets&quot;. They are supposed to capture the most important characteristics of the database. </p>
+<p>There are some other algorithms in SPMF for discovering compressing itemsets such as <strong>KRIMP</strong>, and <strong>SLIM</strong>, and <strong>GRIMP</strong>.</p>
+<p><strong>HMP-HC</strong> utilizes  heuristic search based on a simulated annealing to explore a more diverse search space and has excellent performance. </p>
+<h2>What is the input of the HMP-HC algorithm?</h2>
+<p>The input is a <strong>transaction database</strong> (aka binary
+  context) and a threshold named <span class="highlight">minsup</span> (a
+  value between 0 and 100 %). </p>
+<p>A <strong>transaction database</strong> is a set of transactions.
+  Each <strong>transaction</strong> is a set of items. For example,
+  consider the following transaction database. It contains 5 transactions
+  (t1, t2, ..., t5) and 5 items (1,2, 3, 4, 5). For example, the first
+  transaction represents the set of items 1, 3 and 4. This database is
+  provided as the file <span class="highlight">contextPasquier99.txt</span> in the
+  SPMF distribution. It is important to note that an item is not allowed
+  to appear twice in the same transaction and that items are assumed to
+  be sorted by lexicographical order in a transaction.</p>
+<table align="center" border="1" width="100%">
+  <tbody>
+    <tr>
+      <td width="144"><strong>Transaction id</strong></td>
+      <td width="156"><strong>Items</strong></td>
+    </tr>
+    <tr>
+      <td><strong>t1</strong></td>
+      <td>{1, 3, 4}</td>
+    </tr>
+    <tr>
+      <td><strong>t2</strong></td>
+      <td>{2, 3, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t3</strong></td>
+      <td>{1, 2, 3, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t4</strong></td>
+      <td>{2, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t5</strong></td>
+      <td>{1, 2, 3, 5}</td>
+    </tr>
+  </tbody>
+</table>
+<h2>What is the output of the HMP-HC algorithm?</h2>
+<p><strong>HMP-HC</strong> is an algorithm for discovering compressing itemsets (group of items)
+  that generally occur frequently in a transaction database or capture well its characteristics. The idea is that a set of itemsets should be good if it can be used to compress the database. <strong>HMP-HC is a randomized algorithm,</strong> running it several times <strong>may give different set of patterns</strong>.</p>
+<p>For example, if <strong>HMP-HC</strong> is run on the previous
+  transaction database for extracting 4 patterns, HMP-HC
+  may produce the following result:</p>
+<table align="center" border="1" width="100%">
+  <tbody>
+    <tr>
+      <td width="114"><strong>itemsets</strong></td>
+      <td width="69"><strong>support</strong></td>
+    </tr>
+    <tr>
+      <td>{1, 2, 3, 5}</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{2, 5}</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{1, 3}</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>There are<strong> three itemsets</strong> that are discovered and together they provide a good compression of the database. For each itemset, a <strong>support</strong> value is given, which is how many times it appears in the database after the previous itemsets have been removed. For example, the itemset {1,2,3,5} appears two times in the database (in transactions t3 and t5), so its support is 2. Then, lets look at the next itemset. The itemset {2,5} has a support of 2 because it appears only in transaction t1 after the removal of the first itemset. Then, lets look at the next itemset. After removing the previous itemsets, the itemset {1, 3} only appears in transactions t1. Thus its support is 1. </p>
+<p>It should be noted that this definition of support is slightly different from that of other frequent itemset mining algorithms. </p>
+<h2>How should I interpret the results?</h2>
+In the results, each itemset is annotated with its
+  support. The <strong>support</strong> of an itemset is how many times
+  the itemset could be used to compress the ttransaction database. For example, the
+  itemset {1,2,3,5} has a support of 2 because it can be used in transactions
+  t3 and t5 for compressing the database.
+  <h2>Input file format</h2>
+<p>The <strong> input file format</strong> for HMP-HC is defined as
+  follows. It is a text file. An item is represented by a positive
+  integer. A transaction is a line in the text file. In each line
+  (transaction), items are separated by a single space. It is assumed
+  that all items within a same transaction (line) are sorted according to
+  a total order (e.g. ascending order) and that no item can appear twice
+  within the same line.</p>
+<p>For example, for the previous example, the input file is defined
+  as follows:</p>
+<p>1 3 4<br>
+  2 3 5<br>
+  1 2 3 5<br>
+  2 5 <br>
+  1 2 3 5</p>
+<p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the
+  ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+  Most features of the ARFF format are supported except that (1) the
+  character &quot;=&quot; is forbidden and (2) escape characters are not
+  considered. Note that when the ARFF format is used, the performance of
+  the data mining algorithms will be slightly less than if the native
+  SPMF file format is used because a conversion of the input file will be
+  automatically performed before launching the algorithm and the result
+  will also have to be converted. This cost however should be small. </p>
+<h2>Output file format</h2>
+<p>The <strong>output file format</strong> is defined as follows. It
+  is a text file, where each line represents a frequent itemset. On each
+  line, the items of the itemset are first listed. Each item is
+  represented by an integer and it is followed by a single space. After,
+  all the items, the keyword &quot;#SUP:&quot; appears, which is followed by an
+  integer indicating the support of the itemset, expressed as a number of
+  transactions. For example, here is the output file for this example.
+  The first line indicates the frequent itemset consisting of the items 1,2, 3 and 5 
+  and it indicates that this itemset has a support of 2 transactions.</p>
+<p>1 2 3 5 #SUP:2<br> 
+2 5 #SUP:2 <br>
+1 3 #SUP:1</p>
+<p>Note that if the ARFF format is used as input instead of the
+  default input format, the output format will be the same except that
+  items will be represented by strings instead of integers.</p>
+<h2>Optional feature: giving names to items</h2>
+<p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong class="highlight">contextPasquier99.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+  <br>
+  @CONVERTED_FROM_TEXT<br>
+  @ITEM=1=apple<br>
+  @ITEM=2=orange<br>
+  @ITEM=3=tomato<br>
+  @ITEM=4=milk<br>
+  @ITEM=5=bread<br>
+  1 3 4<br>
+  2 3 5<br>
+  1 2 3 5<br>
+  2 5 <br>
+  1 2 3 5 </p>
+<p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second line indicates that the item 1 is called &quot;apple&quot;. The third line indicates that the item 2 is called &quot;orange&quot;. Then the following lines define  transactions in the SPMF format.</p>
+<p>Then, if we apply the algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+  <br>
+  apple orange tomato bread #SUP: 2<br>
+  apple tomato milk #SUP: 1<br>
+  orange bread #SUP: 2<br>
+  tomato #SUP: 1</p>
+<p>Note that this feature could be also used from the <strong>source code</strong> of SPMF using the ResultConverter class. However, there is currently no example provided for using it from the source code.</p>
+<h2>Optional parameter(s): </h2>
+<p>This implementation allows to specify additional optional parameter(s) :</p>
+<ul>
+  <li><strong>iteration</strong> (integer) : This parameter controls the number of iterations used to refine a pattern before it is finalized. The default value is 15.</li>
+</ul>
+<p>If you are using the command line interface of SPMF, it is also possible to use this optional parameter by adding it at the end of the command. For example: <br>
+    <span class="style1"><strong>java -jar spmf.jar run HMP-HC contextPasquier99.txt
+      output.txt 3 10 </strong></span><br>
+  means to run the algorithm for the above example but with a maximum of <span class="style3"><strong>10</strong> iterations</span>.</p>
+<h2>Performance</h2>
+<p>This is the Java version of HMP-HC, written by the original authors. </p>
+<h2>Where can I get more information about the HMP-HC algorithm?</h2>
+<p> This is the paper proposing the HMP-HC algorithm: </p>
+<p> Chen, E., Nawaz, M. Z, Nawaz, M., Fournier-Viger, P., Sun, M. (2026). HMP: Efficient Heuristic Algorithms for MDL-Based Itemset Mining. Applied Soft Computing, Elsevier. 104: 107200</p>
+<p>For a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>.
+  <!----------END------>
+</p>
+<div class="footer">
+  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+</div>
+</body>
+</html>

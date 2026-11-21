@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>SPMF: Workflow Editor - Creating and running algorithm workflows</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="styles.css">
+<style type="text/css">
+<!--
+.style1 {color: #0000CC}
+-->
+</style>
+</head>
+<body>
+
+<div id="container">
+
+<div id="header">
+<h1>Create a workflow using the SPMF Workflow editor   (<a href="documentation.html">SPMF documentation</a>) </h1>
+</div>
+
+<div id="content">
+
+<h2>What is the Workflow Editor?</h2>
+
+<p>The <strong>SPMF Workflow Editor </strong>is a graphical tool for creating, editing, validating, and executing workflows of data mining algorithms. A <strong>workflow</strong> is a set of algorithms where the output of one algorithm may become the input of subsequent algorithms. This allows you to chain multiple algorithms together to perform complex data mining tasks automatically.</p>
+<h2>How to run this example?</h2>
+<p>If you are using the <strong>graphical interface </strong>of SPMF<strong>, </strong>(1)
+    choose the <strong>&quot;<span class="style1">SPMF_workflow_editor</span>&quot;</strong> algorithm<strong>, </strong> (2) click "<span class="highlight">Run algorithm</span>". </p>
+<p>This will open the <strong>SPMF workflow editor</strong>, which is displayed below: </p>
+<p><img src="work_flow-flow.png" alt="workflow editor of SPMF" width="790" height="590"></p>
+<p>The <strong>workflow editor</strong> is a window divided in the five areas:</p>
+<ul>
+  <li>On the left, the current workflow is displayed (here it is empty).</li>
+  <li>On the right, information about the currently selected element from the workflow is presented and can be edited (here empty)</li>
+  <li>In the center, four  buttons can be used to (1) add an algorithm to the workflow, (2) remove an algorithm from the workflow, (3) validate the workflow, and (4) run the workflow.</li>
+  <li>At the top, there is a menu bar. From that menu bar, the user can save and load a workflow from a file, export a workflow as a BAT or SH scripts and give access to some useful tools.</li>
+  <li>At the very bottom, there is a console that displays messages produced by algorithms when a workflow is run. </li>
+</ul>
+<h2>How to create a  workflow?</h2>
+
+<p>Creating a workflow can be done by following these steps: </p>
+<p><strong>Step 1:</strong> Click the <strong>Add algorithm</strong> button to add the first algorithm node to the workflow.<br>
+  <br>
+  <img src="workflow_add_button.png" alt="add algorithm button" width="143" height="36"></p>
+<p>This will create a new node:</p>
+<p><img src="workflow_add_button_new_node.png" alt="add algorithm node" width="322" height="216">  </p>
+<p><strong>Step 2:</strong> Select the algorithm node by clicking on it. The information panel on the right will display the properties of the selected node.<br>
+  <br>
+  <img src="workflow_add_button_new_node_information.png" alt="information panel for algorithm in workflow editor" width="990" height="210"></p>
+
+<p><strong>Step 3:</strong> In the information panel, configure the algorithm node by selecting an algorithm. </p>
+<p>First, click the <strong>Select</strong> button next to "Algorithm:" to choose an algorithm from the algorithm browser. In this example, we will choose the <strong>Apriori</strong> algorithm, and then click the <strong>OK</strong> button. </p>
+<p><img src="workflow_select_apriori.png" alt="workflow editor select and algorithm" width="990" height="664"></p>
+<p>Note that it is alternatively possible to click the  <strong>Recent ▼</strong>button to select an algorithm that has been used recently.</p>
+<p>In this example, after  selecting the <strong>Apriori</strong> algorithm, the workflow view is updated on the left to show that this algorithm has an <strong>input</strong> and that it will produce and <strong>output</strong>. Moreover, on the right, the information panel is updated to show that this algorithm has two parameters called the minimum support (Minsup) and the maximum pattern length (optional) </p>
+<p><img src="workflow_with_node_apriori.png" alt="apriori node in workflow editor from spmf" width="986" height="196"></p>
+<p>In this example, we will set the Minsup parameter to 0.4 by entering the value in the parameter table and then pressing enter:<br>
+  <br>
+  <img src="workflow_with_node_apriori_parameters.png" alt="workflow parameter for apriori" width="574" height="66"></p>
+<p>Then, we can select the <strong>input file</strong> for this algorithm. This is done by a) clicking on the green <strong>input node</strong> in the workflow, and then clicking on the &quot;Select&quot; button to select an input file. Alternatively, the &quot;Recent&quot; button can be used to select a recent file. </p>
+<p><img src="workflow_choose_input_file.png" alt="configure input file in spmf workflow editor" width="987" height="163"> </p>
+<p>In this example, we will choose the file <strong>contextPasquier99txt</strong>, which is provided with SPMF.</p>
+<p> <img src="workflow_choose_input_file_contextPasquier.png" alt="selecting the input file in the workflow editor" width="987" height="165"><br>  
+    <br>
+    Then, we can set the <strong>output file</strong> for this algorithm. This is done by a) clicking on the green <strong>output node</strong> in the workflow, and then clicking on the &quot;Select&quot; button to set where to write the output file produced by the algorithm.. Alternatively, the &quot;Recent&quot; button can be used to select a recently used file location.</p>
+<p><img src="workflow_choose_output.png" alt="choose output of apriori in workflow editor of spmf" width="916" height="139"></p>
+<p> In this example we will set the name of the output file to &quot;frequent_itemsets.txt&quot;.</p>
+<p><img src="workflow_choose_output_frequentitemsets.png" alt="frequent itemsets output in the workflow editor of spmf" width="939" height="165"> </p>
+<p>After completing this step, we have a complete workflow with a single algorithm. </p>
+<p>We can click on the <strong>Validate the workflow</strong> button to verify that we have made no mistake such as forgetting to set a mandatory parameter. </p>
+<p><img src="workflow_editor_validate_workflow.png" alt="validate the workflow" width="548" height="146"></p>
+<p>We can also click on &quot;<strong>Run the workflow </strong>&quot; to execute the workflow. </p>
+<p><img src="workflow_editor_run_workflow.png" alt="workflow editor run the workflow" width="165" height="36"> </p>
+<p>This will run the algorithm. Information about the algorithm execution will be displayed in the console of the Workflow editor, and the output will be saved to the the file&quot;<strong>frequent_itemsets.txt</strong>&quot;. </p>
+<p><img src="workflow_editor_console_apriori_output.png" alt="workflow editor console panel" width="994" height="157"></p>
+<p>This is interesting, but we may prefer to view the result using tools for viewing frequent itemsets offered in SPMF. To do this, <strong>we will add another algorithm</strong> to the workflow. </p>
+<p>We will click on the <strong>green output node</strong> in the workflow editor, and click &quot;Add algorithm&quot;.</p>
+<p><img src="workflow_editor_addsecond.png" alt="add another algorithm to workflow editor" width="281" height="223"> </p>
+<p>This will add another algorithm:</p>
+<p><img src="workflow_editor_addsecond_viewer.png" alt="adding a second algorithm in the workflow editor" width="943" height="245"> </p>
+<p>Then, we will click on the &quot;<strong>Select</strong>&quot; button in the right panel to choose the <strong>Visualize_frequent_itemsets</strong> algorithm. In the algorithm browser, a) we can use the search bar to quickly find this algorithm, then b) we click on it, and then c) we click the &quot;<strong>OK</strong>&quot; button: </p>
+<p><img src="workflow_editor_visualize_fim.png" alt="workflow editor select tool to visualize frequent itemsets" width="765" height="572"> </p>
+<p>Now the workflow will appear like this:</p>
+<p><img src="workflow_editor_visualize_fim_after_adding.png" alt="workflow editor after adding an algorithm for viewing frequent itemsets" width="205" height="213"> </p>
+<p>We can then click on &quot;<strong>Run the workflow </strong>&quot; to execute the workflow. </p>
+<p><img src="workflow_editor_run_workflow.png" alt="workflow editor run the workflow" width="165" height="36"> </p>
+<p>This will execute the Apriori algorithm and then open the tool for visualizing frequent itemsets.</p>
+<p><img src="workflow_editor_visualize_fim_resultspng.png" alt="viewing the frequent itemsets" width="1099" height="606"> </p>
+<p>Now, if we are satisfied with this workflow, we can <strong>save the workflow to a file</strong> using the save workflow menu:</p>
+<p><img src="workflow_editor_save_workflow.png" alt="save workflow menu" width="286" height="145"> </p>
+<p>This will allow to open this workflow again from the Workflow editor to modify it. We can also use the Workflow menu to export the workflow as a script (a BAT file on windows or SH file for Linux). </p>
+<h1>How to create more complex workflows?</h1>
+<p>Since SPMF 2.66,  is now possible to create workflows with branches. To do this, we can create on an  file in the worklow view and click the &quot;<strong>Add algorithm</strong>&quot; button. <br>
+For example, continuing the previous example, we can a) click on the &quot;<strong>frequent_itemsets.txt</strong>&quot; node and then click b) the button &quot;Add algorithm&quot;:</p>
+<p><img src="workflow_editor_add_third_algorithm.png" alt="add a third algorithm to the workflow editor" width="280" height="404"> </p>
+<p>This will create a new algorithm node:</p>
+<p><img src="workflow_editor_add_third_algorithm_added.png" alt="workflow editor after adding the third algorithm" width="384" height="237"> </p>
+<p>We can now click on the &quot;<strong>Select</strong>&quot; button to open the algorithm browser and select an algorithm. <br>
+For example, a) we click on &quot;Select&quot;, b) choose the &quot;Open_text_file_with_SPMF_text_editor&quot; algo</p>
+<p>Therithm and c) click &quot;OK&quot;:</p>
+<p><img src="workflow_editor_add_third_text.png" alt="add a text editor to the worfklow editor to view the output" width="918" height="667"> </p>
+<p>The result is then like this:</p>
+<p><img src="workflow_editor_add_third_text_after.png" alt="adding a third algorithm" width="490" height="214"> </p>
+<p>We could then run the workflow by clickling the &quot;<strong>Run the workflow</strong>&quot; button. The Apriori will then be executed and then the Visualized_frequent_itemsets tools will be opened, and then the SPMF text editor will be open as well to view the result. </p>
+<p>Now, lets say that we want to add another algorithm that is run separately from Apriori in a different sequence. To to this, a) we will click on the topmost node of the worklow and then click b) add algorithm. <br>
+  <br>
+  <img src="workflow_editor_add_anotherbranch.png" alt="another branch in workflow editor" width="410" height="349"></p>
+<p>The result will be like this:</p>
+<p><img src="workflow_editor_right_branch.png" alt="workflow editor add a branch" width="694" height="243"> </p>
+<p>After that we can continue adding algorithms in the same way to build a larger workflow. For example, after a few steps, it may look like this:</p>
+<p><img src="workflow_editor_right_branch_complex.png" alt="workflow editor complex workflow" width="818" height="244"></p>
+<h1>Other features </h1>
+<p>Besides the features explained above,  is also possible to click on algorithm nodes in the worfklow view to remove algorithms using the &quot;<strong>Remove algorithm</strong>&quot; button.</p>
+<p>It is also possible to right-click on nodes from the workflow editor to remove or duplicate algorithms. Here is a picture:</p>
+<p><img src="workflow_editor_popup.png" alt="workflow editor popup menu" width="492" height="295"></p>
+<h2>What is the workflow file format?</h2>
+
+<p>Workflow files use a simple line-oriented plain text format. Each line contains a keyword followed by space-separated <code>key=value</code> pairs. </p>
+
+<p>Every workflow file must begin with this header line:</p>
+
+<pre>@FILETYPE="WORKFLOW"</pre>
+
+<p>After the header, the file contains four types of record lines:</p>
+
+<h4>NODE record</h4>
+
+<p>A NODE record defines one algorithm step in the workflow:</p>
+
+<pre>NODE id=&lt;integer&gt; parentId=&lt;integer&gt; algorithm=&lt;name&gt; showInput=&lt;boolean&gt; showOutput=&lt;boolean&gt;</pre>
+<ul>
+<li><strong>id</strong> – Unique integer identifier for this node (assigned automatically in depth-first order during save)</li>
+<li><strong>parentId</strong> – The id of the parent node, or <code>0</code> for root nodes (algorithms that have their own input files)</li>
+<li><strong>algorithm</strong> – The name of the SPMF algorithm (e.g., <code>Eclat</code>, <code>FPGrowth_itemsets</code>, <code>PrefixSpan</code>)</li>
+<li><strong>showInput</strong> – <code>true</code> if this node has a visible input file node, <code>false</code> otherwise. Root nodes typically have <code>true</code>. Child nodes have <code>false</code> because they receive input from their parent's output.</li>
+<li><strong>showOutput</strong> – <code>true</code> if this algorithm produces an output file, <code>false</code> otherwise</li>
+</ul>
+
+<h4>INPUT record</h4>
+
+<p>An INPUT record defines the input file for a root node. This record is only present when <code>showInput=true</code>:</p>
+
+<pre>INPUT id=&lt;integer&gt; file=&lt;path&gt; name=&lt;display_name&gt;</pre>
+<ul>
+<li><strong>id</strong> – References the id of the corresponding NODE record</li>
+<li><strong>file</strong> – Full path to the input file. Backslashes are escaped as <code>BSLASH</code> and spaces are escaped as <code>SPACE</code>.</li>
+<li><strong>name</strong> – Display name shown in the user interface (typically just the filename without the full path)</li>
+</ul>
+
+<h4>OUTPUT record</h4>
+
+<p>An OUTPUT record defines the output file for an algorithm node:</p>
+
+<pre>OUTPUT id=&lt;integer&gt; file=&lt;path&gt; name=&lt;display_name&gt;</pre>
+<ul>
+<li><strong>id</strong> – References the id of the corresponding NODE record</li>
+<li><strong>file</strong> – Full path to the output file. Backslashes and spaces are escaped as described above.</li>
+<li><strong>name</strong> – Display name shown in the user interface</li>
+</ul>
+
+<h4>PARAM record</h4>
+
+<p>A PARAM record defines one parameter value for an algorithm. There is one PARAM record for each non-null parameter:</p>
+
+<pre>PARAM id=&lt;integer&gt; index=&lt;integer&gt; value=&lt;string&gt;</pre>
+<ul>
+<li><strong>id</strong> – References the id of the corresponding NODE record</li>
+<li><strong>index</strong> – Zero-based parameter index (matches the order of parameters in the algorithm's signature)</li>
+<li><strong>value</strong> – The parameter value. Backslashes and spaces are escaped as described above.</li>
+</ul>
+
+<h3>Escaping rules</h3>
+
+<p>Since the format uses whitespace to separate fields, any characters that would break token splitting are percent-encoded:</p>
+<ul>
+    <li>Percent character (<code>%</code>) → <code>%25</code> (encoded first to avoid ambiguity)</li>
+    <li>Space character → <code>%20</code></li>
+    <li>Other control characters below ASCII 0x21 or equal to 0x7F → <code>%XX</code> (two hex digits)</li>
+    <li>All other characters, including backslashes and Unicode, are stored as-is.</li>
+</ul>
+
+<p><strong>Example:</strong> The Windows file path <code>C:\Users\Phil\Desktop\DATASETS\chess.txt</code> is stored verbatim because backslashes do not need encoding:</p>
+<pre>C:\Users\Phil\Desktop\DATASETS\chess.txt</pre>
+
+<p>A path or value that contains spaces, such as <code>C:\My Documents\chess.txt</code>, is stored as:</p>
+<pre>C:\My%20Documents\chess.txt</pre>
+
+<p>When the workflow is loaded, all percent-escape sequences are automatically decoded back to the original characters.</p>
+<h2>An example of workflow file </h2>
+
+<p>This example shows a workflow file that runs two different frequent itemset mining algorithms (<strong>Eclat</strong> and <strong>Carpenter</strong>) on the same input file, then visualizes each result. The Eclat output is also opened in a text editor.</p>
+
+<h3>Workflow file content (workflow_eclat.txt)</h3>
+
+<pre>@FILETYPE="WORKFLOW"
+NODE id=1 parentId=0 algorithm=Eclat showInput=true showOutput=true
+INPUT id=1 file=C:%5CUsers%5CPhil%5CDesktop%5CDATASETS%5Cchess.txt name=chess.txt
+OUTPUT id=1 file=Output1.txt name=Output1.txt
+PARAM id=1 index=0 value=0.8
+NODE id=2 parentId=1 algorithm=Visualize_Frequent_itemsets showInput=false showOutput=false
+OUTPUT id=2 file=Output2.txt name=Output2.txt
+NODE id=3 parentId=1 algorithm=Open_text_file_with_SPMF_text_editor showInput=false showOutput=false
+OUTPUT id=3 file=Output3.txt name=Output3.txt
+NODE id=4 parentId=0 algorithm=Carpenter showInput=true showOutput=true
+INPUT id=4 file=C:%5CUsers%5CPhil%5CDesktop%5CDATASETS%5Cchess.txt name=chess.txt
+OUTPUT id=4 file=Output4.txt name=Output4.txt
+PARAM id=4 index=0 value=0.7
+NODE id=5 parentId=4 algorithm=Visualize_Frequent_closed_itemsets showInput=false showOutput=false
+OUTPUT id=5 file=Output5.txt name=Output5.txt
+
+This represents this workflow:
+
+<img src="workflow_eclat.png" alt="workflow eclat" width="757" height="221">
+</pre>
+
+which has the following structure:
+<ul>
+<li><strong>Node 1: Eclat</strong> (root algorithm)
+  <ul>
+    <li>Input file: <code>chess.txt</code></li>
+    <li>Output file: <code>Output1.txt</code></li>
+    <li>Parameter: minimum support threshold = <code>0.8</code> (80%)</li>
+    <li>Children:
+      <ul>
+        <li><strong>Node 2: Visualize_Frequent_itemsets</strong> – Takes <code>Output1.txt</code> as input and visualizes the frequent itemsets</li>
+        <li><strong>Node 3: Open_text_file_with_SPMF_text_editor</strong> – Takes <code>Output1.txt</code> as input and opens it in the SPMF text editor</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li><strong>Node 4: Carpenter</strong> (root algorithm)
+  <ul>
+    <li>Input file: <code>chess.txt</code></li>
+    <li>Output file: <code>Output4.txt</code></li>
+    <li>Parameter: minimum support threshold = <code>0.7</code> (70%)</li>
+    <li>Children:
+      <ul>
+        <li><strong>Node 5: Visualize_Frequent_closed_itemsets</strong> – Takes <code>Output4.txt</code> as input and visualizes the closed itemsets</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+</ul>
+
+<h2>How to export workflows as scripts?</h2>
+
+<p>Workflows can be exported as executable shell scripts for batch processing on the command line:</p>
+
+<ul>
+<li><strong>Workflow → Export workflow as BAT script (for Windows)</strong> – Generates a <code>.bat</code> batch file for Windows systems</li>
+<li><strong>Workflow → Export workflow as SH script (for Linux)</strong> – Generates a <code>.sh</code> shell script for Linux/Unix systems with a shebang line (<code>#!/bin/bash</code>)</li>
+</ul>
+
+<p>These scripts invoke <code>ja</code><code>va -jar spmf.jar run &lt;algorithm&gt; &lt;input&gt; &lt;output&gt; &lt;parameters&gt;</code> for each algorithm in the workflow in breadth-first order.</p>
+
+<p><strong>Note:</strong> Script export does <strong>not</strong> preserve parallelism. All algorithms are executed sequentially in the order they appear in the script. If you need parallel execution, use the Workflow Editor's Run command instead.</p>
+
+<h2>Where can I get more information?</h2>
+
+<p>For information about specific algorithms that can be used in workflows, see the <a href="index.html">SPMF documentation</a>.</p>
+
+<p>For general questions about SPMF, visit the <a href="http://www.philippe-fournier-viger.com/spmf/">SPMF website</a>.</p>
+
+</div>
+
+<div id="footer">
+<p><a href="index.html">Back to SPMF documentation</a></p>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,254 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Run experiments to compare the performance of one or more algorithms on a dataset (one parameter is varied)  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {
+	color: #FF0000;
+	font-weight: bold;
+}
+.style2 {color: #0000FF}
+.style4 {color: #0000FF; font-weight: bold; }
+.style5 {color: #6633FF}
+.style6 {color: #FF0000}
+.style7 {color: #33CC00; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Run experiments to compare the performance of one or more algorithms on a dataset (one parameter is varied)  (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to to use the <strong>ExperimenterForParameterChange</strong> <strong>tool</strong> of SPMF, which allows to compare the performance of one or more algorithms on a dataset, when a parameter is varied. </p>
+<p>This tool runs algorithms automatically and save the results to files. The results include a comparison of runtime, memory usage and output file size. These results are in a tab-separated format, which can be easily imported into Excel or other spreadsheet software to draw charts. </p>
+<p>There is also an option to output results as PGFPlots charts that can be inserted directly in Latex documents such as research papers. This tool is was designed to speed-up the redundant task of running experiments to compare algorithms when writing research papers. </p>
+<p>I will first explain how to use this tool from the user interface of SPMF, and then how the main functionnalities can be used from the source code version of SPMF. </p>
+<h2>How to start this tool? </h2>
+<p>To run this example, <strong>if you are using the graphical user interface </strong>of SPMF, (1)  select the algorithm &quot;<strong>Performance_experiment_one_parameter_varied</strong>&quot; and then (2) click &quot;<strong>Run algorithm</strong>&quot;. This will open the tool, which provides a simple user interface.. </p>
+<p>Alternatively, if you want to run this tool from the  source code of SPMF (e.g. in Eclipse), without using the graphical user interface of SPMF, you can execute the same tool by running the file &quot;<strong>MainTestExperimenterForParameterChange</strong>&quot;, located in the package &quot;<strong>ca.pfv.spmf.test</strong>&quot;. However, this is less user-friendly as there is no user interface. Thus, it is recommended to use the graphical user interface of SPMF. </p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to use the tool?</h2>
+<p>After you run the algorithm &quot;<strong>Performance_experiment_one_parameter_varied</strong>&quot; in the user interface of SPMF, the following window will open, which let you indicate what kind of experiments should be run.</p>
+<p><img src="illustration_experiment.png" alt="experiment with spmf" width="642" height="630"></p>
+<p>I will explain step-by-step how to use this tool:</p>
+<ul>
+  <ul>
+    <li><strong>Step 1:</strong> it is necessary to choose the algorithms that you want to compare. In this example, we will select a few algorithms.  
+      For this, we will click on the combo-box A) and select the algorithm &quot;<span class="style2">Apriori</span>&quot;, and then click on the button B) &quot;<strong>Add algorithm</strong>&quot;. Then, we will repeat this step to also add the algorithms <span class="style2">&quot;<strong>Eclat</strong>&quot;, &quot;<strong>FPGrowth_itemsets</strong>&quot;, &quot;<strong>FPClose</strong>&quot; </span>and <span class="style2">&quot;<strong>FPMax</strong>&quot;</span>. It is necessary to choose at least one algorithm. Besides, it is required that all algorithms have the same number of parameters. This is because it does not make sense to compare algorithms that do not have the same parameters. In this example, we select only  frequent itemset mining algorithms because they all have a same parameter called &quot;minsup&quot; and we want to compare the performance of those algorithms. It is to be noted that some of these algorithms  also have some optional parameters but it does not matter because we will not use them for these experiments. </li>
+    <li><strong>Step 2</strong>: We next need to select an input file on which we will run the algorithms to compare their performance. For this, you may use any datasets that is in the SPMF format. In this example, we will use the <strong><a href="https://www.philippe-fournier-viger.com/spmf/datasets/chess.txt">Chess.txt dataset</a>, </strong>which can be downloaded from the <a href="http://philippe-fournier-viger.com/spmf/index.php?link=datasets.html">dataset page of the SPMF website</a>. After downloading the <strong>Chess dataset</strong>, we click on the button C) to select this dataset.</li>
+    <li><strong>Step 3</strong>: We need to select and output directory on our computer so that the results can be saved into that directory. Here, you may create a new directory called <strong>Experiments</strong> on your computer. Then, you can click on the button D) to select that directory.</li>
+    <li><strong>Step 4</strong>: We need to also provide the list of parameter values to be used as default values for the experiment. If we have multiple parameters, we need to give fixed values for all the parameters, except for the parameter that will be varied in the experiment. The parameter that is varied will be indicated by the value ##. For example, if you have two parameters, you may write <span class="style2"><strong>1.5 ##</strong></span> in the text field F) to indicate  that the first parameter is fixed to 1.5 while the second parameter will be varied. In this example, we have only one parameter, so we will just write <span class="style2">: ## </span>in the text field F) to indicate that this parameter will be varied.</li>
+    <li><strong>Step 5</strong>: Then, we need to give a set of values for the parameter that is varied. In this example, we can use the values : <span class="style2">0.95 0.94 0.93 0.92 0.91 0.90 0.89 0.88 0.87 0.86 0.85 0.84 0.83 0.82 0.81 0.80</span> by typing this in the text field F). </li>
+    <li><strong>Step 6</strong>: After that, we can set some optional parameters.
+      In this example, we will do as follows:
+      <ul>
+        <li>First, we will set a time limit of 10 seconds by typing <span class="style2">10</span> in the text field G). This will ensure that the algorithms will not run for more than 10 seconds each tim (otherwise they ill be terminated). This option is useful to ensure that the experiments do not take too much time.</li>
+        <li>Second, we will click the checkbox I). This checkbox will make SPMF count the number of lines in the output of each algorithm. In other word, this will count the number of patterns generated by each algorithm in this example. If we don't check this option, the tool will only compare the memory usage and runtime. But by clicking this option, we have an additional comparison, which is the number of lines (patterns).</li>
+        <li>Third, we will click the checkbox J) to also save the results as a PGFPlot that we can  insert in Latex documents. </li>
+        <li>By the way, there is also an option H). This option allows to use a specific version of the JAR file of SPMF (<strong>spmf.jar) </strong>for running the experiments. For this example, <strong>it is not necessary to do that. </strong> This option is mainly intended for debugging (for the developers of SPMF). </li>
+        </ul>
+      </li>
+    </ul>
+</ul>
+<p>If you have followed the above instructions, the window will look like this:</p>
+<p> <img src="illustration_experiment_Filled.png" alt="all parameters are filled for the experiments" width="810" height="556"><br> 
+</p>
+<p>Then, we can click on the &quot;<strong>Run the experiment</strong>&quot; <strong>button</strong> K) to start the experiments! </p>
+<p>During the experiments, the status of experiments will be displayed in the text area L) as follows:</p>
+<p><img src="illustration_experiment_Filled_results_explanation.png" alt="console output from the tool" width="903" height="438"> </p>
+<p>And finally, when all experiments are done, the results of the experiments will be displayed in the text area L) as follows:</p>
+<blockquote>
+  <p>  ********************************************<br>
+    *****             RESULTS              *****<br>
+    ********************************************<br>
+    INPUT FILE: D:\SPMF_ALL\SPMF 6\NEW TEST FILES 2020\NEW TEST FILES\chess.txt<span class="style2"> <span class="style1">(the input file) </span><br>
+    </span>PARAMETERS: [##]<span class="style2"> <span class="style1">(the parameter(s) used in this experiment) </span></span></p>
+  <p>TIME (S)<br>
+    parameter	 0,95	0,94	0.93.	0,92	0,91	0,9	0,89	0,88	0,87	0,86	0,85	0,84	0,83	0,82	0,81	0,8 <br>
+    Apriori	0,39	0,4	0,23	0,48	0,52	0,59	0,67	0,75	0,93	1,25	1,52	1,94	2,33	2,48	2,87	3,43 <br>
+    Eclat	0,53	0,61	0,32	0,58	0,63	0,71	0,75	0,81	0,88	0,86	0,92	1,07	1,11	1,27	1,41	1,47 <br>
+    FPGrowth_itemsets	0,77	0,59	0,39	0,55	0,57	0,53	0,6	0,65	0,63	0,54	0,55	0,62	0,6	0,6	0,62	0,69 <br>
+    FPClose	0,61	0,57	0,41	0,67	0,63	0,66	0,65	0,54	0,62	0,59	0,72	0,64	0,63	0,72	0,69	0,73 <br>
+    FPMax	0,67	0,51	0,33	0,5	0,59	0,56	0,58	0,59	0,56	0,58	0,59	0,59	0,55	0,72	0,68	0,58 </p>
+  <p class="style1">(The above lines provide the results for the runtime comparison. The first line is the values of the varied parameter. The second line is the runtimes for Apriori for these parameter values. The following lines show the runtimes for the other algorithms, namely Eclat, FPGrowth, FPClose and FPMax, for these parameter values. For example, the second line means that Apriori took 0.39 seconds when the parameter was set to 0.95, and Apriori took 0.4 seconds when the parameter was set to 0.94, etc.) </p>
+  <p>MEMORY (MB)<br>
+    parameter	 0,95	0,94	0.93.	0,92	0,91	0,9	0,89	0,88	0,87	0,86	0,85	0,84	0,83	0,82	0,81	0,8 <br>
+    Apriori	18,88	18,88	18,88	18,88	18,88	19,32	19,76	19,76	19,76	20	20,44	21,32	21,32	22	3,34	3,36 <br>
+    Eclat	19,92	27,93	27,93	26,76	11,96	38,9	72,43	110,26	154,03	94,25	141,23	91,27	176,8	71,23	15,29	172,98 <br>
+    FPGrowth_itemsets	6,75	7,43	7,43	7,43	7,44	7,44	8,11	8,1	8,78	9,44	10,1	10,77	11,44	12,78	14,12	15,45 <br>
+    FPClose	6,76	7,43	7,43	7,43	7,43	7,43	8,1	8,77	8,76	9,43	10,1	11,43	12,11	12,1	13,45	15,45 <br>
+    FPMax	6,76	7,44	7,44	7,42	7,43	7,43	7,44	7,43	8,1	8,1	8,77	9,44	9,43	9,44	10,11	10,78 </p>
+  <p><span class="style1">(The above lines provide the results for the memory comparison. The first line is the values of the varied parameter. The second line is the maximum memory usage for Apriori for these parameter values. The following lines show the maximum memory usage for the other algorithms, namely Eclat, FPGrowth, FPClose and FPMax, for these parameter values. For example, the second line means that Apriori used 18.88 megabytes of memory when the parameter was set to 0.95, and Apriori took also 18.88 megabytes of memory when the parameter was set to 0.94, etc.) </span></p>
+  <p>OUTPUT_SIZE (LINES)<br>
+    parameter	 0,95	0,94	0.93.	0,92	0,91	0,9	0,89	0,88	0,87	0,86	0,85	0,84	0,83	0,82	0,81	0,8 <br>
+    Apriori	77	139	-1	305	421	622	883	1195	1553	1987	2669	3484	4243	5312	6656	8227 <br>
+    Eclat	77	139	-1	305	421	622	883	1195	1553	1987	2669	3484	4243	5312	6656	8227 <br>
+    FPGrowth_itemsets	77	139	-1	305	421	622	883	1195	1553	1987	2669	3484	4243	5312	6656	8227 <br>
+    FPClose	73	124	-1	269	362	498	689	922	1183	1457	1885	2400	2883	3487	4216	5083 <br>
+    FPMax	11	18	-1	26	30	34	51	75	69	89	119	145	133	163	221	226 </p>
+  <p><span class="style1">(The above lines compares the output size of the algorithms when the parameter is varied. The first line is the values of the varied parameter. The second line is the output size (here, number of patterns) for Apriori for these parameter values. The following lines show the output sizes for the other algorithms, namely Eclat, FPGrowth, FPClose and FPMax, for these parameter values. For example, the second line means that Apriori found 77 patterns when the parameter was set to 0.95, and Apriori found 139 patterns when the parameter was set to 0.94, etc.) </span></p>
+</blockquote>
+<p>All the above results are also saved in a file called <span class="style2"><strong>EXPERIMENT_RESULT.txt</strong></span> in the output directory. </p>
+<h2>Importing the results into Excel </h2>
+<p>The results from the file <span class="style2"><strong>EXPERIMENT_RESULT.txt</strong></span> are tab-separated. This means that they can be easily imported into Excel to create charts. For this, just copy the above results into Excel. For example, here we copy the runtime results: </p>
+<p><img src="excel_results_part1.png" alt="excel results" width="1118" height="168"></p>
+<p>Then, we can select these results to generate charts:  </p>
+<p><img src="excel_results_part2_charts.png" alt="chart excel" width="1079" height="395"></p>
+<p>As can be seen in this picture, this chart is not perfect. In particular, the X axis is incorrect. This can be fixed by right-clicking on the chart in Excel and choosing &quot;Select data&quot; to set up the X axis properly. Besides, it is possible to adjust other aspects of the chart to make it look more pretty. </p>
+<h2>Importing the results into a Latex document</h2>
+<p>If you have selected the <strong>option</strong> to generate a latex file with PGFplot, a file called <span class="style2"><strong> PGPLOT_FIGURES.tex </strong></span>will have been created in the <strong>output directory</strong>. This file can be compiled using Latex to generate charts, which can also be included in latex documents.</p>
+<p>In the above example, the following charts have been created automatically:  </p>
+<p><img src="performance_results.png" alt="performance results pgfplots" width="741" height="583">   </p>
+<h2>The Result Files </h2>
+<p>After running experiments, a set of files are created in the output directory. Here is an overview of those files.</p>
+<ul>
+  <li><span class="style2"><strong>EXPERIMENT_RESULT.txt</strong></span> : contains the main results from the experiments in a tab-separated format  </li>
+  <li><span class="style2"><strong>PGPLOT_FIGURES.txt</strong></span> : contains the latex charts for the experiment (if you have selected the option of generating PGFPlots figures)</li>
+  <li><span class="style4">EXPERIMENT_LOG.txt</span> :  This files contains a detailed log about all the experiments that have been run. This is useful if you want to find more information about the experiments besides the main results. </li>
+  <li><span class="style2"><strong>other files</strong></span>: The output of each algorithm for each experiment is saved in a distinct file. For example, in the above example, a file <strong>Apriori_0.80.txt </strong>contains the results of the <strong>Apriori</strong> algorithm when it is run with <strong>minsup = 0.8</strong>, another file <strong>Apriori_0.81.txt </strong>contains the results of the <strong>Apriori</strong> algorithm when it is run with <strong>minsup = 0.81</strong>, and so on. </li>
+  </ul>
+<p>Here is an overview of all the files created in the output directory for this example:</p>
+<p><img src="all_the_files.png" alt="files from experiment" width="1048" height="995">
+  <!----------END------>
+	  </p>
+<h2>How to run experiments from the source code of SPMF?</h2>
+<p>Above, I have explained how to use the graphical interface of SPMF to run <strong>automated performance experiments</strong>. I will now explain how the same functionnality can be used from the source code of SPMF. This is suited for those who are familiar with Java and wish for example to run experiments without passing through the graphical user interface of SPMF.<br>
+  <br>
+There is an example of how to do this, in the SPMF source code. It is the file <strong>MainTestExperimenterForParameterChange, </strong>which is located in the package <strong>ca.pfv.spmf.experiments.oneparametervaried</strong> of SPMF.</p>
+<p>The main code from that example is shown below. In that example, we will run a performance comparison of two algorithms from SPMF called &quot;<strong>FPGrowth_association_rules</strong>&quot; and &quot;<strong>Apriori_association_rules</strong>. The input file is the file &quot;<strong>ContextPasquier99.txt</strong>&quot;, which is located in the same folder, and  results of the experiments will be saved in a new folder called &quot;<strong>EXPERIMENTS</strong>&quot;. To run the experiments, we indicate a path to the file <strong>spmf.jar</strong> on the local computer. This is because we will be calling the spmf.jar file to run the algorithms.. In this example, we assume that <strong>spmf.jar</strong> has been downloaded to the computer and saved in C://Users//Philippe/Desktop/spmf.jar but other location could work as well. <br>
+  We will also indicate that there are two parameters for those algorithms and that the first one will be varied using the special code : ##
+  and that the second parameter will be fixed to 0.6. Then we will indicate that the first parameter will be varied using the values 0.01, 0.02, 0.03, 0.04, and 0.05.  We will also indicate that each algorithm cannot run for more than <span class="style5">100000</span> s. We can also set additional options such as to generate PGFPlots figures to be used with Latex.<br> 
+  <strong> <br>
+  The important part of the code for this example is below: <br>    
+  <br>
+  </strong><span class="style6">// The input file</span><span class="style5"> String inputFile = fileToPath(&quot;contextPasquier99.txt&quot;); <span class="style6"> <br>
+<br>
+// The directory where results from the experiments will be stored.</span>
+ String outputDirectory = &quot;EXPERIMENTS&quot;;</span></p>
+<pre class="style5"><span class="style6"> // Create the tool to run experiment</span>
+   ExperimenterForParameterChange experimenter = new ExperimenterForParameterChange();
+   
+<span class="style6">   // Here we must give a path to the spmf.jar file on your computer
+   //  If you did not download spmf.jar, you need to download it
+   // from the download page on the SPMF website</span>
+   experimenter.setSPMFJarFilePath(&quot;C:\\\\Users\\\\philippe\\\\Desktop\\\\spmf.jar&quot;);
+   
+<span class="style6">   // We indicate that if an algorithm run out of time, 
+   // the result should be indicated using the &quot;-&quot; string</span>
+   experimenter.setTimeoutCodeS(&quot;-&quot;);</pre>
+<pre class="style5"><span class="style6"> // A list of algorithm to be compared.
+   // They must have the same parameters</span>
+   String algorithmNames[] = new String[] { &quot;FPGrowth_association_rules&quot;, &quot;Apriori_association_rules&quot; };</pre>
+<pre class="style5"><span class="style6"> // The default list of parameter values
+   // The code ## should be used to indicate the parameter that will be varied
+   // in the experiment.
+   // Below, I have indicated that I want to vary the first parameter.</span>
+   String params[] = new String[] { &quot;##&quot;, &quot;0.6&quot; };
+   
+<span class="style6">   // The values for the parameter that is varied
+   // Below, it means that we will vary the first parameter using the 
+   // following values</span>
+   String varyingParameterValues[] = new String[] { &quot;0.01&quot;, &quot;0.02&quot;, &quot;0.03&quot;, &quot;0.04&quot;, &quot;0.05&quot; };
+   
+<span class="style6">   // The name of the varied parameter (just for  printing purpose</span>
+   String variedParameterName = &quot;minsup&quot;;
+   
+<span class="style6">   // The maximum time to run each algorithm
+   // If an algorithm exceed that time limit, it will be stopped.</span>
+   int timeoutInMilliseconds = 100000;
+   
+<span class="style6">   // If true, the output file sizes will be compared in the results</span>
+   boolean compareOutputSizes = true;
+   
+<span class="style6">   // If true, the command for running each algorithm will be shown in
+   // the console. This is useful for debugging but not very important.</span>
+   boolean showCommand = false;
+   
+<span class="style6">   // If true, latex figures will be generated</span>
+   boolean latexFigures = true;</pre>
+<pre class="style5"><span class="style6"> // Run the experiments.</span>
+   experimenter.runAnAlgorithmAndVaryParameter(algorithmNames, params, varyingParameterValues, inputFile,
+   outputDirectory, timeoutInMilliseconds, compareOutputSizes, showCommand, latexFigures,variedParameterName);</pre>
+<p><strong>If we run this example, the output in the console will be like this:</strong></p>
+<p class="style2">********************************************<br>
+  *****       RUNNING EXPERIMENTS        *****<br>
+  ********************************************<br>
+  INPUT: /D:/workspace/SPMF_2019_for_release/bin/ca/pfv/spmf/experiments/oneparametervaried/contextPasquier99.txt<br>
+  OUTPUT DIRECTORY: EXPERIMENTS</p>
+<p class="style2"> *****  EXPERIMENT 1<br>
+  ALGORITHM: FPGrowth_association_rules 	minsup= 0,01  *****<br>
+  TIME: 0,29 s 	 MEMORY: 7,77 MB<br>
+  OUTPUT: FPGrowth_association_rules_0.01.txt 	 OUTPUT_SIZE: 42 lines</p>
+<p class="style2"> *****  EXPERIMENT 2<br>
+  ALGORITHM: FPGrowth_association_rules 	minsup= 0,02  *****<br>
+  TIME: 0,26 s 	 MEMORY: 7,77 MB<br>
+  OUTPUT: FPGrowth_association_rules_0.02.txt 	 OUTPUT_SIZE: 42 lines</p>
+<p class="style2"> *****  EXPERIMENT 3<br>
+  ALGORITHM: FPGrowth_association_rules 	minsup= 0,03  *****<br>
+  TIME: 0,24 s 	 MEMORY: 7,77 MB<br>
+  OUTPUT: FPGrowth_association_rules_0.03.txt 	 OUTPUT_SIZE: 42 lines</p>
+<p class="style2"> *****  EXPERIMENT 4<br>
+  ALGORITHM: FPGrowth_association_rules 	minsup= 0,04  *****<br>
+  TIME: 0,27 s 	 MEMORY: 7,77 MB<br>
+  OUTPUT: FPGrowth_association_rules_0.04.txt 	 OUTPUT_SIZE: 42 lines</p>
+<p class="style2"> *****  EXPERIMENT 5<br>
+  ALGORITHM: FPGrowth_association_rules 	minsup= 0,05  *****<br>
+  TIME: 0,24 s 	 MEMORY: 7,77 MB<br>
+  OUTPUT: FPGrowth_association_rules_0.05.txt 	 OUTPUT_SIZE: 42 lines</p>
+<p class="style2"> *****  EXPERIMENT 6<br>
+  ALGORITHM: Apriori_association_rules 	minsup= 0,01  *****<br>
+  TIME: 0,26 s 	 MEMORY: 7,76 MB<br>
+  OUTPUT: Apriori_association_rules_0.01.txt 	 OUTPUT_SIZE: 42 lines</p>
+<p class="style2"> *****  EXPERIMENT 7<br>
+  ALGORITHM: Apriori_association_rules 	minsup= 0,02  *****<br>
+  TIME: 0,27 s 	 MEMORY: 7,76 MB<br>
+  OUTPUT: Apriori_association_rules_0.02.txt 	 OUTPUT_SIZE: 42 lines</p>
+<p class="style2"> *****  EXPERIMENT 8<br>
+  ALGORITHM: Apriori_association_rules 	minsup= 0,03  *****<br>
+  TIME: 0,28 s 	 MEMORY: 7,76 MB<br>
+  OUTPUT: Apriori_association_rules_0.03.txt 	 OUTPUT_SIZE: 42 lines</p>
+<p class="style2"> *****  EXPERIMENT 9<br>
+  ALGORITHM: Apriori_association_rules 	minsup= 0,04  *****<br>
+  TIME: 0,3 s 	 MEMORY: 7,76 MB<br>
+  OUTPUT: Apriori_association_rules_0.04.txt 	 OUTPUT_SIZE: 42 lines</p>
+<p class="style2"> *****  EXPERIMENT 10<br>
+  ALGORITHM: Apriori_association_rules 	minsup= 0,05  *****<br>
+  TIME: 0,32 s 	 MEMORY: 7,76 MB<br>
+  OUTPUT: Apriori_association_rules_0.05.txt 	 OUTPUT_SIZE: 42 lines</p>
+<p class="style2">********************************************<br>
+  *****             RESULTS              *****<br>
+  ********************************************<br>
+  INPUT FILE: /D:/workspace/SPMF_2019_for_release/bin/ca/pfv/spmf/experiments/oneparametervaried/contextPasquier99.txt<br>
+  PARAMETERS: [##, 0.6]</p>
+<p class="style7">TIME (S)<br>
+  minsup	 0,01	0,02	0,03	0,04	0,05 <br>
+  FPGrowth_association_rules	0,29	0,26	0,24	0,27	0,24 <br>
+  Apriori_association_rules	0,26	0,27	0,28	0,3	0,32 </p>
+<p class="style7">MEMORY (MB)<br>
+  minsup	 0,01	0,02	0,03	0,04	0,05 <br>
+  FPGrowth_association_rules	7,77	7,77	7,77	7,77	7,77 <br>
+  Apriori_association_rules	7,76	7,76	7,76	7,76	7,76 </p>
+<p class="style7">OUTPUT_SIZE (LINES)<br>
+  minsup	 0,01	0,02	0,03	0,04	0,05 <br>
+  FPGrowth_association_rules	42	42	42	42	42 <br>
+  Apriori_association_rules	42	42	42	42	42 </p>
+<p>If we want we can copy the above results in green color to Excel for generating charts from these results.  <br>
+  <br>
+Besides, in the EXPERIMENTS/ directory that will have been created, we can find the detailed results in files, including figures to be used in Latex. </p>
+<p>Now, having said that an interesting question is : What if I want to test some algorithms that are not in SPMF.jar ? At this moment, the tool is only designed to compare algorithms from SPMF.jar but it is not difficult to add new algorithms to SPMF.Jar. I will try to add more explanations about this in the future. </p>
+<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>
+

@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Example: Mining Positive and Negative Association Rules with PNAR-Eclat or PNAR-AprioriTID  (SPMF - Java)</title>
+	<link rel="stylesheet" href="docstyle.css"/>
+    <style type="text/css">
+<!--
+.style1 {color: #0033CC}
+.style2 {color: #000000}
+-->
+        </style>
+    </head>
+  <body>
+	<div width="100%" class="container">
+		  <div class="content">
+			<!----------START------>
+
+<h1> Mining Positive and Negative Association Rules with PNAR-Eclat or PNAR-AprioriTID (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how mine <strong>negative association rules using the PNAR-Eclat or PNAR-AprioriTID </strong>algorithm  using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> &quot;<span class="highlight">PNAR-Eclat</span>&quot; or &quot;PNAR-AprioriTID&quot;  </strong>algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextIGB</span><span class="highlight">.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    (4) set minsup = 30 %, and minconf = 60 % (5) optionally, set the optional parameters to choose which rule types to generate (6) click &quot;<span class="highlight">Run
+      algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="style1 highlight"><strong>java -jar spmf.jar run PNAR-Eclat contextIGB.txt output.txt 30% 60% </strong></span><span class="style1"><strong><br>
+    </strong><span class="style2">or</span><strong><br>
+    <span class="highlight style1">java -jar spmf.jar run PNAR-AprioriTID contextIGB.txt output.txt 30% 60%<br>
+    </span></strong><span class="style2">in a folder
+    containing spmf.jar and the example input
+    file </span><strong>contextIGB.txt<br>
+    </strong></span></li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    this file <strong><span class="highlight">&quot;</span><span class="style1">MainTestPNAR.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is this algorithm?</h2>
+<p>It is an algorithm for discovering positive and negative association rules  in a
+    transaction database, proposed by Cornelis et al. (2006). </p>
+<p>Four types of rules can be discovered:</p>
+<ul>
+  <li>A ==&gt; B  </li>
+  <li>NOT A ==&gt; B</li>
+  <li>A ==&gt; NOT B</li>
+  <li>NOT A ==&gt; NOT B   </li>
+</ul>
+<p> This implementation allows you to select which types of rules should be generated using optional parameters (see the <strong>Optional Parameters </strong>section of this page).</p>
+<p>Moreover, this implementation allows you to choose between two algorithms (AprioriTID and Eclat) for discovering the frequent itemsets that are then used to generate the rules. </p>
+<h2>What is the input?</h2>
+<p>The input is a transaction database (aka binary context) and three
+    thresholds named <em>minimum  support </em>or <em>minsup </em>(a value between 0 and 1) , and <em>minimum confidence </em>or <em>minconf </em>(a value between 0 and 1)<em>.</em></p>
+  <p>A <strong>transaction database</strong> is a set of transactions.
+    Each <strong>transaction</strong> is a set of distinct items. For
+    example, consider the following transaction database. It contains 6
+
+    transactions (t1, t2, ..., t5, t6) and 5 items (1,2, 3, 4, 5). For
+    example, the first transaction represents the set of items 1, 2, 4 and
+    5. This database is provided as the file <strong>contextIGB.txt</strong> of the SPMF distribution. It is important to note that an item is not
+    allowed to appear twice in the same transaction and that items are
+    assumed to be sorted by lexicographical order in a transaction.</p>
+  <table align="center" border="1" width="316">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t6</strong></td>
+        <td>{2, 3, 4}</td>
+      </tr>
+    </tbody>
+  </table>
+  <h2>What is the output?</h2>
+  <p data-start="0" data-end="109">The PNAR algorithm outputs positive and negative association rules that satisfy the user-defined thresholds.</p>
+  <p data-start="113" data-end="203">To understand how this algorithm works, it is necessary to review some basic definitions.</p>
+  <p data-start="207" data-end="271">The PNAR algorithm can discover four types of association rules:</p>
+  <ul>
+    <li>A ==&gt; B </li>
+    <li>NOT A ==&gt; B</li>
+    <li>A ==&gt; NOT B</li>
+    <li>NOT A ==&gt; NOT B </li>
+    </ul>
+  <p>where A and B are itemsets such that the intersection of A and B is empty.</p>
+  <p data-start="416" data-end="578">A <strong>positive association rule</strong> A ==&gt; B indicates that when the items of A appear in a transaction, the items of B are also likely to appear in the same transaction.</p>
+  <p data-start="582" data-end="744">A <strong>negative association rul</strong>e A ==&gt; NOT B indicates that when the items of A appear in a transaction, the items of B are likely to be absent from that transaction.</p>
+  <p data-start="748" data-end="1005">Similarly, a rule NOT A ==&gt; B indicates that when the items of A are absent from a transaction, the items of B are likely to appear. </p>
+  <p data-start="748" data-end="1005">Finally, a rule NOT A ==&gt; NOT B indicates that when the items of A are absent, the items of B are also likely to be absent.</p>
+  <p data-start="1009" data-end="1204">The <strong>support</strong> of a rule is the number of transactions satisfying the rule condition. For example, the support of a rule A ==&gt; NOT B is the number of transactions containing A but not containing B.</p>
+  <p data-start="1208" data-end="1423">The <strong>confidence</strong> of a rule measures its predictive strength. For a rule A ==&gt; NOT B, the confidence is defined as the number of transactions containing A but not B, divided by the number of transactions containing A.</p>
+  <p data-start="1427" data-end="1845">The algorithm outputs the association rules of the four types that have a support not less than the use-defined threshold <em>minsup</em> and a confidence not less than the user-defined <em>minconf </em>threshold<em>. </em></p>
+  <p data-start="2829" data-end="2876">For example, if the algorithm is executed with:</p>
+  <ul data-start="2878" data-end="2942">
+    <li data-section-id="ul9f" data-start="2878" data-end="2898"> minsup = 0.3 (30%) </li>
+    <li data-section-id="1fp7vbl" data-start="2900" data-end="2921"> minconf = 0.6 (60%) </li>
+    </ul>
+  <p data-start="2946" data-end="2983">then multiple rules are discovered including the following rules: </p>
+  <p data-start="2946" data-end="2983">2 4 5 ==&gt; 1  #SUP: 3  #CONF: 1.0<br>
+  2 4 5 ==&gt; NOT 3   #SUP: 2  #CONF: 0.6666666666666666<br>
+    NOT 3  ==&gt; 1 4  #SUP: 2  #CONF: 1.0<br>
+    NOT 1  ==&gt; NOT 4 5   #SUP: 2  #CONF: 1.0</p>
+  <p data-start="3105" data-end="3366" data-is-last-node="" data-is-only-node="">The first rule indicates that when items 2, 4 and 5 appear in a transaction, item 1 is present also in that transaction in 100% of the cases. This rule has a support of 3 transactions as it was observed three times.</p>
+  <p data-start="238" data-end="421">The second rule indicates that when items 2, 4 and 5 appear in a transaction, item 3 is absent from that transaction in 66.67% of the cases. This rule has a support of 2 transactions.</p>
+  <p data-start="425" data-end="607">The third rule indicates that when item 3 is absent from a transaction, items 1 and 4 are present in that transaction in 100% of the cases. This rule has a support of 2 transactions.</p>
+  <p data-start="611" data-end="800" data-is-last-node="" data-is-only-node="">The fourth rule indicates that when item 1 is absent from a transaction, items 4 and 5 are also absent from that transaction in 100% of the cases. This rule has a support of 2 transactions.</p>
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> is a text file containing
+    transactions. Each lines represents a transaction. The items in the
+    transaction are listed on the corresponding line. An item is
+    represented by a positive integer. Each item is separated from the
+    following item by a space. It is assumed that items are sorted
+    according to a total order and that no item can appear twice in the
+    same transaction. For example, for the previous example, the input file
+    is defined as follows:</p>
+  
+    <p>@FILETYPE=&quot;Simple transaction database&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1 2 4 5<br>
+      2 3 5<br>
+      1 2 4 5<br>
+      1 2 3 5<br>
+      1 2 3 4 5<br>
+      2 3 4</p>
+    <p>The first two lines are metadata indicating the type of file and the source of the data. Then, the following lines are the transactions (records). Consider the first line of data. It means that the first transaction is
+    the itemset {1, 2, 4 and 5}. The following lines follow the same format.</p>
+    <p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the
+      ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+      Most features of the ARFF format are supported except that (1) the
+      character &quot;=&quot; is forbidden and (2) escape characters are not
+      considered. Note that when the ARFF format is used, the performance of
+      the data mining algorithms will be slightly less than if the native
+      SPMF file format is used because a conversion of the input file will be
+      automatically performed before launching the algorithm and the result
+      will also have to be converted. This cost however should be small. </p>
+    <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file, where each line represents an <strong>association rule</strong>.
+    On each line, the items of the rule antecedent are first listed. Each
+    item is represented by an integer, followed by a single space. After,
+    that the keyword "==&gt;" appears followed by a space. Then, the items
+    of the rule consequent are listed. Each item is represented by an
+    integer, followed by a single space. Then, the keyword " #SUP: "
+    appears followed by the support of the rule represented by an integer.
+    Then, the keyword " #CONF: " appears followed by the confidence of the
+    rule represented by a double value (a value between 0 and 1,
+    inclusively). For example, here is a few lines from the output file of this example: </p>
+  <p>@FILETYPE=&quot;Association rules&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+2 4 5 ==&gt; 1  #SUP: 3  #CONF: 1.0<br>
+2 4 5 ==&gt; NOT 3   #SUP: 2  #CONF: 0.6666666666666666<br>
+NOT 3  ==&gt; 1 4  #SUP: 2  #CONF: 1.0<br>
+NOT 1  ==&gt; NOT 4 5   #SUP: 2  #CONF: 1.0</p>
+  <p data-start="1052" data-end="1194">The first two lines are metadata indicating the type of pattern in this file and the source of the data. Then it is the data section.</p>
+  <p data-start="1052" data-end="1194">The first rule indicates that when items 2, 4 and 5 appear in a transaction, item 1 is also present in that transaction in 100% of the cases.</p>
+  <p data-start="1198" data-end="1339">The second rule indicates that when items 2, 4 and 5 appear in a transaction, item 3 is absent from that transaction in 66.67% of the cases.</p>
+  <p data-start="1343" data-end="1483">The third rule indicates that when item 3 is absent from a transaction, items 1 and 4 are present in that transaction in 100% of the cases.</p>
+  <p data-start="1487" data-end="1634">The fourth rule indicates that when item 1 is absent from a transaction, items 4 and 5 are also absent from that transaction in 100% of the cases.</p>
+  <p data-start="1638" data-end="1821" data-is-last-node="" data-is-only-node="">Note that if the ARFF format is used as input instead of the default input format, the output format remains the same except that items are represented by strings instead of integers</p>
+  <h2>Optional parameters</h2>
+  <p>The algorithm has four optional parameters to control which types of rules are generated. By default, all four rule types are generated. The optional parameters are:</p>
+  <ul>
+    <li><strong>Generate R1 X ==&gt; Y</strong> (e.g. true or false): If set to true, rules of the form A ==&gt; B are generated (default: true).</li>
+    <li><strong>Generate R2 NOT(X) ==&gt; NOT(Y)</strong> (e.g. true or false): If set to true, rules of the form NOT A ==&gt; NOT B are generated (default: true).</li>
+    <li><strong>Generate R3 X ==&gt; NOT(Y)</strong> (e.g. true or false): If set to true, rules of the form A ==&gt; NOT B are generated (default: true).</li>
+    <li><strong>Generate R4 NOT(X) ==&gt; Y</strong> (e.g. true or false): If set to true, rules of the form NOT A ==&gt; B are generated (default: true).</li>
+  </ul>
+  <p>For example, to run the algorithm and generate only R1 (positive rules) and R3 (A ==&gt; NOT B rules) from the command line:</p>
+  <p><span class="style1 highlight"><strong>java -jar spmf.jar run PNAR-Eclat contextIGB.txt output.txt 30% 60% true false true false</strong></span></p>
+  <h2>Optional feature: giving names to items</h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextIGB.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple transaction database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+1 2 4 5<br>
+2 3 5<br>
+1 2 4 5<br>
+1 2 3 5<br>
+1 2 3 4 5<br>
+2 3 4</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. The second and third line are metadata indicating the type of file and the source of the data.  
+    Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. Then the following lines define transactions in the SPMF format.</p>
+  <p>Then, if we apply the algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+      <br>
+      @FILETYPE=&quot;Association rules&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+bread ==&gt; orange #SUP: 5 #CONF: 1.0<br>
+      orange ==&gt; bread #SUP: 5 #CONF: 0.8333333333333334<br>
+      apple tomato ==&gt; bread #SUP: 2 #CONF: 1.0<br>
+      tomato bread ==&gt; apple #SUP: 2 #CONF: 0.6666666666666666<br>
+      apple tomato ==&gt; orange #SUP: 2 #CONF: 1.0<br>
+      apple ==&gt; milk bread #SUP: 3 #CONF: 0.75</p>
+  <p>Note that this feature could be also used from the <strong>source code</strong> of SPMF using the ResultConverter class. However, there is currently no example provided for using it from the source code.</p>
+
+  <h2>Implementation details</h2>
+  <p>The algorithm is implemented to be as faithful as possible to the paper, while having several optimizations for performance. </p>
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The following article describes the PNAR algorithm:<br>
+      <br>
+          <em>Cornelis et al. (2006)</em>. Mining Positive and Negative Association Rules from Large Databases, Proc. of  CIS 2006, pp. 613-618. </p>
+  <p>For a good overview of <strong> itemset mining and association rule mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+
+			<!----------END------>
+			<div class="footer">
+			  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+			  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+			</div>
+			
+
+	  </div>
+  </div>
+	</table>
+  </body>
+</html>

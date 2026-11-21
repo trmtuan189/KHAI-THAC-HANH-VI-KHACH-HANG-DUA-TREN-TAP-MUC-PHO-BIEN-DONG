@@ -1,0 +1,133 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Calculate the autocorrelation function of time series  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Calculate the autocorrelation function of time series (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to calculate the <strong>autocorrelation function  of time series</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Calculate_autocorrelation_of_time_series</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextAutocorrelation.txt&quot;</span></strong>, (3) set the separator to the comma ',' , set (4) maxlag = 15 and then (4) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run Calculate_autocorrelation_of_time_series contextAutocorrelation.txt output.txt  , </span><br>
+    in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>contextAutocorrelation.txt</strong></span>. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>to
+    run respectively <strong>this example</strong><strong>, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestAutocorrelationFileToFile.java&quot;</span></strong>in
+    the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is the <strong>autocorrelation function  of a time series</strong>?</h2>
+<p>Calculating the <strong>autocorrelation function</strong> of a time series if useful to check if a time series is stationnary, or just generally to check if data points in a time series are correlated or not correlated with some previous data points occuring with a lag.  <strong>Autocorrelation</strong> is defined based on the concept of <strong>lag</strong>. To generate the correlation function of a time series, we will set a parameter called  <strong>max_lag</strong>, and calculate all values of the <strong>autocorrelation function </strong>with a lag from 1 to <strong>max_lag</strong>. The <strong>autocorrelation function</strong> can be viewed as a time series with values in the [-1,1] interval. A value of 1 for a lag of <em>k </em>indicates a <strong>positive</strong> correlation with  values occuring <em>k</em> values before. Similarly, a value of -1 for a lag of <em>k </em>indicates a <strong>negative</strong> correlation with the values occuring <em>k </em>values before.</p>
+  <p>Here is a formal definition of the <strong>autocorrelation function</strong>:<br>
+  </p>
+  <p><img src="autocorrelation_definition.png" alt=""/></p>
+<!-- 
+  $ Let there be a time series $ y_1, y_2, \dots y_n.\\
+$Let $\alpha$ be the average of $y_1, y_2, \dots y_n. \\
+$The autocorrelation function at lag $ k $ is defined as:\\
+$ r_k = [\sum_{i=1}^{n-k} 
+(y_i - \alpha)(y_{i+k} - \alpha)] / 
+[\sum_{i=1}^{n} 
+(y_i - \alpha)^2 ]$\\
+The autocorrelation function of the time series  $y_1, y_2, \dots y_n $ for a parameter $1 \leq max\_lag \leq n$ is 
+$r_1, r_2, \dots r_{max\_lag} $
+ -->
+<h2>What is the input of this algorithm?</h2>
+<p>The input is one or more time series. A <strong>time series </strong>is a sequence of floating-point decimal numbers (double values). <strong></strong>A time-series can also have a name (a string).</p>
+  <p>Time series are used in many applications. An example of time series is the price of a stock on the stock market over time. Another example is a sequence of temperature readings collected using sensors.</p>
+  <p>For this example, consider the two following <strong>time series</strong>:</p>
+  
+    
+      <table width="414" border="1">
+        <tbody>
+          <tr>
+            <td width="161"><strong>Name</strong></td>
+            <td width="237"><strong>Data points</strong></td>
+          </tr>
+          <tr>
+            <td>ECG1</td>
+            <td>1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6</td>
+          </tr>
+          <tr>
+            <td>ECG2</td>
+            <td>0.84,0.90,0.14,-0.75,-0.95,-0.27,0.65,0.98,0.41,-0.54,-0.99,-0.53,0.42,0.99,0.65,-0.28</td>
+          </tr>
+        </tbody>
+      </table>
+    
+  
+  <p>This example <strong>time series database </strong>is provided in the file <strong>contextAutocorrelation.txt </strong>of the SPMF distribution.  </p>
+  <p>In SPMF, to read a time-series file, it is  necessary to indicate the &quot;separator&quot;, which is the character used to separate data points in the input file. In this example, the &quot;separator&quot; is the comma ',' symbol.</p>
+  <p>Moreover, the user needs to provide a max_lag value, which is an integer number no less than 1 and no greater than the number of data points in the time series.<br>
+  </p>
+
+  <h2>What is the output?</h2>
+  <p>The output is a time series representing the autocorrelation function at lag <em>k </em>of the time series taken as input.</p>
+  <p>For example, in the above example, the autocorrelation functions at lag k of the above tow time series are:<br>
+  </p>
+  
+    <table width="558" border="1">
+      <tbody>
+        <tr>
+          <td width="161"><strong>Name</strong></td>
+          <td width="381"><strong>Data points</strong></td>
+        </tr>
+        <tr>
+          <td>ECG1_AUTOCOR</td>
+          <td>1.0,0.5190217391304348,0.13369565217391305,-0.14728260869565218,-0.31521739130434784,-0.36141304347826086,-0.27717391304347827,-0.24945652173913044,-0.1608695652173913,-0.002717391304347826,0.23369565217391305,0.14402173913043478,0.06304347826086956,-5.434782608695652E-4,-0.03804347826086957,-0.04076086956521739</td>
+        </tr>
+        <tr>
+          <td>ECG2_AUTOCOR</td>
+          <td>1.0,0.5189630085503281,-0.34896021596534504,-0.8000624914835336,-0.5043545150938301,0.16813498364430499,0.5761216033068776,0.41692503347430215,-0.06371622277688614,-0.38966662981297634,-0.3246273969517782,-0.031970253360281406,0.16771278110458265,0.13993946271399282,0.012475144157765343,-0.036914291507522644</td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <p>To see the result visually, it is possible to use the <strong>SPMF time series viewer</strong>, described in another example of this documentation. Here is a figure showing the oriignal time series (top) and the autocorrelation functions corresponding to these time series for maxlag = 15 (bottom right) and maxlag = 3 (bottom left) .<br>
+  </p>
+  <p><img src="autocorrelation_maxlag3_maxlag15.png" width="1358" height="808" alt=""/></p>
+  <p>As it can be observed all values are now in the [-1,1] interval, as it should.</p>
+  <p>Besides, in the bottom right figure (max_lag = 15), we can see that the green autocorrelation function has a sinusoidal shape. This is because the original time series is a sinusoidal function. In that case, the autocorrelation function will vary between positive correlations (close to 1) and negative correlations (close to -1) depending on the lag. For example, for a lag of 0, the autocorrelation value is 1, indicating a positive correlation, while for a lag of 3, the autocorrelation value is close to -0.8, which is negative. In general, drawing a chart like the one on the bottom right can be useful to detect if there are some periodic trends in at time series. </p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> is defined
+    as follows. It is a text file.  The text file contains one or more time series. Each time series is represented by two lines in the input file. The first line contains the string &quot;@NAME=&quot; followed by the name of the time series. The second line is a list of data points, where data points are floating-point decimal numbers separated by a separator character (here the ',' symbol). </p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>@NAME=ECG1<br>
+    1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6<br>
+    @NAME=ECG2<br>
+  0.84,0.90,0.14,-0.75,-0.95,-0.27,0.65,0.98,0.41,-0.54,-0.99,-0.53,0.42,0.99,0.65,-0.28</p>
+  <p>Consider the first two lines. It indicates that the first time series name is &quot;ECG1&quot; and that it consits of the data points: 1,2,3,4,5,6,7,8,9,10,1,2,3,4,5, and 6. Then, the other time series are provided in the same file, which follows the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is the same as the input format. For example, there is the result of this example:</p>
+  <p>@NAME=ECG1_AUTOCOR<br>
+    1.0,0.5190217391304348,0.13369565217391305,-0.14728260869565218,-0.31521739130434784,-0.36141304347826086,-0.27717391304347827,-0.24945652173913044,-0.1608695652173913,-0.002717391304347826,0.23369565217391305,0.14402173913043478,0.06304347826086956,-5.434782608695652E-4,-0.03804347826086957,-0.04076086956521739<br>
+    @NAME=ECG2_AUTOCOR<br>
+    1.0,0.5189630085503281,-0.34896021596534504,-0.8000624914835336,-0.5043545150938301,0.16813498364430499,0.5761216033068776,0.41692503347430215,-0.06371622277688614,-0.38966662981297634,-0.3246273969517782,-0.031970253360281406,0.16771278110458265,0.13993946271399282,0.012475144157765343,-0.036914291507522644<br>
+  </p>
+
+  <h2>Where can I get more information about the autocorrelation function?</h2>
+  <p>The autcorrelation function is a basic operation for time series. It is described in many websites and books. For example: http://www.real-statistics.com/time-series-analysis/stochastic-processes/autocorrelation-function/</p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

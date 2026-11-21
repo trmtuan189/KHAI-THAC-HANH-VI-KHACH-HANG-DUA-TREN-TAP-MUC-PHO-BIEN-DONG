@@ -1,0 +1,83 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View frequent (generator) itemsets with the Visual Pattern Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style2 {
+	color: #00CC00;
+	font-weight: bold;
+}
+.style4 {color: #0000FF; font-weight: bold; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View frequent (generator) itemsets with the  Visual Pattern Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><span class="style2">Frequent (generator) itemsets </span>are a type of patterns that can be produced by different algorithms offered in SPMF.</p>
+<p>This page  explains how to <strong>visualize</strong> the <strong class="style2">frequent (generator) itemsets </strong>found by an algorithm using the <strong>Visual Pattern Viewer</strong>. </p>
+<h2>How to run this example? </h2>
+<p>If you want to run this example using the graphical user interface of SPMF, follow these steps.</p>
+<p>1) First, select an <span class="style2">frequent (generator) itemset  </span> mining algorithm offered in SPMF. Several algorithms are offered and are described in the documentation of SPMF.</p>
+<p>2) Then, in the user interface of SPMF, after  selecting an algorithm and setting its input file path, output file path, and parameters,  click on the combo-box besides &quot;<span class="style1"><strong>Open output file using</strong></span>&quot;, and select &quot;<span class="style1"><strong>Visualize_Frequent_itemsets_and_generators</strong></span>&quot; so that the discovered patterns will be opened with the visual pattern viewer. </p>
+<p><img src="Visualize_Pascal_SELECT.png" alt="visualize association rules selection" width="959" height="737"> </p>
+<p>3) Then click on &quot;<strong>Run algorithm</strong>&quot; to run the algorithm. </p>
+<p>After the algorithm terminates, the discovered patterns will be displayed using the <strong>Visual Pattern Viewer</strong>:</p>
+<p><img src="Visualize_Pascal_VIEW.png" alt="visualize rules viewer" width="1133" height="536"> </p>
+<p>The Visual Pattern Viewer interface is quite intuitive. It displays each pattern with its value for each evaluation measure using a colored bar.  </p>
+<p>The Visual Pattern Viewer offers several features such as:</p>
+<ul>
+  <li>Viewing patterns using different layouts (grid, horizontal and vertical layout).</li>
+  <li>Sorting patterns by size and measure values.</li>
+  <li>Searching and filtering using measure values</li>
+  <li>Displaying statistics about the number of patterns found.</li>
+</ul>
+<h2>Other ways of running the Visual Pattern Viewer </h2>
+  <p>It is also possible to run the Visual Pattern Viewer as an algorithm from the GUI of SPMF..</p>
+  <p>In this case, in the user interface of SPMF, select  &quot;<strong class="style4">Visualize_Frequent_itemsets_and_generators</strong>&quot; as algorithm. Then, select a file containing <span class="style2"><strong>frequent (generator) itemsets</strong></span> as input file. Then, click &quot;run algorithm&quot;.</p>
+  <p>This will display the patterns from the file using the Visual Pattern Viewer.</p>
+  <p>Besides, it  is also possible to call the Visual Pattern Viewer from the command line interface of SPMF. To open a file called  <span class="style4"> patternsFrequentItemsetsAndGenerators.txt</span>, this syntax can be used:<br>
+    <br>
+    <span class="style4">java -jar spmf.jar run Visualize_Frequent_itemsets_and_generators patternsFrequentItemsetsAndGenerators.txt </span> in a folder containing <span class="highlight">spmf.jar</span> and the input file.</p>
+  <h2>What is the input file format?</h2>
+  <p>The algorithm  takes as input a file containing<strong><span class="style2"> frequent (generator) itemsets</span></strong>.</p>
+  <p>The <strong> file format</strong> is defined as follows. It
+    is a text file, where each line represents a <strong class="style2">frequent (generator) itemset</strong>.    </p>
+  <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. On each line, the items of the itemset are first listed. Each item is represented by an integer and it is followed by a single space. After, all the items, the keyword "#SUP:" appears, which is followed by an integer indicating the support of the itemset, expressed as a number of transactions. After, all the items, the keyword "#IS_GENERATOR:" appears, which is followed by a boolean indicating if the itemset is a generator (true) or not (false). For example, here is a pattern file:  </p>
+  <p>@FILETYPE=&quot;Frequent itemsets and generator itemsets&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1  #SUP: 4 #IS_GENERATOR: true<br>
+    2  #SUP: 4 #IS_GENERATOR: true<br>
+    3  #SUP: 4 #IS_GENERATOR: true<br>
+    5  #SUP: 4 #IS_GENERATOR: true<br>
+    1 2  #SUP: 3 #IS_GENERATOR: true<br>
+    1 3  #SUP: 3 #IS_GENERATOR: true<br>
+    1 5  #SUP: 3 #IS_GENERATOR: true<br>
+    2 3  #SUP: 3 #IS_GENERATOR: true<br>
+    2 5  #SUP: 4 #IS_GENERATOR: false<br>
+    3 5  #SUP: 3 #IS_GENERATOR: true<br>
+    1 2 3  #SUP: 2 #IS_GENERATOR: true<br>
+    1 2 5  #SUP: 3 #IS_GENERATOR: false<br>
+    1 3 5  #SUP: 2 #IS_GENERATOR: true<br>
+    2 3 5  #SUP: 3 #IS_GENERATOR: false<br>
+    1 2 3 5  #SUP: 2 #IS_GENERATOR: false<br>
+    <br>
+    The first line indicates the frequent itemset consisting of the item 1 and it indicates that this itemset has a support of 3 transactions and is a generator. Other lines follow the same format. <br>
+  </p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

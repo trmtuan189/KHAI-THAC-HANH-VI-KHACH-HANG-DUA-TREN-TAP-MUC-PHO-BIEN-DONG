@@ -1,0 +1,183 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Episode Rules in a Complex Sequence using the TKE, MINEPI+, AFEM or EMMA algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Episode Rules in a Complex Sequence using the TKE, MINEPI+, AFEM or EMMA algorithm (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to mine Episode rules using the <strong>TKE, MINEPI+, AFEM </strong>or <strong>EMMA</strong> <strong>algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>choose the <strong>&quot;<span class="highlight">TKE</span><span class="highlight">-Rules</span>&quot;, &quot;<span class="highlight">MINEPI</span><span class="highlight">+Rules</span>&quot;, &quot;<span class="highlight">AFEM</span><span class="highlight">-Rules</span>&quot;</strong> or <strong>&quot;<span class="highlight">EMMA</span><span class="highlight">-Rules</span>&quot;</strong> algorithm<strong>, </strong>and <strong>select the input file <strong>&quot;<span class="highlight">contextEMMA</span><span class="highlight">.txt&quot;</span></strong>, </strong>and<strong> set the output file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;) </strong>
+    <ul>
+      <li>Then, if you are using <span class="highlight"><strong>TKE</strong></span>, 
+        
+        set the parameter <strong><em>k</em></strong>,  the maximum time duration, the <strong>boolean parameter </strong>indicating that timestamps are  not provided, the <strong>minimum confidence</strong>, the <strong>maximum consequent event count</strong>, and the <strong>minimum support </strong>respectively to <span class="highlight"><strong>3, 2, false, 0.2, 1, 2 </strong></span>and 
+      then click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+      <li>But if you are using <span class="highlight"><strong>MINEPI+, AFEM </strong></span>or <span class="highlight"><strong>EMMA</strong></span>, set the parameter <strong><em>minsup</em></strong>,  the maximum time duration, the <strong>boolean parameter </strong>indicating that timestamps are  not provided, the <strong>minimum confidence</strong>, and the <strong>maximum consequent event count</strong>, respectively to <span class="highlight"><strong>2, 2, false, 0.2, 1 </strong></span>and 
+      then click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+    </ul>
+  </li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute one of those commands: <br>
+    <span class="highlight">java -jar spmf.jar run TKE-Rules contextEMMA.txt  output.txt 3 2 false 0.2 1 2 </span>in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextEMMA.txt</span><br>
+    <span class="highlight">java -jar spmf.jar run MINEPI+Rules contextEMMA.txt  output.txt 2 2 false 0.2 1 </span>in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextEMMA.txt</span><br>
+    <span class="highlight">java -jar spmf.jar run AFEM-Rules contextEMMA.txt  output.txt 2 2 false 0.2 1 </span>in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextEMMA.txt</span><br>
+    <span class="highlight">java -jar spmf.jar run EMMA-Rules contextEMMA.txt  output.txt 2 2 false 0.2 1</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextEMMA.txt</span><br>
+    <br>
+  </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestTKE_Rules.java&quot;</span></strong>, <strong><span class="highlight">&quot;MainTestMINEPIPlus_Rules.java&quot;</span></strong>, <strong><span class="highlight">&quot;MainTestAFEM_Rules.java&quot;</span></strong> or <strong><span class="highlight">&quot;MainTestEMMA_Rules.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What are these algorithms?</h2>
+<p>There exists several algorithms such as <strong>TKE, EMMA, AFEM </strong>and <strong>MINEPI+ </strong>to find <strong>frequent episodes </strong>in a
+  <strong>complex event sequence</strong>. That means to finds subsequences that appear many times in a long sequence of events, where some events may be simultaneous. But although knowing that some subsequence of events appear many times in a sequence is useful, it is not so suitable for making predictions. For this reason the concept of<strong> episode rules </strong>was proposed where the goal is to extract rules of the form X --&gt; Y indicating that if some sequence of events appears it will be followed by another sequence of events with some given confidience (e.g. conditional probability P(Y|X)). </p>
+  <p>The standard episode rules are generated as a post-processing step after applying an algorithm such as <strong>TKE, EMMA, AFEM </strong>and <strong>MINEPI+</strong>. That post-processing step was described by Manila (1995) and can be applied to most episode mining algorithms. It is to be noted that because TKE, EMMA and MINEPI+ use different search procedure and definitions, they do not always generate the same episode rules. </p>
+  <p>There is another example in SPMF for describing the TKE, EMMA, AFEM and MINEPI+ algorithms for mining frequent episodes. This example will only describe how to generate the episode rules using these algorithms. </p>
+  <p>Also, note that there are also some other algorithms in SPMF for extracting other types of episode rules such as <strong>POERM</strong>. It was argued that the episode rules extracted by POERM are more general than those described in this example and may thus be more useful. For more details, you may see the example describing POERM.</p>
+
+  <h2>What is the input?</h2>
+  <p>The <strong>TKE, EMMA, AFEM </strong>and <strong>MINEPI+</strong>  algorithms  takes as input <strong>an event sequence</strong> Let’s consider following sequence consisting of 11 time  points (t1, t2, …, t10) and 4 events type (1, 2, 3, 4). This database is provided  in the text file &quot;<strong><span class="highlight">contextEMM<span class="highlight">A</span></span><span class="highlight">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution.</p>
+  <table border="1" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="277" valign="top"><p><strong>Time points</strong></p></td>
+      <td width="277" valign="top"><p><strong>Itemset</strong> <strong>(event set)</strong> </p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>1</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>2</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>3</p></td>
+      <td width="277" valign="top"><p>1 2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>6</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>7</p></td>
+      <td width="277" valign="top"><p>1 2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>8</p></td>
+      <td width="277" valign="top"><p>3</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>9</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>11</p></td>
+      <td width="277" valign="top"><p>4</p></td>
+    </tr>
+  </table>
+  <p>Each line of the sequence is called an  event set and consists of:</p>
+  <ul>
+    <li>a time point (first column)</li>
+    <li>an event set (second column)</li>
+  </ul>
+  <p>For example, in the above example, at time point 1, the event 1 occurred. Then at time point 2, the event 1 occurred again. Then at time point 3, the events 1 and 2 occurred simultaneously. And so on. </p>
+  <p>To run the <strong>TKE, EMMA, AFEM </strong> and <strong>MINEPI+</strong> algorithms to generate episode rules, it is also required to provide some parameters.</p>
+
+  <ul>
+  <li>For <strong>TKE</strong><strong>, </strong>a parameter <em>k </em>(a positive integer) indicating the number of episodes to find, a <strong>maximum duration (window length), </strong>and a boolean parameter <strong>self_increment</strong>, that must be set to true if the input dataset has no timestamps  or otherwise false. Moreover, it is necessary to set a minimum support (a minimum occurrence frequency) and minimum confidence for the rules that will be generated. The minimum support represents the minimum number of times that a rule appear in the input sequence. The  confidence of a rule X--&gt;Y is the conditional probability that rule X will be followed by Y.</li>
+  <li>For <strong>EMMA, AFEM </strong>and <strong>MINEPI+</strong> , a minimum support threshold indicating the minimum number of times that an episode rules should appear, a <strong>maximum duration (window length), </strong>and a boolean parameter <strong>self_increment</strong>, that must be set to true if the input dataset has no timestamps  or otherwise false. Moreover, it is necessary to set a  minimum confidence for the rules that will be generated. The  confidence of a rule X--&gt;Y is the conditional probability that rule X will be followed by Y.. </li>
+</ul>
+<h2>What is the output?</h2>
+<p> The<strong> output of these algorithms </strong>is a set of <strong>episode rules </strong>that have a high support (occurrence frequency) and a high confidence. More precisely, the algorithms will output all the episode rules that have a support greater or equal to the minimum support threshold set by the user, and a confidence that is greater or equal to the minimum confidence set by the user.</p>
+  <p>For a rule X --&gt; Y, the support means the number of times that X is followed by Y in the input sequence (whithin a time interval no greater than the maximum time duration).</p>
+  <p>For a rule X --&gt; Y, the confidence means the number of times that X is followed by Y in the input sequence divided by the number of times that X appears (whithin a time interval no greater than the maximum time duration). </p>
+  <p>For a more formal definition, you may also see the research papers describing these algorithms.</p>
+  
+    <p>For example, if we use the TKE algorithm to generate episode rules, set k = 6, max time duration= 2, minimum confidence = 0.2, max consequent count = 1 and minimum support = 2, then we find the following episode rules:</p>
+    <table border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="277" valign="top"><p><strong>Frequent episode</strong></p></td>
+        <td width="277" valign="top"><strong>Support</strong></td>
+        <td width="277" valign="top"><p><strong>Confidence</strong></p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>{1} ==&gt; {2}</p></td>
+        <td width="277" valign="top">2</td>
+        <td width="277" valign="top">0.4</td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>{1} ==&gt; {1,2}</p></td>
+        <td width="277" valign="top">2</td>
+        <td width="277" valign="top">0.4</td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>{1} ==&gt; {1}</p></td>
+        <td width="277" valign="top">3</td>
+        <td width="277" valign="top">0.6</td>
+      </tr>
+    </table>
+  
+  
+    <p>For instance, the last episode {1} ==&gt; {1,2} ( indicating that event 1 was followed by event 1 and 2 at the same time), that this rule appeared two times (support = 2) and that the confidence of this rule is 0.4. This means that 40 % of the time when {1} appears, it is followed by {1,2} whithin the maximum time duration of 2..</p>
+  
+
+    <h2>Input file format</h2>
+    <p>The <strong>input file format </strong>of that algorithm is a text file. An <strong>item (event) </strong>is represented  by a positive integer. A <strong>transaction (event set) </strong>is a line in the text file. In each line  (event set), items are separated by a single space. It is assumed that all  items (events) within a same transaction line) are sorted according to a total order  (e.g. ascending order) and that no item can appear twice within the same event set.  Each line is optionally followed by the character &quot;|&quot; and then the timestamp of the  event set (line). Note that it is possible to run <strong>TKE</strong> on a database that has no  timestamps. In that case, the boolean parameter (the third parameter) should be  set to true to indicate that the dataset has no timestamps. If there is not timestamps and the parameter is set to true, the algorithm will assume that each line has a timestamp that is increasing by 1. <br>
+In the previous example, the input file is  defined as follows. The two first lines are metadata indicating the type of file and the source of the data.</p>
+  <p align="left">@FILETYPE=&quot;Transaction database with timestamps&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1|1<br>
+    1|2<br>
+    1 2|3<br>
+    1|6<br>
+    1 2|7<br>
+    3|8<br>
+    2|9<br>
+    4|11</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format </strong>is defined as  follows. It is a text file. Each line is an<strong> episode rules.</strong></p>
+  <p>Each line contains the antecedent of a rule, which is an episode, followed by &quot; ==&gt; &quot;, followed by the consequent of the rule, which is another episode. Then, the keyword <strong>&quot;#SUP:</strong>&quot; appears followed by an integer indicating the support  of the pattern (a positive integer). For example, a few lines from the output  file from the previous example are shown below:</p>
+  <p align="left">@FILETYPE=&quot;Episode rules&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+{1} ==&gt; {2} #SUP: 2 #CONF: 0.4<br>
+    {1} ==&gt; {1,2} #SUP: 2 #CONF: 0.4<br>
+    {1} ==&gt; {1} #SUP: 3 #CONF: 0.6  </p>
+  <p align="left">The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. For instance, the second line indicates that event 1 is followed by events 1 and 2 simultaneously, has a support of 2 and a confidence of 40%. Other lines follow the same format.</p>
+  <p align="left">Note that by changing the parameters, it is possible to find more complex rules such as:</p>
+  <p align="left">{1}{2} ==&gt; {1,2} #SUP: 2 #CONF: 0.4 </p>
+  <p align="left">This rules indicates that if 1 is followed by 2, then it is followed by 1 and 2 at the same time, and this rule has a support of 2 and a confidence of 40%.  </p>
+
+  <h2>Performance and Implementation details</h2>
+  <p>This example has described how to generate episode rules using the output of the TKE, EMMA and MINEPI+ algorithm. This is done based on the standard algorithm for generating episode rules proposed by Toivonen and Manila (1995). There are also other ways of generating episode rules. For example, the <strong>POERM algorithm </strong> also offered in SPMF can generate another type of episode rules called Partially-Ordered Episode rules, which are more general than the rules described in this example. </p>
+
+  <h2>Where can I get more information about these algorithms?</h2>
+  <p>The <strong>TKE</strong> algorithm is described in this  article:</p>
+  <p>Fournier-Viger, P., Wang, Y., Yang, P., Lin, J. C.-W., Yun, U. (2020).<a href="TOP_K_EPISODES.pdf"> <strong>TKE: Mining Top-K Frequent Episodes</strong>. </a>Proc. 33rd Intern. Conf. on Industrial, Engineering and Other Applications of Applied Intelligent Systems (IEA AIE 2020), Springer LNAI, 12 pages</p>
+  <p>Here is the paper describing the  <strong>MINEPI+</strong>  algorithm:</p>
+  <p>Fournier-Viger,  P., Yang, P., Lin, J. C.-W., Yun, U. (2019). <a href="HUE_SPAN.pdf">MINEPI+:  Fast High Utility Episode Mining</a>. Proc. 14th Intern. Conference on Advanced  Data Mining and Applications (ADMA 2019) Springer LNAI, pp. 169-184.</p>
+  <p>The <strong>AFEM</strong>  algorithm is described in this  article (it is a special case of the MaxFEM algorithm):</p>
+  <p>Fournier-Viger, P., Nawaz, M. S., He, Y., Wu, Y., Nouioua, F., Yun, U. (2022). MaxFEM: Mining Maximal Frequent Episodes in Complex Event Sequences. Proc. of the 15th Multi-disciplinary International Conference on Artificial Intelligence (MIWAI 2022), 12 pages, Springer LNAI, to appear.  </p>
+  <p>The <strong>EMMA</strong> algorithm is described in this  article:</p>
+  <p> Kuo-Yu Huang,Chia-Hui Chang (2008). Efficient mining of frequent episodes from  complex sequences.Inf. Syst.33(1):96-114    </p>
+  <p>The first paper discussing about episode rules is :</p>
+  <p>Mannila, H., Toivonen, H., Verkamo, A.I.: Discovering frequent episodes in sequences. In: Proc. 1st Int. Conf. on Knowledge Discovery and Data Mining (1995) </p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

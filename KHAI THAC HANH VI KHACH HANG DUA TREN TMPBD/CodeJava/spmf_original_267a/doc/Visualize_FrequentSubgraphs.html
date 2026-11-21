@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Example: View frequent subgraphs with the Visual Pattern Viewer (SPMF - Java)</title>
+	<link rel="stylesheet" href="docstyle.css"/>
+    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style2 {
+	color: #00CC00;
+	font-weight: bold;
+}
+.style4 {color: #0000FF; font-weight: bold; }
+-->
+    </style>
+</head>
+  <body>
+	<div width="100%" class="container">
+		  <div class="content">
+			<!----------START------>
+<h1>View frequent subgraphs with the Visual Pattern Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><span class="style2">Frequent subgraphs</span> are a type of patterns that can be produced by different algorithms offered in SPMF such as GSPAN, TKG, and other graph mining algorithms.</p>
+<p>This page explains how to <strong>visualize</strong> the <strong class="style2">frequent subgraphs</strong> found by an algorithm using the <strong>Visual Pattern Viewer</strong>. </p>
+
+<h2>What are frequent subgraphs?</h2>
+<p>A <strong>labeled graph</strong> is a set of <strong>vertices</strong> and <strong>edges</strong>, having some <strong>labels</strong>. Let's illustrate this idea with an example. Consider the following graph:</p>
+<p><img src="graph_labeled.png" alt="graph" width="246" height="180"></p>
+<p>This graph contains <strong>four vertices</strong> (depicted as yellow circles). These vertices have labels such as "10" and "11". These labels provide information about the vertices. For example, imagine that this graph is a chemical molecule. The label 10 and 11 could represent the chemical elements of Hydrogen and Oxygen, respectively. Labels do not need to be unique. In other words, the same labels may be used to describe several vertices in the same graph.</p>
+<p>Now, besides vertices, a graph also contains <strong>edges</strong>. The edges are the lines between the vertices, here represented by thick black lines. Edges also have some labels. In this example, four labels are used, which are 20, 21, 22 and 23. These labels represent different types of relationships between vertices. Edge labels do not need to be unique. A graph is a <strong>connected graph</strong> if by following the edges, it is possible to go from any vertex to any other vertices.</p>
+<p>The goal of <strong>frequent subgraph mining</strong> is to discover <strong>interesting subgraph(s)</strong> appearing in a set of graphs (a graph database). A <strong>frequent subgraph</strong> is a subgraph that appears in at least <em>minsup</em> percent of the graphs from the graph database.</p>
+
+<h2>How to run this example? </h2>
+<p>If you want to run this example using the graphical user interface of SPMF, follow these steps.</p>
+<p>1) First, select a <span class="style2">frequent subgraph</span> mining algorithm offered in SPMF. Several algorithms are offered such as <strong>GSPAN</strong>, <strong>TKG</strong>, and others, which are described in the documentation of SPMF.</p>
+<p>2) Then, in the user interface of SPMF, after selecting an algorithm and setting its input file path, output file path, and parameters, click &quot;Run algorithm&quot; and then in the &quot;Output&quot; panel, click on the button &quot;<span class="style1"><strong>View output using</strong></span>:&quot;, and select &quot;<span class="style1"><strong>Visualize_frequent_subgraphs</strong></span>&quot; to visualize the discovered patterns. </p>
+<p><img src="visualize_subgraph_Partie1.png" alt="visualize frequent subgraphs selection" width="608" height="665"></p>
+<p>The discovered patterns will be displayed using the <strong>Visual Pattern Viewer</strong>:</p>
+<p><img src="visualize_subgraph_Partie2_view.png" alt="visualize subgraphs viewer" width="968" height="706"> </p>
+<p>The Visual Pattern Viewer interface is quite intuitive. It displays each subgraph pattern visually with vertices arranged in a circular layout and edges connecting them. Each pattern also shows its value for each evaluation measure (such as support) using a colored bar.</p>
+<p>The Visual Pattern Viewer offers several features such as:</p>
+<ul>
+  <li>Viewing patterns using different layouts (grid, horizontal and vertical layout).</li>
+  <li>Sorting patterns by size (number of vertices) and measure values.</li>
+  <li>Searching patterns by vertex labels or edge labels.</li>
+  <li>Filtering patterns using measure values (e.g., minimum support threshold).</li>
+  <li>Displaying statistics about the number of patterns found.</li>
+  <li>Showing a size distribution histogram of the patterns.</li>
+  <li>Exporting the visualization as a PNG image.</li>
+</ul>
+
+<h3>Visual Representation</h3>
+<p>In the viewer, each subgraph is displayed as follows:</p>
+<ul>
+  <li><strong>Vertices</strong> are shown as blue circles arranged in a circular layout</li>
+  <li><strong>Vertex labels</strong> are displayed inside each circle</li>
+  <li><strong>Edges</strong> are shown as lines connecting vertices</li>
+  <li><strong>Edge labels</strong> are displayed at the midpoint of each edge</li>
+  <li><strong>Measure values</strong> (such as support) are shown below each graph with colored progress bars</li>
+</ul>
+
+<h3>Search and Filter Features</h3>
+<p>The viewer allows you to:</p>
+<ul>
+  <li><strong>Search by text:</strong> Enter vertex or edge labels to find specific patterns. For example, searching for "11" will show only patterns containing a vertex or edge with label "11".</li>
+  <li><strong>Filter by support:</strong> Use the slider to set a minimum support threshold. Only patterns meeting this threshold will be displayed.</li>
+  <li><strong>Combine filters:</strong> Text search and measure filters can be combined to refine your results.</li>
+</ul>
+
+<h2>Other ways of running the Visual Pattern Viewer </h2>
+<p>It is also possible to run the Visual Pattern Viewer as an algorithm from the GUI of SPMF.</p>
+<p>In this case, in the user interface of SPMF, select &quot;<strong class="style4">Visualize_frequent_subgraphs</strong>&quot; as algorithm. Then, select a file containing <span class="style2"><strong>frequent subgraphs</strong></span> as input file. Then, click &quot;run algorithm&quot;.</p>
+<p>This will display the patterns from the file using the Visual Pattern Viewer.</p>
+<p>Besides, it is also possible to call the Visual Pattern Viewer from the command line interface of SPMF. To open a file called <strong>patternsFrequentSubgraphs.txt</strong>, this syntax can be used:<br>
+  <br>
+  <span class="style4">java -jar spmf.jar run Visualize_frequent_subgraphs patternsFrequentSubgraphs.txt</span> in a folder containing <span class="highlight">spmf.jar</span> and the input file.</p>
+
+<h2>What is the input file format?</h2>
+<p>The algorithm takes as input a file containing <strong><span class="style2">frequent subgraphs</span></strong>.</p>
+<p>The <strong>file format</strong> is defined as follows. It is a text file, listing all the frequent subgraphs found in a graph database.The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns.  A frequent subgraph is defined by a few lines of text that follow the following format:</p>
+<ul>
+  <li><strong>t # N * Z</strong> This is the first line of a subgraph. It indicates that this is the N-th subgraph in the file and that its support is Z.</li>
+  <li><strong>v M L</strong> This line defines the M-th vertex of the current subgraph, which has a label L</li>
+  <li><strong>e P Q L</strong> This line defines an edge, which connects the P-th vertex with the Q-th vertex. This edge has the label L</li>
+  <li><strong>x X1 X2 ...</strong> This line lists the identifiers of all the graphs X1, X2 ... that contain the current subgraph.</li>
+</ul>
+<p>For example, here is a sample output file containing some frequent subgraphs:</p>
+<p>@FILETYPE=&quot;Frequent subgraphs&quot;<br>
+  @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/<br>  &quot;t # 0 * 3<br>
+  v 0 10<br>
+  x 0 1 2</p>
+<p>t # 1 * 3<br>
+  v 0 11<br>
+  x 0 1 2</p>
+<p>t # 2 * 3<br>
+  v 0 10<br>
+  v 1 11<br>
+  e 0 1 20<br>
+  x 0 1 2</p>
+<p>The first pattern indicates that a subgraph containing a single vertex with label "10" is frequent, appearing in 3 graphs (graphs 0, 1, and 2), and thus having a support of 3.</p>
+<p>The second pattern shows a single vertex with label "11", also with support 3.</p>
+<p>The third pattern is more complex: it contains two vertices (labeled "10" and "11") connected by an edge labeled "20". This pattern also appears in 3 graphs.</p>
+
+<h2>Performance</h2>
+<p>The Visual Pattern Viewer is optimized to handle large numbers of patterns efficiently through:</p>
+<ul>
+  <li><strong>Pagination:</strong> For datasets with more than 200 patterns, pagination is automatically activated</li>
+  <li><strong>Lazy rendering:</strong> Only patterns on the current page are rendered</li>
+  <li><strong>Efficient filtering:</strong> Search and filter operations are performed in memory for fast response</li>
+</ul>
+
+<h2>Example Use Cases</h2>
+<p>The frequent subgraph viewer is particularly useful for:</p>
+<ul>
+  <li><strong>Chemical compound analysis:</strong> Visualizing common molecular structures across a database of chemical compounds</li>
+  <li><strong>Social network analysis:</strong> Finding common interaction patterns in social networks</li>
+  <li><strong>Bioinformatics:</strong> Discovering recurring protein structures or biological pathways</li>
+  <li><strong>Software engineering:</strong> Identifying common code patterns or design structures</li>
+</ul>
+
+<div class="footer">
+  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+</div>
+	  </div>
+  </div>
+	</table>
+  </body>
+</html>

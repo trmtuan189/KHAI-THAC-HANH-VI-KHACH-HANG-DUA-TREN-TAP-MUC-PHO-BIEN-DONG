@@ -1,0 +1,72 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View a taxonomy file with the Taxonomy Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View a taxonomy file with the  Taxonomy Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><strong>A taxonomy file is </strong>a type of file used by some pattern mining algorithms  offered in SPMF such as<strong> CLH-MINER </strong>and <strong>FHEACP</strong>  .</p>
+<p>SPMF offers a simple tool to view the content of a <strong>taxonmy file</strong>. This tool is called the <strong>SPMF Taxonomy Viewer</strong>. </p>
+<p>This page explains how to use this tool with an example. </p>
+<h2>How to run this example? </h2>
+<p><strong>If you want to run this example from the</strong> <strong>graphical interface of SPMF, </strong>(1)
+      choose the algorithm <strong>&quot;<span class="style1">Open_taxonomy_file_with_taxonomy_viewer</span>&quot;</strong><strong>, </strong> (2) choose the <strong class="style1">Taxonomy_CLHMiner.txt</strong> file as input,   and then (3) click &quot;<strong>run algorithm</strong>&quot; . </p>
+<ul>
+    <li><strong>If you want to run this example from the source code of SPMF, run the file <span class="style1">MainTestTaxonomyViewer</span>, which is located in the package <span class="style1">ca.pfv.spmf.tests </span></strong></li>
+    <li><strong>If you want to execute this example from the</strong> <strong>command line interface of SPMF</strong>, then execute this command: <br>
+      <br>
+        <span class="highlight style1"><strong>java -jar spmf.jar run <span class="style1">Open_taxonomy_file_with_taxonomy_viewer</span> </strong><strong class="style1">Taxonomy_CLHMiner.txt</strong><strong> </strong></span> <br>
+      <br>
+      in a folder containing <span class="style1"><strong>spmf.jar</strong></span> and the file <strong><span class="style1"> </span></strong><strong class="style1">Taxonomy_CLHMiner</strong><strong><span class="style1">.txt</span></strong> which is included with SPMF. </li>
+    </ul>
+  <h2>What is displayed?</h2>
+  <p>After running the example, the content of the file will be displayed by the tool. The picture below shows the user interface of this viewer. </p>
+  <p><img src="TAXVIEWER_RESULT__A.png" alt="taxonomy viewer" width="987" height="443"></p>
+  <p>The <strong>taxonomy viewer</strong> displays a taxonomy as a tree. There are two buttons to expand or collapse all nodes from the tree. Moreover, there is a status bar at the bottom that display statistical information about the taxonomy. </p>
+  <h2>What is the input?</h2>
+  <p>The algorithm  takes as input <strong>a taxonomy file </strong>in SPMF format<strong>, </strong>as used by algorithm such <strong>CLH-Miner</strong>.</p>
+  <p>    The taxonomy file used in this example is provided  in the text file &quot;<strong class="style1">taxonomy_CLHMiner</strong><strong><span class="style1">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution. This taxonomy file consists of 5  items, with 2 leafs and 3 generalized items (categories). </p>
+  <p>In a <strong>taxonomy file,</strong> each line indicates a relationship between two items. </p>
+  <p>The format of a line is an item (an integer), followed by &quot;,&quot;, followed by another item (an integer) representing a category. The meaning is that the first item belong to the category represented by the second item. </p>
+  <p>For example, the example taxonmy file has this content:</p>
+  <p>1,6<br>
+    2,6<br>
+    3,7<br>
+    4,8<br>
+    5,8<br>
+    6,7<br>
+    Consider the first line. It means that the item 1  belongs  to the category 6. The other lines follow the same format. </p>
+  <h2>Optional feature: also loading a transaction file containing item names </h2>
+  <p>There is also an optional feature, which is to also load a transaction file containing item names (strings) so that the items are displayed using strings instead of integers. To do this, in the user interface of SPMF, you can set the parameter <strong>Transaction File </strong>to &quot;<span class="style1">transaction_CLHMiner.txt</span>&quot;. If you are using the command line interface of SPMF, you can run the example using this command: <span class="highlight style1"><strong>java -jar spmf.jar run <span class="style1">Open_taxonomy_file_with_taxonomy_viewer</span> </strong><strong class="style1">Taxonomy_CLHMiner.txt transaction_CLHMiner.txt</strong><strong> </strong></span><br>
+    <br>
+    In this example, the content of the transaction file is like this:</p>
+  <p>@ITEM=1=apple <br>
+    @ITEM=2=orange <br>
+    @ITEM=3=milk <br>
+    @ITEM=4=bread <br>
+  .... (followed by other lines) </p>
+  <p>This defines that the item 1 is called Apple, the item 2 is orange, the item 3 is milk and the item 4 is bread, and so on. Then these names are displayed in the taxonomy viewer:</p>
+  <p><img src="TAXVIEWER_RESULT__B.png" alt="taxonomy viewer with item names" width="994" height="419"></p>
+  <p>Note that in this example, we did not give name to categories such as items 6, 7, and 8. But it is possible to do so. </p>
+  <p>For more details about the transaction database format of CLH-Miner, you may see the documentation of that algorithm. </p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

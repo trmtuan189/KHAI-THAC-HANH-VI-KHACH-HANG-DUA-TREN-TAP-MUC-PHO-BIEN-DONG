@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="java.lang.Class">
+		<item key="replaceBarOpen" value="false"/>
+		<list key="findhistory">
+			<item value="report += &quot;Algorithm source: original archive, "/>
+			<item value="report += &quot;Algorithm source: original archive, unchanged&quot;&#x0A;        + System.lineSeparator();&#x0A;&#x0A;report += &quot;CHARM triangular matrix: &quot;&#x0A;      "/>
+			<item value=".resolve(&quot;02_MaGoc_SPMF267a&quot;)"/>
+			<item value="if (!algorithm.equals("/>
+			<item value="if (!algorithm.equals(&quot;CHARM_ORIGINAL&quot;)&#x0A;        &amp;&amp; !algorithm.equals(&quot;CHARM_COMPACT&quot;)) {&#x0A;    throw new IllegalArgumentEx"/>
+			<item value="if (!algorithm.equals(&quot;CHARM_ORIGINAL&quot;)&#x0A;        &amp;&amp; !algorithm.equals(&quot;CHARM_COMPACT&quot;)) {&#x0A;    throw new IllegalArgumentException(&#x0A;        &quot;Ten thuat toan phai la CHARM_ORIGINAL hoac CHARM_COMPACT.&quot;&#x0A;    );&#x0A;}"/>
+			<item value="supportIJ = matrix.getSupportForItems(itemX, itemJ);supportIJ = matrix.getSupportForItems(&#x0A;    matrixIndex.get(itemX),&#x0A;    matrixIndex.get(itemJ)&#x0A;);"/>
+			<item value="if (useTriangularMatrixOptimization)"/>
+			<item value="int maxItemId = 0;"/>
+			<item value="int maxItemId = 0;&#x0A;maxItemId = calculateSupportSingleItems(database, mapItemTIDS);"/>
+			<item value="Math.pow"/>
+			<item value="Path resultDirectory"/>
+			<item value="double"/>
+			<item value="String output"/>
+			<item value="String input"/>
+		</list>
+	</section>
+</section>

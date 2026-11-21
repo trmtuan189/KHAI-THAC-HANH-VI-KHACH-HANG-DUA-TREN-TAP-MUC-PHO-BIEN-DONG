@@ -1,0 +1,136 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Frequent Subgraphs using the AERMINER Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+				
+		
+<!---------------------- (2) Change the title of the example in the <a> tag: --->
+<h1> Mining Frequent Subgraphs using the AERMiner Algorithm (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>TSeqMiner algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<p>To run the example, you will need to first <strong>download</strong> the <span class="highlight"><strong class="highlight">example</strong> <strong>datasets</strong> </span>that can be used with AERMINER:: <a href="datasets/DYNAMIC_GRAPH_DATASETS_REDUCED.zip">datasets (ZIP, 5.0 MB)</a> and extract the files on your hardrive. Inside  &quot;<strong class="highlight">AERMINER_datasets</strong>&quot; you will find three subfolders containing three datasets:<br>
+    - 
+    DBLP<br>
+  - synthetic<br>
+  - USFlight</p>
+  <p>Then<strong>,</strong> </p>
+  <ul>
+    <li><strong>If you are using the graphical interface, </strong>(1)
+      choose the <strong>&quot;<span class="highlight">AERMiner</span>&quot;</strong> algorithm<strong>, </strong> (2) set the input directory as the path to the sample directory <strong>&quot;<span class="highlight">DBLP</span><span class="highlight">&quot;</span></strong> on your hard drive such as: <span class="highlight"><strong>/D:/Workspace/DBLP</strong>,</span> (3) set the
+      output file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;) (4)
+      set <em>minsup = 0.02, minconf = 0.01 and minlift = 0.4 </em> and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+    <li><strong>If you want to execute this example from the command line</strong>,
+      then execute this command: <br>
+      <span class="highlight">java -jar spmf.jar run AERMiner NOINPUT output.txt <strong>/D:/Workspace/DBLP/ 0.02 0.01 0.4</strong></span>  in a folder containing <span class="highlight">spmf.jar</span> and where you replace <span class="highlight"><strong>/D:/Workspace/DBLP</strong></span> by the path of the example input folder <strong>&quot;<span class="highlight">DBLP</span><span class="highlight">&quot;</span></strong> on your hard drive.</li>
+    <li><strong>If you are using the source code version of SPMF, </strong>edit the file <strong><span class="highlight">&quot;</span><span class="highlight">MainTestAERMiner.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span> and set the path of the data to the correct path on your hard drive such as <span class="highlight"><strong>/D:/Workspace/DBLP</strong></span> and then run the example.</li>
+  </ul>
+
+  <h2>What is this algorithm?</h2>
+  <p><strong>AERMiner</strong> is an algorithm for discovering strongly correlated rules indicating relationships between attribute values of a dynamic attributed graph, proposed by <a href="https://www.philippe-fournier-viger.com/2020_DAWAK_Attribute_Evolution_rules.pdf">Fournier-Viger, P., He, G. et al. (2020</a>) </p>
+
+<p>What is the input of the  algorithm?</p>
+
+  <p>The input of TSeqMiner is a dynamic attributed graph and  3 main parameters called <em>minimum support, minimum confidence </em>and <em>minimum lift. </em></p>
+  <p>The dynamic attributed graph is described by 4 files, including:<br>
+    - <strong class="highlight">attributes_mapping.txt </strong>This file record all attributes names.<br>
+    The format is:<br>
+    A1<br>
+    A2<br>
+    A3<br>
+  ...</p>
+  <p>- <strong class="highlight">vertices_mapping.txt</strong> This file describe all vertex entities and corresponding labels.<br>
+    The format is:<br>
+    0,v1<br>
+    1,v2<br>
+    2,v3<br>
+  ...</p>
+  <p>-<strong class="highlight"> attributes.txt </strong>This file record vertex and corresponding attribute values.<br>
+    Line starting with 'T' represent a new graph. Within the range of the graph, in one line, the first item is vertex label and others are attribute values.<br>
+    The format is:<br>
+    T0<br>
+    0 0.3 0.5 3.4<br>
+    1 0.1 0.9 5.6<br>
+    T1<br>
+    0 0.2 0.3 3.3<br>
+    1 0.1 0.5 1.3<br>
+  ...</p>
+  <p><strong>- <span class="highlight">graph.txt</span></strong>  This file describe the edge connections.<br>
+    Line starting with 'T' represent a new graph. Within the range of the graph, in one line, the first item is a vertex label of currently considered, and the others are vertex labels of the connected vertices of the current vertex.<br>
+    The format is:<br>
+    T0<br>
+    0 45 87 97 35<br>
+    1 49 41 56 67<br>
+    T1<br>
+    0 78 32<br>
+    1 10<br>
+  ...</p>
+  <p>The parameters that must be specified are as follows:<br>
+    - minSup(double: 0-1)<br>
+    The relative support of AER in dynamic attributed graph &gt;= minSup<br>
+    - minConf(double:0-1)<br>
+    The confidence of AER &gt;= minConf<br>
+    - minLift(double:1-∞)<br>
+    The lift of AER &gt;= minLift<br>
+  </p>
+
+  <h2>What is the output of AERMiner?</h2>
+  <p>Given a dynamic attributed graph and several parameters, the algorithm will output all attribute evolution rules with their size, sup, confidence.<br>
+  For the above example<strong>, the output file </strong>looks like this:</p>
+  <p>@FILETYPE=&quot;Attribute Evolution Rules&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      size 2pattern,count: 6<br>
+    CorePattern{ childAttr=57, parentAttr=[33]}sup: 445conf: 0.3571302037201063<br>
+    CorePattern{ childAttr=42, parentAttr=[33]}sup: 507conf: 0.3789088054428889<br>
+    CorePattern{ childAttr=87, parentAttr=[33]}sup: 774conf: 0.3491959304233673<br>
+    CorePattern{ childAttr=54, parentAttr=[33]}sup: 625conf: 0.3096594857539958<br>
+    CorePattern{ childAttr=31, parentAttr=[33]}sup: 644conf: 0.3103020739404869<br>
+    CorePattern{ childAttr=81, parentAttr=[33]}sup: 460conf: 0.3405832921403856<br>
+    size 3pattern,count: 11<br>
+    CorePattern{ childAttr=33, parentAttr=[33, 33]}sup: 702conf: 0.34854877892852576<br>
+    CorePattern{ childAttr=85, parentAttr=[31, 33]}sup: 456conf: 0.31965511735589974<br>
+    CorePattern{ childAttr=52, parentAttr=[31, 33]}sup: 543conf: 0.3463641334062329<br>
+    CorePattern{ childAttr=33, parentAttr=[13, 33]}sup: 491conf: 0.3333333333333333<br>
+    CorePattern{ childAttr=85, parentAttr=[15, 33]}sup: 439conf: 0.31649616368286443<br>
+    CorePattern{ childAttr=52, parentAttr=[15, 33]}sup: 524conf: 0.3307641196013289<br>
+    CorePattern{ childAttr=33, parentAttr=[31, 33]}sup: 510conf: 0.35324791418355184<br>
+    CorePattern{ childAttr=85, parentAttr=[33, 33]}sup: 519conf: 0.31474873624739813<br>
+    CorePattern{ childAttr=52, parentAttr=[33, 33]}sup: 635conf: 0.33086967233308695<br>
+    CorePattern{ childAttr=33, parentAttr=[15, 33]}sup: 568conf: 0.3441785426189836<br>
+    CorePattern{ childAttr=52, parentAttr=[13, 33]}sup: 486conf: 0.33011531241619735<br>
+    size 4pattern,count: 0 <br>
+  </p>
+  <p>This file contains 17 attribute evolution rules. The first two lines are metadata indicating the type of patterns (attribute evolution rules) and the source that generated the patterns (SPMF). </p>
+
+  <h2>Optional parameters available in the source code </h2>
+  <p>    Note that there is more parameters that can be used for AERMiner in the source code, in the class ParametersSettingAERMiner.java. These parameters are not offered in the command line as they are for very specific cases.</p>
+
+  <h2>Performance</h2>
+  <p>The <strong>AERMiner</strong> algorithm is the first algorithm for this problem. This is the original implementation. </p>
+
+<p>Where can I get more information about the algorithm?</p>
+
+  <p> This is the article describing the algorithm: </p>
+  <p>Fournier-Viger, P., He, G., Lin, J. C.-W., Gomes, H. M. (2020). <a href="https://www.philippe-fournier-viger.com/2020_DAWAK_Attribute_Evolution_rules.pdf">Mining  Attribute Evolution Rules in Dynamic Attributed Graphs</a>. Proc. 22nd Intern. Conf. on Data Warehousing and Knowledge Discovery (DAWAK 2020), Springer, pp. 167-182. </p>
+
+	<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+				
+	
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

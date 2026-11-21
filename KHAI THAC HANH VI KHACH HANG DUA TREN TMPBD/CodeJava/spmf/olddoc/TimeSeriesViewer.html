@@ -1,0 +1,98 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Vizualize time series using the time series viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Vizualize time series using the time series viewer (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>time series viewer</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Visualize_time_series</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextSAX.txt&quot;</span></strong>, (3) set the separator to the comma ',' and (4) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run Vizualize_time_series contextSAX.txt , <br>
+    </span>in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>contextSAX</strong>.txt</span>. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>to
+    run respectively <strong>this example</strong><strong>, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestPHM.java&quot;</span></strong>in
+    the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is the <strong>time series viewer</strong>?</h2>
+<p> The <strong>time series viewer </strong> is a tool offered in SPMF for visualizing one or more time series using a chart. The time series viewer provides some basic functions like zooming in, zooming out, printing, and saving the picture as an image.</p>
+
+<h2>What is the input of the time series viewer?</h2>
+<p>The input is one or more time series. A <strong>time series </strong>is a sequence of floating-point decimal numbers (double values). <strong></strong>A time-series can also have a name (a string).</p>
+  <p>Time series are used in many applications. An example of time series is the price of a stock on the stock market over time.  Another example is a sequence of temperature readings collected using sensors.</p>
+  <p>For this example, consider the four following <strong>time series</strong>:</p>
+  
+    
+      <table width="414" border="1">
+        <tbody>
+          <tr>
+            <td width="161"><strong>Name</strong></td>
+            <td width="237"><strong>Data points</strong></td>
+          </tr>
+          <tr>
+            <td>ECG1</td>
+            <td>1,2,3,4,5,6,7,8,9,10</td>
+          </tr>
+          <tr>
+            <td>ECG2</td>
+            <td>1.5,2.5,10,9,8,7,6,5</td>
+          </tr>
+          <tr>
+            <td>ECG3</td>
+            <td>-1,-2,-3,-4,-5</td>
+          </tr>
+          <tr>
+            <td>ECG4</td>
+            <td>-2.0,-3.0,-4.0,-5.0,-6.0 </td>
+          </tr>
+        </tbody>
+      </table>
+    
+  
+  <p>This example <strong>time series database </strong>is provided in the file <strong>contextSAX.txt </strong>of the SPMF distribution.</p>
+  <p>To run the <strong>time series viewer</strong>, it is also necessary to indicate the &quot;separator&quot;, which is the character used to separate data points in the input file. In this example, the &quot;separator&quot; is the comma ',' symbol.<br>
+  </p>
+
+  <h2>What is the result of running the time series viewer?</h2>
+  <p>Running the time series viewer will display the time series visually. For example, for the above time series database, the time series will be displayed as follows (note that this may vary depending on your version of SPMF):</p>
+  <p><img src="timeseriesviewer.png" width="754" height="498" alt=""/></p>
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> used by the <strong>time series viewer</strong> defined
+    as follows. It is a text file.  The text file contains one or more time series. Each time series is represented by two lines in the input file. The first line contains the string &quot;@NAME=&quot; followed by the name of the time series. The second line is a list of data points, where data points are floating-point decimal numbers separated by a separator character (here the ',' symbol). </p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>@NAME=ECG1<br>
+    1,2,3,4,5,6,7,8,9,10<br>
+    @NAME=ECG2<br>
+    1.5,2.5,10,9,8,7,6,5<br>
+    @NAME=ECG3<br>
+    -1,-2,-3,-4,-5<br>
+    @NAME=ECG4<br>
+    -2.0,-3.0,-4.0,-5.0,-6.0</p>
+  <p>Consider the first two lines. It indicates that the first time series name is &quot;ECG1&quot; and that it consits of the data points: 1, 2, 3, 4, 5, 6, 7, 8, 9, and 10. Then, three other time series are provided in the same file, which follows the same format.</p>
+
+  <h2>Implementation details</h2>
+  <p>The time series viewer has been implemented by reusing and extending some code provided by Yuriy Guskov under the MIT License for displaying charts.</p>
+ 				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

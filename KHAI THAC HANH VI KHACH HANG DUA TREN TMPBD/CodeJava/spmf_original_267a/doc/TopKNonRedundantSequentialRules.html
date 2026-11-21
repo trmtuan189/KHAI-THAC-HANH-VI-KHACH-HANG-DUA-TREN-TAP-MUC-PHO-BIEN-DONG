@@ -1,0 +1,238 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining the Top-K Non-Redundant Sequential Rules  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining the Top-K Non-Redundant Sequential Rules  (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>TNS algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">TNS</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextPrefixSpan</span><span class="highlight">.txt&quot;</span></strong>, (3) set the output file name
+    (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;) (4)
+    set <em>k = 30,minconf = 0.5, </em>and<em> delta = 2</em> (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> TNS</span></strong> <strong>contextPrefixSpan</strong>.txt
+      output.txt 30 50% 2</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextPrefixSpan.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestTNS.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is TNS?</h2>
+<p><strong>TNS</strong> is an algorithm for discovering the <strong>top-<em>k</em></strong><em> </em> <strong>non-redundant sequential rules</strong> appearing in a
+    sequence database. It is an approximate algorithm in the sense that it
+    always generates non-redundant rules. But these may not always be the
+    top-k non-redundant rules. TNS uses a parameter named delta, which is a
+    positive integer that can be used to improve the chance that the result
+    is exact (the higher delta value, the more chances that the result will
+    be exact).</p>
+  <p>Why is it important to discover <strong>top-k non-redundant
+    sequential rules</strong>? Because other sequential rule mining
+    algorithms requires that the user set a minimum support (<em>minsup</em>)
+    parameter that is hard to set (usually users set it by trial and error,
+    which is time consuming). Moreover, the result of sequential rule
+    mining algorithms usually contains a high level of redundancy (for
+    example, thousands of rules can be found that are variation of other
+    rules having the same support and confidence). The <strong>TNS</strong> algorithm provide solution to both of these problems by letting users
+    directly indicate <em>k</em>, the number of rules to be discovered,
+    and by eliminating redundancy in results. </p>
+
+  <h2>What is the input of TNS ?</h2>
+  <p><strong>TNS </strong> takes four parameters as input:</p>
+  <ul>
+    <li>a sequence database,</li>
+    <li>a parameter <em>k </em>representing the number of rules to be
+      discovered (an integer &gt;= 1),</li>
+    <li>a parameter <em>minconf</em> representing the minimum
+      confidence that rules should have (a value in [0,1] representing a
+      percentage),</li>
+    <li>a parameter <em>delta</em> (an integer &gt;=0) that is used to
+      increase the chances of having an exact result (because this algorihm
+      is approximate).</li>
+  </ul>
+  <p>A <strong>sequence database</strong> is a set of sequences where
+    each sequence is a list of itemsets. An itemset is an unordered set of
+    items. For example, the table shown below contains four sequences. The
+    first sequence, named S1, contains 5 itemsets. It means that item 1 was
+    followed by items 1 2 and 3 at the same time, which were followed by 1
+    and 3, followed by 4, and followed by 3 and 6. It is assumed that items
+    in an itemset are sorted in lexicographical order. This database is
+    provided in the file &quot;<strong>contextPrefixSpan.txt</strong>&quot; of the
+    SPMF distribution<strong>.</strong></p>
+
+<table align="center" border="1" width="461">
+  <tbody>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td>S1</td>
+      <td>(1), (1 2 3), (1 3), (4), (3 6)</td>
+    </tr>
+    <tr>
+      <td>S2</td>
+      <td >(1 4), (3), (2 3), (1 5)</td>
+    </tr>
+    <tr>
+      <td>S3</td>
+      <td>(5 6), (1 2), (4 6), (3), (2)</td>
+    </tr>
+    <tr>
+      <td>S4</td>
+      <td>(5), (7), (1 6), (3), (2), (3)</td>
+    </tr>
+  </tbody>
+</table>
+What is the output of TNS ?
+<p><strong>TNS</strong> outputs an approximation of the <em>k </em>most
+    frequent <strong>non redundant sequential rules</strong> having a
+    confidence higher or equal to <em>minconf</em>.</p>
+  <p>A <strong>sequential rule</strong> X==&gt;Y is a sequential
+    relationship between two sets of items X and Y such that X and Y are
+    disjoint, and that X is unordered and Y is unordered. 
+    The support of a
+    rule X==&gt;Y is the number of sequences that contain all items of X  before all items from Y divided by
+    the number of sequences in the database. The confidence of a rule is
+    the number of sequences that contain all items of X  before all items from Y, divided by the number of
+    sequences that contains items in X. </p>
+  <p>A <strong>sequential rule</strong> <em>ra</em>: X &#8594; Y <strong>is
+    redundant </strong>with respect to another rule <em>rb</em> : X1 &#8594; Y1
+    if and only if:</p>
+  <ul>
+    <li><em>conf</em>(<em>ra</em>) = <em>conf</em>(<em>rb</em>) </li>
+    <li><em>sup</em>(<em>ra</em>) = <em>sup</em>(<em>rb</em>)</li>
+    <li>X1 &#8838; X &#8743; Y &#8838; Y1. </li>
+  </ul>
+  <p>For example, If we run <strong>TNS</strong> with <em>k = 10 </em> and <em>minconf = 0.5</em> and <em>delta = 2</em>, the following set
+    of non-redundant rules is found</p>
+  <p>2 ==&gt; 3  sup= 3  conf= 0.75<br>
+    1,3 ==&gt; 2  sup= 3  conf= 0.75<br>
+    1,4 ==&gt; 3  sup= 3  conf= 1.0<br>
+    1 ==&gt; 2,3  sup= 4  conf= 1.0<br>
+    3 ==&gt; 4  sup= 3  conf= 1.0<br>
+    2,5 ==&gt; 6  sup= 2  conf= 1.0<br>
+    2,3 ==&gt; 4  sup= 2  conf=0.66<br>
+    1 ==&gt; 2,3,4,6  sup= 2  conf= 0.5<br>
+    3,5 ==&gt; 6  sup= 2  conf= 1.0<br>
+    2 ==&gt; 3,4,6  sup= 2  conf= 0.5 </p>
+  <p>For instance, the rule 1 4 ==&gt; 3 means that if 1 an 4 appears
+    in any order they will be followed by 3 with a confidence of 100 %.
+    Moreover, this rule has a support 75 % (<em>sup = 3</em>) because it
+    appears in three sequences (S1, S2 and S3) out of four sequences.</p>
+  <p>Note that for some values of <em>k </em>and some datasets, TNS
+    may return more than <em>k</em> rules. This can happen if several
+    rules have exactly the same support, and it is normal. It is also
+    possible that the algorithm returns slightly less than <em>k</em> rules in some circonstances because the algorithm is approximate.</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a sequence from a sequence
+    database. Each item from a sequence is a postive integer and items from
+    the same itemset within a sequence are separated by single spaces. Note
+    that it is assumed that items within a same itemset are sorted
+    according to a total order and that no item can appear twice in the
+    same itemset. The value &quot;-1&quot; indicates the end of an itemset. The value
+    &quot;-2&quot; indicates the end of a sequence (it appears at the end of each
+    line). For example, the sample input file &quot;<strong>contextPrefixSpan.txt</strong>&quot;
+    contains the following four lines (four sequences).</p>
+  
+    <p>@FILETYPE=&quot;Simple sequence database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  
+    <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. The first line of data represents a sequence where the itemset {1} is
+      followed by the itemset {1, 2, 3}, followed by the itemset {1, 3},
+      followed by the itemset {4}, followed by the itemset {3, 6}. The next
+      lines follow the same format.</p>
+    <p>Note that it is also possible to use <strong>a text file containing a text (several sentences)</strong> if the text file has the &quot;.text&quot; extension, as an alternative to the default input format. If the algorithm is applied on a text file from the graphical interface or command line interface, the text file will be automatically converted to the SPMF format, by dividing the text into sentences separated by &quot;.&quot;, &quot;?&quot; and &quot;!&quot;, where each word is considered as an item. Note that when a text file is used as input of
+    a data mining algorithm, the performance will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line is a sequential rule. Each item from a
+    sequential rule is a postive integer. On each line, the items from the
+    rule antecedent are first listed, separated by single spaces. Then the
+    keyword &quot;==&gt;&quot; appears, followed by the items from the rule
+    consequent, separated by single spaces. Then, the keyword &quot;#SUP:&quot;
+    appears followed by an integer indicating the support of the rule as a
+    number of sequences. Then, the keyword &quot;#CONF:&quot; appears followed by a
+    double values in the [0, 1] interval indicating the confidence of the
+    rule. For example, an output file is shown below:</p>
+  
+    <p>@FILETYPE=&quot;Top-k frequent non-redundant sequential rules&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      3 ==&gt; 2 #SUP: 3 #CONF: 0.75<br>
+      1 ==&gt; 2,3 #SUP: 4 #CONF: 1.0<br>
+      4 ==&gt; 3 #SUP: 3 #CONF: 1.0</p>
+  
+  <p>Consider the second line. It indicates that the rule {1} ==&gt;
+    {2, 3} has a support of 4 sequences and a confidence of 100 %. The
+    other lines follow the same format.</p>
+
+  <h2>Optional feature: giving names to items </h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextPrefixSpan.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple sequence database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+@ITEM=6=noodle<br>
+@ITEM=7=rice<br>
+@ITEM=-1=|<br>
+1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second and third line indicate the type of file and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. The 11th line indicates that the symbol &quot;-1&quot; must be replaced by &quot;|&quot;. Then the following lines define four sequences in the SPMF format. </p>
+  <p>Then, if we apply a sequential pattern mining algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:</p>
+  <p>apple ==&gt; orange,tomato #SUP: 4 #CONF: 1.0<br>
+  bread,noodle ==&gt; orange,tomato #SUP: 2 #CONF: 1.0</p>
+  <p>Note that this feature could be also used from the source code of SPMF using the ResultConverter class. However, there is currently no example provided.</p>
+
+  <h2>Performance</h2>
+  <p><strong>TNS</strong> is an efficient algorihtm. It is based on the
+    TopSeqRules algorithm for discovering<strong> top-k sequential rules</strong>.
+    The main difference between TNS and TopSeqRules is that TNS includes
+    additional strategies to eliminate redundancy in results, and that TNS
+    is an approximate algorithm, while TopSeqRules is not.</p>
+  <p>TNS and TopSeqRules are more intuitive to use than regular
+    sequential rule mining algorithms such as RuleGrowth. However, it
+    should be note that the problem of <strong>top-k sequential rule mining</strong> is more computationally expensive than the problem of sequential rule
+    mining. Therefore, it is recommended to use TNS or TopSeqRules for <em>k </em>values of up to 1000 or 2000 depending on the dataset. If more
+    rules should be found, it could be better to use RuleGrowth or
+    TRuleGrowth, for more efficiency.</p>
+
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The TNS algorithm is described in this paper:</p>
+  <p><em>Fournier-Viger, P., Tseng, V. S. (2013).<a href="TNS_Mining_top-k_non_redundant%20sequential_rules_6pages.pdf"> TNS: Mining Top-K Non-Redundant Sequential Rules</a>. Proc. 28th
+    Symposium on Applied Computing (ACM SAC 2013). ACM Press, pp. 164-166.</em></p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

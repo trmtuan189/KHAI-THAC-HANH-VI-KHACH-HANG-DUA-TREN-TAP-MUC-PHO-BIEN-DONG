@@ -1,0 +1,159 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Deriving Frequent Itemsets from Frequent Closed Itemsets using the DFI-Growth Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Deriving Frequent Itemsets from Frequent Closed Itemsets using the LevelWise Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>LevelWise algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">LevelWise</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextMushroom_FCI90.txt"</span></strong>, (3) set the
+    output file name (e.g. "<span class="highlight">output.txt</span>") and (4) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run LevelWise 
+      <strong>contextMushroom_FCI90</strong>.txt output.txt </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>contextMushroom_FCI90</strong>.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestLevelWise_saveToFile.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is LevelWise?</h2>
+<p align="left"><strong>LevelWise</strong> is the first algorithm to derive frequent itemsets from frequent closed itemsets. This method was  proposed by Nicolas Pasquier et al. (1999).  </p>
+
+<h2>What is the input of the LevelWise algorithm?</h2>
+<p align="left">The input of <strong>LevelWise</strong> is a<strong> FCI database</strong>. </p>
+  <p align="left"> A <strong>FCI database</strong> is a set of frequent closed itemsets. For example, consider  the following FCI database. It contains 6 frequent closed itemsets and support  number of each itemset. This database is provided as the file <strong>contextMushroom_FCI90.txt</strong>. This input  file was obtained by applying the <strong>Charm</strong> algorithm (proposed by <strong>Zaki)</strong> on the <strong>Mushroom.txt</strong> dataset with 90% as the <em>minsup</em> threshold.</p>
+  <table border="1" cellspacing="0" cellpadding="0" width="312">
+    <tr>
+      <td width="198" valign="top"><p align="left"><strong>frequent closed    itemsets</strong></p></td>
+      <td width="113" valign="top"><p align="left"><strong>support</strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{36  90     97}<strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">7576<strong></strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{90  97}<strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">7768<strong></strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{36  90     94}<strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">8192<strong></strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{36  90} <strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">8200<strong></strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{90  94}<strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">8216<strong></strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{90}<strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">8416<strong></strong></p></td>
+    </tr>
+  </table>
+
+  <h2>What is the output of the LevelWise algorithm?</h2>
+  <p align="left"> <strong>LevelWise</strong> is an algorithm for deriving frequent itemsets from  frequent closed itemsets. A frequent itemset is an itemset which appears in at  least <em>minsup</em> transactions from the  transaction database. And a frequent closed itemset is a frequent itemset that  none of its immediate supersets have the same support number as itself. <br>
+For<strong> </strong>example, if <strong>LevelWise</strong> is run on the previous FCI  database,  <strong>LevelWise </strong>produces the following result:</p>
+  <table border="1" cellspacing="0" cellpadding="0" width="312">
+    <tr>
+      <td width="198" valign="top"><p align="left"><strong>frequent itemsets</strong></p></td>
+      <td width="113" valign="top"><p align="left"><strong>support</strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{36  90  94}<strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">8192<strong></strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{36     90  97}<strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">7576<strong></strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{36  94}<strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">8192<strong></strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{36  90}<strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">8200<strong></strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{90  97}<strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">7768<strong></strong></p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{36  97}</p></td>
+      <td width="113" valign="top"><p align="left">7576</p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{90  94}</p></td>
+      <td width="113" valign="top"><p align="left">8216</p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{36}</p></td>
+      <td width="113" valign="top"><p align="left">8200</p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{97}</p></td>
+      <td width="113" valign="top"><p align="left">7768</p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{94}</p></td>
+      <td width="113" valign="top"><p align="left">8216</p></td>
+    </tr>
+    <tr>
+      <td width="198" valign="top"><p align="left">{90}<strong></strong></p></td>
+      <td width="113" valign="top"><p align="left">8416<strong></strong></p></td>
+    </tr>
+  </table>
+  
+  <h2>How should I interpret the results?</h2>
+  <p align="left"> In the result, each frequent  itemset is annotated with its support number. The <strong>support</strong> number of an frequent itemset is how many times the itemset  appears in the original transaction database from which we obtain the frequent  closed itemsets.  For example, the  itemset {36 90} has a support of 8200 which is a frequent itemset because its  support number is higher or equal to the <em>minsup</em> threshold.</p>
+
+  <h2>Input file format</h2>
+  <p align="left">#SUP: 7576<br>
+90 97 #SUP: 7768<br>
+36 90 94 #SUP: 8192<br>
+36 90 #SUP: 8200<br>
+90 94 #SUP: 8216<br>
+90 #SUP: 8416</p>
+  <p align="left"><a name="_gjdgxs"></a>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to  the default input format. The specification of the ARFF format can be found <a href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>. Most features of the ARFF format  are supported except that (1) the character &quot;=&quot; is forbidden and (2)  escape characters are not considered. Note that when the ARFF format is used,  the performance of the data mining algorithms will be slightly less than if the  native SPMF file format is used because a conversion of the input file will be  automatically performed before launching the algorithm and the result will also  have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p align="left">The <strong>output file format</strong> is defined as follows. It is a text file, where each line represents a frequent  itemset. On each line, the items of the itemset are first listed. Each item is  represented by an integer and it is followed by a single space. After, all the  items, the keyword &quot;#SUP:&quot; appears, which is followed by an integer  indicating the support of the itemset, expressed as a number of transactions.  For example, here is the input file for this example. The first line indicates  the frequent itemset consisting of the item {36 90 94} and it indicates that  this itemset has a support of 8192 transactions.</p>
+  <p align="left">36 90 94 #SUP:  8192<br>
+    36 90 97 #SUP:  7576<br>
+    36 94 #SUP: 8192<br>
+    36 90 #SUP: 8200<br>
+    90 97 #SUP: 7768<br>
+    36 97 #SUP: 7576<br>
+    90 94 #SUP: 8216<br>
+    36 #SUP: 8200<br>
+    97 #SUP: 7768<br>
+    94 #SUP: 8216<br>
+  90 #SUP: 8416</p>
+  <p align="left">Note that if the ARFF format is used as input instead of the  default input format, the output format will be the same except that items will  be represented by strings instead of integers.</p>
+
+  <h2>Where can I get more information about the LevelWise algorithm?</h2>
+  <p align="left">This is the conference article describing LevelWise:</p>
+  <p align="left"><a><em>Nicolas Pasquier, Yves Bastide, Rafik  Taouil and Lotfi Lakhal</em></a><em>: Efficient mining of association rules  using closed itemset lattices. Information Systems, Vol. 24, No. 1, pp. 25–46,  1999</em></p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

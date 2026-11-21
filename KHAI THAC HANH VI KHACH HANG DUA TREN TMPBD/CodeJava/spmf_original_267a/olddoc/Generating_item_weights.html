@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Example: Generating an Item Weights File from a Transaction Database (SPMF - Java)</title>
+    <link rel="stylesheet" href="docstyle.css"/>
+    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+    </style>
+</head>
+  <body>
+    <div width="100%" class="container">
+        <div class="content">
+            <!----------START------>
+            <h1>Generating an Item Weights File from a Transaction Database
+                (<a href="documentation.html">SPMF documentation</a>)
+            </h1>
+
+            <p>This example explains how to <strong>generate an item weights file from a
+            transaction database in SPMF format</strong> using the
+            <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+
+            <h2>How to run this example?</h2>
+            <ul>
+              <li><strong>If you are using the graphical interface,</strong> (1)
+                choose the <strong>&quot;<span class="highlight">Generate_item_weights</span>&quot;</strong>
+                algorithm, (2) set the input file (e.g. <span class="highlight"><strong>DB_RWFIM.txt</strong></span>),
+                (3) set the output file name (e.g. <span class="highlight"><strong>output_weights.txt</strong></span>),
+                (4) click "<span class="highlight">Run algorithm</span>".</li>
+
+              <li><strong>If you want to execute this example from the command line</strong>,
+                then execute this command:<br>
+                <span class="highlight style1">java -jar spmf.jar run <strong>Generate_item_weights</strong>
+                DB_RWFIM.txt output_weights.txt</span><span class="style1"> in a folder containing spmf.jar.</span></li>
+
+              <li><strong>If you are using the source code version of SPMF,</strong> launch
+                the file <strong><span class="highlight">"<span class="style1">MainTestItemWeightsGenerator.java</span>"</span></strong>
+                in the package <span class="style1"><strong>ca.pfv.spmf.tools.dataset_generator</strong></span>.</li>
+            </ul>
+
+            <h2>What is this tool?</h2>
+            <p>This tool reads a <strong>transaction database</strong> in SPMF format,
+            collects all distinct items that appear in the database, and generates a
+            <strong>weight file</strong> that associates a random weight (a real number
+            between 0 and 1) to each distinct item. The weights are generated randomly
+            using a uniform distribution.</p>
+
+            <p>Weight files are used by several weighted data mining algorithms available
+            in SPMF, such as the <strong>RWFIM</strong> algorithm for mining weighted
+            frequent itemsets. This tool makes it easy to quickly generate a weight file
+            for testing and benchmarking such algorithms on a given transaction database,
+            without having to create the weight file manually.</p>
+
+            <h2>What is the input?</h2>
+            <p>The tool takes a single <strong>transaction database file</strong> in SPMF
+            format as input. No additional parameters are required.</p>
+
+            <p>A <strong>transaction database</strong> is a text file where each line
+            represents one transaction. Each transaction is a list of items (positive
+            integers) separated by single spaces. Lines starting with
+            <span class="highlight">#</span>,
+            <span class="highlight">%</span>, or
+            <span class="highlight">@</span> are treated as comments and ignored.</p>
+
+            <p>For example, the input file <span class="style1">DB_RWFIM.txt</span>
+            is defined as follows:</p>
+
+            <pre>
+1 2 3 4 5
+1 3 4
+2 3 5
+1 2 4 5
+2 3 4 5
+1 3 5
+2 4
+1 2 3
+3 4 5
+1 2 4
+            </pre>
+
+            <p>Each line is a transaction. For example, the first line means that
+            transaction T1 contains items 1, 2, 3, 4, and 5.</p>
+
+            <h2>What is the output?</h2>
+            <p>The tool outputs a <strong>weight file</strong> associating each distinct
+            item found in the transaction database with a randomly generated weight. The
+            weight is a real number uniformly distributed in the range [0, 1].</p>
+
+            <p>The weight file is a text file where each line contains one item identifier
+            (a positive integer) followed by a single space and the item weight (a real
+            number between 0 and 1). Items are listed in ascending order.</p>
+
+            <p>For example, for the input file shown above, the output file could look
+            like the following:</p>
+
+            <pre>
+1 0.4
+2 0.7
+3 1.0
+4 0.5
+5 0.45
+</pre>
+
+            <p>In this example, item 1 has been assigned the weight 0.4, item 2 has
+            been assigned the weight 0.7, and so on. Note that the exact weight values
+            will differ each time the tool is run, since they are generated randomly.</p>
+
+            <h2>Output file format</h2>
+            <p>The <strong>output file format</strong> is defined as follows. It is a
+            plain text file. Each line associates one item with its weight. Each line
+            contains:</p>
+            <ul>
+              <li>an item identifier (a positive integer),</li>
+              <li>followed by a single space,</li>
+              <li>followed by the item weight (a real number between 0 and 1).</li>
+            </ul>
+
+            <p>Lines starting with <span class="highlight">#</span>,
+            <span class="highlight">%</span>, or <span class="highlight">@</span>
+            are treated as comments and ignored by algorithms that read this format.</p>
+
+            <p>Items appear in ascending order of their identifier. For example:</p>
+
+            <pre>
+1 0.4
+2 0.7
+3 1.0
+4 0.5
+5 0.45
+            </pre>
+
+            <p>This format is compatible with the weight file format expected by weighted
+            data mining algorithms in SPMF, such as RWFIM, NWFI, NWFCI and WFIM.</p>
+
+            <!----------END------>
+            <div class="footer">
+              <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+              <p>Copyright &copy; 2008-2026                <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>.
+                All rights reserved.</p>
+            </div>
+
+        </div>
+    </div>
+  </body>
+</html>

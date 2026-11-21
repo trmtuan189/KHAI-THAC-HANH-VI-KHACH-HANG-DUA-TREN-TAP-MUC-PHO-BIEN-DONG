@@ -1,0 +1,246 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Local High-Utility Itemsets in a Transaction Database using the LHUI-Miner Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining Local High-Utility Itemsets in a Transaction Database using the LHUI-Miner Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>LHUI-Miner algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">LHUI-Miner</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">DB_LHUI</span><span class="highlight">.txt"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight">output.txt</span>")
+    (4) set the local minimum utility to 40 and the window length to 3 <span class="highlight"> </span>and
+    (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> LHUI-Miner </span></strong><strong><span class="highlight">DB_LHUI</span></strong>.txt
+      output.txt 40 3 </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">DB_LHUI.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestLHUIMiner.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is LTHUI-Miner?</h2>
+<p><strong>LHUI-Miner </strong> (Fournier-Viger, P. Zhang, Y et al, 2019) is an algorithm for discovering <strong>local high-utility itemsets</strong> in a transaction database containing utility  information and timestamps</p>
+  <p>LHUI-Miner is an algorithm that extends  the HUI-Miner algorithm to mine <strong>local high utility itemsets</strong> (LHUI). An itemset  is said to be a LHUI if there are some time periods where the itemset has a high  utility. For example, the algorithm could be use to find time periods where products yield a lot of money in a customer transaction database. To find local high utility itemsets,  period information is added to traditional  utility-lists, and the algorithm uses a sliding window technique to explore each itemset’s  utility-list to determine if it is a LHUI.</p>
+
+  <h2>What is the input?</h2>
+  <p align="left"><strong>LHUI-Miner </strong>takes as  input a<strong> </strong>transaction  database with utility values and the <em>lMinutil </em>and <em>minLength </em>thresholds.<em> </em>Let's consider the following  database consisting of 8 transactions (t1,t2...t8) and 5 items (1, 2, 3, 4, 5),  and each transaction is associated with a timestamp. This database is provided  in the text file &quot;<strong>DB_LHUI.txt</strong>&quot; in the  package <strong>ca.pfv.spmf.tests </strong>of the SPMF distribution</p>
+  <table border="1" cellspacing="3" cellpadding="0" width="663">
+    <tr>
+      <td width="98"><p align="left"><strong>Items</strong> </p></td>
+      <td width="153"><p align="left"><strong>Transaction utility</strong> </p></td>
+      <td width="263"><p align="left"><strong>Item utilities for this transaction</strong> </p></td>
+      <td width="112" valign="top"><p align="left"><strong>Timestamp</strong></p></td>
+    </tr>
+    <tr>
+      <td width="98"><p align="left">2 3 5</p></td>
+      <td width="153"><p align="left">9</p></td>
+      <td width="263"><p align="left">4 2 3</p></td>
+      <td width="112" valign="top"><p align="left">1</p></td>
+    </tr>
+    <tr>
+      <td width="98"><p align="left">2 3 4 5</p></td>
+      <td width="153"><p align="left">18</p></td>
+      <td width="263"><p align="left">8 3 4 3</p></td>
+      <td width="112" valign="top"><p align="left">3</p></td>
+    </tr>
+    <tr>
+      <td width="98"><p align="left">2 3 4 5</p></td>
+      <td width="153"><p align="left">9</p></td>
+      <td width="263"><p align="left">4 2 10 3</p></td>
+      <td width="112" valign="top"><p align="left">3</p></td>
+    </tr>
+    <tr>
+      <td width="98"><p align="left">1 2 3 4 5</p></td>
+      <td width="153"><p align="left">58</p></td>
+      <td width="263"><p align="left">10 20 2 20 6</p></td>
+      <td width="112" valign="top"><p align="left">5</p></td>
+    </tr>
+    <tr>
+      <td width="98"><p align="left">1 3 5</p></td>
+      <td width="153"><p align="left">22</p></td>
+      <td width="263"><p align="left">10 6 6</p></td>
+      <td width="112" valign="top"><p align="left">6</p></td>
+    </tr>
+    <tr>
+      <td width="98"><p align="left">2 3 5</p></td>
+      <td width="153"><p align="left">14</p></td>
+      <td width="263"><p align="left">8 3 3</p></td>
+      <td width="112" valign="top"><p align="left">7</p></td>
+    </tr>
+    <tr>
+      <td width="98"><p align="left">1 3 4</p></td>
+      <td width="153"><p align="left">16</p></td>
+      <td width="263"><p align="left">10 2 4</p></td>
+      <td width="112" valign="top"><p align="left">9</p></td>
+    </tr>
+    <tr>
+      <td width="98"><p align="left">1 3 5</p></td>
+      <td width="153"><p align="left">22</p></td>
+      <td width="263"><p align="left">10 6 6</p></td>
+      <td width="112" valign="top"><p align="left">10</p></td>
+    </tr>
+  </table>
+  <p>Each line of the <strong>database</strong> is:</p>
+  <ul type="disc">
+    <li>a set of items (the       first column of the table), </li>
+    <li>the sum of the       utilities (e.g. profit) of these items in this transaction (the second       column of the table),</li>
+    <li>the utility of each       item for this transaction (e.g. profit generated by this item for this       transaction)(the third column of the table).</li>
+    <li>the timestamp which       indicated when this transaction was made (the fourth column of the table) </li>
+  </ul>
+  <p>Note  that the value in the second column for each line is the sum of the values in  the third column.</p>
+  <p>What  are real-life examples of such a database? There are several applications in  real life. One application is a customer transaction database. Imagine that  each transaction represents the items purchased by a customer. The first  customer named &quot;<strong>t1</strong>&quot; bought items 2, 3 and 5. The  amount of money spent for each item is respectively 4 $, 2 $ and 3 $. The total  amount of money spent in this transaction is 4 + 2 + 3 = 9 $. And the purchase  was made in time 1</p>
+
+  <h2>What is the output?</h2>
+  <p><em> </em>The  output of<strong> LHUI-Miner </strong>is the set of <strong>local</strong> <strong>high utility itemset</strong>s having at least one  window (time period) of length <em>minLength</em> during which it generate utility no  less than a <strong><em>min_utility</em></strong> threshold. To explain what is a  local high utility itemset, it is necessary to review some definitions. An <strong>itemset</strong> is an unordered set of distinct items. And a window is the set of transactions  which were made during the given time period. For example, window w(1,3) is the  set transactions that were made during time 1 to 3, i.e. w(1,3)={t1,t2,t3}. The <strong>utility of an itemset in a transaction </strong>is the sum of the  utility of its items in the transaction. For example, the utility of the  itemset {2 3} in transaction t1 is 4 + 2 = 6 and the utility of {2 3} in  transaction t2 is 8 + 3 = 11. The <strong>utility  of an itemset in a window </strong>is the sum of the utility of its items in  the transactions in the window. For example, the utility of the itemset {2 3}  in window w(1,3) is the sum of itemset {2 3} in t1, t2 and t3, i.e.  (4+2)+(8+3)+(4+2)=35. The<strong> utility of an itemset in a database</strong> is the sum of its utility in all  transactions where it appears. A<strong> local high utility itemset</strong> is  an itemset such that there exists at least one window of length <em>minLength</em> during which the itemset  generate utility greater than <em>lMin_util. </em>For  example, if we run <strong>LHUI-Miner </strong>with a<strong> <em>minLength</em> of 3 and <em>lMin_util of 40</em></strong>, we obtain 14 <strong>high-utility  itemsets</strong>:</p>
+  <div align="center">
+    <table border="1" cellspacing="3" cellpadding="0" width="331">
+      <tr>
+        <td width="118"><br>
+            <strong>itemsets</strong> </td>
+        <td width="103"><p align="left"><strong>utility</strong> </p></td>
+        <td width="102" valign="top"><p align="left"><strong>LHUI periods</strong></p></td>
+      </tr>
+      <tr>
+        <td><p align="left">{4 2}</p></td>
+        <td><p align="left">66</p></td>
+        <td valign="top"><p align="left">[3,5]</p></td>
+      </tr>
+      <tr>
+        <td><p align="left">{4 2 1}</p></td>
+        <td><p align="left">50</p></td>
+        <td valign="top"><p align="left">[5,5]</p></td>
+      </tr>
+      <tr>
+        <td><p align="left">{4 2 1 5}</p></td>
+        <td><p align="left">56</p></td>
+        <td valign="top"><p align="left">[5,5]</p></td>
+      </tr>
+      <tr>
+        <td><p align="left">{4 2 1 5 3}</p></td>
+        <td><p align="left">58</p></td>
+        <td valign="top"><p align="left">[5,5]</p></td>
+      </tr>
+      <tr>
+        <td><p align="left">{4 2 5}</p></td>
+        <td><p align="left">78</p></td>
+        <td valign="top"><p align="left">[3,5]</p></td>
+      </tr>
+      <tr>
+        <td><p align="left">{4 2 5 3}</p></td>
+        <td><p align="left">85</p></td>
+        <td valign="top"><p align="left">[3,5]</p></td>
+      </tr>
+      <tr>
+        <td><p align="left">{4 2 3}</p></td>
+        <td><p align="left">73</p></td>
+        <td valign="top"><p align="left">[3,5]</p></td>
+      </tr>
+      <tr>
+        <td><p align="left">{4 5}</p></td>
+        <td><p align="left">46</p></td>
+        <td valign="top"><p align="left">[3,5]</p></td>
+      </tr>
+      <tr>
+        <td><p align="left">{4 5 3}</p></td>
+        <td><p align="left">53</p></td>
+        <td valign="top"><p align="left">[3,5]</p></td>
+      </tr>
+      <tr>
+        <td><p align="left">{4 3}</p></td>
+        <td><p align="left">47</p></td>
+        <td valign="top"><p align="left">[3,5]</p></td>
+      </tr>
+      <tr>
+        <td>{1 3 5} </td>
+        <td>62</td>
+        <td valign="top">[5,6]</td>
+      </tr>
+      <tr>
+        <td><p align="left">{2 5}</p></td>
+        <td><p align="left">62</p></td>
+        <td valign="top"><p align="left">[3,5]</p></td>
+      </tr>
+      <tr>
+        <td><p align="left">{2 5 3}</p></td>
+        <td><p align="left">74</p></td>
+        <td valign="top"><p align="left">[3,7]</p></td>
+      </tr>
+    </table>
+  </div>
+  <p>If  the database is a transaction database from a store, we could interpret these  results as all the groups of items bought together that generated a profit of  40 $ or more in a short period (e.g. 3 days). Note that the LHUI period is the  time periods when the itemsets have high utility.</p>
+
+  <h2>Input file format</h2>
+  <p align="left">The <strong>input file format</strong> of <strong>LHUI-Miner </strong>is  defined as follows. It is a text file. Each line represents a transaction. Each  line is composed of four sections, as follows.</p>
+  <ul>
+    <li>First, the  items contained in the transaction are listed. An item is represented by a  positive integer. Each item is separated from the next item by a single space.  It is assumed that all items within a same transaction (line) are sorted  according to a total order (e.g. ascending order) and that no item can appear  twice within the same transaction.</li>
+    <li>Second, the  symbol &quot;:&quot; appears and is followed by the transaction utility (an  integer).</li>
+    <li>Third, the  symbol &quot;:&quot; appears and is followed by the utility of each item in  this transaction (an integer), separated by single spaces.</li>
+    <li>Fourth, the  symbol &quot;:&quot; appears and is followed by the timestamp (an integer)  indicating when the transaction were made.</li>
+  </ul>
+  <p align="left">For example, for the previous example, the input file is  defined as follows:</p>
+  <p align="left">@FILETYPE=&quot;Transaction database with utility values and time&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    2 3 5:9:4 2 3:1<br>
+    2 3 4 5:18:8 3 4 3:3<br>
+    2 3 4 5:19:4 2 10 3:3<br>
+    1 2 3 4 5:58:10 20 2 20 6:5<br>
+    1 3 5:22:10 6 6:6<br>
+    2 3 5:14:8 3 3:7<br>
+    1 3 4:16:10 2 4:9<br>
+    1 3 5:22:10 6 6:10</p>
+  <p align="left">The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. Consider the first line of data. It means that the transaction {2,  3, 5} has a total utility of 9 and that items 2, 3 and 5 respectively have a  utility of 4, 2 and 3 in this transaction, and the transaction were made at  time 1. The following lines follow the same format.</p>
+
+  <h2>Output file format</h2>
+  <p align="left">The <strong>output file format</strong> of <strong>LHUI-Miner </strong>is  defined as follows. It is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line represents a <strong>local high utility itemset</strong>. On each line, the items of the itemset  are first listed. Each item is represented by an integer, followed by a single  space. After, all the items, the keyword &quot; #UTIL: &quot; appears and is  followed by the utility (in the whole database) of the itemset. Then, it is  followed by #WINDOWS: and then the itemset’s LHUI periods. For example, we show below the output  file for this example. </p>
+  <p align="left">@FILETYPE=&quot;Local high-utility itemsets&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    4 1 2 #UTIL: 50 #WINDOWS: [5,5] <br>
+    4 1 2 5 #UTIL: 56 #WINDOWS: [5,5] <br>
+    4 1 2 5 3 #UTIL: 58 #WINDOWS: [5,5] <br>
+    4 1 2 3 #UTIL: 52 #WINDOWS: [5,5] <br>
+    4 2 #UTIL: 66 #WINDOWS: [3,5] <br>
+    4 2 5 #UTIL: 78 #WINDOWS: [3,5] <br>
+    4 2 5 3 #UTIL: 85 #WINDOWS: [3,5] <br>
+    4 2 3 #UTIL: 73 #WINDOWS: [3,5] <br>
+    4 5 #UTIL: 46 #WINDOWS: [3,5] <br>
+    4 5 3 #UTIL: 53 #WINDOWS: [3,5] <br>
+    4 3 #UTIL: 47 #WINDOWS: [3,5] <br>
+    1 5 3 #UTIL: 62 #WINDOWS: [5,6] <br>
+    2 5 #UTIL: 62 #WINDOWS: [3,5] <br>
+    2 5 3 #UTIL: 74 #WINDOWS: [3,7]  </p>
+  <p align="left">    For example, the fifth line indicates that the itemset  {2, 4} is a LHUI and its utility in the whole database is 66. The itemset’s  LHUI period is [3,5]. The following lines follows the same format.</p>
+
+  <h2>Performance</h2>
+  <p><strong>Local high  utility itemset mining</strong> can find  patterns that are ignored by traditional high  utility itemset mining algorithms and thus is a more difficult problem than traditional high utility itemset mining.  Therefore, local high-utility itemset mining algorithms are generally slower  than high uility itemset mining algorithms when the average utility of the two  algorithms are equal. However, when the number of patterns are similar,  LHUI-Miner’s performance is similar to that of HUI-Miner.</p>
+
+<p>Implementation details</p>
+
+  <p>The version implemented here contains all the optimizations
+    described in the paper proposing LTHUI-Miner. Note that the input format
+    is not exactly the same as described in the original article. But it is
+    equivalent.</p>
+
+  <h2>Where can I get more information about the LHUI-Miner algorithm?</h2>
+  <p>This is the  reference of the article describing the LHUI-Miner algorithm:</p>
+  <p>    Fournier-Viger, P., Zhang, Y., Lin, J. C.W., Fujita, H., Koh,  Y.S. (2019). <strong><a href="https://www.philippe-fournier-viger.com/2018_Local_and_peak_utility_patterns_FINAL.pdf">Mining Local and Peak High Utility Itemsets</a></strong>.  Information Sciences, Elsevier, 481: 344-367. </p>
+  <p>Besides, for a general overview of <strong> high utility itemset mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_high_utility_itemset2019_draft.pdf">survey paper</a>. </p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

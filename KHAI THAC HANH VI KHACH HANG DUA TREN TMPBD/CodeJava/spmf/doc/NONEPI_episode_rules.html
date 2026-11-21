@@ -1,0 +1,150 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Episode Rules in a Complex Sequence with the Non-Overlapping Frequency using the NONEPI algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/></head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining Episode Rules in a Complex Sequence with the Non-Overlapping Frequency using the NONEPI algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>NONEPI algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;NONEPI&quot; </strong>algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextEMMA</span><span class="highlight">.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;)
+    (4) set the minimum support to 1, and the minimum confidence to 0.2 (which means 20%), and then  
+    (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run NONEPI contextEMMA.txt  output.txt 2 0.2 <br>
+</span>in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextEMMA.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestPOERM.java&quot;</span></strong> or <strong><span class="highlight">&quot;MainTestPOERM-ALL.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.<br>
+</li>
+</ul>
+<h2>What is NONEPI?</h2>
+<p><strong>NONEPI </strong>(Ouarem et al, 2021) is an
+    algorithm for discovering<strong>  episode rules </strong>in a
+    <strong>complex event sequence</strong>. In simple words, the algorithm is used to analyze a sequence of symbols or events that has timestamps. The output is some rules of the form X--&gt;Y indicating that if some sequence of event(s) or symbol(s) X appear in the sequence, they will be followed by some other sequence of event(s) or symbol(s) Y. Finding such rule is useful to discover some sequential or temporal relationships in a sequence. For example, it can be used to analyze the purchase behavior of a customer (a sequence of purchases), or it could be used to find relationships between some words in a text (a sequence of words). </p>
+  <p>Various algorithms have been proposed to find episode rules.Diifferent algorithms may use different ways of counting how many times a rule appears in a sequence. The NONEPI algorithm is special in that it uses the non-overlapping frequency. The non-overlapping frequency means that NONEPI counts only the occurrences of a rule that are non overlapping in a sequence and ignore others. This can have some advantages for some applications.  </p>
+  <h2>What is the input?</h2>
+  <p>The algorithm  takes as input <strong>an event sequence</strong>  with a <strong>minimum support</strong> <strong>threshold</strong>, amd a <strong>mininum confidence threshold</strong>. Let’s consider following sequence consisting of 11 time  points (t1, t2, …, t10) and 4 events type (1, 2, 3, 4). This database is provided  in the text file &quot;<strong><span class="highlight">contextEMM<span class="highlight">A</span></span><span class="highlight">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution.</p>
+  <table border="1" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="277" valign="top"><p><strong>Time points</strong></p></td>
+      <td width="277" valign="top"><p><strong>Itemset</strong> <strong>(event set)</strong> </p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>1</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>2</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>3</p></td>
+      <td width="277" valign="top"><p>1 2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>6</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>7</p></td>
+      <td width="277" valign="top"><p>1 2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>8</p></td>
+      <td width="277" valign="top"><p>3</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>9</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>11</p></td>
+      <td width="277" valign="top"><p>4</p></td>
+    </tr>
+  </table>
+  <p>Each line of the sequence is called an  event set and consists of:</p>
+  <ul>
+    <li>a time point (first column)</li>
+    <li>an event set (second column)</li>
+  </ul>
+  <p>For example, in the above example, at time point 1, the event 1 occurred. Then at time point 2, the event 1 occurred again. Then at time point 3, the events 1 and 2 occurred simultaneously. And so on. </p>
+  <p>To make it easier to understand, we could also represent the above sequence visually like this:</p>
+  <p><img src="poerm_sequence.png" alt="poerm sequence" width="570" height="88"></p>
+  <h2>What is the output?</h2>
+  <p> The<strong> output of NONEPI </strong>is the set of <strong> episode rules </strong>having a <strong>support</strong> (occurrence frequency) that is no less than a minSup threshold (a positive integer)  set by the user, and a confidence that is no less than a minimum confidence threshold (a double number representing a percentage). </p>
+  <p>A <strong>rule</strong> is denoted as <strong>X --&gt; Y</strong> and it is a relationship between two sequence of events (episodes) X and Y. The <strong>intuitive</strong> <strong>meaning of a rule X--&gt; </strong>Y is that if the sequence of events X appear in a sequence, they will be followed by a sequence of events Y. </p>
+  <p>The <strong>support </strong>of a rule X--&gt;Y means how many times the rule appeared in the input sequence (how many times X was followed by Y.. For example, if a rule appears three times, we will say that the support of the rule is 3.</p>
+  <p>The <strong>confidence </strong>of a rule X--&gt;Y means how many times X--&gt;Y appeared in the input sequence, divided by how many times X appeared in the input sequence. Thus, you can think about the confidence as the conditional probability P(Y|X), that is how likely it is that Y will follow X in the sequence. The confidence is expressed as a percentage. For example, a confidence of 50% means that 50% of the times X was followed by Y in the input sequence. </p>
+  <p>The <strong>output of the algorithm </strong>is all the episode rules that (1) have a confidence greater or equal to the minConf parameter, and (2) a support greater or equal to the minSup parameter.</p>
+  <p>It is to be noted that NONEPI uses the non-overlapping support. Thus, to calculate the support and confidence of rules, overlapping occurrences are not counted. See the research paper for a formal explanation of non overlapping ocurrences. .</p>
+  <p>Now, let's look at the result for the above example, if we set minsup = 2 and minconf = 0.2 (20 %). One rule is found:</p>
+  
+    <table border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="277" valign="top"><p><strong>Episode rules </strong></p></td>
+        <td width="277" valign="top"><strong>Support</strong></td>
+        <td width="277" valign="top"><p><strong>Confidence</strong></p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>{1} ==&gt; {1}{1 2}</p></td>
+        <td width="277" valign="top">3</td>
+        <td width="277" valign="top"><p>0.667 (which means 66.7%) </p></td>
+      </tr>
+    </table>
+    <h2>Input file format</h2>
+    <p>The <strong>input file format </strong>of that algorithm is a text file. An <strong>item (event) </strong>is represented by a positive integer. A <strong>transaction (event set) </strong>is a line in the text file. In each line (event set), items are separated by a single space. It is assumed that all items (events) within a same transaction line) are sorted according to a total order (e.g. ascending order) and that no item can appear twice within the same event set. Each line is optionally followed by the character "|" and then the timestamp of the event set (line). <br>
+In the previous example, the input file is defined as follows. The two first lines are metadata indicating the type of file and the source of the data.</p>
+    <p align="left">@FILETYPE=&quot;Transaction database with timestamps&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1|1<br>
+      1|2<br>
+      1 2|3<br>
+      1|6<br>
+      1 2|7<br>
+      3|8<br>
+      2|9<br>
+      4|11</p>
+    <h2>Output file format</h2>
+  <p>The <strong>output file format </strong>is defined as  follows. It is a text file. Each line is an<strong> episode rule.</strong> Each event in an<strong> episode rule </strong> is a positive integer On each line, the items from the
+    rule antecedent are first listed, separated by single spaces. Then the
+    keyword &quot;==&gt;&quot; appears, followed by the items from the rule
+    consequent, separated by single spaces. Then, the keyword &quot;#SUP:&quot;
+    appears followed by an integer indicating the support of the rule as a
+    number of occurrences. Then, the keyword &quot;#CONF:&quot; appears followed by a
+    double values in the [0, 1] interval indicating the confidence of the
+    rule (e.g. 0.5 means 50%). The output for the example is: </p>
+  @FILETYPE=&quot;Episode rules&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+<p align="left">{1} ==&gt; {1}{1 2} #SUP: 3 #CONF: 0.6666667</p>
+  <p align="left">The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. Consider the first line. It indicates that the rule {1, 2} ==&gt;
+    {1} has a support of 2 (it appears twice in the input sequence) and that the confidence of this rule is 50%. The next
+  lines follow the same format</p>
+
+  <h2>Performance</h2>
+  <p>This is the original implementation of NONEPI. </p>
+
+  <h2>Where can I get more information about the algorithm?</h2>
+  <p>The NONEPI algorithm is described in this  article:</p>
+  <p> Ouarem, O., Nouioua, F., Fournier-Viger, P. (2021). Mining Episode Rules From Event Sequences Under Non-Overlapping Frequency. Proc. 34th Intern. Conf. on Industrial, Engineering and Other Applications of Applied Intelligent Systems (IEA AIE 2021), Springer LNAI, pp. 73-85.</p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

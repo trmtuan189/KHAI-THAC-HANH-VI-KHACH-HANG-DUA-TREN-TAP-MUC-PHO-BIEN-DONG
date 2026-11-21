@@ -1,0 +1,181 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example:  Mining Cost-Efficient Sequential Patterns Using CEPN Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h3>àMining Cost-Efficient Sequential Patterns Using CEPN Algorithm (<a href="documentation.html">SPMF documentation</a>)</h3>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>CEPN algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> &quot;<span class="highlight">CEPN</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">example_CEPN</span><span class="highlight">.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    (4) set <em>minsup = 2, </em><em>maxcost = 50, minoccupancy - 0.1 </em>and (5) click &quot;<span class="highlight">Run
+      algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command
+    line</strong>, then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run CEPN example_CEPN.txt output.txt 2 50 0.1 </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>example_CEPN</strong>.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestCEPN.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is CEPN?</h2>
+<p> CEPN is an algorithm proposed by Fournier-Viger, P., <strong>Li, Jiaxuan </strong>et al. (2020) for discovering cost-effective patterns in a sequence database (a set of sequences), where each event/activity in a sequence has a <strong>cost</strong>, and each sequence has an outcome called &quot;<strong>utility</strong>&quot; that is a numeric value  indicating that an outcome is good or bad to different degrees.</p>
+  <p>This type of data can be found in many domains. For example, it can model how students use an e-learning system. In that case, each sequence is a list of activities or sessions performed by a student, and the cost represents the time spent for studying for each activity. Then, the utility represents the outcome of a sequence such whether the student's grade at a final exam (numeric utility). </p>
+  <p>The CEPN algorithm can discover patterns in such sequences that are said to be cost-efficient. This means that the pattern has a low cost and is likely to bring a high utility. Moreover, a pattern must have a <strong>good trade-off between cost and utility, i.e. it must be able to provide utility at a low-cost </strong>. In the above example, some cost-effective patterns may be that studying some e-learning materials A and B typically require not much time but lead to high scores at the final exam.  </p>
+  <p>It is to be noted that some other algorithms are provided in SPMF named CorCEPB and CEPB for handling the case where utility is binary values instead of numeric values. </p>
+
+  <h2>What is the input of CEPN?</h2>
+  <p> <strong>CEPN</strong> takes as input a <strong>sequence database where each sequence is an ordered list of events, each event has a cost value (a positive integer), </strong> and <strong>each sequence has a utility</strong> value ( a numeric value such that a high value indicates a better outcome or result). Moreover, the user must set two parameters: (1) a minimum support threshold <em>minsup </em>(a positive integer), (2) a maximum cost threshold <em>maxcost </em>(a positive integer), and a (3) minimum occupancy <em>minoccupancy </em>threshold (a value in the [0,1] interval).&nbsp;</p>
+  <p>For example, consider the following sequence database, which is provided in the file <span class="highlight"><strong>example_CEPN</strong>.txt</span> of the SPMF distribution: </p>
+  <p>@FILETYPE=&quot;Sequence database with cost and numeric utility&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1[20] -1 2[40] -1 3[50] -1 4[20] -1 -2 SUtility:80<br>
+    2[25] -1 4[12] -1 3[30] -1 5[25] -1 -2 SUtility:60<br>
+    1[25] -1 5[14] -1 2[30] -1 -2 SUtility:50<br>
+    1[40] -1 2[16] -1 4[40] -1 -2 SUtility:40<br>
+    2[20] -1 5[24] -1 3[20] -1 -2 SUtility:70</p>
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section.This database contains five lines of data. Each line is a sequence. </p>
+  <p>Each sequence (line) is an ordered list of events separated by -1.</p>
+  <p> An event is represented by a positive integer and it is followed by a <strong>cost value</strong> (e.g. spent time on the event) indicated between squared brackets [ ]. A cost is a positive integer. </p>
+  <p>The end of a sequence is indicated by -2. Finally, at the end of each line, the keyword &quot;SUtility:&quot; is followed by a positive integer which indicates how good the outcome of this sequence is (e.g. it could represents a final exam score) </p>
+  <p>    For example, the first line of data indicates that event &quot;1&quot; had a cost of 20, was followed by event &quot;2&quot; with a cost of 40, followed by event &quot;3&quot; with a cost of 50, followed by event &quot;4&quot; with a cost of 20. Moreover, this sequence has a utility of 80, which means a quite good outcome (compared to other sequences in this database). The other sequences follow the same format.</p>
+  <p>This database could for example represents sequences of learning activities made by learners, where the events 1,2,3,4 and 5 are learning activities, cost values are the time spent on a learning activity and the utility is the grade obtained at a final exam. </p>
+
+  <h2>What is the output of CEPN?</h2>
+  <p> The output of <strong>CEPN</strong> is the set of all <strong>cost-effective patterns </strong>meeting the criteria specified by the user.  </p>
+  <p>A <strong>pattern</strong> is a subsequence of events that appear in some sequences of the input database.</p>
+  <p>A <strong>pattern</strong> is said to be <strong>cost-effective</strong> if it meets the following criteria:</p>
+  <ul>
+    <li>it appears in at least <em class="highlight">minsup </em>sequences of the database. </li>
+    <li>the average cost of the sequence is not greater than the <em class="highlight">maxcost</em> parameter set by the user,</li>
+    <li>the pattern has an occupancy not smaller than the <em class="highlight">minoccupancy </em>threshold.</li>
+  </ul>
+  <p>For example, if we set<em> minsup = 2, </em><em>maxcost = 50</em>, <em>minoccupancy = 0.1, </em> we find <strong>6 cost-effective patterns</strong>. </p>
+  <p>This is the output file, where each line is a <strong>cost-effective pattern</strong>: </p>
+  
+    @FILETYPE=&quot;Cost-efficient Sequential patterns&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;
+<p>1 -1 -2 #UTIL: 56.667 #SUP: 3 #TRADE: 0.500 #AVGCOST: 28.333 #OCCUP: 0.153<br>
+      2 -1 -2 #UTIL: 60.000 #SUP: 5 #TRADE: 0.437 #AVGCOST: 26.200 #OCCUP: 0.150<br>
+      5 -1 -2 #UTIL: 60.000 #SUP: 3 #TRADE: 0.350 #AVGCOST: 21.000 #OCCUP: 0.153<br>
+      3 -1 -2 #UTIL: 70.000 #SUP: 3 #TRADE: 0.476 #AVGCOST: 33.333 #OCCUP: 0.139<br>
+      4 -1 -2 #UTIL: 60.000 #SUP: 3 #TRADE: 0.400 #AVGCOST: 24.000 #OCCUP: 0.139<br>
+      2 -1 5 -1 -2 #UTIL: 65.000 #SUP: 2 #TRADE: 0.723 #AVGCOST: 47.000 #OCCUP: 0.583    </p>
+    <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. Consider the  line: </p>
+    <p>      2 -1 5 -1 -2 #UTIL: 65.000 #SUP: 2 #TRADE: 0.723 #AVGCOST: 47.000 #OCCUP: 0.583 </p>
+    <p>This line is the pattern where event &quot;2&quot; is followed by event &quot;5&quot;. On that line, there is #SUP:2, which indicates that the support (occurrence frequency) of this pattern is 2, and AVGCOST: 47.000 indicating that the pattern's average cost is 47. Moreover,  #UTIL: 65.000 indicates that this pattern has an average utility of 65, and #TRADE: 0.723 indicates that this pattern has a trade-off ratio between cost and utility of 0.723. Generally, a low trade-off is more desirable as it means that a pattern produces utility at a lower cost. </p>
+    <p>The support of the above pattern is 2 because this pattern appears in the second and fifth sequences of the input database. Below, I have highlighted these two occurrences in blue, and the corresponding cost values in red, and utility values in green. </p>
+    <p class="highlight">1[20] -1 2[40] -1 3[50] -1 4[20] -1 -2 SUtility:80<br>
+      <span class="highlight"><strong>2</strong></span>[<span class="highlight"><strong>25</strong></span>] -1 4[12] -1 3[30] -1 <span class="highlight"><strong>5</strong></span>[<span class="highlight">25</span>] -1 -2 SUtility:<span class="highlight">60</span><br>
+1[25] -1 5[14] -1 2[30] -1 -2 SUtility:50<br>
+1[40] -1 2[16] -1 4[40] -1 -2 SUtility:40<br>
+<span class="highlight"><strong>2</strong></span>[<span class="highlight"><strong>20</strong></span>] -1 <span class="highlight"><strong>5</strong></span>[<span class="highlight"><strong>24</strong></span>] -1 3[20] -1 -2 SUtility:<span class="highlight">70</span></p>
+    <p>In the second sequence, the cost of that pattern is 25 + 25= 50 (the sum of the red values). In the last sequence, the cost of that pattern is 20 + 24 = 44. Thus, the average cost of that pattern is : (50 + 44) / 2 = 1302 = 65.</p>
+    <p>The trade-off of that pattern is calculated as the cost divided by the utility that is : 44 / 65 = 0.723. </p>
+    <p>Besides, &quot;#OCCUP: 0.583&quot; indicates that this pattern has an occupancy of 0.583. The occupancy of a pattern represents how much a pattern covers the sequences in which it appears. The occupancy of the pattern in Sequence 2 is 2 / 4 = 0.5 because the pattern consists of 2 of the 4 events of that sequence. The occupancy of the pattern in Sequence 5 is  2/3 = 0.666 because it consists of 2 of the 3 events in that sequence. The occupancy of that pattern for the whole database is the average of its occupancy in Sequence 2 and Sequence 5, that is 0.666 + 0.5 / 2 = 0.583. </p>
+    <p>Since the average cost of that pattern is 65 &lt;= <em>maxcost, </em>  its support is 2 &gt;= <em>minsup, </em>and its occupancy is 0.583 &gt;= <em>minoccupancy, </em>this pattern is a cost-effective pattern, and it is output.</p>
+    <p>If the database is sequences of events from an e-learning website, we could interpret this pattern as follows. Three learners have some learning activity 2, followed by some learning activity 5, and they have spent an average of 44 hours and received and average score of 65 at a final exam. The trade-off between the time spent studying and the final score is 0.723. </p>
+    <p>Note that if one does not wish to use the occupancy measure, it is possible to simply set <em>minoccupancy = 0. </em></p>
+  
+
+    <h2>Optional parameter(s)</h2>
+    <p>The <strong>CEPN</strong> implementation allows to specify
+    three additional optional parameters:</p>
+  <ul>
+    <li>&quot;<span class="highlight">maximum pattern length</span>&quot; allows to specify the maximum number
+      of items that patterns found should contain. The value for this parameter must be a positive integer. </li>
+    <li>&quot;<span class="highlight">sort patterns by utility </span>&quot; specify that patterns in the output must be sorted by decreasing correlation. The value for this parameter must be true or false.</li>
+    <li>&quot;<span class="highlight">only lowest trade-off?</span>&quot; specify that for each utility value, only the patterns having the lowest trade-off should be output. The value for this parameter must be true or false.</li>
+  </ul>
+  <p>Note that the &quot;<span class="highlight">sort patterns by utility</span>&quot; and &quot;<span class="highlight">only lowest trade-off</span>?&quot;cannot be activated at the same time (one should not set these two parameters to true at the same time!) </p>
+  <p>The optional parameter(s) are available in the GUI of SPMF and also in
+    the example(s) <strong><span class="highlight">&quot;MainTestCEPN.java&quot;</span></strong> provided in the source code of SPMF.</p>
+  <p>The parameter(s) can be also used in the command line with the Jar
+    file. If you want to use these optional parameter(s) in the command
+    line, it can be done as follows. Consider this example:<br>
+    <span class="highlight">java -jar spmf.jar run<strong> CEPN </strong><strong> example_CEPN</strong>.txt
+      output.txt 2 50 0.1 2 true false <br>
+    </span>This command means to apply the algorithm on the file
+    &quot;<span class="highlight">example_CEPN.txt&quot;</span> and output the results to &quot;output.txt&quot;.
+    Moreover, it specifies that the user wants to find patterns for<em> minsup = 2, </em><em>maxcost = 50</em><em>,</em> <em>minoccupancy = 0.1</em>, and patterns must have a maximum length of 2 items, and to sort patterns in the output by utility. The output is then like this:</p>
+  <p>@FILETYPE=&quot;Cost-efficient Sequential patterns&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+3 -1 -2 #UTIL: 70.000 #SUP: 3 #TRADE: 0.476 #OCCUP: 0.139 #AVGCOST: 33.333<br>
+    2 -1 5 -1 -2 #UTIL: 65.000 #SUP: 2 #TRADE: 0.723 #OCCUP: 0.583 #AVGCOST: 47.000<br>
+    2 -1 -2 #UTIL: 60.000 #SUP: 5 #TRADE: 0.437 #OCCUP: 0.150 #AVGCOST: 26.200<br>
+    5 -1 -2 #UTIL: 60.000 #SUP: 3 #TRADE: 0.350 #OCCUP: 0.153 #AVGCOST: 21.000<br>
+    4 -1 -2 #UTIL: 60.000 #SUP: 3 #TRADE: 0.400 #OCCUP: 0.139 #AVGCOST: 24.000<br>
+    1 -1 -2 #UTIL: 56.667 #SUP: 3 #TRADE: 0.500 #OCCUP: 0.153 #AVGCOST: 28.333  </p>
+  <p>Another example is: <span class="highlight">java -jar spmf.jar run<strong> CEPN example_CEPN</strong>.txt
+      output.txt 2 50 0.1 2 false true <br>
+  </span>This command means to apply the algorithm on the file
+    <span class="highlight">&quot;example_CEPN.txt</span>&quot; and output the results to &quot;output.txt&quot;.
+Moreover, it specifies that the user wants to find patterns for<em> minsup = 2, </em><em>maxcost = 50</em><em>,</em> <em>minoccupancy = 0.1</em>, and patterns must have a maximum length of 2 items, and to sort keep only patterns having the lowest trade-off for each utility value. The output is then like this:</p>
+  <p>@FILETYPE=&quot;Cost-efficient Sequential patterns&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+2 -1 5 -1 -2 #UTIL: 65.000 #SUP: 2 #TRADE: 0.723 #AVGCOST: 47.000 #OCCUP: 0.583<br>
+    3 -1 -2 #UTIL: 70.000 #SUP: 3 #TRADE: 0.476 #AVGCOST: 33.333 #OCCUP: 0.139<br>
+    1 -1 -2 #UTIL: 56.667 #SUP: 3 #TRADE: 0.500 #AVGCOST: 28.333 #OCCUP: 0.153<br>
+    5 -1 -2 #UTIL: 60.000 #SUP: 3 #TRADE: 0.350 #AVGCOST: 21.000 #OCCUP: 0.153</p>
+
+  <h2>Implementation details </h2>
+  <p>This is the original implementation of the algorithm. </p>
+
+  <h2>Optional feature: giving names to items </h2>
+  <p>Some users have requested the feature of giving names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong class="highlight">example_CEPN.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+      @FILETYPE=&quot;Sequence database with cost and numeric utility&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      @ITEM=1=homework<br>
+      @ITEM=2=lesson<br>
+      @ITEM=3=anotherlesson<br>
+      @ITEM=4=groupwork<br>
+      @ITEM=5=selfstudy<br>
+      @ITEM=-1=|<br>
+      1[20] -1 2[40] -1 3[50] -1 4[20] -1 -2 SUtility:80<br>
+      2[25] -1 4[12] -1 3[30] -1 5[25] -1 -2 SUtility:60<br>
+      1[25] -1 5[14] -1 2[30] -1 -2 SUtility:50<br>
+      1[40] -1 2[16] -1 4[40] -1 -2 SUtility:40<br>
+      2[20] -1 5[24] -1 3[20] -1 -2 SUtility:70</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second and third line are optional metadata indicating the filetype and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;homework&quot;. The fifth line indicates that the item 2 is called &quot;lesson&quot;, and so on .. The 9th line indicates that the symbol &quot;-1&quot; must be replaced by &quot;|&quot;. Then the following lines define four sequences in the SPMF format. </p>
+  <p>Then, if we apply the algorithm using this file using the user interface of SPMF or the command line, the output file looks like this: <br>
+      <br>
+      @FILETYPE=&quot;Cost-efficient Sequential patterns&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+homework | -2 #UTIL: 56.667 #SUP: 3 #TRADE: 0.500 #AVGCOST: 28.333 #OCCUP: 0.153<br>
+      lesson | -2 #UTIL: 60.000 #SUP: 5 #TRADE: 0.437 #AVGCOST: 26.200 #OCCUP: 0.150<br>
+      selfstudy | -2 #UTIL: 60.000 #SUP: 3 #TRADE: 0.350 #AVGCOST: 21.000 #OCCUP: 0.153<br>
+      anotherlesson | -2 #UTIL: 70.000 #SUP: 3 #TRADE: 0.476 #AVGCOST: 33.333 #OCCUP: 0.139<br>
+      groupwork | -2 #UTIL: 60.000 #SUP: 3 #TRADE: 0.400 #AVGCOST: 24.000 #OCCUP: 0.139<br>
+      lesson | selfstudy | -2 #UTIL: 65.000 #SUP: 2 #TRADE: 0.723 #AVGCOST: 47.000 #OCCUP: 0.583</p>
+  <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. </p>
+  <p><strong>Note</strong> that what is described above is the normal way of using item names in SPMF. But the CEPN algorithm also allows to directly replace the items like 1 and 2 with strings in the input file like this:</p>
+  <p>homework[4] -1 selfsttudy [2] -1 -2 SUtility:1 </p>
+  <p>This will achieve a similar result</p>
+
+  <h2>Where can I get more information about the <strong>CEPN</strong> algorithm?</h2>
+  <p>The <strong>CEPN</strong> algorithm is described in this article:</p>
+  <p> Fournier-Viger, P., Li, J., Lin, J. C., Chi, T. T., Kiran, R. U. (2019). <a href="COST_UTILITY_PATTERNS.pdf">Mining Cost-Effective Patterns in Event Logs</a>. Knowledge-Based Systems (KBS), Elsevier, </p>
+  <p>Besides, you may read this<a href="https://www.philippe-fournier-viger.com/dspr-paper5.pdf"> survey of sequential pattern mining</a>, which gives an overview of sequential pattern mining algorithms.</p>
+
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>
+

@@ -1,0 +1,165 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Compressing Sequential Patterns Using the GoKrimp Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Compressing Sequential Patterns Using the GoKrimp Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>GoKrimp algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> "<span class="highlight">GoKrimp</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">test_goKrimp</span><span class="highlight">.dat"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight"><strong>output</strong>.txt</span>")
+    (4) set the label file as <strong>&quot;<span class="highlight">test_goKrimp</span><span class="highlight">.lab"</span></strong><em> </em>and (5) click "<span class="highlight">Run algorithm</span>".<br>
+    Note that the algorithm can run without the label file if none is
+    available. </li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run GoKrimp<strong> test_goKrimp</strong>.dat output.txt <strong>test_goKrimp</strong>.lab </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file<span class="highlight"><strong> test_goKrimp</strong>.dat</span> and <span class="highlight"><strong>test_goKrimp</strong>.lab</span>.<br>
+    Note that the algorithm can run without the label file if none is
+    available. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestGoKrimp_printResultToConsole.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>,
+    or <strong><span class="highlight">"MainTestGoKrimp_saveToFile.java"</span></strong></li>
+</ul>
+<h2>What is GoKrimp?</h2>
+<p>The <strong>GoKrimp</strong> algorithm finds a non-redundant set
+    of compressing sequential patterns based on the Minimum Description
+    Length principle. It searches for a set of sequential pattern that
+    compresses the data most. In this way, the set of patterns found
+    by <strong>GoKrimp</strong> is usually non-redundant, and they are
+    much more meaningful compared the the set of frequent patterns.</p>
+  <p> Another important property of <strong>GoKrimp</strong> is that
+    it is parameter-free, thus users are not required to fine tune the
+    parameters such as minimum support which is a difficult task in many
+    applications. </p>
+  <p> The <strong>Gokrimp</strong> algorithm was first published in
+    the SIAM Data Mining conference in 2012 and was chosen to include in
+    the special issue of the best papers of SDM 2012 in the journal of
+    Statistical Analysis and Data Mining (SADM Wiley 2014). </p>
+  <p>This implementation is the original implementation of GoKrimp.</p>
+
+  <h2>What is the input of GoKrimp?</h2>
+  <p> The input is a sequence database and a label file (<em>optional</em>).</p>
+  <p> A sequence database is a set of sequences where each sequence is
+    an ordered list of items. Current version of GoKrimp does not
+    work for a sequence of itemsets but the file input format is consistent
+    with the standard file input format of the SPMF package. </p>
+  <p> The <strong>input file format </strong>is defined as follows.
+    It is a text file where each line represents a sequence from a sequence
+    database. Each item from a sequence is a positive integer and it is
+    separated by the value "-1". The value "-2" indicates the end of a
+    sequence (it appears at the end of each line). For example, the input
+    file may contain the following two lines (two sequences).</p>
+  <p> 1 -1 2 -1 3 -1 4 -1 3-1 -2<br>
+    4 -1 3 -1 2 -1 1 -1 -2</p>
+  <p> The first line represents a sequence where the item {1} is
+    followed by the item { 2}, followed by the item {3}, followed by
+    the item {4} and followed by the item {3}. The next lines follow the
+    same format.</p>
+  <p>The <strong>label file format</strong><strong> </strong>is
+    defined as follows. It is a text file where each line contains a string
+    indicating the label of the item with identifier equal to the line
+    number. For example the label file may contain the following 4 lines:</p>
+  <p>Support<br>
+    Vector<br>
+    Machine<br>
+    Algorithm</p>
+  <p>which indicates that the label of the item 1 is &#8220;Support&#8221;, of item
+    2 is &#8220;Vector&#8221;, of item 3 is &#8220;Machine&#8221;, and of item
+    4 is &#8220;Algorithm&#8221;. Label file is optional.</p>
+
+  <h2>Output file format</h2>
+  <p> The <strong>output file format</strong> is defined as follows.
+    It is a text file. Each line corresponds to a compressing sequential
+    pattern. Each item separated by a single space from a compressing
+    sequential pattern is either represented by a positive integer or by
+    its label if the label file is provided. On each line, the compressing
+    sequential pattern is first indicated. Then, the keyword "#SUP" appears
+    followed by a real number indicating the contribution of the pattern in
+    the compression. For example, here a few lines from the
+    output file from the journal of machine learning dataset (<strong>jmlr_goKrimp.dat</strong>):<br>
+    <br>
+    support vector machin #SUP: 1922.0710148279322<br>
+    real world #SUP: 598.4753133154009<br>
+    machin learn #SUP: 514.3586664227769<br>
+    state art #SUP: 412.9730013575172<br>
+    high dimension #SUP: 362.7776787300827<br>
+    reproduc hilbert space #SUP: 359.42939766764175<br>
+    neural network #SUP: 210.35608129308093<br>
+    experiment result #SUP: 187.4169747827109<br>
+    compon analysi #SUP: 176.54417917714454<br>
+    supervis learn #SUP: 160.87427082075737<br>
+    support vector #SUP: 148.74911007808987<br>
+    well known #SUP: 138.22464635269716<br>
+    hilbert space #SUP: 21.132125171017833<br>
+    Compressed size: 839792.3563524645, uncompressed size:
+    845005.7388124614, compression ratio: 1.006207942261633<br>
+    Running time: 2 seconds</p>
+  <p>The first line indicates that the compressing sequential pattern
+    is <em>support vector machin</em> followed by the #SUP tag indicating
+    the compression contribution of this pattern. The last two lines shows
+    the compressed size and uncompressed size of the data in the number of
+    bits, the compression ratio and the running times in seconds.</p>
+
+  <h2>Performance</h2>
+  <p><strong>GoKrimp</strong> is very efficient. It output one pattern
+    in each step so you can terminate the algorithm at anytime. In each
+    step, GoKrimp starts from a seed item (usually frequent
+    items) and tries to extend this item with related items chosen by the
+    Sign Test. When extension of a pattern does not give significant
+    compression benefit, GoKrimp outputs the pattern and starts looking for
+    the next pattern with the new seeds.</p>
+
+  <h2>Tips for using the source code: </h2>
+  <p> <strong>GoKrimp</strong> algorithm uses the <strong>SignTest</strong> to test for dependency between a pattern and events used to extend a
+    pattern. It requires that the event occurs at least in N=25
+    sequences to perform the test properly. If you have a very long
+    sequence instead of a database of many sequences, you should split the
+    long sequences into a set of short sequences.<br>
+    <br>
+    The source code contains the <strong>SeqKrimp</strong> algorithm
+    implementation which gets the candidate pattern set and returns a
+    good subset of compressing patterns. You can feed <strong>SeqKrimp</strong> with any frequent pattern mining algorithm, e.g. BIDE+ and PreFixSpan.</p>
+  <p>The default encoding for an integer in our implementation is the
+    Elias Gamma code, you can try the Elias Delta code by uncomenting the
+    Elias Delta returning code in the function <em>bits</em> of GoKrimp
+    class. The result might be slightly different.</p>
+  <p>The fields NSTART and NRELATED in the GoKrimp class are used to
+    control the number of initial most frequent events used as seeds to
+    extend to get the set of patterns and the maximum number of related
+    events used to extend a given candidate pattern. The default value for
+    NSTART and NRELATED is 1000. You can change this value to smaller
+    value if the source code runs too long yet the quality of the results
+    will be affected. </p>
+
+  <h2> The GoKrimp algorithm is described in this paper:</h2>
+  <p> Hoang Thanh Lam, Fabian M&ouml;rchen, Dmitriy Fradkin, Toon Calders: <em><a rel="nofollow" href="gokrimp.pdf">Mining Compressing Sequential
+    Patterns</a></em> in Journal of Statistical Analysis and Data Mining
+    7(1): 34-52 (2014) by Wiley.</p>
+  <p><strong>Acknowledgements</strong><br>
+    The work was done when the first author was doing his PhD at Eindhoven
+    University of Technology<strong>,</strong> the Netherlands under the
+    support by the Netherlands Organisation for Scientific Research (NWO)
+    in the project COMPASS. Part of the work has been done at Siemens
+    Corporate Research center in Princeton, NJ USA. </p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

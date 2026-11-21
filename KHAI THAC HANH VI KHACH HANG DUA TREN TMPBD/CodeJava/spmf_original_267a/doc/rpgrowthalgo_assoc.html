@@ -1,0 +1,237 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Rare Itemsets using the RP-Growth Algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Association Rules from  Rare Itemsets found by the RP-Growth Algorithm (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>RP-Growth algorithm</strong> to extract association rules using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run  this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical  interface, </strong>(1)  choose the “<span class="highlight"><strong>RPGrowth_association_rules</strong></span><strong>” </strong>algorithm, (2) select the “<span class="highlight"><strong>contextRP.txt</strong></span><strong>”, </strong>(3) set the output file name (e.g. “<span class="highlight"><strong>output.txt</strong></span><strong>”</strong>), (4) set minsup to <strong class="highlight">60%, </strong> minraresup to <span class="highlight"><strong>10%</strong></span><strong>,  </strong>minconf  to<strong> <span class="highlight"><strong>60%,</strong></span> </strong>and (5) click “<strong>Run algorithm”.</strong> </li>
+  <li><strong>If you want to execute this example  from the command line, </strong>the  execute this command: <span class="highlight"><strong>java –jar spmf.jar run RPGrowth_association_rules contextRP.txt  output.txt 60% 10% 60% </strong></span>in a folder containing <strong>spmf.jar</strong> and the example input  file <span class="highlight">contextRP.txt</span> </li>
+  <li><strong>If you are using the source code  version of SPMF, </strong>launch  the file “<span class="highlight"><strong> MainTestAllAssociationRules_RPGrowth_saveToFile.java</strong></span><strong>” </strong>in the package <strong>ca.pfv.SPMF.tests</strong> </li>
+</ul>
+<h2>What is  RPGrowth?</h2>
+<p>  <strong>RPGrowth</strong> is an adaptation of the FPGrowth algorithm for  discovering <strong>rare itemsets</strong> in a transaction database. FPGrowth was proposed by  Han et al. (2000) and the adaptation of the FPGrowth to find rare itemsets was  proposed by Sidney Tsang, Yun Sing Koh, and Gillian Dobbie (2011). Being  modified from the FPGrowth algorithm, it retains the speed, memory efficiency,  and the usage of the FP-Tree. <br>
+  <br>
+  This example describes how to extract rare itemsets with RPGrowth and derive association rules from them. There is <a href="rpgrowthalgo.html">another example</a> in the documentation that describe only the first step (extracting rare itemsets). </p>
+
+<h2>What is the  input of the RPGrowth algorithm for association rule mining?</h2>
+<p>  The input of <strong>RPGrowth</strong> is a <strong>transaction database</strong> (aka binary context) and three thresholds:</p>
+<ul>
+  <li> <strong>minsup</strong> (which represents the upper  boundary of what is considered “rare”, a value between 0 and 100%),</li>
+  <li> <strong>minraresup</strong> (which  represents the lower boundary of what is considered “rare”, a value between 0  and 100%). 
+    NOTE: minraresup and minsup represent a range. That being  said, minraresup <strong>must be lower</strong> than minsup.<strong></strong></li>
+  <li><strong>minconf</strong>: a minimum confidence threshold for deriving association rules from rare itemsets.<br> 
+    <br>
+    A <strong>transaction database </strong>is a set of transactions. Each <strong>transaction</strong> is a set of items. For example, consider the following  transaction database. It contains 5 transactions (t1, t2, …, t5) and 5 items  (1, 2, 3, 4, 5). For example, the first transaction represents the set of items  1, 2, and 4. This database is provided as the file <strong>contextRP</strong> in the SPMF  distribution. It is important to note than an item is not allowed to appear  twice in the same transaction and that items are assumed to be sorted by  lexicographical order in a transaction.</li>
+</ul>
+<table border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="312" valign="top"><br>
+        <strong>Transaction id</strong> </td>
+    <td width="312" valign="top"><p><strong>Items</strong></p></td>
+  </tr>
+  <tr>
+    <td width="312" valign="top"><p><strong>t1</strong> </p></td>
+    <td width="312" valign="top"><p>{1, 2, 4}</p></td>
+  </tr>
+  <tr>
+    <td width="312" valign="top"><p><strong>t2</strong> </p></td>
+    <td width="312" valign="top"><p>{1, 3}</p></td>
+  </tr>
+  <tr>
+    <td width="312" valign="top"><p><strong>t3</strong> </p></td>
+    <td width="312" valign="top"><p>{1, 2, 3, 5}</p></td>
+  </tr>
+  <tr>
+    <td width="312" valign="top"><p><strong>t4</strong> </p></td>
+    <td width="312" valign="top"><p>{2, 3, 5}</p></td>
+  </tr>
+  <tr>
+    <td width="312" valign="top"><p><strong>t5</strong> </p></td>
+    <td width="312" valign="top"><p>{1, 2, 3, 5}</p></td>
+  </tr>
+</table>
+<h2>What is the  output of the RPGrowth algorithm?</h2>
+<p><strong>RPGrowth</strong> is an algorithm for discovering rare itemsets (group of items) occurring  infrequently in a transaction database (<strong>rare itemsets</strong>). A rare itemset  is an itemset appearing within the minraresup and minsup range (e.g. minraresup  is set to 10% and minsup is set to 60%), where both minraresup and minsup are  parameters defined by the user. NOTE: RPGrowth has the requirement that any  “rare” itemset of size 2 or greater contain at least one item (itemset of size  1) that was considered “rare”. 
+    For example, if <strong>RPGrowth</strong> is run on the previous  transaction database with a minsup of 50% (4 transactions) and minraresup 10%  (1 transaction), <strong>RPGrowth</strong> first extracts the following rare itemsets:</p>
+
+<div align="center">
+  <table border="1" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="209" valign="top"><br>
+          <strong>Itemsets</strong> </td>
+      <td width="243" valign="top"><p><strong>Support</strong> </p></td>
+    </tr>
+    <tr>
+      <td width="209" valign="top"><p>{4}</p></td>
+      <td width="243" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="209" valign="top"><p>{1, 4}</p></td>
+      <td width="243" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="209" valign="top"><p>{2, 4}</p></td>
+      <td width="243" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="209" valign="top"><p>{1, 2, 4}</p></td>
+      <td width="243" valign="top"><p>1</p></td>
+    </tr>
+  </table>
+</div>
+
+  <p>&nbsp;</p>
+  <p>Then, association rules are derived from these rare itemsets. To explain what is the result, it is necessary to explain a few definitions. <br>
+    <br>
+    An<strong> association rule</strong> X==&gt;Y
+    is a relationship between two itemsets (sets of items) X and Y such
+    that the intersection of X and Y is empty. The <strong>support of a
+      rule</strong> is the number of transactions that contains X&#8746;Y. The <strong>confidence
+        of a rule </strong>is the number of transactions that contains X&#8746;Y
+    divided by the number of transactions that contain X. The output of  association rule mining algorithm is a set of
+    association rules respecting the user-specified<em> minconf</em> threshold. This means that all rules are output that have a confidence that is no less than 60% in this example. For example, by deriving association rules from the rare itemsets found by RPGrowth we obtains <strong>4 associations rules:</strong></p>
+  <table border="1" cellpadding="0" cellspacing="0">
+    <tr>
+      <td width="209" valign="top"><br>
+          <strong>Itemsets</strong> </td>
+      <td width="243" valign="top"><strong>Support</strong></td>
+      <td width="243" valign="top"><p><strong>Confidence</strong> </p></td>
+    </tr>
+    <tr>
+      <td width="209" valign="top"><p>4 ==&gt; 1</p></td>
+      <td width="243" valign="top"><p>1</p></td>
+      <td width="243" valign="top">100%</td>
+    </tr>
+    <tr>
+      <td width="209" valign="top"><p>4 ==&gt; 3</p></td>
+      <td width="243" valign="top"><p>1</p></td>
+      <td width="243" valign="top">100%</td>
+    </tr>
+    <tr>
+      <td width="209" valign="top"><p>3 4 ==&gt; 1</p></td>
+      <td width="243" valign="top"><p>1</p></td>
+      <td width="243" valign="top">100%</td>
+    </tr>
+    <tr>
+      <td width="209" valign="top"><p>1 4 ==&gt; 3</p></td>
+      <td width="243" valign="top"><p>1</p></td>
+      <td width="243" valign="top">100%</td>
+    </tr>
+    <tr>
+      <td valign="top">4 ==&gt; 1 3 </td>
+      <td valign="top">1</td>
+      <td valign="top">100%</td>
+    </tr>
+  </table>
+  <br>
+  <h2>How should I  interpret the results?</h2>
+<p>  In the results, each itemset is annotated with its support.  The <strong>support</strong> of an itemset is how many times the itemset appears in the  transaction database. For example, the itemset {1, 2, 4} has a support of 1  because it appears in only t1. It is a rare itemset because it falls within the  user determined range of what is considered “rare” (and meets previously  mentioned constraints).</p>
+
+<h2>Input file  format:</h2>
+<p>  The <strong>input file format</strong> used by the <strong>RPGrowth </strong>is  defined as follows. It is a text file. An item is represented by a positive  integer. A transaction is a line in the text file. In each line (transaction),  items are separated by a single space. It is assumed that all items within a  same transaction (line) are sorted according to total order (e.g. ascending  order) and that no item can appear twice within the same line. <strong></strong></p>
+  <p>For example, for the previous example, the input file is  defined as follows. The first two lines are metadata indicating the type of file and the source of the data. Then, the following lines are the transactions (records). <br>
+    <br>
+    @FILETYPE=&quot;Simple transaction database&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1 3 4<br>
+    2 3 5<br>
+    1 2 3 5<br>
+    2 5<br>
+    1 2 3 5</p>
+
+  <h2>Output file  format:</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file, where each line represents an <strong>association rule</strong>.
+    On each line, the items of the rule antecedent are first listed. Each
+    item is represented by an integer, followed by a single space. After,
+    that the keyword &quot;==&gt;&quot; appears followed by a space. Then, the items
+    of the rule consequent are listed. Each item is represented by an
+    integer, followed by a single space. Then, the keyword &quot; #SUP: &quot;
+    appears followed by the support of the rule represented by an integer.
+    Then, the keyword &quot; #CONF: &quot; appears followed by the confidence of the
+    rule represented by a double value (a value between 0 and 1,
+    inclusively). For example, here is a few lines from the output file for
+    this example:</p>
+  <p>@FILETYPE=&quot;Association rules&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+4 ==&gt; 1 #SUP: 1 #CONF: 1.0<br>
+    4 ==&gt; 3 #SUP: 1 #CONF: 1.0<br>
+    3 4 ==&gt; 1 #SUP: 1 #CONF: 1.0<br>
+    1 4 ==&gt; 3 #SUP: 1 #CONF: 1.0<br>
+    4 ==&gt; 1 3 #SUP: 1 #CONF: 1.0  </p>
+  <p>The first two lines are metadata indicating the type of pattern in this file and the source of the data. Then it is the data section. The first line of data indicates that the association rule
+    {4} --&gt; {1,3} has a support of 1 transaction and a confidence
+    of 100 %. The other lines follow the same format.</p>
+  <p>Note that if the ARFF format is used as input instead of the
+    default input format, the output format will be the same except that
+    items will be represented by strings instead of integers.</p>
+  <h2>Optional feature: constraints on the size of association rules </h2>
+  <p>Sometimes, there may be just too many association rules, and rules containing many items may not be interesting. Thus, it is also possible to specify two optional parameters in the <strong>user</strong> <strong>interface of SPMF:</strong></p>
+  <ul>
+    <li><strong>Max antecedent length</strong>: This parameter allows to set a maximum number of items to appear on the left side of a rule. By default, this parameter is equal to the infinity if it is not set. </li>
+    <li><strong>Max consequent length</strong>: This parameter allows to set a maximum number of items to appear on the right side of a rule. By default, this parameter is equal to the infinity if it is not set. </li>
+  </ul>
+  <p>If you are using the command line interface of SPMF, it is also possible to use these optional parameters by adding them at the end of the command. For example: <br>
+    <span class="highlight">java –jar spmf.jar run RPGrowth_association_rules contextRP.txt  output.txt 60% 10% 60% 2 3 </span><br>
+    means to run the above example with a maximum antecedent length of 2 items and a maximum consequent length of 3 items. </p>
+  <h2>Optional feature: giving names to items</h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextRP.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+    @CONVERTED_FROM_TEXT<br>
+    @FILETYPE=&quot;Simple transaction database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    @ITEM=1=apple<br>
+    @ITEM=2=orange<br>
+    @ITEM=3=tomato<br>
+    @ITEM=4=milk<br>
+    @ITEM=5=bread<br>
+    1 3 4<br>
+    2 3 5<br>
+    1 2 3 5<br>
+    2 5 <br>
+    1 2 3 5 </p>
+  <p>In this file, the first line indicates that names will be given to items. The second and third lines indicate the type of file and the source of the data, respectively. <br> 
+    Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fith line indicates that the item 2 is called &quot;orange&quot;, and so on . Then the following lines define five transactions in the SPMF format.</p>
+  <p>Then, if we apply the algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns:<br>
+      <br>
+      @FILETYPE=&quot;Association rules&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+milk ==&gt; apple #SUP: 1 #CONF: 1.0<br>
+milk ==&gt; 3 #SUP: 1 #CONF: 1.0<br>
+tomato milk ==&gt; apple #SUP: 1 #CONF: 1.0<br>
+apple milk ==&gt; tomato #SUP: 1 #CONF: 1.0<br>
+milk ==&gt; apple tomato #SUP: 1 #CONF: 1.0 </p>
+  <h2>Performance</h2>
+  <p><strong>RPGrowth</strong> is the only algorithm for all rare  itemsets that branch off initial singleton rare items offered in SPMF. Being  an extension of FPGrowth; RPGrowth retains the speed, memory efficiency, and  the usage of the FP-Tree.</p>
+
+  <h2> Where can I  get more information about the RPGrowth algorithm?</h2>
+  <p>    This is the journal article describing the original FPGrowth  algorithm:<br>
+    <br>
+    <em>Jiawei Han, Jian Pei, Yiwen Yin, Runying Mao: Mining  Frequent Patterns without Candidate Generation: A Frequent-Pattern Tree  Approach. Data Min. Knowl. Discov. 8(1): 53-87 (2004)</em><br>
+    <br>
+    This is the journal article describing the modification of  the FPGrowth algorithm and FP-Tree to handle rare itemsets rather than frequent  itemsets:<br>
+    <br>
+    <em>Sidney Tsang, Yun Sing Koh, Gillian Dobbie,  RP-Tree: Rare Pattern Tree Mining, International Conference of Data Warehousing  and Knowledge Discovery, 277-288 (2011)</em><br>
+  <a href="https://link.springer.com/chapter/10.1007/978-3-642-23544-3_21">https://link.springer.com/chapter/10.1007/978-3-642-23544-3_21</a> </p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

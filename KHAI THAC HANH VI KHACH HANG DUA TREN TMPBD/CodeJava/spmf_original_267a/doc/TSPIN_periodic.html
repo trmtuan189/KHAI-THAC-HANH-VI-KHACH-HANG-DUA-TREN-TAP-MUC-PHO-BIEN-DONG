@@ -1,0 +1,230 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining the Top-K Stable Periodic Frequent Patterns using the TSPIN algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining the Top-K Stable Periodic Frequent Patterns using the TSPIN algorithm (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>TSPIN algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">TPIN</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextTSPIN.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;)
+    (4) set the maximum periodicity, the parameter k, the maximum lability and the boolean parameter indicating that timestamps are provided, respectively to <span class="highlight">5, 3, 1, false </span>and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong> TSPIN </strong> contextTSPIN.txt output.txt 5 3 1 false </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextTSPIN.txt</span>. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>to
+    run respectively <strong>TSPIN</strong><strong>, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestTSPIN.java&quot;</span></strong>in
+    the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is TSPIN ?</h2>
+<p><strong>TSPIN </strong> is an algorithm for discovering stable periodic frequent
+    itemsets in a sequence of transactions (a transaction database) with or without timestamps. It was proposed by Fournier-Viger, P., Wang, Y., P. Yang,  et al. (2020). TSPIN can discover patterns that have a stable periodic behavior in a sequence of transactions. Periodic pattern mining has many applications such as discovering periodic behavior of customers, and finding recurring events. </p>
+  <p>The first algorithm for discovering stable periodic patterns is SPP-Growth (2019). TSPIN is a variation of that algorithm that discovers the <strong>top-k </strong>most frequent stable periodic frequent itemsets. The advantage of TSPIN is that the user can directly set<strong> k,</strong> the number of patterns to be discovered.  </p>
+
+  <h2>What is the input of the TSPIN algorithm?</h2>
+  <p>The input is a <strong>transaction database</strong> (a sequence of transactions) and four parameters that are set by the user: </p>
+    <ul>
+        <li>a maximum periodicity threshold <em>maxper ( a positive integer)</em></li>
+        <li>a parameter <em>k( a positive integer)</em> representing the number of patterns to be found </li>
+        <li>a maximum lability threshold <em>maxla ( a positive integer)</em></li>
+        <li>a boolean parameter <em>hasNoTimestamps, </em>that must be  set to true if the input dataset has no timestamps or otherwise false.</li>
+      </ul>
+    
+    <p>A <strong>transaction database</strong> is a set of
+      transactions. Each <strong>transaction</strong> is a set of items (symbols) that has a timestamp. For
+      example, consider the following transaction database. It contains 8
+      transactions (t1, t2, ..., t8) and 5 items (1,2, 3, 4, 5). For example,
+      the first transaction represents the set of items 2, 3 and 5. This
+      database is provided as the file <strong>contextTSPIN.txt</strong> in the SPMF distribution. It is important to note that an item is not
+      allowed to appear twice in the same transaction and that items are
+    assumed to be sorted according to some total order in each transaction such as the alphabetical order. </p>
+    <table align="center" border="1" width="372">
+      <tbody>
+        <tr>
+          <td width="104"><strong>Transaction id</strong></td>
+          <td width="103"><strong>Items</strong></td>
+          <td width="143"><strong>Timestamp</strong></td>
+        </tr>
+        <tr>
+          <td><strong>t1</strong></td>
+          <td>{2, 3, 5}</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td><strong>t2</strong></td>
+          <td>{2, 3, 4, 5}</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td><strong>t3</strong></td>
+          <td>{2, 3, 4, 5}</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td><strong>t4</strong></td>
+          <td>{1, 2, 3, 4, 5}</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td><strong>t5</strong></td>
+          <td>{1, 3, 5}</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td><strong>t6</strong></td>
+          <td>{2,3,5}</td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <td><strong>t7</strong></td>
+          <td>{1, 3, 4}</td>
+          <td>9</td>
+        </tr>
+        <tr>
+          <td><strong>t8</strong></td>
+          <td>{1, 3, 5}</td>
+          <td>10</td>
+        </tr>
+      </tbody>
+    </table>
+  
+
+    <h2>What is the output of the algorithm?</h2>
+<p><strong>TSPIN</strong> is an algorithm for discovering the <strong>top-k stable periodic frequent patterns,</strong> which are also called <strong>top-k stable</strong> <strong>periodic frequent itemsets</strong>. An itemset is a group of items. The <strong>TSPIN</strong>  algorithm finds the <strong>k</strong> itemsets that appear periodically in a sequence of  transactions and have the highest support. To measure if an itemset is  periodic, the algorithm calculates its periods. To explain this in more  details, it is necessary to introduce a few definitions.</p>
+  <p>The set of transactions containing an itemset X is denoted as g(X). For example, consider the itemset {2, 3}. The set g({2,3}) is equal to {t1,t2, t3, t4, t6}. In other words, the itemset {2, 3} appears in the transactions t1 t2,t3, t4 and t6. It is also said that these are five occurrences of the itemset {2,3}.</p>
+  <p>Now, to assess the <strong>periodicity</strong> of an itemset X, its list of periods is calculated. A <strong>period</strong> is the time in terms of number of transactions between two occurrences of an itemset in the database (see the paper for the formal definition). For example, the periods of the itemset {2, 3} are {1,1,1,1,2,2}. The first period of {2,3} is 1 because {2,3} appears in the first transaction after the creation of the database. The second period of {2,3} is 1 because the itemset appears in transaction t2, which is one transactions after t1. The third period of {2,3} is 1 because the itemset appears in transactions t3, which is one transactions after t3. Then, the fourth period of {2,3} is 1 because the itemset appears in t4, which is one transaction after t3. Then, the fifth period of {2,3} is 2 because the itemset appears in t6, which is one transaction after t4. Finally, the fifth period of {2,3} is 2 because there is two transactions appearing after the last occurrence of {2,3} in the database (in t6).</p>
+  <p>The TSPIN algorithms utilize the list of periods of an itemset X to calculate its  maximum periodicity and a measure called lability that measures by how far the periods deviates from the <em>maxper </em>threshold set by the user  . The <strong>maximum periodicity of an itemset </strong> is the largest period among the periods of the itemset. The  <strong>lability</strong> of an itemset X is the cummulative sum of the difference between each period length and <em>maxper </em>(see the paper for a formal definition and some detailed examples).  </p>
+  <p>The TSPIN algorithm finds the <em>k</em> itemsets that have the highest support and have a maximum  periodicity that is no greater than the <em>maxper</em> threshold, and a maximum lability  that is no greater than the <em>maxla</em> threshold.</p>
+  <p>For example, if <strong>TSPIN</strong> is run on the previous transaction  database with a <em>maxper</em> = 3 , <em>maxla</em> =1, and <em>k</em> = 3, the TSPIN algorithm finds 3  stable periodic frequent itemsets.</p>
+  <table align="center" border="1" width="274">
+    <tbody>
+      <tr>
+        <td width="114"><strong>itemset</strong></td>
+        <td width="69"><strong>support (number of transactions where the itemset appear)</strong></td>
+        <td width="69"><strong>maximum lability </strong></td>
+      </tr>
+      <tr>
+        <td valign="top"><p>{3}</p></td>
+        <td valign="top"><p>7</p></td>
+        <td valign="top"><p>0</p></td>
+      </tr>
+      <tr>
+        <td valign="top"><p>{3, 5}</p></td>
+        <td valign="top"><p>7</p></td>
+        <td valign="top"><p>1</p></td>
+      </tr>
+      <tr>
+        <td valign="top">{5}</td>
+        <td valign="top"><p>7</p></td>
+        <td valign="top"><p>1</p></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>How should I interpret the results?</h2>
+  <p>Each <strong>stable periodic frequent itemset </strong>is annotated with its support (number of transactions where it appears) as well as its maximum lability. For example, the itemset {3, 5} has a support of 7 because  it appears in 7 transactions (t1, t2, t3, t4, t5, t6 and t8. The lability of {3,5}  is 1 which means that the periodic behavior of this pattern is quite stable  through the database (a smaller lability value means a more stable periodic  behavior).</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> used by TSPIN is defined
+    as follows. It is a text file. An item is represented by a positive
+    integer. A transaction is a line in the text file. In each line
+    (transaction), items are separated by a single space. It is assumed
+    that all items within a same transaction (line) are sorted according to
+    a total order (e.g. ascending order) and that no item can appear twice
+    within the same line. Items are followed by the character &quot;|&quot; and then the timestamp of the transaction. Note that it is possible to run TSPIN on a database that has no timestamps. In that case, the Boolean parameter of TSPIN (the fourth parameter) should be set to true to indicate that the dataset has no timestamps. </p>
+  <p>In the previous example, the input file is defined
+    as follows:</p>
+  <p>@FILETYPE=&quot;Transaction database with timestamps&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    2 3 5|1<br>
+    2 3 4 5|3<br>
+    2 3 4 5|3<br>
+    1 2 3 4 5|5<br>
+    1 3 5|6<br>
+    2 3 5|7<br>
+    1 3 4|9<br>
+    1 3 5|10</p>
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then the following lines provides the transactions. </p>
+  <p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the
+    ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+    Most features of the ARFF format are supported except that (1) the
+    character &quot;=&quot; is forbidden and (2) escape characters are not
+    considered. Note that when the ARFF format is used, the performance of
+    the data mining algorithms will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line represents a stable periodic frequent itemset. On each
+    line, the items of the itemset are first listed. Each item is
+    represented by an integer and it is followed by a single space. After,
+    all the items, the keyword &quot;#SUP:&quot; appears, which is followed by an
+    integer indicating the support of the itemset, expressed as a number of
+    transactions. Then, the keyword #MAXLA: appears and is followed by a space,  an integer indicating the maximum lability of the itemset.</p>
+  <p>For example, here is the output file for this example.
+    The first line indicates that the itemset {5} is a frequent periodic itemset, having a support of 6transactions, and a maximum lability of 0 transaction. Other lines follow the same format. </p>
+  <p>@FILETYPE=&quot;Top-k Stable Periodic frequent itemsets&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    5  #SUP: 6  #MAXLA: 0<br>
+    3  #SUP: 7  #MAXLA: 0<br>
+  3 5  #SUP	: 7  #MAXLA: 0</p>
+  <p>Note that if the ARFF format is used as input instead of the
+    default input format, the output format will be the same except that
+    items will be represented by strings instead of integers.</p>
+
+  <h2>Optional feature: giving names to items</h2>
+  <p>Some users have requested the feature of giving names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextTSPIN.txt</strong>&quot;. Here we have modified the file to give a name to each item: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+      @FILETYPE=&quot;Transaction database with timestamps&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      @ITEM=1=apple<br>
+      @ITEM=2=orange<br>
+      @ITEM=3=tomato<br>
+      @ITEM=4=milk<br>
+      @ITEM=5=bread<br>
+      2 3 5|1<br>
+      2 3 4 5|3<br>
+      2 3 4 5|3<br>
+      1 2 3 4 5|5<br>
+      1 3 5|6<br>
+      2 3 5|7<br>
+      1 3 4|9<br>
+      1 3 5|10</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second and third line indicate the type of file and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. Then, the following lines define  transactions in the SPMF format.</p>
+  <p>Then, if we apply an algorithm on this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+  <br>
+      bread #SUP: 6 #MAXLA: 1<br>
+      tomato bread #SUP: 7 #MAXLA: 1<br>
+      tomato #SUP: 7 #MAXLA: 0</p>
+  <p>Note that this feature could be also used from the <strong>source code</strong> of SPMF using the ResultConverter class. However, there is currently no example provided for using it from the source code.</p>
+
+  <h2>Performance</h2>
+  <p>TSPIN is currently the only algorithm designed to mine the <strong>top-k </strong>stable periodic frequent itemset in a sequence of transaction (a transaction database) with or without timestamps, offered in SPMF. </p>
+  <p>TSPIN is a variation of the SPP-Growth algorithm. The difference is that TSPIN let the user decide &quot;k&quot;, the number of patterns to be found, while SPP-Growth requires that the user set a minimum support threshold instead. The performance of the two algorithm is similar but mining the top-k patterns is a more difficult problem. </p>
+
+  <h2>Where can I get more information about the TSPIN algorithm?</h2>
+  <p>This is the article proposing the TSPIN algorithm:</p>
+  <p><em>Fournier-Viger, P., Wang Y., Yang, P., Lin, J. C.-W., Yun, U. (2021). <strong><a href="https://www.philippe-fournier-viger.com/TSPIN_topk_stable.pdf">TSPIN: Mining Top-k Stable Periodic Patterns</a>.</strong> Applied Intelligence, to appear.</em></p>
+  <p>Related to this, you can also view a <a href="https://www.philippe-fournier-viger.com/StablePatternsPeriodicIEA_AIE2019.pdf">PPT presentation of the SPP-Growth algorithm </a> (which is similar to TSPIN) or the same presentation as a <a href="videos/SPPGrowth.html">video. </a>
+    <!------------------------------------------------------------------------------->
+  </p>
+  
+<p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+<p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+</body>
+</html>

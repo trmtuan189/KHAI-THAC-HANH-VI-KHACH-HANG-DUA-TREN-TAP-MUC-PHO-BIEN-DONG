@@ -1,0 +1,233 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining High Average-Utility Itemsets with Multiple Thresholds in a Transaction Database using the HAUI-MMAU Algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining High Average-Utility Itemsets with Multiple Thresholds in a Transaction Database using the HAUI-MMAU Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>HAUI-MMAU algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">HAUI-MMAU</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextHAUIMMAU</span><span class="highlight">.txt"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight">output.txt</span>")
+    (4) set the GLMAU to 0 and the MAUI file to &quot;MAU_Utility.txt&quot; <span class="highlight"> </span>and
+    (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong> HAUI-MMAU contextHAUIMMAU</strong>.txt
+      output.txt 0 MAU_Utility.txt </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>contextHAUIMMAU</strong>.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestHAUI_MMAU_saveToFile.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is HAUI-MMAU?</h2>
+<p><strong>HAUI-MMAU</strong>&nbsp;is an algorithm for  mining <strong>average-utility itemsets </strong>by using<strong> multiple minimum average-utility thresholds</strong>. Unlike some other algorithms such as HAUI-Miner, the HAUI-MMAU algorithms allows to set a different threshold for each item, rather than a single threshold to evaluate all items. Setting multiple thresholds is useful because it allows to set lower minimum average-utility thresholds for  low profit  items. Therefore, it  allows discovering high average-utility itemsets containing low profit items.</p>
+
+<h2>What is the input?</h2>
+<p>The input of&nbsp;<strong>HAUI-MMAU</strong>&nbsp;is  a transaction database and a list of minimum average-utility thresholds  indicating the <strong>minimum average-utility threshold</strong> for each item.<br>
+    A&nbsp;transaction  database&nbsp;is a set of transactions, where each transaction is a list  of distinct items (symbols). For example, let's consider the following  transaction database. It consists of 5 transactions (t1, t2, ..., t5) and 8  items (1, 2, 3, 4, 5, 6). For instance, transaction t1 is the set of items {2,  3, 4, 5}. This database is provided in the file &quot;<strong>contextHAUIMMAU.txt</strong>&quot; of the SPMF distribution. It is  important to note that an item is not allowed to appear twice in the same  transaction.</p>
+  <div align="center">
+    <table border="1" cellspacing="3" cellpadding="0" width="747">
+      <tr>
+        <td width="236"><br>
+          Transaction ID </td>
+        <td width="250"><p align="center">Items </p></td>
+        <td width="249" valign="top"><p align="center">Utilities</p></td>
+      </tr>
+      <tr>
+        <td><p align="center">t1 </p></td>
+        <td><p align="center">2 3 4 5 </p></td>
+        <td valign="top"><p align="center">14 2 6 4 </p></td>
+      </tr>
+      <tr>
+        <td><p align="center">t2 </p></td>
+        <td><p align="center">2 3 4 </p></td>
+        <td valign="top"><p align="center">8 3 6 </p></td>
+      </tr>
+      <tr>
+        <td><p align="center">t3 </p></td>
+        <td><p align="center">1 4 </p></td>
+        <td valign="top"><p align="center">10 2 </p></td>
+      </tr>
+      <tr>
+        <td><p align="center">t4 </p></td>
+        <td><p align="center">1 3 6 </p></td>
+        <td valign="top"><p align="center">5 6 4 </p></td>
+      </tr>
+      <tr>
+        <td><p align="center">t5 </p></td>
+        <td><p align="center">2 3 4 6 </p></td>
+        <td valign="top"><p align="center">4 3 2 2 </p></td>
+      </tr>
+    </table>
+  </div>
+  <p>The list of minimum average-utility threshold is stored  in a text file that is read as input by the algorithm. This is provided in the  file &quot;<strong>MAU_Utility.txt&quot;:</strong></p>
+  <div align="center">
+    <table border="1" cellspacing="3" cellpadding="0" width="498">
+      <tr>
+        <td><br>
+          item </td>
+        <td><p align="center">minimum average-utility threshold </p></td>
+      </tr>
+      <tr>
+        <td><p align="center">1</p></td>
+        <td><p align="center">5</p></td>
+      </tr>
+      <tr>
+        <td><p align="center">2</p></td>
+        <td><p align="center">2</p></td>
+      </tr>
+      <tr>
+        <td><p align="center">3</p></td>
+        <td><p align="center">1</p></td>
+      </tr>
+      <tr>
+        <td><p align="center">4</p></td>
+        <td><p align="center">2</p></td>
+      </tr>
+      <tr>
+        <td><p align="center">5</p></td>
+        <td><p align="center">4</p></td>
+      </tr>
+      <tr>
+        <td><p align="center">6</p></td>
+        <td><p align="center">1</p></td>
+      </tr>
+    </table>
+  </div>
+  <p>This file indicated for example that the average-utility threshold  to be used for item 1 is 5. </p>
+
+  <h2>What is the output?</h2>
+  <p><em> </em>The output of&nbsp;<strong>HAUI-MMAU</strong>&nbsp;is the set of all <strong>high average-utility itemsets</strong> contained in the database.<br>
+  </p>
+  <p>What is a high average-utility itemset? The&nbsp;average-utility of an itemset&nbsp;is the sum  of the average-utilities of transactions containing the itemset. An itemset is a&nbsp;<strong>high  average-utility itemset&nbsp;</strong>if  its average-utility is higher or equal to the smallest minimum average-utility threshold  among the minimum average-utility thresholds of all its items. For example, the  itemset {1, 4} is high average-utility because it appears in transactions (t3)  and its average-utility (= 6)is higher than the average minimum average-utility  item 1, item 4, which is (5+2)/2 = 3.5.</p>
+  <p> Why HAUI-MMAU is useful? It is useful because it permits  setting lower minimum average-utility thresholds for  low profit  items. Therefore, it  allows discovering high average-utility itemsets containing  low profit  items.<br>
+    If we run&nbsp;HAUI-MMAU&nbsp;on  the previous transaction database with the&nbsp;MAU_Utility.txt&nbsp;file previously described, we get the  following result, where each line represents an itemsets followed by  &quot;:&quot; and then its absolute average-utility and minimum average-utility  count:</p>
+  <p> 1  #AUTIL: 15 #mau: 5.0 <br>
+    2  #AUTIL: 26 #mau: 2.0 <br>
+    3  #AUTIL: 14 #mau: 1.0 <br>
+    4  #AUTIL: 16 #mau: 2.0 <br>
+    5  #AUTIL: 4 #mau: 4.0 <br>
+    6  #AUTIL: 6 #mau: 1.0 <br>
+    3 6  #AUTIL: 7 #mau: 1.0 <br>
+    3 2  #AUTIL: 17 #mau: 1.5 <br>
+    3 4  #AUTIL: 11 #mau: 1.5 <br>
+    3 5  #AUTIL: 3 #mau: 2.5 <br>
+    3 1  #AUTIL: 5 #mau: 3.0 <br>
+    6 2  #AUTIL: 3 #mau: 1.5 <br>
+    6 4  #AUTIL: 2 #mau: 1.5 <br>
+    6 1  #AUTIL: 4 #mau: 3.0 <br>
+    2 4  #AUTIL: 20 #mau: 2.0 <br>
+    2 5  #AUTIL: 9 #mau: 3.0 <br>
+    4 5  #AUTIL: 5 #mau: 3.0 <br>
+    4 1  #AUTIL: 6 #mau: 3.5 <br>
+    3 6 2  #AUTIL: 3 #mau: 1.3333334 <br>
+    3 6 4  #AUTIL: 2 #mau: 1.3333334 <br>
+    3 6 1  #AUTIL: 5 #mau: 2.3333333 <br>
+    3 2 4  #AUTIL: 16 #mau: 1.6666666 <br>
+    3 2 5  #AUTIL: 6 #mau: 2.3333333 <br>
+    3 4 5  #AUTIL: 4 #mau: 2.3333333 <br>
+    6 2 4  #AUTIL: 2 #mau: 1.6666666 <br>
+    2 4 5  #AUTIL: 8 #mau: 2.6666667 <br>
+    3 6 2 4  #AUTIL: 2 #mau: 1.5 <br>
+    3 2 4 5  #AUTIL: 6  #mau: 2.25 </p>
+  <p>For example, the first  line represent the itemset &ldquo;3, 2&rdquo; has average-utility 17 and its minimum  average-utility count is 1.5. The other lines follows the same format.</p>
+
+  <h2>Input file format</h2>
+  <p align="left">HAUI-MMAU&nbsp;takes  two files as input, defined as follows.</p>
+  <p align="left"> The&nbsp;first  file&nbsp;(e.g. contextHAUIMMAU.txt) is a text file containing   transactions. Each lines represents a
+    transaction. Each line is composed of three sections, as follows.</p>
+  <ul>
+    <li>First, the items contained in the transaction are listed. An
+      item is represented by a positive integer. Each item is separated from
+      the next item by a single space. It is assumed that all items within a
+      same transaction (line) are sorted according to a total order (e.g.
+      ascending order) and that no item can appear twice within the same
+      transaction.</li>
+    <li>Second, the symbol ":" appears and is followed by the
+      transaction utility (an integer).</li>
+    <li>Third, the symbol ":" appears and is followed by the utility of
+      each item in this transaction (an integer), separated by single spaces.</li>
+  </ul>
+  <p align="left"> 2 3 4 5:26:14 2 6 4<br>
+    2 3 4:17:8 3 6<br>
+    1 4:12:10 2<br>
+    1 3 6:15:5 6 4<br>
+    2 3 4 6:11:4 3 2 2</p>
+  <p align="left"> Consider the first line.  It means that the first transaction is the itemset {2, 3, 4, 5} with utilities  {14, 2, 6, 4}. The following lines follow the same format.<br>
+    <br>
+    The&nbsp;second  file&nbsp;is a text file (e.g. MAU_Utility.txt) which provides the minimum average-utility to be used  for each item. Each line indicate the minimum average-utility for an item and  consists of two integer values separated by a single space. The first value is  the item. The second value is the minimum average-utility value to be used for  this item. For example, here is the file used in this example. The first line  indicate that for item &quot;1&quot; and the minimum average-utility to be used  is 1 (one transaction). The other lines follow the same format.<br>
+    1 5<br>
+    2 2<br>
+    3 1<br>
+    4 2<br>
+    5 4<br>
+    6 1</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is
+    defined as follows. It is a text file, where each line represents a <strong>high
+      average-utility itemset</strong>. On each line, the items of the itemset are
+    first listed. Each item is represented by an integer, followed by a
+    single space. After, all the items, the keyword " #AUTIL: " appears and
+    is followed by the average-utility of the itemset. For example, we show below
+    the output file for this example. </p>
+  <p align="left">1  #AUTIL: 15 #mau: 5.0 <br>
+    2  #AUTIL: 26 #mau: 2.0 <br>
+    3  #AUTIL: 14 #mau: 1.0 <br>
+    4  #AUTIL: 16 #mau: 2.0 <br>
+    5  #AUTIL: 4 #mau: 4.0 <br>
+    6  #AUTIL: 6 #mau: 1.0 <br>
+    3 6  #AUTIL: 7 #mau: 1.0 <br>
+    3 2  #AUTIL: 17 #mau: 1.5 <br>
+    3 4  #AUTIL: 11 #mau: 1.5 <br>
+    3 5  #AUTIL: 3 #mau: 2.5 <br>
+    3 1  #AUTIL: 5 #mau: 3.0 <br>
+    6 2  #AUTIL: 3 #mau: 1.5 <br>
+    6 4  #AUTIL: 2 #mau: 1.5 <br>
+    6 1  #AUTIL: 4 #mau: 3.0 <br>
+    2 4  #AUTIL: 20 #mau: 2.0 <br>
+    2 5  #AUTIL: 9 #mau: 3.0 <br>
+    4 5  #AUTIL: 5 #mau: 3.0 <br>
+    4 1  #AUTIL: 6 #mau: 3.5 <br>
+    3 6 2  #AUTIL: 3 #mau: 1.3333334 <br>
+    3 6 4  #AUTIL: 2 #mau: 1.3333334 <br>
+    3 6 1  #AUTIL: 5 #mau: 2.3333333 <br>
+    3 2 4  #AUTIL: 16 #mau: 1.6666666 <br>
+    3 2 5  #AUTIL: 6 #mau: 2.3333333 <br>
+    3 4 5  #AUTIL: 4 #mau: 2.3333333 <br>
+    6 2 4  #AUTIL: 2 #mau: 1.6666666 <br>
+    2 4 5  #AUTIL: 8 #mau: 2.6666667 <br>
+    3 6 2 4  #AUTIL: 2 #mau: 1.5 <br>
+    3 2 4 5  #AUTIL: 6  #mau: 2.25 </p>
+  <p>For example, the last line indicates that the itemset {3  2 4 5} has average utility of 6 which is larger than its minimum  average-utility threshold 2.25. The other lines follows the same format.</p>
+
+  <h2>Implementation details</h2>
+  <p>This is the original implementation of the algorithm.</p>
+
+  <h2>Where can I get more information about the HAUI-MMAU algorithm?</h2>
+  <p>This is the reference of the article describing the HAUI-MMAU
+    algorithm:</p>
+  <p><em>Jerry Chun-Wei  Lin, Ting Li, Philippe Fournier-Viger, Tzung-Pei Hong, and Ja-Hwung Su.  Efficient Mining of High Average-Utility Itemsets with Multiple Minimum  Thresholds[C]//Proceedings of the Industrial  Conference on Data Mining, 2016:14-28.</em></p>
+
+
+  <p>Besides, for a general overview of <strong> high utility itemset mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_high_utility_itemset2019_draft.pdf">survey paper</a>. </p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

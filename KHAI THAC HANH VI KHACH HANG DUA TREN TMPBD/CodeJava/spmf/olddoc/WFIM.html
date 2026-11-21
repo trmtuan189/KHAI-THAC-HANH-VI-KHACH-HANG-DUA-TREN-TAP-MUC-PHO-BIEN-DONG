@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Example: Mining Weighted Frequent Itemsets in a Transaction Database using the WFIM Algorithm (SPMF - Java)</title>
+    <link rel="stylesheet" href="docstyle.css"/>
+    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style3 {color: #0000FF; font-weight: bold; }
+-->
+    </style>
+</head>
+  <body>
+    <div width="100%" class="container">
+      <div class="content">
+        <!----------START------>
+
+        <h1>Mining Weighted Frequent Itemsets in a Transaction Database using the WFIM Algorithm
+          (<a href="documentation.html">SPMF documentation</a>)
+        </h1>
+
+        <p>This example explains how to run the <strong>WFIM algorithm</strong> using the
+          <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+
+        <h2>How to run this example?</h2>
+        <ul>
+          <li><strong>If you are using the graphical interface,</strong> (1) choose the
+            <strong>&quot;<span class="style1">WFIM</span>&quot;</strong> algorithm,
+            (2) select the input file <strong>&quot;<span class="style1">DB_RWFIM.txt</span>&quot;</strong>,
+            (3) set the weight file <strong>&quot;<span class="style1">weights_RWFIM.txt</span>&quot;</strong>,
+            (4) set the output file name (e.g. &quot;<span class="style3">output.txt</span>&quot;),
+            (5) set the minimum support ratio to <span class="style1">0.40</span>,
+            (6) set the minimum weight to <span class="style1">0.5</span>,
+            and (7) click &quot;<span class="style1">Run algorithm</span>&quot;.</li>
+          <li><strong>If you want to execute this example from the command line,</strong>
+            then execute this command:<br>
+            <span class="style3">java -jar spmf.jar run WFIM
+              DB_RWFIM.txt output.txt weights_RWFIM.txt 0.40 0.5</span>
+            in a folder containing <span class="style1">spmf.jar</span> and the example
+            input files <span class="style1">DB_RWFIM.txt</span> and
+            <span class="style1">weights_RWFIM.txt</span>.</li>
+          <li><strong>If you are using the source code version of SPMF,</strong> launch
+            the file <strong><span class="style1">&quot;MainTestWFIM.java&quot;</span></strong>
+            in the package
+            <span class="style1"><strong>ca.pfv.spmf.test</strong></span>.</li>
+        </ul>
+
+        <h2>What is WFIM?</h2>
+        <p><strong>WFIM</strong> (Yun &amp; Leggett, SDM 2005) is an algorithm for discovering
+          <strong>weighted frequent itemsets</strong> in a transaction database where each item
+          is associated with a weight. Unlike traditional frequent itemset mining, which treats
+          all items equally, WFIM accounts for the relative importance (weight) of items by
+          computing a <strong>weighted support</strong> for each itemset.</p>
+
+        <p>The weighted support of an itemset X is defined in this paper as:</p>
+        <p><strong>wsup(X) = w(X) &times; sup(X)</strong></p>
+        <p>where <em>w(X)</em> is the <strong>average weight</strong> of the items in X and
+          <em>sup(X)</em> is the <strong>support count</strong> of X (i.e., the number of
+          transactions containing X). An itemset X is called a
+          <strong>Weighted Frequent Itemset (WFI)</strong> if its weighted support is no less
+          than a user-specified minimum weighted support threshold.<br>
+          <br>
+        Note that this definition of the weighted support is not the same as the one used by some other algorithms in SPMF for weighted frequent itemset mining. </p>
+        <h2>What is the input?</h2>
+        <p><strong>WFIM</strong> takes as input:</p>
+        <ul>
+          <li>A <strong>transaction database</strong> (a set of transactions, each being a set
+            of items).</li>
+          <li>A <strong>weight table</strong> associating a weight (a real number between 0
+            and 1) to each item.</li>
+          <li>A <strong>minimum support ratio</strong> <em>minSup</em> (a value in [0,1]).</li>
+          <li>A <strong>minimum weight</strong> <em>minWeight</em> (a value in [0,1],
+            typically 0.5 if no minimum weight constraint is desired).</li>
+        </ul>
+
+        <p>Let's consider the following database consisting of 10 transactions and 5 items
+          (1, 2, 3, 4, 5). This database is provided in the text file
+          <strong>&quot;DB_RWFIM.txt&quot;</strong> in the package
+          <strong>ca.pfv.spmf.test </strong> of the
+          SPMF distribution.</p>
+
+        <table align="center" border="1" width="400">
+          <tbody>
+            <tr>
+              <td><strong>Transaction ID</strong></td>
+              <td><strong>Items</strong></td>
+            </tr>
+            <tr><td><strong>T1</strong></td><td>1 2 3 4 5</td></tr>
+            <tr><td><strong>T2</strong></td><td>1 3 4</td></tr>
+            <tr><td><strong>T3</strong></td><td>2 3 5</td></tr>
+            <tr><td><strong>T4</strong></td><td>1 2 4 5</td></tr>
+            <tr><td><strong>T5</strong></td><td>2 3 4 5</td></tr>
+            <tr><td><strong>T6</strong></td><td>1 3 5</td></tr>
+            <tr><td><strong>T7</strong></td><td>2 4</td></tr>
+            <tr><td><strong>T8</strong></td><td>1 2 3</td></tr>
+            <tr><td><strong>T9</strong></td><td>3 4 5</td></tr>
+            <tr><td><strong>T10</strong></td><td>1 2 4</td></tr>
+          </tbody>
+        </table>
+
+        <p>The weight table is provided in the file <strong>&quot;<span class="style1">weights_RWFIM.txt</span>&quot;</strong>
+          and assigns a weight to each item as follows:</p>
+
+        <table align="center" border="1" width="250">
+          <tbody>
+            <tr>
+              <td><strong>Item</strong></td>
+              <td><strong>Weight</strong></td>
+            </tr>
+            <tr><td>1</td><td>0.40</td></tr>
+            <tr><td>2</td><td>0.70</td></tr>
+            <tr><td>3</td><td>1.00</td></tr>
+            <tr><td>4</td><td>0.50</td></tr>
+            <tr><td>5</td><td>0.45</td></tr>
+          </tbody>
+        </table>
+
+        <p>For example, item 3 has the highest weight (1.00), meaning it is the most important
+          item, while item 1 has the lowest weight (0.40).</p>
+
+        <h2>What is the output?</h2>
+        <p>The output of <strong>WFIM</strong> is the set of all
+          <strong>weighted frequent itemsets</strong> whose <strong>weighted support</strong>          (<em>wsup = avg_weight &times; support_count</em>) is no less than
+          <em>minSup &times; dbSize</em>.</p>
+           <p>WFIM also uses two pruning conditions to efficiently avoid exploring itemsets that
+          cannot be weighted frequent:</p>
+        <ul>
+          <li><strong>Condition 1:</strong> An itemset X can be pruned if
+            <em>sup(X) &lt; min_sup</em> AND <em>w(X) &lt; min_weight</em>.</li>
+          <li><strong>Condition 2:</strong> An itemset X can be pruned if
+            <em>sup(X) &times; MaxW &lt; min_sup</em>, where MaxW is the global maximum
+            item weight across all items in the database.</li>
+        </ul>
+        <p>For example, if we run <strong>WFIM</strong> on the database above with a
+          <strong>minimum support ratio of 40%</strong> (i.e., <em>minSup = 0.40</em>, 
+          which means an itemset must have <em>wsup ≥ 0.40 &times; 10 = 4.0</em>) 
+          and a <strong>minimum weight of 0.5</strong>, we
+          obtain the following <strong>14 weighted frequent itemsets</strong>:</p>
+
+        <table align="center" border="1" width="550">
+          <tbody>
+            <tr>
+              <td><strong>Itemset</strong></td>
+              <td><strong>Support count</strong></td>
+              <td><strong>Avg. weight</strong></td>
+              <td><strong>Weighted support (wsup)</strong></td>
+            </tr>
+            <tr>
+              <td>{3}</td>
+              <td>7</td>
+              <td>1.0000</td>
+              <td>7.0000</td>
+            </tr>
+            <tr>
+              <td>{3, 2}</td>
+              <td>4</td>
+              <td>0.8500</td>
+              <td>3.4000</td>
+            </tr>
+            <tr>
+              <td>{3, 4}</td>
+              <td>4</td>
+              <td>0.7500</td>
+              <td>3.0000</td>
+            </tr>
+            <tr>
+              <td>{3, 5}</td>
+              <td>5</td>
+              <td>0.7250</td>
+              <td>3.6250</td>
+            </tr>
+            <tr>
+              <td>{3, 1}</td>
+              <td>4</td>
+              <td>0.7000</td>
+              <td>2.8000</td>
+            </tr>
+            <tr>
+              <td>{2}</td>
+              <td>7</td>
+              <td>0.7000</td>
+              <td>4.9000</td>
+            </tr>
+            <tr>
+              <td>{2, 4}</td>
+              <td>5</td>
+              <td>0.6000</td>
+              <td>3.0000</td>
+            </tr>
+            <tr>
+              <td>{2, 5}</td>
+              <td>4</td>
+              <td>0.5750</td>
+              <td>2.3000</td>
+            </tr>
+            <tr>
+              <td>{2, 1}</td>
+              <td>4</td>
+              <td>0.5500</td>
+              <td>2.2000</td>
+            </tr>
+            <tr>
+              <td height="53">{4}</td>
+              <td>7</td>
+              <td>0.5000</td>
+              <td>3.5000</td>
+            </tr>
+            <tr>
+              <td>{4, 5}</td>
+              <td>4</td>
+              <td>0.4750</td>
+              <td>1.9000</td>
+            </tr>
+            <tr>
+              <td>{4, 1}</td>
+              <td>4</td>
+              <td>0.4500</td>
+              <td>1.8000</td>
+            </tr>
+            <tr>
+              <td>{5}</td>
+              <td>6</td>
+              <td>0.4500</td>
+              <td>2.7000</td>
+            </tr>
+            <tr>
+              <td height="23">{1}</td>
+              <td>6</td>
+              <td>0.4000</td>
+              <td>2.4000</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p><strong>Note:</strong> An itemset is considered a weighted frequent itemset if its weighted support
+          (wsup = avg_weight &times; support_count) is at least minSup &times; dbSize = 0.40 &times; 10 = 4.0.
+          However, itemsets with wsup &lt; 4.0 may still appear in the output if they satisfy the pruning
+          conditions (they don't violate both Condition 1 AND Condition 2). For example, {1, 3} has 
+          wsup = 2.8 but appears because it doesn't satisfy Condition 1 (sup=4 ≥ minSup=4) nor Condition 2 
+          (4 &times; 1.0 = 4.0 ≥ 4.0).</p>
+
+        <p>The actual output file produced by WFIM for this example is:</p>
+        <p>
+          3 #SUP: 7 #WAVG: 1.0000<br>
+          3 2 #SUP: 4 #WAVG: 0.8500<br>
+          3 4 #SUP: 4 #WAVG: 0.7500<br>
+          3 5 #SUP: 5 #WAVG: 0.7250<br>
+          3 1 #SUP: 4 #WAVG: 0.7000<br>
+          2 #SUP: 7 #WAVG: 0.7000<br>
+          2 4 #SUP: 5 #WAVG: 0.6000<br>
+          2 5 #SUP: 4 #WAVG: 0.5750<br>
+          2 1 #SUP: 4 #WAVG: 0.5500<br>
+          4 #SUP: 7 #WAVG: 0.5000<br>
+          4 5 #SUP: 4 #WAVG: 0.4750<br>
+          4 1 #SUP: 4 #WAVG: 0.4500<br>
+          5 #SUP: 6 #WAVG: 0.4500<br>
+          1 #SUP: 6 #WAVG: 0.4000
+        </p>
+
+        <h2>Input file format</h2>
+        <p>WFIM takes two input files:</p>
+
+        <h3>1. Transaction database file</h3>
+        <p>The transaction database file is a text file where each line represents one
+          transaction. Each transaction is a list of items (positive integers) separated by
+          single spaces. Lines starting with <strong>#</strong>, <strong>%</strong>, or
+          <strong>@</strong> are treated as comments and ignored.For example, the file <strong>DB_RWFIM.txt</strong> is defined as follows:</p>
+        <p>
+          1 2 3 4 5<br>
+          1 3 4<br>
+          2 3 5<br>
+          1 2 4 5<br>
+          2 3 4 5<br>
+          1 3 5<br>
+          2 4<br>
+          1 2 3<br>
+          3 4 5<br>
+          1 2 4
+        </p>
+        <p>Each line is a transaction. For example, the first line means that transaction T1
+          contains items 1, 2, 3, 4, and 5.</p>
+
+        <h3>2. Weight table file</h3>
+        <p>The weight table file is a text file where each line associates one item with its
+          weight. Each line contains an item identifier (a positive integer) followed by a
+          single space and the item weight (a real number between 0 and 1). Lines starting
+          with <strong>#</strong>, <strong>%</strong>, or <strong>@</strong> are treated as
+          comments and ignored.</p>
+        <p>For example, the file <strong>weights_RWFIM.txt</strong> is defined as follows:</p>
+        <p>
+          1 0.4<br>
+          2 0.7<br>
+          3 1.0<br>
+          4 0.5<br>
+          5 0.45
+        </p>
+        <p>Each line associates one item with its weight. For example, item 1 has weight 0.4
+          and item 3 has the maximum weight of 1.0.</p>
+
+        <h2>Output file format</h2>
+        <p>The output file is a text file where each line represents one
+          <strong>weighted frequent itemset</strong>. On each line, the items of the itemset
+          are first listed as positive integers separated by single spaces. After all the
+          items, the keyword <strong>&quot;#SUP:&quot;</strong> appears, followed by the
+          support count of the itemset. Then the keyword <strong>&quot;#WAVG:&quot;</strong>
+          appears, followed by the average weight of the items in the itemset (a real number 
+          formatted to 4 decimal places).</p>
+        <p>For example, the output file for this example is:</p>
+        <p>
+          3 #SUP: 7 #WAVG: 1.0000<br>
+          3 2 #SUP: 4 #WAVG: 0.8500<br>
+          3 4 #SUP: 4 #WAVG: 0.7500<br>
+          3 5 #SUP: 5 #WAVG: 0.7250<br>
+          3 1 #SUP: 4 #WAVG: 0.7000<br>
+          2 #SUP: 7 #WAVG: 0.7000<br>
+          2 4 #SUP: 5 #WAVG: 0.6000<br>
+          2 5 #SUP: 4 #WAVG: 0.5750<br>
+          2 1 #SUP: 4 #WAVG: 0.5500<br>
+          4 #SUP: 7 #WAVG: 0.5000<br>
+          4 5 #SUP: 4 #WAVG: 0.4750<br>
+          4 1 #SUP: 4 #WAVG: 0.4500<br>
+          5 #SUP: 6 #WAVG: 0.4500<br>
+          1 #SUP: 6 #WAVG: 0.4000
+        </p>
+        <p>For example, the first line indicates that the itemset {3} has a support count of 7
+          (appears in 7 out of 10 transactions) and an average weight of 1.0000. The weighted
+          support can be computed as wsup({3}) = 1.0000 &times; 7 = 7.0000. The following lines 
+          follow the same format.</p>
+
+        <h2>Performance</h2>
+        <p><strong>Weighted frequent itemset mining</strong> is a generalization of traditional
+          frequent itemset mining that introduces item weights to reflect the varying importance
+          of items. WFIM achieves efficiency by:</p>
+        <ul>
+          <li>Using an <strong>FP-tree</strong>-based pattern-growth approach, which avoids
+            the costly candidate generation step of Apriori-like algorithms.</li>
+          <li>Applying two <strong>pruning conditions</strong> (Conditions 1 and 2) both
+            during initial item filtering and during conditional database construction, which
+            significantly reduces the search space.</li>
+        </ul>
+        <p>In practice, WFIM is efficient for moderate-sized databases. </p>
+
+        <h2>Implementation details</h2>
+        <p>The version offered in SPMF is an implementation of the WFIM algorithm based on the
+          description provided in the original paper (Yun &amp; Leggett, SDM 2005). The
+          implementation uses an FP-tree data structure and a recursive pattern-growth mining
+          procedure. Weights are computed using exact integer arithmetic (scaled by 10000) to
+          avoid floating-point inconsistencies. The output reports the support count and average 
+          weight (formatted to 4 decimal places) for each weighted frequent itemset. </p>
+        <h2>Where can I get more information about the WFIM algorithm?</h2>
+        <p>This is the reference of the article describing the WFIM algorithm:</p>
+        <p><em>Yun, U., Leggett, J.J. (2005). WFIM: Weighted Frequent Itemset Mining with a
+          weight range and a minimum weight. Proceedings of the SIAM International Conference
+          on Data Mining (SDM 2005), pp. 636-640.</em>
+          <!----------END------>
+        </p>
+        <div class="footer">
+          <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+          <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

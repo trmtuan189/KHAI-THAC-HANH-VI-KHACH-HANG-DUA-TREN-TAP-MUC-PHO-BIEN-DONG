@@ -1,0 +1,365 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Using the ARFF format in the source code version of SPMF  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000CC}
+.style3 {color: #0000CC; font-weight: bold; }
+.style4 {color: #339933}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Converting a Text file into a transaction database in SPMF format   (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>To provide  interoperability, the GUI interface and command line interface of SPMF can read <strong>text</strong> <strong>files</strong> since version 0.93 of SPMF and this is totally
+  transparent to the user as long as the input text file has the extension &quot;<strong>.text</strong>&quot;. When the user run an algorithm, the input text file is automatically converted. But if a file is used multiple times, it is desirable to convert the file  once to avoid the overhead of repeated conversions. Hence, this example explains how to convert a TEXT file to a sequence database in SPMF format so that it can be reused multiple times. This works only for algorithms that take a sequence database as input such as sequential pattern mining and sequential rule mining algorithms. </p>
+<h2>How to run this example? </h2>
+<p>To run this example: </p>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the &quot;<span class="style3">Convert_TEXT_file_to_sequence_database</span>&quot; algorithm<strong>, </strong> (2) select the input file <span class="highlight">&quot;</span><span class="style3">moby_fragment.txt</span><span class="highlight">&quot;</span><strong>,</strong> (3) set the
+    output file name (e.g.<span class="highlight"> &quot;</span><span class="style3">output.txt</span><span class="highlight">&quot;</span>) (4)
+    set the maximum number of sequences to <span class="highlight">100 </span>and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+        <span class="highlight style1"><strong>java -jar spmf.jar run <span class="style3">Convert_TEXT_file_to_sequence_database</span>        moby_fragment.txt output.txt 100 </strong></span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">moby_fragment.txt</span>. </li>
+  </ul>
+<h2><strong></strong><strong>What is the input? </strong></h2>
+<p>The input is a file in text file. The file considered in this example is called<span class="highlight"> moby_fragment.txt </span>and has the following content: </p>
+<p class="style4">“All ye mast-headers have before now heard me give orders about a white whale. Look ye! d’ye see this Spanish ounce of gold?”—holding up a broad bright coin to the sun—“it is a sixteen dollar piece, men. D’ye see it? Mr. Starbuck, hand me yon top-maul.”<br>
+  While the mate was getting the hammer, Ahab, without speaking, was slowly rubbing the gold piece against the skirts of his jacket, as if to heighten its lustre, and without using any words was meanwhile lowly humming to himself, producing a sound so strangely muffled and inarticulate that it seemed the mechanical humming of the wheels of his vitality in him.<br>
+  Receiving the top-maul from Starbuck, he advanced towards the main-mast with the hammer uplifted in one hand, exhibiting the gold with the other, and with a high raised voice exclaiming: “Whosoever of ye raises me a white-headed whale with a wrinkled brow and a crooked jaw; whosoever of ye raises me that white-headed whale, with three holes punctured in his starboard fluke—look ye, whosoever of ye raises me that same white whale, he shall have this gold ounce, my boys!”<br>
+  “Huzza! huzza!” cried the seamen, as with swinging tarpaulins they hailed the act of nailing the gold to the mast.<br>
+  “It’s a white whale, I say,” resumed Ahab, as he threw down the topmaul: “a white whale. Skin your eyes for him, men; look sharp for white water; if ye see but a bubble, sing out.”<br>
+  All this while Tashtego, Daggoo, and Queequeg had looked on with even more intense interest and surprise than the rest, and at the mention of the wrinkled brow and crooked jaw they had started as if each was separately touched by some specific recollection.<br>
+  “Captain Ahab,” said Tashtego, “that white whale must be the same that some call Moby Dick.”<br>
+  “Moby Dick?” shouted Ahab. “Do ye know the white whale then, Tash?”<br>
+  “Does he fan-tail a little curious, sir, before he goes down?” said the Gay-Header deliberately.<br>
+  “And has he a curious spout, too,” said Daggoo, “very bushy, even for a parmacetty, and mighty quick, Captain Ahab?”<br>
+  “And he have one, two, three—oh! good many iron in him hide, too, Captain,” cried Queequeg disjointedly, “all twiske-tee be-twisk, like him—him—” faltering hard for a word, and screwing his hand round and round as though uncorking a bottle—“like him—him—”<br>
+  “Corkscrew!” cried Ahab, “aye, Queequeg, the harpoons lie all twisted and wrenched in him; aye, Daggoo, his spout is a big one, like a whole shock of wheat, and white as a pile of our Nantucket wool after the great annual sheep-shearing; aye, Tashtego, and he fan-tails like a split jib in a squall. Death and devils! men, it is Moby Dick ye have seen—Moby Dick—Moby Dick!”<br>
+  “Captain Ahab,” said Starbuck, who, with Stubb and Flask, had thus far been eyeing his superior with increasing surprise, but at last seemed struck with a thought which somewhat explained all the wonder. “Captain Ahab, I have heard of Moby Dick—but it was not Moby Dick that took off thy leg?”</p>
+<p>This is an excerpt from the Moby Dick book.</p>
+<h2><strong>What is the output? </strong></h2>
+<p>The output is a sequence database in SPMF format:</p>
+<div>
+  <div>
+    <p class="style4">@CONVERTED_FROM_TEXT<br>
+      @FILETYPE=&quot;Simple sequence database&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      @ITEM=1=all<br>
+      @ITEM=2=ye<br>
+      @ITEM=3=mastheaders<br>
+      @ITEM=4=have<br>
+      @ITEM=5=before<br>
+      @ITEM=6=now<br>
+      @ITEM=7=heard<br>
+      @ITEM=8=me<br>
+      @ITEM=9=give<br>
+      @ITEM=10=orders<br>
+      @ITEM=11=about<br>
+      @ITEM=12=a<br>
+      @ITEM=13=white<br>
+      @ITEM=14=whale<br>
+      1 -1 2 -1 3 -1 4 -1 5 -1 6 -1 7 -1 8 -1 9 -1 10 -1 11 -1 12 -1 13 -1 14 -1 -2<br>
+      @ITEM=15=look<br>
+      15 -1 2 -1 -2<br>
+      @ITEM=16=d<br>
+      @ITEM=17=see<br>
+      @ITEM=18=this<br>
+      @ITEM=19=spanish<br>
+      @ITEM=20=ounce<br>
+      @ITEM=21=of<br>
+      @ITEM=22=gold<br>
+      16 -1 2 -1 17 -1 18 -1 19 -1 20 -1 21 -1 22 -1 -2<br>
+      @ITEM=23=holding<br>
+      @ITEM=24=up<br>
+      @ITEM=25=broad<br>
+      @ITEM=26=bright<br>
+      @ITEM=27=coin<br>
+      @ITEM=28=to<br>
+      @ITEM=29=the<br>
+      @ITEM=30=sun<br>
+      @ITEM=31=it<br>
+      @ITEM=32=is<br>
+      @ITEM=33=sixteen<br>
+      @ITEM=34=dollar<br>
+      @ITEM=35=piece<br>
+      @ITEM=36=men<br>
+      23 -1 24 -1 12 -1 25 -1 26 -1 27 -1 28 -1 29 -1 30 -1 31 -1 32 -1 12 -1 33 -1 34 -1 35 -1 36 -1 -2<br>
+      16 -1 2 -1 17 -1 31 -1 -2<br>
+      @ITEM=37=mr<br>
+      37 -1 -2<br>
+      @ITEM=38=starbuck<br>
+      @ITEM=39=hand<br>
+      @ITEM=40=yon<br>
+      @ITEM=41=topmaul<br>
+      38 -1 39 -1 8 -1 40 -1 41 -1 -2<br>
+      @ITEM=42=while<br>
+      @ITEM=43=mate<br>
+      @ITEM=44=was<br>
+      @ITEM=45=getting<br>
+      @ITEM=46=hammer<br>
+      @ITEM=47=ahab<br>
+      @ITEM=48=without<br>
+      @ITEM=49=speaking<br>
+      @ITEM=50=slowly<br>
+      @ITEM=51=rubbing<br>
+      @ITEM=52=against<br>
+      @ITEM=53=skirts<br>
+      @ITEM=54=his <br>
+      @ITEM=55=jacket<br>
+      @ITEM=56=as<br>
+      @ITEM=57=if<br>
+      @ITEM=58=heighten<br>
+      @ITEM=59=its<br>
+      @ITEM=60=lustre<br>
+      @ITEM=61=and<br>
+      @ITEM=62=using<br>
+      @ITEM=63=any<br>
+      @ITEM=64=words<br>
+      @ITEM=65=meanwhile<br>
+      @ITEM=66=lowly<br>
+      @ITEM=67=humming<br>
+      @ITEM=68=himself<br>
+      @ITEM=69=producing<br>
+      @ITEM=70=sound<br>
+      @ITEM=71=so<br>
+      @ITEM=72=strangely<br>
+      @ITEM=73=muffled<br>
+      @ITEM=74=inarticulate<br>
+      @ITEM=75=that<br>
+      @ITEM=76=seemed<br>
+      @ITEM=77=mechanical<br>
+      @ITEM=78=wheels<br>
+      @ITEM=79=vitality<br>
+      @ITEM=80=in<br>
+      @ITEM=81=him<br>
+      42 -1 29 -1 43 -1 44 -1 45 -1 29 -1 46 -1 47 -1 48 -1 49 -1 44 -1 50 -1 51 -1 29 -1 22 -1 35 -1 52 -1 29 -1 53 -1 21 -1 54 -1 55 -1 56 -1 57 -1 28 -1 58 -1 59 -1 60 <br>
+      -161 -1 48 -1 62 -1 63 -1 64 -1 44 -1 65 -1 66 -1 67 -1 28 -1 68 -1 69 -1 12 -1 70 -1 71 -1 72 -1 73 -1 61 -1 74 -1 75 -1 31 -1 76 -1 29 -1 77 -1 67 -1 21 -1 29 -1 78<br>
+      -1 21 -1 54 -1 79 -1 80 -1 81 -1 -2<br>
+      @ITEM=82=receiving<br>
+      @ITEM=83=from<br>
+      @ITEM=84=he<br>
+      @ITEM=85=advanced<br>
+      @ITEM=86=towards<br>
+      @ITEM=87=mainmast<br>
+      @ITEM=88=with<br>
+      @ITEM=89=uplifted<br>
+      @ITEM=90=one<br>
+      @ITEM=91=exhibiting<br>
+      @ITEM=92=other<br>
+      @ITEM=93=high<br>
+      @ITEM=94=raised<br>
+      @ITEM=95=voice<br>
+      @ITEM=96=exclaiming<br>
+      @ITEM=97=whosoever<br>
+      @ITEM=98=raises<br>
+      @ITEM=99=whiteheaded<br>
+      @ITEM=100=wrinkled<br>
+      @ITEM=101=brow<br>
+      @ITEM=102=crooked<br>
+      @ITEM=103=jaw<br>
+      @ITEM=104=three<br>
+      @ITEM=105=holes<br>
+      @ITEM=106=punctured<br>
+      @ITEM=107=starboard<br>
+      @ITEM=108=fluke<br>
+      @ITEM=109=same<br>
+      @ITEM=110=shall<br>
+      @ITEM=111=my<br>
+      @ITEM=112=boys<br>
+      82 -1 29 -1 41 -1 83 -1 38 -1 84 -1 85 -1 86 -1 29 -1 87 -1 88 -1 29 -1 46 -1 89 -1 80 -1 90 -1 39 -1 91 -1 29 -1 22 -1 88 -1 29 -1 92 -1 61 -1 88 -1 12 -1 93 -1 94 -1<br>
+      95 -1 96 -1 97 -1 21 -1 2 -1 98 -1 8 -1 12 -1 99 -1 14 -1 88 -1 12 -1 100 -1 101 -1 61 -1 12 -1 102 -1 103 -1 97 -1 21 -1 2 -1 98 -1 8 -1 75 -1 99 -1 14 -1 88 -1 104<br>
+      -1 105 -1 106 -1 80 -1 54 -1 107 -1 108 -1 15 -1 2 -1 97 -1 21 -1 2 -1 98 -1 8 -1 75 -1 109 -1 13 -1 14 -1 84 -1 110 -1 4 -1 18 -1 22 -1 20 -1 111 -1 112 -1 -2<br>
+      @ITEM=113=huzza<br>
+      113 -1 -2<br>
+      113 -1 -2<br>
+      @ITEM=114=cried<br>
+      @ITEM=115=seamen<br>
+      @ITEM=116=swinging<br>
+      @ITEM=117=tarpaulins<br>
+      @ITEM=118=they<br>
+      @ITEM=119=hailed<br>
+      @ITEM=120=act<br>
+      @ITEM=121=nailing<br>
+      @ITEM=122=mast<br>
+      114 -1 29 -1 115 -1 56 -1 88 -1 116 -1 117 -1 118 -1 119 -1 29 -1 120 -1 21 -1 121 -1 29 -1 22 -1 28 -1 29 -1 122 -1 -2<br>
+      @ITEM=123=s<br>
+      @ITEM=124=i<br>
+      @ITEM=125=say<br>
+      @ITEM=126=resumed<br>
+      @ITEM=127=threw<br>
+      @ITEM=128=down<br>
+      31 -1 123 -1 12 -1 13 -1 14 -1 124 -1 125 -1 126 -1 47 -1 56 -1 84 -1 127 -1 128 -1 29 -1 41 -1 12 -1 13 -1 14 -1 -2<br>
+      @ITEM=129=skin<br>
+      @ITEM=130=your<br>
+      @ITEM=131=eyes<br>
+      @ITEM=132=for<br>
+      @ITEM=133=sharp<br>
+      @ITEM=134=water<br>
+      @ITEM=135=but<br>
+      @ITEM=136=bubble<br>
+      @ITEM=137=sing<br>
+      @ITEM=138=out<br>
+      129 -1 130 -1 131 -1 132 -1 81 -1 36 -1 15 -1 133 -1 132 -1 13 -1 134 -1 57 -1 2 -1 17 -1 135 -1 12 -1 136 -1 137 -1 138 -1 -2<br>
+      @ITEM=139=tashtego<br>
+      @ITEM=140=daggoo<br>
+      @ITEM=141=queequeg<br>
+      @ITEM=142=had<br>
+      @ITEM=143=looked<br>
+      @ITEM=144=on<br>
+      @ITEM=145=even<br>
+      @ITEM=146=more<br>
+      @ITEM=147=intense<br>
+      @ITEM=148=interest<br>
+      @ITEM=149=surprise<br>
+      @ITEM=150=than<br>
+      @ITEM=151=rest<br>
+      @ITEM=152=at<br>
+      @ITEM=153=mention<br>
+      @ITEM=154=started<br>
+      @ITEM=155=each<br>
+      @ITEM=156=separately<br>
+      @ITEM=157=touched<br>
+      @ITEM=158=by<br>
+      @ITEM=159=some<br>
+      @ITEM=160=specific<br>
+      @ITEM=161=recollection<br>
+      1 -1 18 -1 42 -1 139 -1 140 -1 61 -1 141 -1 142 -1 143 -1 144 -1 88 -1 145 -1 146 -1 147 -1 148 -1 61 -1 149 -1 150 -1 29 -1 151 -1 61 -1 152 -1 29 -1 153 -1 21 -1 29 -1 100 -1 101 -1 61 -1 102 -1 103 -1 118 -1 142 -1 154 -1 56 -1 57 -1 155 -1 44 -1 156 -1 157 -1 158 -1 159 -1 160 -1 161 -1 -2<br>
+      @ITEM=162=captain<br>
+      @ITEM=163=said<br>
+      @ITEM=164=must<br>
+      @ITEM=165=be<br>
+      @ITEM=166=call<br>
+      @ITEM=167=moby<br>
+      @ITEM=168=dick<br>
+      162 -1 47 -1 163 -1 139 -1 75 -1 13 -1 14 -1 164 -1 165 -1 29 -1 109 -1 75 -1 159 -1 166 -1 167 -1 168 -1 -2<br>
+      167 -1 168 -1 -2<br>
+      @ITEM=169=shouted<br>
+      169 -1 47 -1 -2<br>
+      @ITEM=170=do<br>
+      @ITEM=171=know<br>
+      @ITEM=172=then<br>
+      @ITEM=173=tash<br>
+      170 -1 2 -1 171 -1 29 -1 13 -1 14 -1 172 -1 173 -1 -2<br>
+      @ITEM=174=does<br>
+      @ITEM=175=fantail<br>
+      @ITEM=176=little<br>
+      @ITEM=177=curious<br>
+      @ITEM=178=sir<br>
+      @ITEM=179=goes<br>
+      174 -1 84 -1 175 -1 12 -1 176 -1 177 -1 178 -1 5 -1 84 -1 179 -1 128 -1 -2<br>
+      @ITEM=180=gayheader<br>
+      @ITEM=181=deliberately<br>
+      163 -1 29 -1 180 -1 181 -1 -2<br>
+      @ITEM=182=has<br>
+      @ITEM=183=spout<br>
+      @ITEM=184=too<br>
+      @ITEM=185=very<br>
+      @ITEM=186=bushy<br>
+      @ITEM=187=parmacetty<br>
+      @ITEM=188=mighty<br>
+      @ITEM=189=quick<br>
+      61 -1 182 -1 84 -1 12 -1 177 -1 183 -1 184 -1 163 -1 140 -1 185 -1 186 -1 145 -1 132 -1 12 -1 187 -1 61 -1 188 -1 189 -1 162 -1 47 -1 -2<br>
+      @ITEM=190=two<br>
+      @ITEM=191=oh<br>
+      61 -1 84 -1 4 -1 90 -1 190 -1 104 -1 191 -1 -2<br>
+      @ITEM=192=good<br>
+      @ITEM=193=many<br>
+      @ITEM=194=iron<br>
+      @ITEM=195=hide<br>
+      @ITEM=196=disjointedly<br>
+      @ITEM=197=twisketee<br>
+      @ITEM=198=betwisk<br>
+      @ITEM=199=like<br>
+      @ITEM=200=faltering<br>
+      @ITEM=201=hard<br>
+      @ITEM=202=word<br>
+      @ITEM=203=screwing<br>
+      @ITEM=204=round<br>
+      @ITEM=205=though<br>
+      @ITEM=206=uncorking<br>
+      @ITEM=207=bottle<br>
+      @ITEM=208=corkscrew<br>
+      192 -1 193 -1 194 -1 80 -1 81 -1 195 -1 184 -1 162 -1 114 -1 141 -1 196 -1 1 -1 197 -1 198 -1 199 -1 81 -1 81 -1 200 -1 201 -1 132 -1 12 -1 202 -1 61 -1 203 -1 54<br>
+      -1 39 -1 204 -1 61 -1 204 -1 56 -1 205 -1 206 -1 12 -1 207 -1 199 -1 81 -1 81 -1 208 -1 -2<br>
+      @ITEM=209=aye<br>
+      @ITEM=210=harpoons<br>
+      @ITEM=211=lie<br>
+      @ITEM=212=twisted<br>
+      @ITEM=213=wrenched<br>
+      @ITEM=214=big<br>
+      @ITEM=215=whole<br>
+      @ITEM=216=shock<br>
+      @ITEM=217=wheat<br>
+      @ITEM=218=pile<br>
+      @ITEM=219=our<br>
+      @ITEM=220=nantucket<br>
+      @ITEM=221=wool<br>
+      @ITEM=222=after<br>
+      @ITEM=223=great<br>
+      @ITEM=224=annual<br>
+      @ITEM=225=sheepshearing<br>
+      @ITEM=226=fantails<br>
+      @ITEM=227=split<br>
+      @ITEM=228=jib<br>
+      @ITEM=229=squall114 -1 47 -1 209 -1 141 -1 29 -1 210 -1 211 -1 1 -1 212 -1 61 -1 213 -1 80 -1 81 -1 209 -1 140 -1 54 -1 183 -1 32 -1 12 -1 214 -1 90 -1 199 -1 <br>
+      12 -1 215 -1 216 -1 21 -1 217 -1 61 -1 13 -1 56 -1 12 -1 218 -1 21 -1 219 -1 220 -1 221 -1 222 -1 29 -1 223 -1 224 -1 225 -1 209 -1 139 -1 61 -1 84 -1 226 -1 199<br>
+      -1 12 -1 227 -1 228 -1 80 -1 12 -1 229 -1 -2<br>
+      @ITEM=230=death<br>
+      @ITEM=231=devils<br>
+      230 -1 61 -1 231 -1 -2<br>
+      @ITEM=232=seen<br>
+      36 -1 31 -1 32 -1 167 -1 168 -1 2 -1 4 -1 232 -1 167 -1 168 -1 167 -1 168 -1 -2<br>
+      @ITEM=233=who<br>
+      @ITEM=234=stubb<br>
+      @ITEM=235=flask<br>
+      @ITEM=236=thus<br>
+      @ITEM=237=far<br>
+      @ITEM=238=been<br>
+      @ITEM=239=eyeing<br>
+      @ITEM=240=superior<br>
+      @ITEM=241=increasing<br>
+      @ITEM=242=last<br>
+      @ITEM=243=struck<br>
+      @ITEM=244=thought<br>
+      @ITEM=245=which<br>
+      @ITEM=246=somewhat<br>
+      @ITEM=247=explained<br>
+      @ITEM=248=wonder<br>
+      162 -1 47 -1 163 -1 38 -1 233 -1 88 -1 234 -1 61 -1 235 -1 142 -1 236 -1 237 -1 238 -1 239 -1 54 -1 240 -1 88 -1 241 -1 149 -1 135 -1 152 -1 242 -1 76 -1 243 -1 88 -1 12 -1 244 -1 245 -1 246 -1 247 -1 1 -1 29 -1 248 -1 -2<br>
+      @ITEM=249=not<br>
+      @ITEM=250=took<br>
+      @ITEM=251=off<br>
+      @ITEM=252=thy<br>
+      @ITEM=253=leg<br>
+      162 -1 47 -1 124 -1 4 -1 7 -1 21 -1 167 -1 168 -1 135 -1 31 -1 44 -1 249 -1 167 -1 168 -1 75 -1 250 -1 251 -1 252 -1 253 -1 -2</p>
+    </div>
+</div>
+<p>&nbsp;</p>
+<p>The file begins with the tag @CONVERTED_FROM_TEXT, indicating that this sequence database was generated by converting a text file.</p>
+<p>Each unique word encountered in the text is then assigned a unique integer identifier, declared using @ITEM tags (e.g., @ITEM=1=all, @ITEM=2=ye, @ITEM=3=mastheaders, etc.). Words are converted to lowercase and stripped of punctuation before being assigned an identifier. These @ITEM declarations appear incrementally throughout the file, as new words are encountered for the first time while reading the text from beginning to end.</p>
+<p>Each sentence found in the input text is converted into a sequence, where each word of the sentence becomes an item, and each item is followed by -1, which is the itemset separator. The special symbol -2 indicates the end of a sequence. For example, the first sequence:<br>
+1 -1 2 -1 3 -1 4 -1 5 -1 6 -1 7 -1 8 -1 9 -1 10 -1 11 -1 12 -1 13 -1 14 -1 -2</p>
+<p>represents the sentence "All ye mast-headers have before now heard me give orders about a white whale.", where each number refers to the corresponding word through the @ITEM mapping shown above the sequence.</p>
+<p>Note that new @ITEM declarations are written just before the sequence in which they first appear, which is why they appear interspersed throughout the file rather than all being grouped at the top. Also note that some sentences contain very few words (e.g., "Huzza!" is converted to the single-item sequence 113 -1 -2), since exclamations and short dialogue are treated as their own sequences, in the same way as longer sentences.</p>
+<p>Importantly, the conversion reuses item identifiers across sequences when the same word appears in multiple sentences (e.g., the word "ye", assigned item id 2, reappears in many sequences throughout the file). This allows sequential pattern mining and sequential rule mining algorithms to discover patterns and associations between words that are reused across different sentences of the text.</p>
+<p>The converted file can then be taken as input by sequential pattern mining and sequential rule mining algorithms such as PrefixSpan, CM-SPADE and RuleGrowth. You may see the other examples of the documentation to learn how to run such algorithms.</p>
+<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

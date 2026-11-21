@@ -1,0 +1,92 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View a time utility transaction database file with the transaction database Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View a time utility transaction database file with the  transaction database Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><strong>Time utility transaction databases </strong>are a type of data taken as input by  data mining algorithms  offered in SPMF such as<strong> LHUI-MINER</strong>, <strong>PHUI-MINER</strong> and <strong>PHM</strong> </p>
+<p>SPMF offers a tool to view the content of a <strong>time utility transaction database</strong>. This tool is called the <strong>SPMF time utility transaction database viewer</strong>. </p>
+<p>This page explains how to use this tool with an example. </p>
+<h2>How to run this example? </h2>
+<p><strong>If you want to run this example from the</strong> <strong>graphical interface of SPMF, </strong>(1)
+      choose the algorithm <strong>&quot;<span class="style1">Open_utility_time_transaction_database_file_with_viewer</span>&quot;</strong><strong>, </strong> (2) choose the <strong class="style1">DB_LTHUI.txt</strong> file as input,   and then (3) click &quot;<strong>run algorithm</strong>&quot; . </p>
+<p align="center"><img src="loco_loco_utility.png" alt="graph viewer open" width="804" height="220" border="0"></p>
+  <ul>
+    <li><strong>If you want to run this example from the source code of SPMF, run the file <span class="style1">MainTestUtilityTimeTransactionViewer</span>, which is located in the package <span class="style1">ca.pfv.spmf.tests </span></strong></li>
+    <li><strong>If you want to execute this example from the</strong> <strong>command line interface of SPMF</strong>, then execute this command: <br>
+      <br>
+        <span class="highlight style1"><strong>java -jar spmf.jar run Open_utility_time_transaction_database_file_with_viewer </strong><strong class="style1">DB_LTHUI.txt</strong><strong> </strong></span> <br>
+      <br>
+      in a folder containing <span class="style1"><strong>spmf.jar</strong></span> and the file <strong><span class="style1"> </span></strong><strong class="style1">DB_LTHUI</strong><strong><span class="style1">.txt</span></strong> which is included with SPMF. </li>
+    </ul>
+  <h2>What is displayed?</h2>
+  <p>After running the example, the content of the file will be displayed by the tool. The picture below shows the user interface of this viewer. </p>
+  <p>The <strong>window A</strong>) show in the picture below is the main window. It displays the <strong> time utility transaction database</strong> using a table. The table has 10 rows in this example. Each row (except the last one) is a transaction from the time utility transaction database.</p>
+  <p>Imagine that each transaction represents the
+      items purchased by a customer. </p>
+  <p>Take the first row as example.
+      <br>
+    The cell in the first column indicates that the ID of this transaction is 0.<br>
+    The cell in the second row indicates that this transaction was recorded at time 1. <br>
+    The cell in the third column indicates that this transaction 0 does not contain the item 1. <br>
+    The cell in the fourth column indicates that this transaction 0 contains the item 2 and the utility was 4 $. <br>
+The cell in the fifth column indicates that this transaction 0 contains the item 3 and the utility was 2$. <br>
+    The cell in the sixth column indicates that this transaction 0 does not contain the item 4. <br>
+    The cell in the seventh column indicates that this transaction 0 contains the item 5 and the utility was 3 $. <br>
+    The cell in the eigth column indicates that the total amount
+    of money (utility) spent in this transaction is 4 + 2 + 3= 9 $</p>
+  <p>The other transactions follow the same format.<br>
+    <br>
+  Then the last line of the table provides the sum of each column. For example, the cell in the last row and third column indicates that the total amount of utility for item 1 in this database is 10 + 10 + 10 = 30 $. </p>
+  <p>This view as a table can be useful to understand the content of a time utility transaction database file. </p>
+  <p>Besides, there are buttons that provides additional features: </p>
+  <ul>
+    <li>By clicking on the button &quot;<strong>View transaction length distribution </strong>&quot;, a new window is opened, presented as <strong>window B)</strong> in the picture below. This window displays the frequency histogram of the different transaction lengths in the current file. The number of transactions is the Y axis and the different transaction lengths are the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    <li>By clicking on the button &quot;<strong>View transaction utility distribution </strong>&quot;, a new window is opened, presented as <strong>window C)</strong> in the picture below. This window displays the frequency histogram of the different transaction lengths in the current file in terms of utility.. The number of transactions is the Y axis and the different transaction utility values are the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    <li>By clicking on the button &quot;<strong>View item utility distribution </strong>&quot;, a new window is opened, presented as <strong>window D)</strong> in the picture below. This window displays the utility of the different items as a histogram. The utility is the Y axis and the different items are the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+  </ul>
+  <p align="center"><img src="utility_with_time_time_time.png" alt="graph viewer database graph" width="1412" height="1221"></p>
+  <h2>What is the input?</h2>
+  <p>The algorithm  takes as input <strong>a time utility transaction database </strong>in SPMF format<strong>, </strong>as used by algorithm such as<strong> LTHUI-MINER </strong></p>
+  <p>    The database used in this example is provided  in the text file &quot;<strong class="style1">DB_LTHUI</strong><strong><span class="style1">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution. </p>
+  <p>The <strong>input file format </strong>of <strong>LTHUI-Miner </strong>is defined as follows.  It is a text file. Each line represents a transaction. Each line is composed of  four sections, as follows.</p>
+  <p>First, the items contained in the transaction are listed. An  item is represented by a positive integer. Each item is separated from the next  item by a single space. It is assumed that all items within a same transaction  (line) are sorted according to a total order (e.g. ascending order) and that no  item can appear twice within the same transaction.<br>
+    Second, the symbol &quot;:&quot; appears and is followed by  the transaction utility (an integer).<br>
+    Third, the symbol &quot;:&quot; appears and is followed by  the utility of each item in this transaction (an integer), separated by single  spaces.<br>
+    Fourth, the symbol &quot;:&quot; appears and is followed by  the timestamp (an integer) indicating when the transaction were made.<br>
+    <br>
+    For example, this is the content of the example file &quot;<strong class="style1">DB_LTHUI</strong><strong><span class="style1">.txt</span>&quot;</strong>:</p>
+  <p>@FILETYPE=&quot;Transaction database with utility values and time&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+2 3 5:9:4 2 3:1<br>
+2 3 4 5:18:8 3 4 3:3<br>
+2 3 5:14:10 1 3:4<br>
+1 2 3:32:10 20 2:4<br>
+1 3 5:22:10 6 6:6<br>
+2 3:11:8 3:7<br>
+2 3:34:32 2:9<br>
+1 3 5:22:10 6 6:10<br>
+2 3 5:15:10 2 3:12</p>
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. Consider the first line of data. It means that the transaction {2,  3, 5} has a total utility of 9 and that items 2, 3 and 5 respectively have a  utility of 4, 2 and 3 in this transaction, and the transaction were made at  time 1. The following lines follow the same format.</p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

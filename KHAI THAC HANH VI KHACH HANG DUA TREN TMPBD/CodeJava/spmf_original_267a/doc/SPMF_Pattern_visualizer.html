@@ -1,0 +1,75 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Open an output file containing patterns with the SPMF Pattern Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {
+	color: #0033CC;
+	font-weight: bold;
+}
+.style2 {color: #FFFFFF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Open an output file containing patterns with the SPMF Pattern Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>The <strong>SPMF softwar</strong>e can be used to run various algorithms that find interesting patterns in data. </p>
+<p>These <strong>patterns</strong> discovered by algorithms are typically saved in an output  text file. This text file can be opened with a text editor but also with a tool called the <strong>Pattern Viewer</strong>, which is provided in the graphical user interface of SPMF.</p>
+<p>This tool offers several interesting features for analyzing the patterns found by an algorithm.</p>
+<p>This page explain how to use the <strong>Pattern Viewer </strong> of SPMF.   </p>
+<h2>How to start the Pattern Viewer?</h2>
+<p>The main windows for running an algorithm in SPMF is shown in the picture below. In that window, we can choose an algorithm (e.g. Apriori), choose an input file (e.g. contextPasquier99.txt), set an output file for saving the results (e.g. test.txt), and set the parameters of the algorithm. </p>
+<p>Then, we can click &quot;Run algorithm&quot; to run the selected algorithm. </p>
+<p><img src="main_maaain_winnn.png" width="816" height="636"></p>
+<p>But also, as shown in the picture below, we can use this window to decide what to do with the output file after the algorithm is run: </p>
+<p><img src="pattern_pat_pat_viewer.png" width="816" height="636">  </p>
+<p>Here we have four main options:</p>
+<ul>
+  <li>Use the default text editor installed in the operating system to open the output file.</li>
+  <li>Use the built-in SPMF text editor to open the output file.</li>
+  <li>Use the <strong>Pattern Viewer tool </strong>of SPMF to open the output file.</li>
+  <li>or don't open the output file.</li>
+  </ul>
+<p>If we choose to open the output file with the pattern viewer tool, the Pattern Viewer window will  open when we click the &quot;Run algorithm&quot; button to display the output file produced by the selected algorithm::</p>
+<p><img src="viewer_of_all_these_pat_pat.png" alt="pattern viewer tool of SPMF" width="816" height="657"><br>
+  <br> 
+  This windows show the patterns discovered as a table but also provide multiple useful features. Here is an overview:</p>
+<p><img src="patttttttt_viewer2.png" alt="pattern viewer 2" width="1085" height="1278"> </p>
+<p>The main functions provided by the <strong>Pattern Viewer</strong> are displayed in the picture above:</p>
+<ul>
+  <li><strong>Display patterns</strong>: Display the list of patterns as a table.</li>
+  <li><strong>Search function</strong>: Allows tosearch for patterns containing some string. For example, we could search for all patterns containing &quot;1&quot;.</li>
+  <li><strong>Filtering function: </strong>Allows applying filters to the table such as to display only the patterns containing item &quot;1&quot; but not item &quot;2&quot;.</li>
+  <li><strong>Exporting function</strong>: Allows exporting the current list of patterns in the table (with filters applied) to an output text file.</li>
+  <li><strong>Viewing the distribution of patterns</strong>: We can view the distribution of patterns as a frequency histogram. We can choose the column according to     which we want to view the distribution. In the example above, I chose to display the distribution of patterns in terms of the support (#SUP) column from the table. A frequency histogram is generated, and it is possible to then export this histogram as a PNG file or a CSV file that can be imported in other software (.e.g Excel or OpenOffice Calc).</li>
+  </ul>
+<h2>Running the Pattern Viewer as an algorithm from the graphical user interface </h2>
+<p>There are also other ways to start the<strong> Pattern Viewer</strong> of SPMF. In particular, the <strong>Pattern Viewer </strong>can be  called just like any other algorithms offered in SPMF.</p>
+<p>For example, lets say that we want to view a file <span class="style1">patterns40.txt </span>containing the patterns found by an itemset mining algorithm using the Pattern Viewer.</p>
+<p><strong>In the graphical user interface of SPMF,</strong> we can (1) select the algorithm &quot;<span class="style1">Open_text_file_with_pattern_viewer</span>&quot;   and (2) set the input file as <span class="style1">patterns40.txt </span>and then (3) click the &quot;Run algorithm&quot; button.</p>
+<p><img src="spat_spat_spat.png" alt="pattern viewer tool of spmf" width="814" height="229"></p>
+<p>This will open the content of the <span class="style1">patterns40.txt </span>file with the Pattern Viewer:</p>
+<p class="style2"><img src="pat40pat40pat40.png" alt="pattern viewer" width="727" height="656"> </p>
+<h2>Starting the Pattern Viewer using the command line interface of SPMF </h2>
+<p>We can also start the Pattern Viewer using the command line interface of SPMF by running the following commands in the command line, in a folder containing <span class="style1">spmf.jar</span> and the file <span class="style1"><strong>patterns40.txt</strong></span>: </p>
+<p class="style1"><strong>java -jar spmf.jar run Open_text_file_with_pattern_viewer
+      patterns40.txt </strong></p>
+<p>&nbsp;</p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

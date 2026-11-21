@@ -1,0 +1,220 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining High-Utility Episodes using the HUE-SPAN Algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0033CC}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining High-Utility Episodes in a Complex Event Sequence using the HUE-SPAN Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>HUE-SPAN algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">HUE-SPAN</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextHUE_Span</span><span class="highlight">.txt"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight">output.txt</span>")
+    (4) set the minimum utility ratio to 0.45 and the max duration to 2, (5) set Output Single Event? to <strong>false</strong>  and
+    (6) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run HUE-SPAN contextHUE_Span.txt output.txt 0.45 2 false </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="style1"><strong>contextHUE_Span.txt</strong></span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"</span><span class="style1">MainTestHUESpan.java</span><span class="highlight">"</span></strong> in the package <span class="style1"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is HUE-SPAN?</h2>
+<p><strong>HUE-SPAN </strong> (Fournier-Viger et al., 2019) is an
+    algorithm for discovering<strong> high-utility episodes </strong>in a
+    <strong>complex event sequence containing utility </strong>information. It was shown to outperform the previous state-of-the-art algorithm, named US-SPAN (Wu et al., 2003). HUE-SPAN also introduces a new way of counting the utility to avoid some problem of US-SPAN such that the utility of some episodes may be underestimated (see the paper for details) but it can also use the traditional definition of utility. </p>
+  <p><strong>High utility episode mining </strong>can be used to discover  subsequences of events (<strong>episodes</strong>) that have a high importance (e.g. yield a high profit) in a complex event sequence. A c<strong>omplex event sequence</strong> is an ordered list of event sets, where an event sets is a set of events occuring simultaneously. In a complex event sequence with utility information, each event is annotated with some utility information (numbers indicating the importance of the event - e.g. profit yield by the event).</p>
+  <p>Although high utility episode mining algorithms are often presented in the context of
+    analyzing customer transaction data, there exist other applications.</p>
+
+  <h2>What is the input?</h2>
+  <p><strong>HUE-SPAN</strong> takes as input a <strong>complex event sequence</strong> (also called a transaction database)
+    with utility information, a minimum utility threshold <em>min_utility </em>(a percentage), a <em>minimum time duration</em> (an integer), and a optional boolean parameter <em>outputSingleEvents</em>. Let's consider the following
+    database consisting of 5 time points (t1,t2...t5) and 7 event types (1, 2,
+    3, 4, 5, 6, 7). This database is provided in the text file "<strong>contextHUE_Span.txt</strong>"
+    in the package <strong>ca.pfv.spmf.tests </strong>of the SPMF
+    distribution<strong>.</strong></p>
+  <table align="center" border="1" width="721">
+    <tbody>
+      <tr>
+        <td valign="top"><p><strong>Time points</strong></p></td>
+        <td valign="top"><p><strong>Events</strong></p></td>
+        <td valign="top"><p><strong>Total event utility </strong></p></td>
+        <td valign="top"><p><strong>Utilities of each event</strong> (item) </p></td>
+      </tr>
+      <tr>
+        <td valign="top"><p>t1</p></td>
+        <td valign="top"><p>1</p></td>
+        <td valign="top"><p>2</p></td>
+        <td valign="top"><p>2</p></td>
+      </tr>
+      <tr>
+        <td valign="top"><p>t2</p></td>
+        <td valign="top"><p>2 4</p></td>
+        <td valign="top"><p>4</p></td>
+        <td valign="top"><p>2 2</p></td>
+      </tr>
+      <tr>
+        <td valign="top"><p>t3</p></td>
+        <td valign="top"><p>2 3</p></td>
+        <td valign="top"><p>6</p></td>
+        <td valign="top"><p>3 3</p></td>
+      </tr>
+      <tr>
+        <td valign="top"><p>t4</p></td>
+        <td valign="top"><p>1 3</p></td>
+        <td valign="top"><p>7</p></td>
+        <td valign="top"><p>4 3</p></td>
+      </tr>
+      <tr>
+        <td valign="top"><p>t5</p></td>
+        <td valign="top"><p>4</p></td>
+        <td valign="top"><p>2</p></td>
+        <td valign="top"><p>2</p></td>
+      </tr>
+    </tbody>
+  </table>
+  
+    <p>Each line of the sequence is called an  <strong>event set </strong>and consists of:</p>
+    <ul>
+      <li>a <strong>time point</strong> (first column)</li>
+      <li>a <strong>set of events</strong> that are considered simultaneous at this time point  (the second column of the table),</li>
+      <li>the <strong>sum of the utilitie</strong>s (e.g. profit) of the events (the third  column of the table),</li>
+      <li>the <strong>utility</strong> (importance) of each event at this time point (the  fourth column of the table).</li>
+    </ul>
+    <p>Note that the value in the third column of each line is the sum of  the values in the fourth column.</p>
+    <p>What are real-life examples of such a database? There are
+      several applications in real life. One application is a customer
+      transaction database. Imagine that each transaction represents the
+      items purchased by a customer. The fourth customer named "<strong>t4</strong>"
+      bought items 1 and 3. The amount of money spent for each
+      item is respectively 4 $ and 3 $. The total amount
+      of money spent in this transaction is 4 + 3 = 7 $.</p>
+  
+
+    <h2>What is the output?</h2>
+    <p><em> </em>The output of<strong> UP-SPAN </strong>is the set of <strong>high utility episodes</strong>. To explain what is a high utility episode, it is
+    necessary to review some definitions. </p>
+  <p>An <strong>episode </strong> is a subsequence of the input sequence. An occurrence of an episode in a sequence is a set of no more than <em>maxTimeDuration+1 </em>consecutive events that contains the episode . The <strong>utility of an episode</strong> is the sum the utilities of its minimal occurrences in the sequence (see the paper for a more formal definition). </p>
+  <p>For example, consider the <strong>episode</strong> <strong>&lt;(2),  (3)&gt;</strong> which represents that event 2 was followed by events 3. If <strong>maxDur</strong> = 2,  and minimal occurrences of this episode are [t2, t3] and [t3, t4]. The<strong> utility  of this episode</strong> is the sum of the utility of &lt;(2), (3)&gt; for the minimal  occurrences [t2, t3] and [t3, t4]., that is (2+3)+(3+3) = 11.</p>
+  <p>The<strong> total utility</strong> of the input sequence, denoted as <strong>total_utility</strong>, is the sum of the third column in the previous example, that is:  2+4+6+7+2 = 21</p>
+  <p>A <strong>high utility episode</strong> is an episode such  that its utility is no less than <strong>min_utility * total_utility</strong>. For a given input  sequence, the<strong> HUE-Span algorithm</strong> outputs all <strong>high utility episodes</strong>. For  example, consider that min_utility = 0.45. If we run <strong>HUE-Span</strong> with minUtil = 0.45,  maxDur = 2, we obtain <strong>7 high-utility episodes</strong> that have a utility no less than  0.45 * 21 = 9.45</p>
+
+<table align="center" border="1" width="411">
+  <tbody>
+    <tr>
+      <td width="277" valign="top"><p><strong>High utility episode</strong></p></td>
+      <td width="277" valign="top"><p><strong>Utility</strong></p></td>
+    </tr>
+    <tr>
+      <td valign="top"><p>&lt;(1), (4)&gt;</p></td>
+      <td valign="top"><p>10</p></td>
+    </tr>
+    <tr>
+      <td valign="top"><p>&lt;(2, 3), (1)&gt;</p></td>
+      <td valign="top"><p>10</p></td>
+    </tr>
+    <tr>
+      <td valign="top"><p>&lt;(2, 3), (1, 3)&gt;</p></td>
+      <td valign="top"><p>13</p></td>
+    </tr>
+    <tr>
+      <td valign="top"><p>&lt;(2), (1, 3)&gt;</p></td>
+      <td valign="top"><p>10</p></td>
+    </tr>
+    <tr>
+      <td valign="top"><p>&lt;(2), (3)&gt;</p></td>
+      <td valign="top"><p>11</p></td>
+    </tr>
+    <tr>
+      <td valign="top"><p>&lt;(3), (1, 3)&gt;</p></td>
+      <td valign="top"><p>10</p></td>
+    </tr>
+    <tr>
+      <td valign="top"><p>&lt;(2, 4), (2, 3)&gt;</p></td>
+      <td valign="top"><p>10</p></td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>If the input sequence is a sequence of  transactions made by a customer in a store, we could interpret these results as  all the subsequences of purchases made by a customer that generated a profit of  9.45 $ or more.</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> of <strong>HUE-SPAN </strong>is
+    defined as follows. It is a text file. Each lines represents an event set. Each line is composed of three sections, as follows.</p>
+  <ul>
+    <li>First, the events (items) contained in the event set are listed. An  event is represented by a positive integer. Each item is separated from the  next item by a single space. It is assumed that all events within a same event  set (line) are sorted according to a total order (e.g. ascending order) and  that no event can appear twice within the same event set.</li>
+    <li>Second, the symbol &quot;:&quot; appears and is followed by the  total utility of the event set (an integer).</li>
+    <li>Third, the symbol &quot;:&quot; appears and is followed by the  utility of each event in this event set (an integer), separated by single  spaces.</li>
+  </ul>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  
+    <p align="left">1:2:2<br>
+      2 4:4:2 2<br>
+      2 3:6:3 3<br>
+      1 3:7:4 3<br>
+      4:2:</p>
+  
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. The second line of that section means that at  the second time point, two events 2 and 4 occurred, and that these events respectively  have a utility of 2 and 2. The total utility of this event set is thus 2 + 2 = 4.  The following lines follow the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The<strong> output file format </strong>is defined as  follows. It is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. Each line is a high utility episode. Each event in  a <strong>high utility episode</strong> is a positive integer and items from the same event set  within an episode are separated by single spaces. The value &quot;-1&quot;  indicates the end of an event set. On each line, the episode is first indicated.  Then, the keyword &quot;#Utility:&quot; appears followed by an integer  indicating the utility of the pattern (a positive integer). For example, a few  lines from the output file from the previous example are shown below:</p>
+  <p>@FILETYPE=&quot;High-Utility episodes&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1 -1 4 -1 #UTIL: 10<br>
+    2 3 -1 1 -1 #UTIL: 10<br>
+    2 3 -1 1 3 -1 #UTIL: 13<br>
+    2 -1 1 3 -1 #UTIL: 10<br>
+    2 -1 3 -1 #UTIL: 11<br>
+    3 -1 1 3 -1 #UTIL: 10 <br>
+  4 2 -1 2 3 -1 #UTIL: 10</p>
+  <p>For instance, the first line indicates that the high  utility episode consisting of the itemset (1), followed by the itemset (4) has  a utility of 10.</p>
+
+  <h2>Comparison of HUE-SPAN with UP-SPAN </h2>
+  <p><span class="highlight"><strong>Important note</strong>:</span> <span class="highlight">If you are interested to compare the episodes found by <strong>UP-SPAN </strong>(Wu et al., 2013) with those found by <strong>HUE-SPAN</strong>, it should be noted that the definition of window is slightly different for these two algorithms. </span>The difference is that maxWindow must be increased by 1 for HUE-Span to obtain the same result as UP-Span. Thus in the above example, if maxWindow = 2 for HUE-SPAN, then UP-SPAN must be run with maxWindow =1 to obtain the same result. Besides, it is also important to note that HUE-SPAN let the user use a novel definition of utility (as presented in the HUE-SPAN paper). To obtain the same results as UP-SPAN using HUE-SPAN it is necessary to use the old definition of utility. This is achieved by setting UseTraditionalUtility = true in the graphical user interface of SPMF or by setting CheckMaximumUtility = false in the source code of SPMF. Then the two algorithms should return the same result. But as of 2020-03-04, a bug has been found in UP-Span such that it can miss some patterns (thanks to Acquah Hackman for reporting the bug). For example, in the above database, minutil = 0.45 and maxWindow = 2, UP-Span misses the episode <span class="highlight">2 -1 1 3 -1 #UTIL: 10</span> that exists in the database, while HUE-SPAN with maxWindow = 3 can find it. We will try to fix that bug in UP-SPAN soon! </p>
+
+  <h2>Performance</h2>
+  <p>The first algorithm for high utility episode mining is UP-SPAN (Wu et al., 2013). The HUE-SPAN algorithm was shown to be faster than UP-SPAN. This is the original implementation of HUE-SPAN. </p>
+
+  <h2>Optional parameters</h2>
+  <p>In the<strong> release version of SPMF</strong>, there is an optional parameter <strong>&quot;Use the traditional utility?</strong>&quot;, which allows to change the definition of utility to use the traditional one instead of the new one presented in the HUE-SPAN paper. In that paper, it was argued that the new definition is better. But using the traditional definition of utility can be interesting to compare the performance with other algorithms like UP-SPAN, for example.  	 This optional parameter takes two values : <strong>true </strong>or <strong>false</strong>. For using this parameter in the command line, the parameter is simply added at the end of the command such as: <span class="highlight">java -jar spmf.jar run HUE-SPAN contextHUE_Span.txt
+  output.txt 0.45 2 false true</span> where <strong>true</strong> indicates to use the traditional definition of utility. </p>
+  <p>In the<strong> source code version of SPMF,</strong> there are some additional parameters that can be used to deactivate some optimizations. Normally, it is not necessary to deactivate them, unless for doing some performance experiments.</p>
+
+  <h2>Implementation details</h2>
+  <p>The version implemented here contains all the optimizations
+    described in the paper proposing HUE-SPAN. Note that the input format
+    is not exactly the same as described in the original article. But it is
+    equivalent.</p>
+
+  <h2>Where can I get more information about the HUE-SPAN algorithm?</h2>
+  <p>Here is the paper describing the  HUE-SPAN
+    algorithm:</p>
+  <p>Fournier-Viger,  P., Yang, P., Lin, J. C.-W., Yun, U. (2019). <a href="HUE_SPAN.pdf">HUE-SPAN:  Fast High Utility Episode Mining</a>. Proc. 14th Intern. Conference on Advanced  Data Mining and Applications (ADMA 2019) Springer LNAI, pp. 169-184.</p>
+  <p>Also, here is a<a href="HUE_SPAN_slides.pdf"> powerpoint presentation of HUE-SPAN</a>. </p>
+
+<p>Besides, for a general overview of <strong> high utility itemset mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_high_utility_itemset2019_draft.pdf">survey paper</a>. </p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

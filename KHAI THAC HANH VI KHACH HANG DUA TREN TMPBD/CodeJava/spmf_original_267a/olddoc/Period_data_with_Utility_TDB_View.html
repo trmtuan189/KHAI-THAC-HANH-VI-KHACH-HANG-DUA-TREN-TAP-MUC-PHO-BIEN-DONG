@@ -1,0 +1,102 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View a utility period transaction database file with the transaction database Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View a utility period transaction database file with the  transaction database Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><strong>Utility  period transaction databases </strong>are a type of data taken as input by  data mining algorithms  offered in SPMF such as<strong> FOSHU </strong><strong></strong> and <strong>TS-HOUN</strong> </p>
+<p>SPMF offers a tool to view the content of a <strong>utility period transaction database</strong>. This tool is called the <strong>SPMF utility time transaction database viewer</strong>. </p>
+<p>This page explains how to use this tool with an example. </p>
+<h2>How to run this example? </h2>
+<p><strong>If you want to run this example from the</strong> <strong>graphical interface of SPMF, </strong>(1)
+      choose the algorithm <strong>&quot;<span class="style1">Open_utility_period_transaction_database_file_with_viewer</span>&quot;</strong><strong>, </strong> (2) choose the <strong class="style1">DB_FOSHU.txt</strong> file as input,   and then (3) click &quot;<strong>run algorithm</strong>&quot; . </p>
+<p align="center"><img src="foshu_foshu_utility.png" alt="graph viewer open" width="804" height="220" border="0"></p>
+  <ul>
+    <li><strong>If you want to run this example from the source code of SPMF, run the file <span class="style1">MainTestUtilityPeriodTransactionViewer</span>, which is located in the package <span class="style1">ca.pfv.spmf.tests </span></strong></li>
+    <li><strong>If you want to execute this example from the</strong> <strong>command line interface of SPMF</strong>, then execute this command: <br>
+      <br>
+        <span class="highlight style1"><strong>java -jar spmf.jar run Open_utility_period_transaction_database_file_with_viewer </strong><strong class="style1">DB_FOSHU.txt</strong><strong> </strong></span> <br>
+      <br>
+      in a folder containing <span class="style1"><strong>spmf.jar</strong></span> and the file <strong><span class="style1"> </span></strong><strong class="style1">DB_FOSHU</strong><strong><span class="style1">.txt</span></strong> which is included with SPMF. </li>
+    </ul>
+  <h2>What is displayed?</h2>
+  <p>After running the example, the content of the file will be displayed by the tool. The picture below shows the user interface of this viewer. </p>
+  <p>The <strong>window A</strong>) show in the picture below is the main window. It displays the <strong> utility period transaction database</strong> using a table. The table has 6 rows in this example. Each row (except the last one) is a transaction from the utility period transaction database.</p>
+  <p>Imagine that each transaction represents the
+      items purchased by a customer. </p>
+  <p>Take the first row as example.
+      <br>
+    The cell in the first column indicates that the ID of this transaction is 0.<br>
+    The cell in the second row indicates that this transaction was recorded during the period 0. A period can for example be the winter or summer. <br>
+    The cell in the third column indicates that this transaction 0 contains the item 1 with a utility value of -5 <br>
+    The cell in the fourth column indicates that this transaction 0 does not contain the item 2 <br>
+The cell in the fifth column indicates that this transaction 0 contains the item 3 and the utility was 1. <br>
+    The cell in the sixth column indicates that this transaction 0 contains the item 4 with a utility of 2. <br>
+    The cell in the seventh column indicates that this transaction 0 does not contain the item 5. <br>
+The cell in the eigth column indicates that this transaction 0 does not contain the item 6. <br>
+The cell in the nineth column indicates that this transaction 0 does not contain the item 7. <br>
+    The cell in the tenth column indicates that the total amount
+    of money (utility) spent in this transaction, while ignoring the negative values. The total without considering -5 is 1 + 2 = 3$</p>
+  <p>The other transactions follow the same format.<br>
+    <br>
+  Then the last line of the table provides the sum of each column (while including negative values). For example, the cell in the last row and third column indicates that the total amount of utility for item 1 in this database is -5 + -10 + -5 = -20 $. </p>
+  <p>This view as a table can be useful to understand the content of a utility period transaction database file. </p>
+  <p>Besides, there are buttons that provides additional features: </p>
+  <ul>
+    <li>By clicking on the button &quot;<strong>View transaction length distribution </strong>&quot;, a new window is opened, presented as <strong>window B)</strong> in the picture below. This window displays the frequency histogram of the different transaction lengths in the current file. The number of transactions is the Y axis and the different transaction lengths are the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    <li>By clicking on the button &quot;<strong>View transaction utility distribution </strong>&quot;, a new window is opened, presented as <strong>window C)</strong> in the picture below. This window displays the frequency histogram of the different transaction lengths in the current file in terms of utility.. The number of transactions is the Y axis and the different transaction utility values are the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    <li>By clicking on the button &quot;<strong>View item utility distribution </strong>&quot;, a new window is opened, presented as <strong>window D)</strong> in the picture below. This window displays the utility of the different items as a histogram. The utility is the Y axis and the different items are the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+  </ul>
+  <p align="center"><img src="period_foshu_viewer_tool.png" alt="graph viewer database graph" width="1412" height="1221"></p>
+  <h2>What is the input?</h2>
+  <p>The algorithm  takes as input <strong>a utility period transaction database </strong>in SPMF format<strong>, </strong>as used by algorithm such as<strong> LTHUI-MINER </strong></p>
+  <p>    The database used in this example is provided  in the text file &quot;<strong class="style1">DB_FOSHU</strong><strong><span class="style1">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution. </p>
+  <p>The <strong> input file format</strong> of<strong> FOSHU </strong>is
+    defined as follows. It is a text file. Each lines represents a
+    transaction. Each line is composed of three sections, as follows.</p>
+  <ul>
+    <li>First, the items contained in the transaction are listed. An
+      item is represented by a positive integer. Each item is separated from
+      the next item by a single space. It is assumed that all items within a
+      same transaction (line) are sorted according to a total order (e.g.
+      ascending order) and that no item can appear twice within the same
+      transaction.</li>
+    <li>Second, the symbol ":" appears and is followed by the
+      transaction utility (an integer).</li>
+    <li>Third, the symbol ":" appears and is followed by the utility of
+      each item in this transaction (an integer), separated by single spaces.</li>
+    <li>Fourth, the symbol ":" appears and is followed by a positive
+      integer such as 0,1,2.... indicating the time period of the transaction</li>
+    </ul>
+  <p>For example, this is the content of the example file &quot;<strong class="style1">DB_FOSHU</strong><strong><span class="style1">.txt</span>&quot;</strong>:</p>
+  <p>1 3 4:3:-5 1 2:0<br>
+    1 3 5 7:17:-10 6 6 5:0<br>
+    1 2 3 4 5 6:25:-5 4 1 12 3 5:1<br>
+    2 3 4 5:20:8 3 6 3:1<br>
+    2 3 5 7:11:4 2 3 2:2 </p>
+  <p>Consider the first line. It means that the transaction {1,3, 4}
+    has a total utility of 3 and that items 1, 3 and 4 respectively have a
+    utility of -5, 1 and 2 in this transaction. The following lines follow
+    the same format.</p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

@@ -1,0 +1,230 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Frequent Itemsets using the MPFPS Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining Frequent Itemsets using the MPFPS-BFS and MPFPS-DFS Algorithms (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>MPFPS-BFS and MPFPS-DFS algorithms</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">MPFPS-BFS</span>&quot;</strong> or <strong>&quot;<span class="highlight">MPFPS-DFS</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextPrefixSpan.txt"</span></strong>, (3) set the
+    output file name (e.g. "<span class="highlight">output.txt</span>") (4)
+    set maxStd to <span class="highlight">10</span>, minRA to <span class="highlight">0.25</span>, maxPer to <span class="highlight">10</span>, and minSup to <span class="highlight">2</span>, and (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example with MPFPS-BFS from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run MPFPS-BFS
+      <strong>contextPrefixSpan</strong>.txt output.txt 10 0.25 10 2 </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>contextPrefixSpan</strong>.txt</span>.<br>
+      Or if you want to use the MPFPS-DFS algorithm, then execute this command:<br> 
+      <span class="highlight">java -jar spmf.jar run MPFPS-DFS<strong> contextPrefixSpan</strong>.txt output.txt 10 0.25 10 2</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>contextPrefixSpan</strong>.txt</span>.<br>
+  </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestMPFPS_DFS.java"</span></strong> or <strong><span class="highlight">MainTestMPFPS_BFS.java</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What are the MPFPS-BFS<em></em> and MPFPS-DFS algorithms?</h2>
+<p align="left"><strong>MPFPS-BFS</strong> and <strong>MPFPS-DFS </strong>(Fournier-Viger  et al., 2019) are algorithms to find all <strong>periodic frequent patterns common to  multiple sequences </strong>in a sequence database. The MPFPS-BFS algorithm applies a breadth-first search, while the MPFPS-DFS algorithms relies on a depth-first search. 
+    Periodic frequent patterns have several applications. For  example, consider that we have a database of sequences of transactions made by shoppers in a retail store. Finding periodic frequent patterns in such data can reveal products that are regularly bought by  several customers (e.g. every week or month) to promote the sale of groups of  items.</p>
+
+<h2>What is the input of these algorithms?</h2>
+<p align="left">The input of MPFPS-BFS<em></em> and MPFPS-DFS<em></em> algorithms is a&nbsp;<strong>sequence database</strong>&nbsp;(a set of sequences) and four thresholds, named<strong><em> minSup</em></strong> (an integer), <strong><em>maxStd</em></strong> (a double value), <strong><em>maxPr</em></strong> (an integer) and <strong><em>minRa</em></strong> (a double value),  respectively.</p>
+  <p>A <strong>sequence database</strong> is a set of <strong>sequences</strong> where
+      each sequence is a list of itemsets (also called transactions). An itemset is an unordered set of
+      items. For example, the table shown below contains four sequences (S0, S1, S2 and S3). The
+      first sequence, named S0, contains 5 itemsets. It means that item 1 was
+      followed by items 1 2 and 3 at the same time, which were followed by 1
+      and 3, then followed by item 4, and then followed by items 3 and 6. It is assumed that items
+      in an itemset are sorted in lexicographical order. This database is
+      provided in the file "<strong>contextPrefixSpan.txt</strong>" of the
+      SPMF distribution<strong>.</strong> Note that it is assumed that no
+      items appear twice in the same itemset and that items in an itemset are
+      lexically ordered.</p>
+  <table align="center" border="1" width="461">
+    <tbody>
+      <tr>
+        <td><strong>ID</strong></td>
+        <td><strong>Sequences</strong></td>
+      </tr>
+      <tr>
+        <td>S0</td>
+        <td>(1), (1 2 3), (1 3), (4), (3 6)</td>
+      </tr>
+      <tr>
+        <td>S1</td>
+        <td >(1 4), (3), (2 3), (1 5)</td>
+      </tr>
+      <tr>
+        <td>S2</td>
+        <td>(5 6), (1 2), (4 6), (3), (2)</td>
+      </tr>
+      <tr>
+        <td>S3</td>
+        <td>(5), (7), (1 6), (3), (2), (3)</td>
+      </tr>
+    </tbody>
+  </table>
+  <p align="left">Sequence databases are found in many fields. For example, the first sequence S0 could represents transactions made by a customer, while sequences S1, S2 and S3 could be transactions made by other customers. </p>
+
+  <h2>What is the output of these algorithms?</h2>
+  <p align="left">MPFPS-BFS<em></em> and MPFPS-DFS are algorithms  for discovering <strong>itemsets</strong> (<strong>sets</strong> of items) that appear periodically in many input sequences. An itemset is called <strong>periodic  frequent </strong>in a sequence if it appears in at least&nbsp;<em>minsup&nbsp;</em>transactions  from that sequence, the periods (the intervals between two consecutive appearances) of that itemset in a sequence is never larger than a  threshold, named <em>maxPr</em>, and the standard deviation of its periods is no larger than a threshold, named <em>maxStd</em>. Moreover, to mine periodic frequent patterns common to multiple sequences, there is a requirement that the mined patterns  should be periodic and frequent in at least <em>minRa</em> sequences of the database (minRa is a ratio). For the same input, the MPFPS-BFS and MPFPS-DFS algorithms have the same output.</p>
+  <p align="left">For example, if MPFPS-BFS<em></em> and MPFPS-DFS<em></em> are run on the previous  sequence database with minSup = 2, maxPr = 3, maxStd = 1.0 and minRa = 0.4,  MPFPS-BFS<em></em> and MPFPS-DFS find that there are <strong>five periodic frequent patterns:</strong></p>
+  <table width="581" border="1">
+    <tr>
+      <td width="67">Itemset</td>
+      <td width="152">RA</td>
+      <td width="340">Occurrences</td>
+    </tr>
+    <tr>
+      <td>{1}</td>
+      <td>0.5</td>
+      <td> sequence S0 Itemsets: [0] [1] [2] <br>
+      sequence S1 Itemsets: [0] [3] </td>
+    </tr>
+    <tr>
+      <td>{2}</td>
+      <td>0.25</td>
+      <td> sequence S2 Itemsets: [1] [4] </td>
+    </tr>
+    <tr>
+      <td>{3}</td>
+      <td>0.75</td>
+      <td><p>sequence S0 Itemsets: [1] [2] [4]<br>
+        sequence S1 Itemsets: [1] [2] <br>
+        sequence S3 Itemsets: [3] [5] </p>
+      </td>
+    </tr>
+    <tr>
+      <td>{6}</td>
+      <td>0.25</td>
+      <td>sequence S2 Itemsets: [0] [2] </td>
+    </tr>
+    <tr>
+      <td>{1,3}</td>
+      <td>0.25</td>
+      <td>sequence S0 Itemsets: [1] [2] </td>
+    </tr>
+  </table>
+  <p>These results can be interpreted as follows. </p>
+  <p align="left">Consider the first pattern {1}, presented in the second line of the above table. This pattern contains the item 1. This pattern is said to have a RA of 0.5 because {1} is a periodic frequent pattern in two sequences out of four sequences (i.e. 2 / 4 = 0.5). The third column of the table indicates that these two sequences are S0 and S1. Moreover, the third column indicates in which itemsets of these sequences the pattern {1} appeared. It appeared in the three first itemsets of sequence S0, denoted as 0, 1, 2. Moreover, the itemset {1} appeared in the first and third itemsets of the sequence S1,  denoted as 0 and 3. These occurrences of the pattern {1} are highlighted in bold, below.</p>
+  <table align="center" border="1" width="461">
+    <tbody>
+      <tr>
+        <td><strong>ID</strong></td>
+        <td><strong>Sequences</strong></td>
+      </tr>
+      <tr>
+        <td>S0</td>
+        <td>(<span class="highlight"><strong>1</strong></span>), (<span class="highlight"><strong>1</strong></span> 2 3), (<span class="highlight"><strong>1</strong></span> 3), (4), (3 6)</td>
+      </tr>
+      <tr>
+        <td>S1</td>
+        <td ><strong>(<span class="highlight">1</span></strong> 4), (3), (2 3), (<span class="highlight"><strong>1</strong></span> 5)</td>
+      </tr>
+      <tr>
+        <td>S2</td>
+        <td>(5 6), (1 2), (4 6), (3), (2)</td>
+      </tr>
+      <tr>
+        <td>S3</td>
+        <td>(5), (7), (1 6), (3), (2), (3)</td>
+      </tr>
+    </tbody>
+  </table>
+  <p align="left">Note that the pattern {1} also appears in sequence S2 and S3, but it is not periodic in those sequences. The other patterns can be understood in a similar way. </p>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a sequence from a sequence
+    database. Each item from a sequence is a positive integer and items
+    from the same itemset within a sequence are separated by single space.
+    Note that it is assumed that items within a same itemset are sorted
+    according to a total order and that no item can appear twice in the
+    same itemset. The value "-1" indicates the end of an itemset. The value
+    "-2" indicates the end of a sequence (it appears at the end of each
+    line). For example, the input file "contextPrefixSpan.txt" contains the
+    following four lines (four sequences).</p>
+  
+    <p>@FILETYPE=&quot;Simple sequence database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  
+    <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. The first line of data represents a sequence where the itemset {1} is
+      followed by the itemset {1, 2, 3}, followed by the itemset {1, 3},
+      followed by the itemset {4}, followed by the itemset {3, 6}. The next
+      lines follow the same format.</p>
+    <p>Note that it is also possible to use <strong>a text file containing a text (several sentences)</strong> if the text file has the ".text" extension, as an alternative to the default input format. If the algorithm is applied on a text file from the graphical interface or command line interface, the text file will be automatically converted to the SPMF format, by dividing the text into sentences separated by &quot;.&quot;, &quot;?&quot; and &quot;!&quot;, where each word is considered as an item. Note that when a text file is used as input of
+    a data mining algorithm, the performance will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p align="left">The&nbsp;<strong>output file format</strong>&nbsp;is  defined as follows. It is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line represents a periodic  frequent itemset. On a line, the items of the itemset are first listed.  Each item is represented by an integer separated by a space. After, that the keyword #RA: appears followed by a double value indicating the RA value of the pattern. Then, the keyword #SIDOCC: appears followed by an integer representing a sequence identifier and the list of itemsets where the pattern appears between squared brackets. </p>
+  <p align="left">For example, for the above example, the result is the following: </p>
+  <p align="left">@FILETYPE=&quot;Periodic frequent itemsets common to multiple sequences&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1 #RA:0.5 #SIDOCC: 0[0] [1] [2] 1[0] [3] <br>
+    2 #RA:0.25 #SIDOCC: 2[1] [4] <br>
+    3 #RA:0.75 #SIDOCC: 0[1] [2] [4] 1[1] [2] 3[3] [5] <br>
+    6 #RA:0.25 #SIDOCC: 2[0] [2] <br>
+  1 3 #RA:0.25 #SIDOCC: 0[1] [2] </p>
+  <p align="left">Consider the last line. It indicates that the pattern {1,3} is a periodic frequent patterns with a RA of 0.25, and that this pattern is periodic in sequence S0 (the first sequence) and appears in the second and third itemsets of that sequences (denoted as [1] and [2]). </p>
+
+  <h2>Optional feature: giving names to items </h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextPrefixSpan.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple sequence database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+@ITEM=6=noodle<br>
+@ITEM=7=rice<br>
+@ITEM=-1=|<br>
+1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second and third line indicate the type of file and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. The 11th line indicates that the symbol &quot;-1&quot; must be replaced by &quot;|&quot;. Then the following lines define four sequences in the SPMF format. </p>
+  <p>Then, if we apply the pattern mining algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns having this format: <br>
+      <br>
+      apple #RA:0.5 #SIDOCC: 0[0] [1] [2] 1[0] [3]<br>
+      orange #RA:0.25 #SIDOCC: 2[1] [4]<br>
+      tomato #RA:0.75 #SIDOCC: 0[1] [2] [4] 1[1] [2] 3[3] [5]<br>
+      noodle #RA:0.25 #SIDOCC: 2[0] [2]<br>
+  apple tomato #RA:0.25 #SIDOCC: 0[1] [2]</p>
+  <p>Note that this feature could be also used from the source code of SPMF using the ResultConverter class. However, there is currently no example provided.</p>
+
+  <h2>Performance</h2>
+  <p align="left">This is the original implementation of the MPFPS-DFS and MPFPS-BFS algorithms. MPFPS<em>-BFS</em> and MPFPS<em>-DFS</em> algorithms  are designed to mine periodic frequent patterns common to multiple sequences,  which is a new research topic. Thus, these two algorithms have been compared in the original for  several parameter values with baseline versions designed to find all frequent  patterns. The experimental evaluation have shown that they can output the correct result  and are efficient. Both algorithms have the same input and output but apply different techniques to find the result. For this reason, their performance will not be the same, and one may be better than the other on different types of data. You may look at the original paper describing these algorithms (below) for a comparison of their performance, and a more detailed explanation of their difference.</p>
+
+  <h2>Where can I get more information about the  algorithm?</h2>
+  <p> This is the paper describing
+    the algorithm: </p>
+
+<p>Fournier-Viger, P., Li, Z., Lin, J. C. W., Kiran, R. U., Fujita, H. (2019). <a href="https://www.philippe-fournier-viger.com/2019_IS_periodic%20patterns%20multiple%20sequences.pdf">Efficient Algorithms to Identify Periodic Patterns in Multiple Sequences</a>. Information Sciences, Elsevier, 489: 205-226</p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>
+

@@ -1,0 +1,292 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Closed Sequential Patterns with Time Constraints from a Time-Extended Sequence Database (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style3 {color: #0000FF; font-weight: bold; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<!---------------------- (2) Change the title of the example in the <a> tag: --->
+<h1>Mining Closed Sequential Patterns with Time Constraints from a Time-Extended Sequence Database (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>Fournier-08 algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h3>How to run this example?</h3>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Fournier08-Closed+time</span>&quot;
+ </strong>algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextSequencesTimeExtended</span><span class="highlight">.txt&quot;
+</span></strong>,
+    (3) set the output file name (e.g. &quot;
+<span class="highlight"><strong>output</strong>.txt</span>&quot;
+)
+    (4) minsup= 55 %, min_time_interval = 0, max_time_interval = 2,
+    min_whole_interval = 0, max_whole_interval = 2, (5) click &quot;
+<span class="highlight">Run algorithm</span>&quot;
+.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run Fournier08-Closed+time<strong> contextSequencesTimeExtended</strong>.txt output.txt 55% 0 2 0 2</span> in a folder containing <span class="highlight">spmf.jar</span> and the
+    example input file <span class="highlight">contextSequencesTimeExtended.txt</span>.</li>
+  <li><strong>To run this example with the source code version of SPMF,</strong> launch the file <strong><span class="highlight">&quot;
+MainTestSequentialPatternsMining2_saveToMemory.java&quot;
+</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h3>What is this algorithm?</h3>
+<p>The <a href="https://www.philippe-fournier-viger.com/fournier-viger_sequential_patterns_micai08.pdf">Fournier-Viger
+    et al., 2008</a> algorithm is a sequential pattern mining algorithm
+    combining features from several other sequential pattern mining
+    algorithms. It also offers some original features. In this example, we
+    show how it can be used to discover <strong>closed sequential patterns
+      with time-constraints. </strong></p>
+  <p>Closed sequential patterns is a compact representation of all
+    sequential patterns. Mining closed sequential patterns is important
+    because it can greatly reduce the number of patterns found without loss
+    of information. Using time-constraint is important because it allows to
+    filter unininteresting patterns according to time-related constraints.</p>
+  <p>Mining closed patterns or using time constraints is also important
+    because it can greatly improve the speed and memory usage when these
+    constraints are used.</p>
+
+  <h3>What is the input?</h3>
+  <p>The input is a <strong>time-extended sequence</strong> <strong>database</strong> (as defined by <a href="hirateyamana.pdf" rel="nofollow">Hirate-Yamana,
+    2006</a>) and some <strong>constraints</strong>.</p>
+  <p>A <strong>time-extended sequence database</strong> is a set of <strong>time-extended
+    sequences</strong>. A<strong> time-extended sequences</strong> is a
+    list of itemsets (groups of items). Each <strong>itemset</strong> is
+    anotated with a <strong>timestamp</strong> that is an integer value. </p>
+  <p>For example, consider the following time-extended sequence
+    database provided in the file <strong>contextSequencesTimeExtended.txt </strong>of the SPMF distribution. The database contains 4
+    time-extended sequences. Each sequence contains itemsets that are
+    annotated with a timestamp. For example, consider the sequence S1. This
+    sequence indicates that itemset {1} appeared at time 0. It was followed
+    by the itemset {1, 2, 3} at time 1. This latter itemset was followed by
+    the itemset {1 2} at time 2.</p>
+
+<table align="center" border="1" width="100%">
+  <tbody>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td>S1</td>
+      <td>(<strong>0</strong>, 1), (<strong>1</strong>, 1 2 3}), (<strong>2</strong>,
+        1 3)</td>
+    </tr>
+    <tr>
+      <td>S2</td>
+      <td >(<strong>0</strong>, 1 ) (<strong>1</strong>,
+        1 2 ), (<strong>2</strong>, 1 2 3), (<strong>3</strong>, 1 2 3 )</td>
+    </tr>
+    <tr>
+      <td>S3</td>
+      <td>(<strong>0</strong>, 1 2), (<strong>1</strong>, 1 2 )</td>
+    </tr>
+    <tr>
+      <td>S4</td>
+      <td>(<strong>0</strong>, 2), (<strong>1</strong>, 1 2 3 )</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>The algorithms discovers <strong>closed time-extended sequential
+    patterns</strong> that are common to several sequences. To do that, the
+    user needs to provide five constraints (see the paper by Hirate &amp;
+    Yamana, 2006 for full details):</p>
+  <ul>
+    <li>minimum support (<strong>minsup</strong>): the minimum number
+      of sequences that should contain a sequential patterns (an integer
+      &gt;=1)</li>
+    <li>minimum time interval allowed between two succesive itemsets of
+      a sequential pattern (<strong>min_time_interval</strong>) (an integer
+      &gt;=0)</li>
+    <li>maximum time interval allowed between two succesive itemsets of
+      a sequential pattern (<strong>max_time_interval</strong>) (an integer
+      &gt;=0)</li>
+    <li>minimum time interval allowed between the first itemset and the
+      last itemset of a sequential pattern (<strong>min_whole_interval</strong>)
+      (an integer &gt;=0)</li>
+    <li>maximum time interval allowed between the first itemset and the
+      last itemset of a sequential pattern (<strong>max_whole_interval</strong>)
+      (an integer &gt;=0)</li>
+  </ul>
+  <p><strong>Note : </strong>It is recommended to set <strong>max_whole_interval</strong> to a very large value because if it is used with closed sequential
+    pattern mining, the algorithm become approximate and may not return all
+    closed itemsets respecting the time constraint (the reason is that this
+    constraint is not compatible with the &quot;
+backScan pruning&quot;
+ of the BIDE+
+    algorithm).</p>
+
+  <h3>What is the output?</h3>
+  <p>The output is a set of <strong>closed time-extended sequential
+    patterns </strong>meeting the constraints given by the user. For
+    example, if we run the algorithm with minsup= 55 %, min_time_interval =
+    0, max_time_interval = 2, min_whole_interval = 0, max_whole_interval =
+    100, we obtain the following results:</p>
+  <table align="center" border="1" width="100%">
+    <tbody>
+      <tr>
+        <td><strong>ID</strong></td>
+        <td><strong>Sequential Patterns</strong></td>
+        <td><strong>Support</strong></td>
+      </tr>
+      <tr>
+        <td>S1</td>
+        <td>(<strong>0</strong>, 1 2 3)</td>
+        <td>75%</td>
+      </tr>
+      <tr>
+        <td>S2</td>
+        <td>(<strong>0</strong>, 1 2)</td>
+        <td>100 %</td>
+      </tr>
+      <tr>
+        <td>S3</td>
+        <td>(<strong>0</strong>, 2), (<strong>1</strong>, 1 2)</td>
+        <td>75 %</td>
+      </tr>
+      <tr>
+        <td>S4</td>
+        <td>(<strong>0</strong>, 2), (<strong>1</strong>, 1 3)</td>
+        <td>75 %</td>
+      </tr>
+      <tr>
+        <td>S5</td>
+        <td>(<strong>0</strong>, 2), (<strong>1</strong>, 1)</td>
+        <td>100 %</td>
+      </tr>
+      <tr>
+        <td>S6</td>
+        <td>(<strong>0</strong>, 1), (<strong>1</strong>, 1 2)</td>
+        <td>75 %</td>
+      </tr>
+      <tr>
+        <td>S7</td>
+        <td>(<strong>0</strong>, 1 2), (<strong>1</strong>, 1)</td>
+        <td>75 %</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>For instance, the last pattern S7 indicates that the items 1 and 2
+    were followed by item 1 one time unit after. This pattern has a support
+    of 75 % because it appears in S1, S2 and S3. It is important to note
+    that the timestamps in the sequential patterns found are relative. For
+    example, the pattern S6 is considered to appear in S1, S2 and S3
+    because {1} appears one time unit after {1, 2} in all of these
+    sequences, even though the timestamps do not need to be the same in all
+    of these sequences.</p>
+
+
+  <p>If you compare the results of this example with the previous
+    example, you can observe that the number of closed time-extended
+    sequential patterns (6) is much smaller than the number of
+    time-extended sequential patterns (15) found in the previous example. </p>
+
+  <h3>Input file format</h3>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a time-extended sequence from
+    a sequence database. Each line is a list of itemsets, where each
+    itemset has a timestamp represented by a positive integer and each item
+    is represented by a positive integer. Each itemset is first represented
+    by it timestamp between the &quot;
+&lt;&quot;
+ and &quot;
+&gt; symbol. Then, the items of
+    the itemset appear separated by single spaces. Finally, the end of an
+    itemset is indicated by &quot;
+-1&quot;
+. After all the itemsets, the end of a
+    sequence (line) is indicated by the symbol &quot;
+-2&quot;
+. Note that it is
+    assumed that items are sorted according to a total order in each
+    itemset and that no item appears twice in the same itemset.</p>
+  <p>For example, the input file "<span class="style3">contextSequencesTimeExtended.txt</span>"
+    contains four sequences. </p>
+  
+    <p>@FILETYPE=&quot;Sequence database with timestamps&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+  &lt;0&gt; 1 -1 &lt;1&gt; 1 2 3 -1 &lt;2&gt; 1 3 -1 -2<br>
+  &lt;0&gt; 1 -1 &lt;1&gt; 1 2 -1 &lt;2&gt; 1 2 3 -1 &lt;3&gt; 1 2 3 -1 -2<br>
+  &lt;0&gt; 1 2 -1 &lt;1&gt; 1 2 -1 -2<br>
+  &lt;0&gt; 2 -1 &lt;1&gt; 1 2 3 -1 -2</p>
+    <p>The first two lines of the file indicate the file type and the source of the data. Then, the following lines contain the four sequences. <br>
+      Consider the first line of data. It indicates that at time "0" the itemset
+      {1} appeared, followed by the itemset {1, 2, 3} at time 1, then
+      followed by the itemset {1, 3} at time 2. Note that timestamps do not
+      need to be consecutive integers. But they should increase for each
+      succesive itemset within a sequence. The second, third and fourth line
+      follow the same format.</p>
+    <h3>Output file format</h3>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line is a time-extended frequent closed sequential
+    pattern. Each line starts by listing the itemsets of the sequential
+    pattern, where each itemset has a relative timestamp represented by a
+    positive integer between the &quot;
+&lt;&quot;
+ and &quot;
+&gt; symbol. Then the
+    timestamp is followed by each item in the itemset, each represented by
+    a positive integer. The items of the itemset appear separated by single
+    spaces and the symbol &quot;
+-1&quot;
+ indicates the end of an itemset. Finally,
+    after all the itemsets of a sequential pattern, the keyword &quot;
+#SUP:&quot;
+ is
+    followed by an integer indicating the support of the pattern as a
+    number of sequences. For example, here is a two lines from the output
+    file from the previous example: </p>
+  
+    <p>@FILETYPE=&quot;Frequent closed sequential patterns with timestamps&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      &lt;0&gt; 1 2 -1 &lt;1&gt; 1 3 -1 #SUP: 2<br>
+      &lt;0&gt; 1 2 -1 &lt;1&gt; 1 2 -1 #SUP: 2</p>
+  
+  <p>Consider the first line. It represents a sequential pattern having
+    the itemset {1, 2} with a relative timestamp of 0, followed by the
+    itemset {1, 3} one time unit later. This pattern has a support of 2
+    sequences. The second line follow the same format.</p>
+
+  <h3>Implementation details</h3>
+  <p>To propose an algorithm to discover closed sequential patterns
+    with time constraints, we have combined ideas from the BIDE+ algorithm
+    and the Hirate &amp; Yamana algorithm. Both of these algorithms are
+    based on the PrefixSpan algorithm. </p>
+
+  <h3>Where can I get more information about this algorithm?</h3>
+  <p>The Fournier-Viger (2008) algorithm is described in this paper:</p>
+  <p><em> Fournier-Viger, P., Nkambou, R &amp; Mephu Nguifo, E. (2008),<a href="https://www.philippe-fournier-viger.com/fournier-viger_sequential_patterns_micai08.pdf"> A Knowledge Discovery Framework for Learning Task Models from User
+    Interactions in Intelligent Tutoring Systems</a>. Proceedings of the
+    7th Mexican International Conference on Artificial Intelligence (MICAI
+    2008). LNAI 5317, Springer, pp. 765-778.</em></p>
+  <p>The idea of using time-constraints is based on this paper</p>
+  <p><em>Yu Hirate, Hayato Yamana (2006) <a href="hirateyamana.pdf" rel="nofollow">Generalized Sequential Pattern Mining with Item
+    Intervals. JCP 1(3): 51-60</a>.</em></p>
+  <p>The idea of mining closed sequential pattern is based on this
+    paper:</p>
+  <p><em>J. Wang, J. Han: <a href="https://www.philippe-fournier-viger.com/spmf/icde04_bide.pdf" rel="nofollow">BIDE: Efficient Mining of Frequent Closed Sequences</a>.
+    ICDE 2004: 79-90</em></p>
+  <p>Besides, you may read this<a href="https://www.philippe-fournier-viger.com/dspr-paper5.pdf"> survey of sequential pattern mining</a>, which gives an overview of sequential pattern mining algorithms.</p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

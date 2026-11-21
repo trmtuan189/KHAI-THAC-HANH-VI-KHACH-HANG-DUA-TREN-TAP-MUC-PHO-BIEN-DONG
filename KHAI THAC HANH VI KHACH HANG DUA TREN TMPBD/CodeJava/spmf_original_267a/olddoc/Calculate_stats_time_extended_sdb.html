@@ -1,0 +1,107 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example:  Calculate Statistics for a Time-Extended Sequence Database   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0033CC}
+.style3 {color: #0033CC; font-weight: bold; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<h1>Calculate Statistics for a Time-Extended Sequence Database (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to <strong> calculate statistics for a time-extended sequence database</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight style1">Calculate_stats_for_a_time-extended_sequence_database</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the input file <span class="style1"><strong>contextSequencesTimeExtended.txt</strong></span> (3) click &quot;<span class="style3">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="style3">java -jar spmf.jar run Calculate_stats_for_a_time-extended_sequence_database contextSequencesTimeExtended.txt
+      no_output_file</span> in a folder containing <span class="highlight">spmf.jar</span> and the input file <span class="style3"><strong>contextSequencesTimeExtended.txt</strong></span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;</span><span class="style3">MainTestGenerateTimeSequenceDatabaseStats.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this tool?</h2>
+<p>This tool is a tool for generating statistics about a time-extended sequence
+    database, a type of data taken as input by algorithms such as the Hirate &amp; Yamana algorithm. </p>
+
+<h2>What is the input?</h2>
+<p>The input is a time-extended sequence database. A <strong>time-extended sequence database</strong> is a set of <strong>time-extended sequences</strong>. A <strong>time-extended sequences </strong>is a list of itemsets (groups of items). Each <strong>itemset</strong> is anotated with a <strong>timestamp</strong> that is an integer value. Note that it is assumed that an item should not appear more than once in an itemset and that items in an itemset are lexically ordered.</p>
+
+<p>For example, consider the following time-extended sequence database provided in the file <strong>contextSequencesTimeExtended.txt </strong>of the SPMF distribution. The database contains 4 time-extended sequences. Each sequence contains itemsets that are annotated with a timestamp. For example, consider the sequence S1. This sequence indicates that itemset {1} appeared at time 0. It was followed by the itemset {1, 2, 3} at time 1. This latter itemset was followed by the itemset {1 2} at time 2.</p>
+<table align="center" border="1" width="461">
+  <tbody>
+    <tr>
+      <td width="65"><strong>ID</strong></td>
+      <td width="380"><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td>S1</td>
+      <td>(<strong>0</strong>, 1), (<strong>1</strong>, 1 2 3}), (<strong>2</strong>, 1 3)</td>
+    </tr>
+    <tr>
+      <td>S2</td>
+      <td>(<strong>0</strong>, 1 ) (<strong>1</strong>, 1 2 ), (<strong>2</strong>, 1 2 3), (<strong>3</strong>, 1 2 3 )</td>
+    </tr>
+    <tr>
+      <td>S3</td>
+      <td>(<strong>0</strong>, 1 2), (<strong>1</strong>, 1 2 )</td>
+    </tr>
+    <tr>
+      <td>S4</td>
+      <td>(<strong>0</strong>, 2), (<strong>1</strong>, 1 2 3 )</td>
+    </tr>
+  </tbody>
+</table>
+<p>The algorithms discovers time-extended sequential patterns that are common to several sequences. To do that, the user needs to provide five constraints (see the paper by Hirate &amp; Yamana, 2006 for full details):</p>
+<ul>
+  <li>minimum support (<strong>minsup</strong>): the minimum number of sequences that should contain a sequential patterns (a positive integer &gt;=0)</li>
+  <li>minimum time interval allowed between two succesive itemsets of a sequential pattern (<strong>min_time_interval</strong>) (an integer &gt;=0)</li>
+  <li>maximum time interval allowed between two succesive itemsets of a sequential pattern (<strong>max_time_interval</strong>) (an integer &gt;=0)</li>
+  <li>minimum time interval allowed between the first itemset and the last itemset of a sequential pattern (<strong>min_whole_interval</strong>) (an integer &gt;=0)</li>
+  <li>maximum time interval allowed between the first itemset and the last itemset of a sequential pattern (<strong>max_whole_interval</strong>) (an integer &gt;=0)</li>
+</ul>
+<h2>What is the output?</h2>
+<p>The output is statistics about the time-extended sequence database. For example,
+    if we use the tool on the previous sequence database given as example,
+    we get the following statistics:</p>
+<p><span class="style1">============  SEQUENCE DATABASE STATS ==========<br>
+  Number of sequences : 4<br>
+  File C:\Users\Phil\Desktop\test_files\contextSequencesTimeExtended.txt<br>
+  Number of distinct items: 3<br>
+  Largest item id: 3<br>
+  Average number of itemsets per sequence : 2.75 standard deviation: 0.82915619758885 variance: 0.6875<br>
+  Average number of distinct item per sequence : 2.75 standard deviation: 0.4330127018922193 variance: 0.18749999999999997<br>
+  Average number of occurences in a sequence for each item appearing in a sequence : 2.090909090909091 standard deviation: 0.899954085146515 variance: 0.8099173553719007<br>
+  Average number of items per itemset : 2.090909090909091 standard deviation: 0.7925270806437588 variance: 0.6280991735537189<br>
+  Timestamps range: 0 to 3</span></p>
+<h2>Input file format</h2>
+<p>The <strong>input file format</strong> is defined as follows. It is a text file where each line represents a time-extended sequence from a sequence database. Each line is a list of itemsets, where each itemset has a timestamp represented by a positive integer and each item is represented by a positive integer. Each itemset is first represented by it timestamp between the "&lt;" and "&gt; symbol. Then, the items of the itemset appear separated by single spaces. Finally, the end of an itemset is indicated by "-1". After all the itemsets, the end of a sequence (line) is indicated by the symbol "-2". Note that it is assumed that items are sorted according to a total order in each itemset and that no item appears twice in the same itemset.</p>
+  
+    <p>For example, the input file "<strong>contextSequencesTimeExtended.txt</strong>" contains the following four lines (four sequences).</p>
+    <p>&lt;0&gt; 1 -1 &lt;1&gt; 1 2 3 -1 &lt;2&gt; 1 3 -1 -2<br>
+      &lt;0&gt; 1 -1 &lt;1&gt; 1 2 -1 &lt;2&gt; 1 2 3 -1 &lt;3&gt; 1 2 3 -1 -2<br>
+      &lt;0&gt; 1 2 -1 &lt;1&gt; 1 2 -1 -2<br>
+      &lt;0&gt; 2 -1 &lt;1&gt; 1 2 3 -1 -2</p>
+    <p>Consider the first line. It indicates that at time "0" the itemset {1} appeared, followed by the itemset {1, 2, 3} at time 1, then followed by the itemset {1, 3} at time 2. Note that timestamps do not need to be consecutive integers. But they should increase for each succesive itemset within a sequence. The second, third and fourth line follow the same format.</p>
+    <!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

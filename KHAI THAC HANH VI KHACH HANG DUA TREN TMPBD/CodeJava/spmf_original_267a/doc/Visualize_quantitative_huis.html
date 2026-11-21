@@ -1,0 +1,81 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View quantitative high utility itemsets with the Visual Pattern Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style2 {
+	color: #00CC00;
+	font-weight: bold;
+}
+.style4 {color: #0000FF; font-weight: bold; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View quantitative high utility itemsets with the  Visual Pattern Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><span class="style2">Quantitative high utility itemsets </span>are a type of patterns that can be produced by different algorithms offered in SPMF.</p>
+<p>This page  explains how to <strong>visualize</strong> the <strong class="style2">quantitative high utility itemsets </strong>found by an algorithm using the <strong>Visual Pattern Viewer</strong>. </p>
+<h2>How to run this example? </h2>
+<p>If you want to run this example using the graphical user interface of SPMF, follow these steps.</p>
+<p>1) First, select a<span class="style2"> quantitative high utility itemset </span> mining algorithm offered in SPMF. Several algorithms are offered and are described in the documentation of SPMF.</p>
+<p>2) Then, in the user interface of SPMF, after  selecting an algorithm and setting its input file path, output file path, and parameters,  click on the combo-box besides &quot;<span class="style1"><strong>Open output file using</strong></span>:&quot;, and select &quot;<span class="style1"><strong>Visualize_Quantitative_high_Utility_itemsets</strong></span>&quot; so that the discovered patterns will be opened with the visual pattern viewer. </p>
+<p><img src="Visualize_QuantitativeHUIs_SELECT.png" alt="visualize association rules selection" width="962" height="737"> </p>
+<p>3) Then click on &quot;<strong>Run algorithm</strong>&quot; to run the algorithm. </p>
+<p>After the algorithm terminates, the discovered patterns will be displayed using the <strong>Visual Pattern Viewer</strong>:</p>
+<p><img src="Visualize_QuantitativeHUIs_VIEW.png" alt="visualize rules viewer" width="977" height="648"> </p>
+<p>The Visual Pattern Viewer interface is quite intuitive. It displays each pattern with its value for each evaluation measure using a colored bar.  </p>
+<p>The Visual Pattern Viewer offers several features such as:</p>
+<ul>
+  <li>Viewing patterns using different layouts (grid, horizontal and vertical layout).</li>
+  <li>Sorting patterns by size and measure values.</li>
+  <li>Searching and filtering using measure values</li>
+  <li>Displaying statistics about the number of patterns found.</li>
+</ul>
+<h2>Other ways of running the Visual Pattern Viewer </h2>
+  <p>It is also possible to run the Visual Pattern Viewer as an algorithm from the GUI of SPMF..</p>
+  <p>In this case, in the user interface of SPMF, select  &quot;<span class="style4">Visualize_Quantitative_high_Utility_itemsets</span>&quot; as algorithm. Then, select a file containing <span class="style2"><strong>quantitative high utility itemsets</strong></span> as input file. Then, click &quot;run algorithm&quot;.</p>
+  <p>This will display the patterns from the file using the Visual Pattern Viewer.</p>
+  <p>Besides, it  is also possible to call the Visual Pattern Viewer from the command line interface of SPMF. To open a file called<strong> patternsQuantitativeHighUtilityItemsets.txt,</strong> this syntax can be used:<br>
+    <br>
+    <span class="style4">java -jar spmf.jar run Visualize_Quantitative_high_Utility_itemsets patternsQuantitativeHighUtilityItemsets.txt </span> in a folder containing <span class="highlight">spmf.jar</span> and the input file.</p>
+  <h2>What is the input file format?</h2>
+  <p>The algorithm  takes as input a file containing<strong><span class="style2"> quantitative high utility itemsets</span></strong>.</p>
+  <p>The <strong> file format</strong> is defined as follows. It
+    is a text file, where each line represents a <strong class="style2">quantitative high utility itemset </strong>.    </p>
+  <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. An itemset contains several items. Each item is represented in the form (x,y) where x is the item and y is its purchase quantity, or by the form (x,y,z) indicating that from y to z units of item x where purchased. At the end of each line, the utility of the itemset is indicated after the keyword #UTIL: For examle, here is a few line of a pattern file:</p>
+  <p>@FILETYPE=&quot;Quantitative high utility itemsets&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    (4,4,6) #UTIL: 1455<br>
+    (4,5,6) #UTIL: 1067<br>
+    (3,9) (2,8) #UTIL: 1542<br>
+    (3,9) (4,6) #UTIL: 1428<br>
+    (3,9) (1,7) #UTIL: 1140<br>
+    (3,9) (2,8) (4,6) #UTIL: 2124<br>
+    (3,9) (2,8) (1,7) #UTIL: 1836<br>
+    (3,9) (2,8) (4,6) (1,7) #UTIL: 2418<br>
+    (3,9) (4,6) (1,7) #UTIL: 1722<br>
+    (2,8) (4,6) #UTIL: 1278<br>
+    (2,8) (4,6) (1,7) #UTIL: 1572<br>
+    (4,4,6) (1,7) #UTIL: 1558<br>
+    (2,6) (4,4) (1,7) #UTIL: 1204
+    <br>
+    <br>
+  </p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

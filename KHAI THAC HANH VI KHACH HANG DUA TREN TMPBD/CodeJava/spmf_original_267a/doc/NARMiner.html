@@ -1,0 +1,210 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Negative Association Rules with NAR-Miner  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0033CC}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<h1> Mining Negative Association Rules with NAR-Miner (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how mine <strong>negative association rules with NAR-Miner</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> &quot;<span class="highlight">NAR-Miner</span>&quot; </strong>algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextPasquier99</span><span class="highlight">.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    (4) set minsup = 50 %, mis = 30 % and minconf = 30 %(5) click &quot;<span class="highlight">Run
+      algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight style1">java -jar spmf.jar run NAR-Miner contextPasquier99.txt output.txt 50% 30% 30% </span> in a folder
+    containing <span class="highlight">spmf.jar</span> and the example input
+    file <span class="style1"><strong>contextPasquier99.txt</strong></span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    this file <strong><span class="highlight">&quot;</span><span class="style1">MainTestNARMiner.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is this algorithm?</h2>
+<p>It is an algorithm for discovering negative association rules of the form A ==&gt; NOT B in a
+    transaction database proposed by Bian et al. (2018). <br>
+    The first step is to discover frequent
+    itemsets and infrequent itemsets. The second step is to generate negative rules from them. </p>
+
+<h2>What is the input?</h2>
+<p>The input is a transaction database (aka binary context) and three
+    thresholds named <em>minimum frequent support </em>or <em>minsup </em>(a value between 0 and 1), <em>minimum infrequent support</em> or <em>mis</em> (a value between 0 and 1) , and <em>minconf </em>(a value between 0 and 1)<em>.</em></p>
+  <p>A <strong>transaction database</strong> is a set of transactions.
+    Each <strong>transaction</strong> is a set of items. For example,
+    consider the following transaction database. It contains 5 transactions
+    (t1, t2, ..., t5) and 5 items (1,2, 3, 4, 5). For example, the first
+    transaction represents the set of items 1, 3 and 4. This database is
+    provided as the file <span class="style1"><strong>contextPasquier99.txt</strong></span> in the
+    SPMF distribution. It is important to note that an item is <strong>not</strong> allowed
+    to appear twice in the same transaction and that items are assumed to
+    be sorted by lexicographical order in a transaction.</p>
+  <table align="center" border="1" width="100%">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 3, 4}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{2, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+    </tbody>
+  </table>
+  <h2>What is the output?</h2>
+  <p>The output is negative association rules of the form A ==&gt; NOT B respecting the user-defined<em></em> thresholds. </p>
+  <p>To explain how this algorithm works, it is necessary to
+    review some definitions. </p>
+  <p>A<strong> negative association rule</strong> A ==&gt; NOT B as defined by this algorithm
+    is a relationship between two itemsets (sets of items) A and B such
+    that the intersection of A and B is empty. </p>
+  <p>The interpretation of a rule A ==&gt; NOT B is that if the items of A appears, it is likely that the items of B will not appear in the same transaction.</p>
+  <p>    The <strong>support of a negative
+      rule</strong> of this type is the number of transactions that contains A but does not contain B. <br>
+      <br>
+      The <strong>confidence
+        of a negative
+      rule</strong> of this type <strong> </strong>is the number of transactions that contains A but does not contain B 
+    divided by the number of transactions that contain A.<br>
+    <br>
+  The <strong>interestingness</strong> of a negative rule of this type is a secondary quality measure designed to assess how informative the rule is beyond support and confidence. <br>
+  In this implementation, it is computed by comparing the confidence of the rule with the entropy of the antecedent itemset.More precisely, if the entropy of the antecedent is zero, the interestingness is simply equal to the confidence. Otherwise, the interestingness is obtained by dividing the confidence by the entropy value. Intuitively, this measure adjusts the confidence according to how “informative” or “structured” the antecedent is in the dataset. When the antecedent has low entropy, meaning its items are highly skewed or strongly present in the database, the interestingness value becomes higher. This emphasizes rules that are derived from more deterministic or less random patterns. On the other hand, when the antecedent has higher entropy, meaning the items are more uniformly distributed, the interestingness decreases, reflecting that such rules are less distinctive. In practical terms, this means that two rules with the same confidence can still receive different interestingness scores depending on the distribution of their antecedent items in the database. This allows the algorithm to rank rules not only by their predictive strength, but also by how informative and non-trivial they are. See the research paper for more details about the interestingness measure. </p>
+  <p>If we apply the algorithm, it will return
+    all the negative rules meeting the thresholds constraints.<br>
+    <br>
+    Note that NAR-MINER algorithms generate rule in a very specific way such   a rule A ==&gt;  NOT B   is only output if the union C = A U B is infrequent and all the subsets of C are frequent. Thus, the algorithm does not output all possible negative rules but only the subset meeting this constraint. </p>
+  <p>For example, by applying the algorithm with minsup = 0.5 (50%),
+    mis = 0.3% minconf = 0.3 (30%), we obtains <strong>2 negative  associations rules:<br>
+    <br>
+    </strong></p>
+
+  <div>
+    <div>
+      <p>1 ==&gt; NOT 2 #SUP: 2 #CONF: 0.3333 #INTER: 0.4764</p>
+      <p>1 ==&gt; NOT 5 #SUP: 2 #CONF: 0.3333 #INTER: 0.4764</p>
+    </div>
+  </div>
+  <p>The first rule indicates that if the item 1 is present, the item 2 is not present, and this rule has a support of 2 transactions, a confidence of 33% and an interestingness value of 0.4764. The second rule can be interpreted in the same way. </p>
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> is a text file containing
+    transactions. Each lines represents a transaction. The items in the
+    transaction are listed on the corresponding line. An item is
+    represented by a positive integer. Each item is separated from the
+    following item by a space. It is assumed that items are sorted
+    according to a total order and that no item can appear twice in the
+    same transaction. For example, for the previous example, the input file
+    is defined as follows:</p>
+  
+    <p>@FILETYPE=&quot;Simple transaction database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+1 3 4<br>
+2 3 5<br>
+1 2 3 5<br>
+2 5 <br>
+1 2 3 5 </p>
+    <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then, the following lines contain the transactions. </p>
+    <p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the
+      ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+      Most features of the ARFF format are supported except that (1) the
+      character &quot;=&quot; is forbidden and (2) escape characters are not
+      considered. Note that when the ARFF format is used, the performance of
+      the data mining algorithms will be slightly less than if the native
+      SPMF file format is used because a conversion of the input file will be
+      automatically performed before launching the algorithm and the result
+      will also have to be converted. This cost however should be small. </p>
+    <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file, where each line represents a negative <strong>association rule</strong>.
+    On each line, the items of the rule antecedent are first listed. Each
+    item is represented by an integer, followed by a single space. After,
+    that the keyword &quot;==&gt;&quot; appears followed by a space. Then, NOT appears followed by a space, and then followed by the items
+    of the rule consequent. Each item is represented by an
+    integer, followed by a single space. Then, the keyword &quot; #SUP: &quot;
+    appears followed by the support of the rule represented by an integer.
+    Then, the keyword &quot; #CONF: &quot; appears followed by the confidence of the
+    rule represented by a double value (a value between 0 and 1,
+    inclusively). Then the keyword &quot;#INTER:&quot; appears, followed by the interestingness value (a value greater or equal to 0). For example, here is the output of this example: </p>
+  <p>@FILETYPE=&quot;Association rules&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+1 ==&gt; NOT 2 #SUP: 2 #CONF: 0.3333 #INTER: 0.4764<br>
+    1 ==&gt; NOT 5 #SUP: 2 #CONF: 0.3333 #INTER: 0.4764</p>
+  <p>The first two lines are metadata indicating the type of pattern in this file and the source of the data. Then it is the data section. The first rule indicates that if the item 1 is present, the item 2 is not present, and this rule has a support of 2 transactions, a confidence of 33% and an interestingness value of 0.4764. The second rule can be interpreted in the same way. </p>
+  <p>Note that if the ARFF format is used as input instead of the
+    default input format, the output format will be the same except that
+    items will be represented by strings instead of integers.</p>
+
+  <h2>Optional feature: giving names to items</h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextIGB.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple transaction database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+1 3 4<br>
+2 3 5<br>
+1 2 3 5<br>
+2 5 <br>
+1 2 3 5 </p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second and third line indicate the type of file and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. Then, the following lines define  transactions in the SPMF format.</p>
+  <p>Then, if we apply the algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+      <br>
+      @FILETYPE=&quot;Association rules&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+apple ==&gt; NOT orange #SUP: 2 #CONF: 0.3333 #INTER: 0.4764<br>
+apple ==&gt; NOT bread #SUP: 2 #CONF: 0.3333 #INTER: 0.4764</p>
+  <p>Note that this feature could be also used from the <strong>source code</strong> of SPMF using the ResultConverter class. However, there is currently no example provided for using it from the source code.</p>
+
+  <h2>Implementation details</h2>
+  <p>The algorithm is implemented to be as faithful as possible to the paper, while having several optimizations for performance. </p>
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The following article describes the NAR-Miner algorithm:<br>
+      <br>
+          <em>Bian et al. (2018) NAR-Miner: Discovering Negative Association Rules from Code  for Bug Detection. Proceedings of ESEC/FSE 2018. pages 411-422.</em> </p>
+  <p>For a good overview of <strong> itemset mining and association rule mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+				
+	
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

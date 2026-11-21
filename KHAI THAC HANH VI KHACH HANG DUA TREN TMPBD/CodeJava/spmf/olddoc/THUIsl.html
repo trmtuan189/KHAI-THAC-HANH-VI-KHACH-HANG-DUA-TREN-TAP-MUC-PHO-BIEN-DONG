@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mining Top-k High Utility Itemsets based on the Information Gain for Supervised Learning using the THUIsl Algorithm (SPMF documentation)</title>
+<style type="text/css">
+<!--
+.style2 {color: #0000FF}
+-->
+</style>
+</head>
+<body>
+
+<h1>Mining Top-k High Utility Itemsets based on the Information Gain for Supervised Learning using the THUIsl Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+<p>This example explains how to run the <strong>THUIsl algorithm</strong>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>This algorithm is not offered in the release version of
+    SPMF.</strong></li>
+  <li><strong>To run this example with the source code version of SPMF,</strong> launch the file <strong><span class="Style2">"</span><span class="style2">MaintTestTHUIsl.java</span><span class="Style2">" </span></strong><span class="Style2">file</span>  in the package <span class="style2"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is the THUIsl algorithm? </h2>
+<p>Top-k High Utility Itemsets - Supervised learning (THUIsl) takes as input a tabular dataset in CSV format that is used for supervised learning.</p>
+<p>Then, the algorithm transforms the dataset  into a transaction database format and extract the top-k high utility itemsets based on the information gain for the purpose of supervised learning.</p>
+<p>The THUIsl algorithm was proposed as part of the HUG-IML framework (High Utility Gain - Interpretable Machine Learning), which embeds extracted high-utility patterns into interpretable classifier models, such as logistic regression. The framework supports both binary and multi-class classification problems. Full details on the HUG-IML methodology, benchmark results, and application scenarios can be found in the IEEE Access paper: <b>Interpretable classifier models for decision support using high utility gain patterns</b>, IEEE Access 2024, DOI: <a href="https://doi.org/10.1109/ACCESS.2024.3455563" target="_blank">https://doi.org/10.1109/ACCESS.2024.3455563</a>.</p>
+<p>THUIsl requires to provide a configuration file and a dataset. The algorithm first parses metadata such as target column, skipped columns, numeric and categorical indices. Numeric attributes are discretized into <code>B</code> bins using equal-width or quantile-based discretization, while categorical attributes are directly mapped to unique item IDs. Each dataset record is then converted into a set of attribute-value items, which are aggregated into transactions used for high utility itemset mining. The process generates a mapping file linking item IDs to original attributes and values, ensuring full interpretability and reproducibility of the derived patterns.</p>
+<h2>What is the input? </h2>
+
+<p>To execute the  algorithm, you need a CSV dataset and a configuration file. In this example, we will use the dataset <span class="style2">contextUBTGenTitanicSample.csv</span> and the configuration file <span class="style2">configTitanic.txt</span>, provided in the <strong>ca.pfv.SPMF.tests </strong>package.</p>
+<p>The key parameters of the algorithms are:</p>
+<ul>
+<li><b>B</b> – Number of bins for numeric attributes; <code>-1</code> = auto-determined.</li>
+<li><b>L</b> – Maximum pattern length; can be an integer or <code>all</code> for unlimited length.</li>
+<li><b>G</b> – Minimum utility gain threshold; default = 1e-4.</li>
+<li><b>topK</b> – Number of top high-utility patterns to mine.</li>
+<li><b>fsK</b> – Feature selection size; defaults to <code>topK</code>.</li>
+<li><b>modelTest</b> – Boolean; <code>true</code> to transform test dataset using patterns from training.</li>
+</ul>
+
+<h4>Dataset file </h4>
+<p>The dataset must be in <strong>CSV (Comma-Separated Values) format</strong> with a header row. Each row represents one data instance (e.g., a passenger), and each column represents an attribute (e.g., age, fare, class). As example, the content of the dataset <span class="style2">contextUBTGenTitanicSample.csv</span> is provided here: </p>
+<pre>
+PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
+1,0,3,"Braund Mr. Owen Harris",male,22,1,0,A/5 21171,7.25,,S
+2,1,1,"Cumings Mrs. John Bradley (Florence Briggs Thayer)",female,38,1,0,PC 17599,71.2833,C85,C
+3,0,3,Thayer Mr. John Borland,male,24,0,0,A/5 21171,8.05,,S
+17,0,2,Sloper Mr. William Thompson,male,21,0,0,SC/Paris 2123,13.0,,S
+32,0,1,Harder Mrs. George W (Elizabeth Lydia Waldheim),female,39,1,0,PC 17585,89.1042,C123,C
+47,0,3,Beesley Mr. Lawrence,male,30,0,0,SOTON/OQ 392076,10.5,,S
+59,0,2,Anderson Mr. Harry,male,48,0,0,248744,13.0,,S
+6,1,3,Allen Mr. William Henry,male,35,0,0,373450,8.05,,S
+14,1,3,Moran Mr. James,male,27,0,0,330877,7.25,,Q
+22,1,1,Futrelle Mrs. Jacques Heath (Lily May Peel),female,35,1,0,113803,53.1,C123,S
+39,1,2,Saunders Miss. Eliza Mary,female,19,0,0,237736,26.0,,S
+51,1,1,Brown Mrs. James Joseph (Margaret Tobin),female,49,1,0,113784,76.7292,C105,C
+</pre>
+<p>The format of this CSV file is explained as follows. The first line is the header and contains attribute names separated by commas. The subsequent lines are data records where each line represents one instance with attribute values separated by commas. Missing values are represented by empty fields, which appear as consecutive commas.</p>
+<p> In this example, the dataset contains the following attributes: </p>
+<ul>
+  <li><b>PassengerId</b> — unique identifier for each passenger</li>
+  <li><b>Survived</b> — survival label (0 = did not survive, 1 = survived)</li>
+  <li><b>Pclass</b> — passenger ticket class</li>
+  <li><b>Name</b> — full name of the passenger</li>
+  <li><b>Sex</b> — gender of the passenger</li>
+  <li><b>Age</b> — age in years</li>
+  <li><b>SibSp</b> — number of siblings/spouses aboard</li>
+  <li><b>Parch</b> — number of parents/children aboard</li>
+  <li><b>Ticket</b> — ticket number</li>
+  <li><b>Fare</b> — ticket fare</li>
+  <li><b>Cabin</b> — cabin number</li>
+  <li><b>Embarked</b> — port of embarkation</li>
+</ul>
+<p><strong>Configuration file</strong></p>
+<p>The configuration file is a <strong>text file with key-value pairs</strong> (one per line) that specify how to process the CSV dataset. Each line specifies one configuration parameter. Each line follows the format parameter=value. </p>
+<p>The configuration file <span class="style2">configTitanic.txt</span> used in this example has the following content: </p>
+<pre>
+inputFile=contextUBTGenTitanicSample.csv
+outputFile=titanic_processed.csv
+testFile=contextUBTGenTitanicSampleTest.csv
+prefix=titanic
+header=true
+delimiter=,
+targetColIndex=1
+skipColsIndices=0,3,8,10
+numericIntColsIndices=6,7
+numericFloatColsIndices=5,9
+catColsIndices=2,4,11
+B=5
+writeTransformParameters=false
+missingValueImputation=false
+</pre>
+<p>The format of this configuration file is explained as follows. Each line specifies one configuration parameter. The format is parameterName=value with no spaces around the equals sign. Multiple values are separated by commas (e.g., skipColsIndices=0,3,8,10). Column indices are zero-based, meaning the first column has index 0.</p>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>inputFile</td>
+    <td>Input training dataset (CSV)</td>
+  </tr>
+  <tr>
+    <td>outputFile</td>
+    <td>Transactional output file</td>
+  </tr>
+  <tr>
+    <td>testFile</td>
+    <td>Test dataset (optional)</td>
+  </tr>
+  <tr>
+    <td>prefix</td>
+    <td>Prefix for generated filenames</td>
+  </tr>
+  <tr>
+    <td>header</td>
+    <td>CSV has header row (true/false)</td>
+  </tr>
+  <tr>
+    <td>delimiter</td>
+    <td>CSV delimiter</td>
+  </tr>
+  <tr>
+    <td>targetColIndex</td>
+    <td>Target column index</td>
+  </tr>
+  <tr>
+    <td>skipColsIndices</td>
+    <td>Columns to ignore</td>
+  </tr>
+  <tr>
+    <td>numericIntColsIndices</td>
+    <td>Integer numeric columns</td>
+  </tr>
+  <tr>
+    <td>numericFloatColsIndices</td>
+    <td>Floating numeric columns</td>
+  </tr>
+  <tr>
+    <td>catColsIndices</td>
+    <td>Categorical columns</td>
+  </tr>
+  <tr>
+    <td>B</td>
+    <td>Bin count for numeric discretization</td>
+  </tr>
+  <tr>
+    <td>writeTransformParameters</td>
+    <td>Write transformation parameters to file</td>
+  </tr>
+  <tr>
+    <td>missingValueImputation</td>
+    <td>Enable missing value handling</td>
+  </tr>
+</table>
+<p><strong>Special case:</strong> When B = -1, the algorithm automatically determines the number of bins using quantile-based discretization.y.</p>
+<h2>What is the output?</h2>
+
+<p>The output of THUIsl consists of the following files:</p>
+
+<ul>
+  <li><b>Top-k high utility item (HUI) patterns:</b> Lists the most significant patterns mined from the dataset along with their utility values.</li>
+  <li><b>Transformed transaction file:</b> Each dataset record is transformed into item IDs corresponding to attribute-value pairs, reflecting the utility mining format used in <b>SPMF</b>.</li>
+  <li><b>Column mapping file:</b> Links each numeric item ID in the transaction file back to its original attribute/value in the dataset, ensuring interpretability.</li>
+  <li><b>Intermediate file for utility mining:</b> Encodes records with item IDs, transaction weights, and normalized numeric features used to compute HUI patterns.</li>
+</ul>
+
+<h3>Top-k HUI patterns</h3>
+<p>This file contains the <strong>mined high-utility patterns ranked by information gain</strong>. Each line represents one pattern with its utility score and information gain value.</p>
+<p>The format consists of three columns: utility, pattern, and ig. The <strong>utility</strong> column shows the utility value of the pattern as a floating-point number. The <strong>pattern</strong> column displays the itemset pattern in human-readable format showing attribute equals value. The <strong>ig</strong> column shows the information gain score as a floating-point number.</p>
+<p>An example of this file format is shown below:</p>
+<pre>
+utility pattern ig
+.3500 'Sex=male' .13565559
+5.0000 'Sex=female' .13565557
+1.5879 'Fare=[53.1-76.7292]' .13230415
+1.1005 'Age=[35.0-38.0]' .13230415
+.4285 'Fare=[13.0-26.0]' .13230415
+1.9695 'Pclass=1' .06465999
+.1969 'Embarked=S' .06465997
+.9354 'Fare=[76.7292-89.1042]' .06155537
+.8688 'Age=[48.0-49.0]' .06155537
+.8399 'Age=[39.0-48.0]' .06155537
+.5792 'Age=[38.0-39.0]' .06155537
+.5239 'Fare=[26.0-53.1]' .06155537
+.3186 'Age=[27.0-30.0]' .06155537
+.2317 'Age=[24.0-27.0]' .06155537
+.1448 'Age=[22.0-24.0]' .06155537
+.0657 'Fare=[10.5-13.0]' .06155537
+.4569 'Embarked=C' .01879747
+.0228 'Pclass=2' .01879747
+5.9846 'SibSp=[0.0-1.0]' .01436260
+.0265 'Pclass=3' .01436258
+</pre>
+
+The interpretation of this file is as follows. Patterns are ranked by information gain with the most predictive patterns appearing first. For categorical attributes, the pattern shows the exact value such as Sex=male. For numeric attributes, the pattern shows the discretized bin range such as Age=[35.0-38.0]. Higher information gain values indicate stronger association with the target variable.<br>
+<br>
+<h3>Transformed transaction file (filtered based on mined Top-K patterns)</h3>
+<p>This file contains the <strong>human-readable transactional representation</strong> of each data record, showing only the attribute-value pairs that appear in the mined top-k patterns. The format of this file is that each line represents one transaction or data record as a comma-separated list of attribute-value pairs. An example of this file format is shown below:</p>
+<pre>
+Sex=male, Embarked=S, Age=[22.0-24.0], Pclass=3
+Sex=female, Fare=[53.1-76.7292], Pclass=1, Age=[38.0-39.0], Embarked=C
+Sex=male, Embarked=S, Age=[24.0-27.0], SibSp=[0.0-1.0], Pclass=3
+Sex=male, Fare=[13.0-26.0], Embarked=S, Pclass=2, SibSp=[0.0-1.0]
+Sex=female, Pclass=1, Age=[39.0-48.0], Embarked=C
+Sex=male, Embarked=S, Fare=[10.5-13.0], SibSp=[0.0-1.0], Pclass=3
+Sex=male, Fare=[13.0-26.0], Embarked=S, Age=[48.0-49.0], Pclass=2, SibSp=[0.0-1.0]
+Sex=male, Age=[35.0-38.0], Embarked=S, SibSp=[0.0-1.0], Pclass=3
+Sex=male, Age=[27.0-30.0], SibSp=[0.0-1.0], Pclass=3
+Sex=female, Fare=[53.1-76.7292], Age=[35.0-38.0], Pclass=1, Embarked=S
+Sex=female, Embarked=S, Fare=[26.0-53.1], Pclass=2, SibSp=[0.0-1.0]
+Sex=female, Pclass=1, Fare=[76.7292-89.1042], Embarked=C
+</pre>
+
+The interpretation of this file is as follows. Each line corresponds to one row from the original CSV dataset. The file only includes features that appear in the top-k patterns, filtering out irrelevant attributes. Numeric values are shown as bin ranges such as Age=[22.0-24.0]. This format can be used directly for interpretable machine learning models.<br>
+<br>
+<h3>Column mapping file</h3>
+<p>This file provides the <strong>mapping between numeric item IDs</strong> (used internally) and <strong>human-readable attribute-value pairs</strong>.</p>
+<p>The format consists of three columns separated by spaces. The first column is the bin identifier, which is an encoded bin name following the format &lt;bin_number&gt;&lt;column_index&gt;. The second column is the item ID, which is a unique numeric identifier used in internal representations. The third column is the attribute mapping, which shows the human-readable attribute equals value or attribute equals range.</p>
+<p>An example of this file format is shown below:</p>
+<pre>
+10000 1 SibSp=[0.0-1.0]
+10002 2 Age=[19.0-24.0]
+20002 3 Age=[24.0-30.0]
+30002 4 Age=[30.0-35.0]
+40002 5 Age=[35.0-39.0]
+50002 6 Age=[39.0-49.0]
+10003 7 Fare=[7.25-8.05]
+20003 8 Fare=[8.05-13.0]
+30003 9 Fare=[13.0-26.0]
+40003 10 Fare=[26.0-71.2833]
+50003 11 Fare=[71.2833-89.1042]
+10004 12 Pclass=3
+20004 13 Pclass=1
+30004 14 Pclass=2
+10005 15 Sex=male
+20005 16 Sex=female
+10006 17 Embarked=S
+20006 18 Embarked=C
+30006 19 Embarked=Q
+</pre>
+
+<p>The first column (bin identifier) follows a specific format. The format is &lt;bin_number&gt;&lt;column_index&gt; where the first digit or digits encode which bin (1, 2, 3, etc.) and the last digit represents the feature column index. For example, 10002 means bin 1 of column or feature 2, which corresponds to Age.</p>
+<p>The interpretation of this file is as follows. This file ensures full traceability from numeric IDs to original data values. It is essential for interpreting patterns in their original context. The file enables transformation of test data using the same encoding scheme that was applied to training data.</p>
+<h3>Intermediate file in utility mining format for Top-K HUI mining</h3>
+
+<p>This file represents the <strong>internal transactional format</strong> used during high-utility itemset mining. It is a text file using the standard SPMF format for transaction databases with utility values. </p>
+<p>Each lines represents a
+  transaction. Each line is composed of three sections, as follows.</p>
+<ul>
+  <li>First, the items contained in the transaction are listed. An
+    item is represented by a positive integer. Each item is separated from
+    the next item by a single space. It is assumed that all items within a
+    same transaction (line) are sorted according to a total order (e.g.
+    ascending order) and that no item can appear twice within the same
+    transaction.</li>
+  <li>Second, the symbol ":" appears and is followed by the
+    transaction utility (a double value).</li>
+  <li>Third, the symbol ":" appears and is followed by the utility of
+    each item in this transaction (a double value), separated by single spaces.</li>
+</ul>
+<pre>
+2 7 12 15 17:1.697197:0.156452 0.009773 0.018053 0.932594 0.580325
+5 11 13 16 18:3.15678:0.625808 1.0 0.018053 0.932594 0.580325
+1 3 8 12 15 17:2.74273:0.797316 0.344195 0.070247 0.018053 0.932594 0.580325
+1 2 9 14 15 17:2.713806:0.797316 0.156452 0.229066 0.018053 0.932594 0.580325
+6 13 16 18:2.469684:0.938712 0.018053 0.932594 0.580325
+1 4 8 12 15 17:2.899182:0.797316 0.500647 0.070247 0.018053 0.932594 0.580325
+1 6 9 14 15 17:3.496066:0.797316 0.938712 0.229066 0.018053 0.932594 0.580325
+1 5 8 12 15 17:3.024343:0.797316 0.625808 0.070247 0.018053 0.932594 0.580325
+1 3 7 12 15 19:2.682256:0.797316 0.344195 0.009773 0.018053 0.932594 0.580325
+5 10 13 16 17:2.939065:0.625808 0.782285 0.018053 0.932594 0.580325
+1 2 10 14 16 17:3.267025:0.797316 0.156452 0.782285 0.018053 0.932594 0.580325
+11 13 16 18:2.530972:1.0 0.018053 0.932594 0.580325
+</pre>
+<h2>Where to get more information?</h2>
+<p>More information about this algorithm can be found in this paper:</p>
+<ul>
+  <li> S. Krishnamoorthy, "<b>Interpretable classifier models for decision support using high utility gain patterns</b>," <i>IEEE Access</i>, vol. 12, pp. 126088–126107, 2024. <a href="https://doi.org/10.1109/ACCESS.2024.3455563" target="_blank">https://doi.org/10.1109/ACCESS.2024.3455563</a></li>
+</ul>
+<p>The following  GitHub repository also offers this algorithm and other components of the HUG-IML method: <a href="https://github.com/srikumar2050/ubtgen" target="_blank">github.com/srikumar2050/ubtgen</a></p>
+<p>The code of THUIsl is included from this repository in SPMF under the GPL license. </p>
+</body>
+</html>

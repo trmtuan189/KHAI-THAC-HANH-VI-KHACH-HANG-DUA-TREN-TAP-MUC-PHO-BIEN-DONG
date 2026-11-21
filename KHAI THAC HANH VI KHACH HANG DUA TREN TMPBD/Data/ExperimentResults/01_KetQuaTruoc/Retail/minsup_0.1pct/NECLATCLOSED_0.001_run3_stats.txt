@@ -1,0 +1,6 @@
+Algorithm: NECLATCLOSED
+Minsup: 0.0010
+Run: 3
+Closed itemsets: 7572
+Elapsed time (ms): 8971.667
+Sampled peak heap (MiB): 236.213

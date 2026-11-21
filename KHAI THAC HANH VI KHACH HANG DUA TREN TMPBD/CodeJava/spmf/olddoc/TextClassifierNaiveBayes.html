@@ -1,0 +1,150 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Classifying Text documents using a Naive Bayes approach  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Classifying Text documents using a Naive Bayes approach  (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>text classifier based on Naive Bayes</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestTextClassifier.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this algorithm? </h2>
+<p>The algorithm is a <strong>text document classifier </strong>implemented
+    by <strong>Sabarish Raghu</strong>. It can classify texts
+    automatically into categories. For example, it can be used to
+    classified text by subjects. </p>
+  <p>The input is a training set of texts classified by categories
+    (with known categories) and a set of texts to be classified (with
+    unknown categories). </p>
+  <p>The output is a category for each text from the testing set.</p>
+
+  <h2>How the algorithm works?</h2>
+  <p>The Naive Bayes classifier is a probabilistic classifier. It
+    compute the probability of a document <strong>d</strong> being in a
+    class <strong>c</strong> as follows:<br>
+    <strong>P(c|d) &#8733; P(c) Y 1&#8804;k&#8804;nd P(tk |c)</strong> where<br>
+    <strong>nd</strong> is the length of the document. (number of tokens)<br>
+    <strong>P(tk |c)</strong> is the conditional probability of term tk
+    occurring in a document of class <strong>c</strong><br>
+    <strong>P(tk |c)</strong> as a measure of how much evidence tk
+    contributes that <strong>c</strong> is the correct class.<br>
+    <strong>P(c)</strong> is the prior probability of <strong>c</strong>.<br>
+    If a document&#8217;s terms do not provide clear evidence for one class vs.
+    another, we choose the <strong>c</strong> with highest <strong>P(c)</strong> </p>
+  <h2><strong>Pseudocode</strong> <strong>of the algorithm</strong></h2>
+  <p> Algorithm ():<br>
+    Na&iuml;ve Bayes(Test_Data_Dir, Training_Data_Dir)<br>
+    {<br>
+    For(each test file in test data directory)<br>
+    For each class<br>
+    Map&lt;class, probability&gt; ProbabilityMap;<br>
+    For each word in test file<br>
+    Wordprobability=Probability of occurance of that word in the class<br>
+    ProbabilityMap.put(className,probability*Wordprobability)<br>
+    Classified_class=Key of Max probability value<br>
+    }</p>
+  <h2><strong>The algorithm contains a set of classes, as follows:</strong></h2>
+  <p><strong>Class &quot;TestRecord&quot;</strong><br>
+    Holds the Test record as an object.</p>
+  <p>* String RecordId Filename of the Test File<br>
+    * String fullRecord Test record as a single string.<br>
+    * ArrayList&lt;String&gt; words words in the test record.</p>
+  <p><strong>Class &quot;OccurrenceProbabilties&quot;</strong><br>
+    Used as a cache to store the probabilities of words associated with a
+    particular class.<br>
+    * String className Classname<br>
+    * Hashmap&lt;String,Double&gt; Probability of the each word</p>
+  <p><br>
+    <strong>Class &quot;MemoryFile&quot;</strong><br>
+    Holds the training record as an object.<br>
+    * String className Class name of the training file<br>
+    * ArrayList&lt;String&gt; content Words in the class.</p>
+  <h2><strong>Flow of the Code</strong></h2>
+  <p>    1. Read each test file, remove stopwords, perform stemming and load in
+    to objects.<br>
+    2. Read each training file, remove stopwords, perform stemming and load
+    in to objects.<br>
+    3. For each test file, for each class name, for each word; check if the
+    probability already exist in cache.<br>
+    4. Else compute the probability of each word and multiply them to get
+    overall probability for the test file.<br>
+    5. Check which probability has maximum among the classes for the test
+    file which gives the class value of the file.</p>
+  <h2><strong>There are two modes of execution</strong></h2>
+  <p>    Take your choice depending upon the size of the dataset and computing
+    power you have in the machine.</p>
+  <p><strong>* In Memory</strong><br>
+    Training Data is loaded in to memory as objects.<br>
+    Executes much faster<br>
+    Significantly less number of file reads.<br>
+    Higher memory load.</p>
+  <p><strong>* File Read</strong><br>
+    Handles Training data as files as it is.<br>
+    Executes slower<br>
+    More number of file reads.<br>
+    Significantly less memory load.</p>
+  <h2><strong>How to use this algorithm</strong></h2>
+  <p> An example of how to use the algorithm is provided in the file
+    MainTestTextClassifier of the package ca.pfv.spmf.test. To run the
+    algorithm, one needs to create an instance of the algorithm and call
+    the runAlgorithm() method:<br>
+    <br>
+    <em>AlgoNaiveBayesClassifier nbClassifier=new
+      AlgoNaiveBayesClassifier();<br>
+      nbClassifier.runAlgorithm(&lt;Training_Directory&gt;,&lt;Test_Directory&gt;,&lt;Output_Directory&gt;,&lt;Memory_Flag&gt;);</em></p>
+  <p>The output is a file indicating the categories of each text from
+    the testing set. </p>
+  <p><em>Output &#8216;output.tsv&#8217; would be found in the output directory
+    &#8216;output.tsv&#8217;</em></p>
+  <h2><strong>Input of the algorithm</strong></h2>
+  <p>The algorithm takes a input two directories. The first directory
+    is a set of training texts. The second directory is a set of testing
+    texts that need to be classified.</p>
+  <p>In the package <strong>ca.pfv.spmf.test.text_classification_set</strong>,
+    there are some sample files for training and testing.</p>
+  <p> Please follow the following structure of directory for Test and
+    training directory.</p>
+  <p><strong>For training directory</strong> <strong>(to train the
+    algorithm)</strong>:</p>
+  <p>TrainingDirectoryName<br>
+    ---&gt;ClassName1<br>
+    ---&gt;Trainingfile1<br>
+    ---&gt;Trainingfile2<br>
+    <br>
+    ---&gt;TrainingFileN<br>
+    ---&gt;ClassName2<br>
+    ---&gt;Trainingfile1<br>
+    ---&gt;Trainingfile2<br>
+    <br>
+    .........</p>
+  <p><strong>For the directory of test files (to be classified)</strong></p>
+  <p>----&gt;TestDirectoryName<br>
+    ----&gt;Testfile1<br>
+    ----&gt;Testfile2<br>
+    ----&gt;Testfile3<br>
+    ...</p>
+  <h2><strong>Output of the algorithm</strong></h2>
+  <p>The algorithm outputs a file <em> &#8216;output.tsv&#8217;</em> in the output
+    directory indicating the categories (classes) attributed to each text
+    of the test set.</p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

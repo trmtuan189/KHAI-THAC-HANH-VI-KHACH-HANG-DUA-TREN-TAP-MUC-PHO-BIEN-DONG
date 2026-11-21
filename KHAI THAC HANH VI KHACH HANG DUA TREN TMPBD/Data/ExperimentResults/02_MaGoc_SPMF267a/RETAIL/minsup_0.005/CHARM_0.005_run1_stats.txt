@@ -1,0 +1,12 @@
+Algorithm: CHARM
+Minsup: 0.0050
+Run: 1
+Closed itemsets: 580
+Elapsed time (ms): 1054.849
+Sampled peak heap (MiB): 782.120
+Dataset: RETAIL
+Input: D:\KHAI THAC HANH VI KHACH HANG DUA TREN TMPBD\Data\BenchmarkDatasets\retail.txt
+SPMF version: 2.67a
+Algorithm source: original archive, unchanged
+CHARM triangular matrix: true
+Java version: 21.0.13

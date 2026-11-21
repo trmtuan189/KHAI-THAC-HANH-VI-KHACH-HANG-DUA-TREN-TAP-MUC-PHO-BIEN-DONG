@@ -1,0 +1,184 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Partially-Ordered Episode Rules in a Complex Sequence using the POERM or POERM-ALL algorithms (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining Partially-Ordered Episode Rules in a Complex Sequence using the POERM or POERM-ALL algorithms (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>POERM (or POERM-ALL) algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">POERM</span>&quot; </strong>or  <strong>&quot;<span class="highlight">POERMALL</span>&quot; </strong>algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextEMMA</span><span class="highlight">.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;)
+    (4) set the minimum support to 2, XSpan = 2, YSpan = 2, the minimum confidence to 0.5 (which means 50%), the XYSpan to 3, and set &quot;Without timestamps?&quot; to false, and then  
+    (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line with POERM </strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run POERM contextEMMA.txt output.txt 2 2 2 0.5 3 false </span>in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextEMMA.txt</span>.If you want to use POERMALL, do as follows:<br>
+    <span class="highlight">java -jar spmf.jar run POERMALL contextEMMA.txt output.txt 2 2 2 0.5 3 false</span><br>
+</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestPOERM.java&quot;</span></strong> or <strong><span class="highlight">&quot;MainTestPOERM-ALL.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.<br>
+</li>
+</ul>
+<h2>What is POERM and POERM-ALL?</h2>
+<p><strong>POERM </strong>and <strong>POERM-ALL </strong> (Fournier-Viger, P., Chen, Y. et al., 2021) is an
+    algorithm for discovering<strong> partially-ordered episode rules </strong>in a
+    <strong>complex event sequence</strong>. In simple words, the algorithm is used to analyze a sequence of symbols or events that can have timestamps or not. The output is some rules of the form X--&gt;Y indicating that if some event(s) or symbol(s) X appear in the sequence, they will be followed by some other event(s) or symbol(s) Y. Finding such rule is useful to discover some sequential or temporal relationships in a sequence. For example, it can be used to analyze the purchase behavior of a customer (a sequence of purchases), or it could be used to find relationships between some words in a text (a sequence of words). </p>
+  <p>Various algorithms have been proposed to find episode rules. <strong>POERM</strong> is a recent algorithm that is designed to find a specific type of rules called &quot;partially ordered&quot; episode rules. Partially ordered means that these rules are not totally ordered. In a rule X --&gt; Y, we just require that symbols in X appear before those in Y but there is not order requirement between the events in X, or between the events in Y. It was argued that these rules are more general than the traditional episode rules used in previous papers.</p>
+  <p>POERM and POERM-ALL both have the same input and output but they use different strategies to found the result. <strong>POERM</strong> is generally more efficient than <strong>POERM-ALL</strong>.</p>
+
+  <h2>What is the input?</h2>
+  <p>The algorithm  takes as input <strong>an event sequence</strong>  with a <strong>minimum support</strong> <strong>threshold</strong>, a <strong>mininum confidence threshold,</strong> some constraints on rules to be found called XSpan, YSpan, XYSpan and a boolean parameter  <strong>without_timestamp? (self-increment)</strong>, that must be set to true if the input dataset has no timestamps  or otherwise false. Let’s consider following sequence consisting of 11 time  points (t1, t2, …, t10) and 4 events type (1, 2, 3, 4). This database is provided  in the text file &quot;<strong><span class="highlight">contextEMM<span class="highlight">A</span></span><span class="highlight">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution.</p>
+  <table border="1" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="277" valign="top"><p><strong>Time points</strong></p></td>
+      <td width="277" valign="top"><p><strong>Itemset</strong> <strong>(event set)</strong> </p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>1</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>2</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>3</p></td>
+      <td width="277" valign="top"><p>1 2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>6</p></td>
+      <td width="277" valign="top"><p>1</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>7</p></td>
+      <td width="277" valign="top"><p>1 2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>8</p></td>
+      <td width="277" valign="top"><p>3</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>9</p></td>
+      <td width="277" valign="top"><p>2</p></td>
+    </tr>
+    <tr>
+      <td width="277" valign="top"><p>11</p></td>
+      <td width="277" valign="top"><p>4</p></td>
+    </tr>
+  </table>
+  <p>Each line of the sequence is called an  event set and consists of:</p>
+  <ul>
+    <li>a time point (first column)</li>
+    <li>an event set (second column)</li>
+  </ul>
+  <p>For example, in the above example, at time point 1, the event 1 occurred. Then at time point 2, the event 1 occurred again. Then at time point 3, the events 1 and 2 occurred simultaneously. And so on. </p>
+  <p>To make it easier to understand, we could also represent the above sequence visually like this:</p>
+  <p><img src="poerm_sequence.png" alt="poerm sequence" width="570" height="88"></p>
+  <p>It is possible to apply the POERM and POERM algorithms on dataset that have no timestamps. In that case, it will be assumed that timestamps are 1,2,3,4...</p>
+
+  <h2>What is the output?</h2>
+  <p> The<strong> output of POERM or POERM-ALL </strong>is the set of <strong>partially-ordered episode rules </strong>having a <strong>support</strong> (occurrence frequency) that is no less than a minSup threshold (a positive integer)  set by the user, a confidence that is no less than a minimum confidence threshold (a double number representing a percentage), and that meet some constraints <strong>XSpan</strong>, <strong>YSpan</strong> and <strong>XYSpan</strong>. </p>
+  <p>A <strong>rule</strong> is denoted as <strong>X --&gt; Y</strong> and it is a relationship between two sets of events X and Y. The <strong>intuitive</strong> <strong>meaning of a rule X--&gt; </strong>Y is that if all events from X appear in any order in a sequence, they will be followed by all events from Y. To avoid ﬁnding rules containing events that are too far appart, the algorithm allows to specify three constraints: (1) events from X must appear whithin some maximum amount of time <em>XSpan</em> ∈ Z+, (2) events from Y must appear whithin some maximum amount of time <em>YSpan</em> ∈ Z+, and (3) the time between X and Y must be no less than a constant <em>XYSpan</em> ∈ Z+. The three constraints <em>XSpan</em>, <em>YSpan </em>and <em>XYSpan </em>are parameters of the algorithm , and are illustrated in the figure below for a rule X → Y .</p>
+  <p><img src="poerm_three_constraints.png" alt="poerm three constraints" width="646" height="106"></p>
+  <p>The <strong>support </strong>of a rule X--&gt;Y means how many times the rule appeared in the input sequence (how many times X was followed by Y, and respected the three time constraints). For example, if a rule appears three times, we will say that the support of the rule is 3.</p>
+  <p>The <strong>confidence </strong>of a rule X--&gt;Y means how many times X--&gt;Y appeared in the input sequence, divided by how many times X appeared in the input sequence. Thus, you can think about the confidence about the conditional probability P(Y|X), that is how likely it is that Y will follow X in the sequence. The confidence is expressed as a percentage. For example, a confidence of 50% means that 50% of the times X was followed by Y in the input sequence. </p>
+  <p>The <strong>output of the algorithm </strong>is all the episode rules that (1) have a confidence greater or equal to the minConf parameter, and (2) a support greater or equal to the minSup parameter, given the three time constraints.</p>
+  <p>Now, let's look at the result for the above example. Four rules are found:</p>
+  
+    <table border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="277" valign="top"><p><strong>Episode rules </strong></p></td>
+        <td width="277" valign="top"><strong>Support</strong></td>
+        <td width="277" valign="top"><p><strong>Confidence</strong></p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>1 2 --&gt; 1 </p></td>
+        <td width="277" valign="top">2</td>
+        <td width="277" valign="top"><p>0.5 (which means 50%) </p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>1 2 --&gt; 2 </p></td>
+        <td width="277" valign="top">2</td>
+        <td width="277" valign="top"><p>0.5 (which means 50%)</p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>1 2 -&gt; 3 </p></td>
+        <td width="277" valign="top">2</td>
+        <td width="277" valign="top"><p>0.5 (which means 50%)</p></td>
+      </tr>
+      <tr>
+        <td width="277" valign="top"><p>1 2 -&gt; 2 3 </p></td>
+        <td width="277" valign="top">2</td>
+        <td width="277" valign="top"><p>0.5 (which means 50%)</p></td>
+      </tr>
+    </table>
+    <p>For instance, the first episode rule {1,2} --&gt; 1 ( indicating that event 1 and 2 are followed by event 1) has a support of 2 and a confidence of 50%. The two occurrences of this rule are illustrated in the picture below:</p>
+    <p><img src="poerm_rule_example.png" alt="poerm rule example" width="798" height="250"> </p>
+    <p>Since the rule appears twice, the support is two. Moreover, it can be observed that there are two occurrences of X = {1,2} but only one is followed by Y={1}. Hence, the confidence is 50%. </p>
+  
+
+    <h2>Input file format</h2>
+    <p>The <strong>input file format </strong>of that algorithm is a text file. An <strong>item (event) </strong>is represented  by a positive integer. A <strong>transaction (event set) </strong>is a line in the text file. In each line  (event set), items are separated by a single space. It is assumed that all  items (events) within a same transaction line) are sorted according to a total order  (e.g. ascending order) and that no item can appear twice within the same event set.  Each line is optionally followed by the character &quot;|&quot; and then the timestamp of the  event set (line). Note that<strong> it is possible to run the algorithms on a database that has no  timestamps</strong>. In that case, the boolean parameter <strong>&quot;without timestamps (self-increment)&quot; </strong>should be  set to <strong>true</strong> to indicate that the dataset has no timestamps. If there is no timestamps and the parameter is set to true, the algorithm will assume that each line has a timestamp that is increasing by 1. <br>
+In the previous example, the input file is  defined as follows. The two first lines are metadata indicating the type of file and the source of the data.</p>
+    <p align="left">@FILETYPE=&quot;Transaction database with timestamps&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1|1<br>
+    1|2<br>
+    1 2|3<br>
+    1|6<br>
+    1 2|7<br>
+    3|8<br>
+    2|9<br>
+    4|11</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format </strong>is defined as  follows. It is a text file. Each line is a <strong>partially episode rule.</strong> Each event in a  <strong>partially episode rule </strong> is a positive integer On each line, the items from the
+    rule antecedent are first listed, separated by single spaces. Then the
+    keyword &quot;==&gt;&quot; appears, followed by the items from the rule
+    consequent, separated by single spaces. Then, the keyword &quot;#SUP:&quot;
+    appears followed by an integer indicating the support of the rule as a
+    number of occurrences. Then, the keyword &quot;#CONF:&quot; appears followed by a
+    double values in the [0, 1] interval indicating the confidence of the
+    rule (e.g. 0.5 means 50%). The output for the example is: </p>
+  <p align="left">@FILETYPE=&quot;Frequent episode rules&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot; <br>
+1 2 ==&gt; 1 #SUP: 2 #CONF: 0.5<br>
+    1 2 ==&gt; 2 #SUP: 2 #CONF: 0.5<br>
+    1 2 ==&gt; 3 #SUP: 2 #CONF: 0.5<br>
+  1 2 ==&gt; 2 3 #SUP: 2 #CONF: 0.5</p>
+  <p align="left">The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. Consider the first line. It indicates that the rule {1, 2} ==&gt;
+    {1} has a support of 2 (it appears twice in the input sequence) and that the confidence of this rule is 50%. The next
+  lines follow the same format</p>
+
+  <h2>Performance</h2>
+  <p>POERM and POERM-ALL are the first algorithms for mining partially-ordered episode rules. POERM should generally be more efficient than POERM-ALL. A comparison of both algorithms is presented in the paper by Fournier-Viger et al. (2021) </p>
+
+  <h2>Implementation details</h2>
+  <p>This is the original implementations of those algorithms. </p>
+
+<p>Where can I get more information about the POERM and POERM-ALL algorithms?</p>
+
+  <p>The POERM and POERM-ALL algorithm are described in this  article:</p>
+  <p>Fournier-Viger, P., Chen, Y., Nouioua, F., Lin, J. C.-W. (2020). <a href="2021_POERM_episode_rules.pdf">Mining Partially-Ordered Episode Rules in an Event Sequence.</a> Proc. of the 13th Asian Conference on Intelligent Information and Database Systems (ACIIDS 2021),</p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

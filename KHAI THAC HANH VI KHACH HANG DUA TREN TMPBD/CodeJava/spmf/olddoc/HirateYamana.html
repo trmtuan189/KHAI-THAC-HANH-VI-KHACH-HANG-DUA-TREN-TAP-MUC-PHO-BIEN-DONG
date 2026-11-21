@@ -1,0 +1,293 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Sequential Patterns with Time Constraints from a Time-Extended Sequence Database  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Sequential Patterns with Time Constraints from a Time-Extended Sequence Database (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>Hirate-Yamana algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">HirateYamana</span>" </strong>algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextSequencesTimeExtended</span><span class="highlight">.txt"</span></strong>, (3) set the output file name
+    (e.g. "<span class="highlight"><strong>output</strong>.txt</span>") (4)
+    minsup= 55 %, min_time_interval = 0, max_time_interval = 2,
+    min_whole_interval = 0, max_whole_interval = 2, (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run HirateYamana <strong>contextSequencesTimeExtended</strong>.txt
+      output.txt 55% 0 2 0 2</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextSequencesTimeExtended.txt</span>.</li>
+  <li><strong>To run this example with the source code version of SPMF,</strong> launch the file <strong><span class="highlight">"MainTestSequentialPatternsMining1_saveToMemory.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is this algorithm?</h2>
+<p>The <a href="hirateyamana.pdf" rel="nofollow">Hirate-Yamana, 2006</a> algorithm is an algorithm for discovering <strong>frequent sequential
+    patterns respecting some time-constraints </strong>to filter
+    uninteresting patterns.</p>
+  <p>The idea of using time constraints is interesting because it can
+    greatly reduce the number of patterns found and it is also faster and
+    use less memory than if all patterns are discovered.</p>
+  <p>Note that in our implementation, the Hirate &amp; Yamana algorithm
+    is not implemented as a standalone algorithm. The features of the
+    Hirate-Yamana 2006 algorithm are rather integrated in the
+    Fournier-Viger et al. (2008) algorithm that combines features from
+    several other sequential pattern mining algorithms. </p>
+
+  <h2>What is the input?</h2>
+  <p>The input is a <strong>time-extended sequence</strong> <strong>database</strong> (as defined by <a href="hirateyamana.pdf" rel="nofollow">Hirate-Yamana,
+    2006</a>) and some <strong>constraints</strong>.</p>
+  <p>A <strong>time-extended sequence database</strong> is a set of <strong>time-extended
+    sequences</strong>. A <strong>time-extended sequences </strong>is a
+    list of itemsets (groups of items). Each <strong>itemset</strong> is
+    anotated with a <strong>timestamp</strong> that is an integer value.
+    Note that it is assumed that an item should not appear more than once
+    in an itemset and that items in an itemset are lexically ordered.</p>
+  <p>For example, consider the following time-extended sequence
+    database provided in the file <strong>contextSequencesTimeExtended.txt </strong>of the SPMF distribution. The database contains 4
+    time-extended sequences. Each sequence contains itemsets that are
+    annotated with a timestamp. For example, consider the sequence S1. This
+    sequence indicates that itemset {1} appeared at time 0. It was followed
+    by the itemset {1, 2, 3} at time 1. This latter itemset was followed by
+    the itemset {1 2} at time 2. </p>
+
+<table align="center" border="1" width="461">
+  <tbody>
+    <tr>
+      <td width="65"><strong>ID</strong></td>
+      <td width="380"><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td>S1</td>
+      <td>(<strong>0</strong>, 1), (<strong>1</strong>, 1 2 3}), (<strong>2</strong>,
+        1 3)</td>
+    </tr>
+    <tr>
+      <td>S2</td>
+      <td >(<strong>0</strong>, 1 ) (<strong>1</strong>,
+        1 2 ), (<strong>2</strong>, 1 2 3), (<strong>3</strong>, 1 2 3 )</td>
+    </tr>
+    <tr>
+      <td>S3</td>
+      <td>(<strong>0</strong>, 1 2), (<strong>1</strong>, 1 2 )</td>
+    </tr>
+    <tr>
+      <td>S4</td>
+      <td>(<strong>0</strong>, 2), (<strong>1</strong>, 1 2 3 )</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>The algorithms discovers time-extended sequential patterns that
+    are common to several sequences. To do that, the user needs to provide
+    five constraints (see the paper by Hirate &amp; Yamana, 2006 for full
+    details):</p>
+  <ul>
+    <li>minimum support (<strong>minsup</strong>): the minimum number
+      of sequences that should contain a sequential patterns (a positive
+      integer &gt;=0)</li>
+    <li>minimum time interval allowed between two succesive itemsets of
+      a sequential pattern (<strong>min_time_interval</strong>) (an integer
+      &gt;=0)</li>
+    <li>maximum time interval allowed between two succesive itemsets of
+      a sequential pattern (<strong>max_time_interval</strong>) (an integer
+      &gt;=0)</li>
+    <li>minimum time interval allowed between the first itemset and the
+      last itemset of a sequential pattern (<strong>min_whole_interval</strong>)
+      (an integer &gt;=0)</li>
+    <li>maximum time interval allowed between the first itemset and the
+      last itemset of a sequential pattern (<strong>max_whole_interval</strong>)
+      (an integer &gt;=0)</li>
+  </ul>
+
+  <h2>What is the output?</h2>
+  <p>The output is a set of time-extended sequential patterns meeting
+    the five constraints given by the user. For example, if we run the
+    algorithm with minsup= 55 %, min_time_interval = 0, max_time_interval =
+    2, min_whole_interval = 0, max_whole_interval = 2, we obtain the
+    following results:</p>
+
+<table align="center" border="1" width="477">
+  <tbody>
+    <tr>
+      <td width="18"><strong>ID</strong></td>
+      <td width="292"><strong>Sequential Patterns</strong></td>
+      <td width="145"><strong>Support</strong></td>
+    </tr>
+    <tr>
+      <td>S1</td>
+      <td>(<strong>0</strong>, 3)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>S2</td>
+      <td >(<strong>0</strong>, 2 3)</td>
+      <td >75 %</td>
+    </tr>
+    <tr>
+      <td>S3</td>
+      <td>(<strong>0</strong>, 2)</td>
+      <td>100 %</td>
+    </tr>
+    <tr>
+      <td>S4</td>
+      <td>(<strong>0</strong>, 1 2 3)</td>
+      <td>75%</td>
+    </tr>
+    <tr>
+      <td>S5</td>
+      <td>(<strong>0</strong>, 1 2)</td>
+      <td>100 %</td>
+    </tr>
+    <tr>
+      <td>S6</td>
+      <td>(<strong>0</strong>, 1 3)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>S7</td>
+      <td>(<strong>0</strong>, 1)</td>
+      <td>100 %</td>
+    </tr>
+    <tr>
+      <td>S8</td>
+      <td>(<strong>0</strong>, 2), (<strong>1</strong>, 3)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>S9</td>
+      <td>(<strong>0</strong>, 2), (<strong>1</strong>, 1 2)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>S10</td>
+      <td>(<strong>0</strong>, 2), (<strong>1</strong>, 1 3)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>S11</td>
+      <td>(<strong>0</strong>, 2), (<strong>1</strong>, 1)</td>
+      <td>100 %</td>
+    </tr>
+    <tr>
+      <td>S12</td>
+      <td>(<strong>0</strong>, 2), (<strong>1</strong>, 2)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>S13</td>
+      <td>(<strong>0</strong>, 1), (<strong>1</strong>, 1 2)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>S14</td>
+      <td>(<strong>0</strong>, 1), (<strong>1</strong>, 1)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>S15</td>
+      <td>(<strong>0</strong>, 1), (<strong>1</strong>, 2)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>S16</td>
+      <td>(<strong>0</strong>, 1 2), (<strong>1</strong>, 1)</td>
+      <td>75 %</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>For instance, the pattern S16 indicates that the items 1 and 2
+    were followed by item 1 one time unit after. This pattern has a support
+    of 75 % because it appears in S1, S2 and S3. It is important to note
+    that the timestamps in the sequential patterns found are relative. For
+    example, the pattern S16 is considered to appear in S1, S2 and S3
+    because {1} appears one time unit after the itemset {1, 2} in all of
+    these sequences, even though the timestamps do not need to be the same
+    in all of these sequences.</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a time-extended sequence from
+    a sequence database. Each line is a list of itemsets, where each
+    itemset has a timestamp represented by a positive integer and each item
+    is represented by a positive integer. Each itemset is first represented
+    by it timestamp between the "&lt;" and "&gt; symbol. Then, the items of
+    the itemset appear separated by single spaces. Finally, the end of an
+    itemset is indicated by "-1". After all the itemsets, the end of a
+    sequence (line) is indicated by the symbol "-2". Note that it is
+    assumed that items are sorted according to a total order in each
+    itemset and that no item appears twice in the same itemset.</p>
+  <p>For example, the input file "<strong>contextSequencesTimeExtended.txt</strong>"
+    contains the following four lines (four sequences).</p>
+  
+    <p>&lt;0&gt; 1 -1 &lt;1&gt; 1 2 3 -1 &lt;2&gt; 1 3 -1 -2<br>
+      &lt;0&gt; 1 -1 &lt;1&gt; 1 2 -1 &lt;2&gt; 1 2 3 -1 &lt;3&gt; 1 2 3 -1 -2<br>
+      &lt;0&gt; 1 2 -1 &lt;1&gt; 1 2 -1 -2<br>
+      &lt;0&gt; 2 -1 &lt;1&gt; 1 2 3 -1 -2</p>
+  
+  <p>Consider the first line. It indicates that at time "0" the itemset
+    {1} appeared, followed by the itemset {1, 2, 3} at time 1, then
+    followed by the itemset {1, 3} at time 2. Note that timestamps do not
+    need to be consecutive integers. But they should increase for each
+    succesive itemset within a sequence. The second, third and fourth line
+    follow the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. Each line is a time-extended frequent sequential
+    pattern. Each line starts by listing the itemsets of the sequential
+    pattern, where each itemset has a relative timestamp represented by a
+    positive integer between the "&lt;" and "&gt; symbol. Then the
+    timestamp is followed by each item in the itemset, each represented by
+    a positive integer. The items of the itemset appear separated by single
+    spaces and the symbol "-1" indicates the end of an itemset. Finally,
+    after all the itemsets of a sequential pattern, the keyword "#SUP:" is
+    followed by an integer indicating the support of the pattern as a
+    number of sequences. For example, here is a two lines from the output
+    file from the previous example: </p>
+  
+    <p>&lt;0&gt; 1 2 -1 &lt;1&gt; 1 3 -1 #SUP: 2<br>
+      &lt;0&gt; 1 2 -1 &lt;1&gt; 1 2 -1 #SUP: 2</p>
+  
+  <p>Consider the first line. It represents a sequential pattern having
+    the itemset {1, 2} with a relative timestamp of 0, followed by the
+    itemset {1, 3} one time unit later. This pattern has a support of 2
+    sequences. The second line follow the same format.</p>
+
+  <h2>Implementation details</h2>
+  <p>In this implementation, we have followed the Hirate &amp; Yamana
+    (2006) algorithm closely. The only difference is that we did not keep
+    the idea of interval itemization function for discretization. But we
+    have keep the core idea which is to use the time constraints.</p>
+  <p>Note that the Hirate &amp; Yamana algorithm is an extension of the
+    PrefixSpan algorithm. We have implemented it based on our
+    implementation of PrefixSpan.</p>
+
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The Hirate &amp; Yamana algorithm is described in this paper</p>
+  <p><em>Yu Hirate, Hayato Yamana (2006) <a href="hirateyamana.pdf" rel="nofollow">Generalized Sequential Pattern Mining with Item
+    Intervals. JCP 1(3): 51-60</a>.</em></p>
+  <p>The implementation of the algorithm in SPMF is part of the
+    Fournier-Viger (2008) algorithm, which is described in this paper:</p>
+  <p><em> Fournier-Viger, P., Nkambou, R &amp; Mephu Nguifo, E. (2008),<a href="https://www.philippe-fournier-viger.com/fournier-viger_sequential_patterns_micai08.pdf"> A Knowledge Discovery Framework for Learning Task Models from User
+    Interactions in Intelligent Tutoring Systems</a>. Proceedings of the
+    7th Mexican International Conference on Artificial Intelligence (MICAI
+    2008). LNAI 5317, Springer, pp. 765-778.</em></p>
+  <p>Besides, you may read this<a href="https://www.philippe-fournier-viger.com/dspr-paper5.pdf"> survey of sequential pattern mining</a>, which gives an overview of sequential pattern mining algorithms.</p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Example: Mining the Top-K Frequent Itemsets using the HTK_negFIN Algorithm (SPMF - Java)</title>
+    <link rel="stylesheet" href="docstyle.css"/>
+    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style4 {color: #0000FF; font-weight: bold; }
+.style6 {color: #000000; font-weight: bold; }
+.style7 {color: #000000}
+-->
+    </style>
+  </head>
+  <body>
+    <div width="100%" class="container">
+      <div class="content">
+        <!----------START------>
+
+<h1>Mining the Top-K Frequent Itemsets using the HTK-negFIN Algorithm (<a href="documentation.html">SPMF documentation</a>)</h1>
+
+<p>This example explains how to run the <strong>HTK-negFIN </strong>algorithm using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface,</strong> (1)
+    choose the <strong>&quot;<span class="style1">HTK_NEGFIN</span>&quot;</strong> algorithm, (2) select the input file <strong>&quot;<span class="style1">contextPasquier99.txt</span>&quot;</strong>, (3) set the
+    output file name (e.g. &quot;<span class="style1">output.txt</span>&quot;), (4)
+    set <strong class="style1">k</strong> to <span class="style1">8</span> and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command:<br>
+    <span class="style4">java -jar spmf.jar run HTK_NEGFIN
+      contextPasquier99.txt output.txt 8</span> in a folder containing <span class="style4">spmf.jar</span> and the example input file <span class="style4">contextPasquier99.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF,</strong> launch
+    the file <strong><span class="highlight">&quot;<span class="style1">MainTestHTKnegFIN_saveToFile.java</span>&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+
+<h2>What is HTK_NEGFIN?</h2>
+<p><strong>HTK-negFIN</strong> (A Top-K Frequent Itemset Miner based on negNodesets) is an algorithm designed for the efficient discovery of the top-K most frequent itemsets in a transaction database, without requiring a user-defined minimum support threshold. It is based on the negNodeset structure introduced in the negFIN algorithm, and was proposed by Malliaridis and Ougiaroglou (2026).</p>
+<p>Instead of asking the user to define a minimum support threshold, <strong>HTK_NEGFIN</strong> asks the user to specify the number <strong>k</strong> of itemsets to find. The algorithm then discovers the <strong>k most frequent itemsets</strong> in the database. This is more intuitive to use, as the user does not need to know in advance what support values are meaningful for a given dataset.</p>
+<p><span class="style6">Implementation note: </span><span class="style7">This implementation of </span><strong>HTK_NEGFIN</strong> is implemented to return <strong>k itemsets plus any tied itemsets</strong> at the K-th position (K+N behaviour).</p>
+
+<h2>What is the input of the HTK_NEGFIN algorithm?</h2>
+<p>The input is a <strong>transaction database</strong> (also called a binary context) and a threshold named <em><strong>k</strong></em> (a positive integer value).</p>
+<p>A <strong>transaction database</strong> is a set of transactions. Each <strong>transaction</strong> is a set of items. For example, consider the following transaction database. It contains 5 transactions (t1, t2, ..., t5) and 5 items (1, 2, 3, 4, 5). For example, the first transaction represents the set of items 1, 3 and 4. This database is provided as the file <strong>contextPasquier99.txt</strong> in the SPMF distribution. It is important to note that an item is not allowed to appear twice in the same transaction and that items are assumed to be sorted by lexicographical order in a transaction.</p>
+
+<table align="center" border="1" width="316">
+  <tbody>
+    <tr>
+      <td width="144"><strong>Transaction id</strong></td>
+      <td width="156"><strong>Items</strong></td>
+    </tr>
+    <tr>
+      <td><strong>t1</strong></td>
+      <td>{1, 3, 4}</td>
+    </tr>
+    <tr>
+      <td><strong>t2</strong></td>
+      <td>{2, 3, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t3</strong></td>
+      <td>{1, 2, 3, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t4</strong></td>
+      <td>{2, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t5</strong></td>
+      <td>{1, 2, 3, 5}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>What is the output of the HTK_NEGFIN algorithm?</h2>
+<p><strong>HTK_NEGFIN</strong> discovers the <strong>k itemsets</strong> (groups of items) that occur most frequently in a transaction database, plus any additional itemsets that are tied at the K-th position. To use this algorithm, you must set a value for the parameter <em>k</em>, which represents the desired number of itemsets to be returned.</p>
+<p>For example, if <strong>HTK_NEGFIN</strong> is run on the previous transaction database with <strong>k = 8</strong>, it produces the following result:</p>
+
+<table align="center" border="1" width="199">
+  <tbody>
+    <tr>
+      <td width="114"><strong>Itemset</strong></td>
+      <td width="69"><strong>Support</strong></td>
+    </tr>
+    <tr>
+      <td>{2}</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{3}</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{5}</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{2, 5}</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{3, 1}</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{3, 2, 5}</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{3, 2}</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{3, 5}</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>How should I interpret the results?</h2> <p>In the results, each itemset is annotated with its <strong>support</strong>. The <strong>support</strong> of an itemset, also called its frequency, is the number of transactions in the database that contain that itemset. For example, the itemset {3, 2, 5} has a support of 3 because it appears in transactions t2, t3 and t5.</p> <p>For <strong>k = 8</strong>, the itemsets presented in the previous table are the <strong>top-8 most frequent itemsets</strong> found by HTK_negFIN.</p> <p>An important characteristic of this implementation of <strong>HTK_negFIN</strong> is that it <strong>supports K+N ties</strong>. This means that the algorithm will return exactly K itemsets, plus any additional itemsets (N) that have the same support value as the K-th itemset. This ensures that no tied itemsets are arbitrarily excluded from the results. </p><h2>Input file format</h2> <p>The <strong>input file format</strong> used by <strong>HTK_negFIN</strong> is defined as follows. It is a text file. An item is represented by a positive integer. A transaction is represented by a line in the text file. In each line (transaction), items are separated by a single space. It is assumed that all items within a same transaction (line) are sorted according to a total order (e.g. ascending order) and that no item can appear twice within the same line.</p> 
+<p>For example, for the previous example, the input file is defined as follows:</p> <p>@FILETYPE=&quot;Simple transaction database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+1 3 4<br>
+2 3 5<br>
+1 2 3 5<br>
+2 5 <br>
+1 2 3 5 </p> 
+<p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then, the following lines contain the transactions. </p>
+<p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the ARFF format<a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29"></a>. Most features of the ARFF format are supported except that (1) the character &quot;=&quot; is forbidden and (2) escape characters are not considered. Note that when the ARFF format is used, the performance of the data mining algorithms will be slightly less than if the native SPMF file format is used because a conversion of the input file will be automatically performed before launching the algorithm and the result will also have to be converted. This cost however should be small.</p><h2>Output file format</h2> <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line represents an itemset.</p>
+<p>On each line, the items of the itemset are first listed. Each item is represented by an integer and it is followed by a single space. After all the items, the keyword &quot;#SUP:&quot; appears, which is followed by an integer indicating the support of the itemset, expressed as a number of transactions. For example, here is the output file for this example. The first line indicates the frequent itemset consisting of item 2 and shows that this itemset has a support of 4 transactions.</p>
+<p>@FILETYPE=&quot;Frequent itemsets&quot;<br>
+  @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+  2 #SUP: 4<br> 3 #SUP: 4<br> 5 #SUP: 4<br> 2 5 #SUP: 4<br> 3 1 #SUP: 3<br> 3 2 5 #SUP: 3<br> 3 2 #SUP: 3<br> 3 5 #SUP: 3</p> 
+<p>Note that if the ARFF format is used as input instead of the default input format, the output format will be the same except that items will be represented by strings instead of integers.</p><h2>Performance</h2> <p><strong>HTK_negFIN</strong> is designed to be a high-performance algorithm for top-k frequent itemset mining. It achieves efficiency through its negNodeset representation based on the negFIN algorithm, the BMC Tree structure for organizing transactions, and dynamic threshold raising via its integrated Q-Heap-based top-k management. The use of negative itemset representations can be particularly efficient for dense datasets.</p> <h2>Implementation details</h2> <p>This implementation is a Java translation of the HTK_negFIN algorithm, adapted by the authors of the HTK_negFIN algorithm for the SPMF library. Several design decisions were made to ensure correctness and efficiency within the JVM environment:</p> <ul> <li>The Q-Heap structure is implemented as a specialized priority queue that maintains the top-K itemsets in sorted order with efficient insertion operations.</li> <li class="style7"><strong>Note:</strong> Support for K+N ties <strong>has been implemented</strong> in this version. The implementation will return exactly K itemsets plus any tied itemsets N at the K-th position, ensuring complete results.</li> <li><span class="style7">The algorithm is based on the negFIN approach by Aryabarzan et al. (2018), which uses negative itemset node representations to efficiently compute support without repeatedly scanning the database.</span></li> <li><span class="style7">The BMC Tree (Bitmap Code Tree) structure is used to organize transactions in a compact form, enabling fast support counting through bitmap operations.</span></li> </ul><h2>Optional parameter(s)</h2> <p>This implementation allows to specify additional optional parameter(s):</p> <ul><li><strong>&quot;Separator&quot;</strong> (string): This parameter allows to specify the character used to separate items in the input file. By default, a single space &quot; &quot; is used.</li> </ul> <p>These parameter(s) are available in the GUI of SPMF and also in the example <strong><span class="highlight">&quot;<span class="style4">MainTestHTKnegFIN_saveToFile.java</span>&quot;</span></strong> provided in the source code of SPMF.</p> <p>The parameter(s) can also be used in the command line with the Jar file. If you want to use these optional parameter(s) in the command line, it can be done as follows. Consider this example:<br> <span class="style4">java -jar spmf.jar run HTK_NEGFIN contextPasquier99.txt output.txt 8 " "</span><br> This command means to apply the algorithm on the file &quot;contextPasquier99.txt&quot; and output the results to &quot;output.txt&quot;. Moreover, it specifies that the user wants to find patterns for <em>k=8</em>, using a space as the separator.</p>
+<h2>Optional feature: giving names to items</h2> <p>Some users have requested the feature of giving names to items instead of using numbers. This feature is offered in the <strong>user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextPasquier99.txt</strong>&quot;. Here we have modified the file to give names to the items:<br> <br>
+  @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple transaction database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+1 3 4<br>
+2 3 5<br>
+1 2 3 5<br>
+2 5 <br>
+1 2 3 5 </p> 
+<p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second and third line indicate the type of file and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. Then, the following lines define  transactions in the SPMF format.</p>
+<p>Then, if we apply the algorithm using this file through the user interface of SPMF or the command line, the output file will contain patterns such as:<br> <br> orange #SUP: 4<br> tomato #SUP: 4<br> bread #SUP: 4<br> orange bread #SUP: 4<br> tomato apple #SUP: 3<br> tomato orange bread #SUP: 3<br> tomato orange #SUP: 3<br> tomato bread #SUP: 3</p> <p>Note that this feature could also be used from the <strong>source code</strong> of SPMF using the ResultConverter class. However, there is currently no example provided for using it from the source code.</p><h2>Where can I get more information about the HTK_negFIN algorithm?</h2> <p>This is the research article describing the HTK_negFIN algorithm:</p> <p><em>Konstantinos Malliaridis and Stefanos Ougiaroglou. <a href="https://www.sciencedirect.com/science/article/pii/S0957417426001582" rel="nofollow">Efficient techniques for retrieving top-K frequent itemsets</a>. Expert Systems with Applications, https://doi.org/10.1016/j.eswa.2026.131250</em></p> <p>The negFIN algorithm, which HTK_negFIN is based on, was introduced in:</p> <p><em>Aryabarzan, N., Minaei-Bidgoli, B., & Teshnehlab, M. (2018). negFIN: An efficient algorithm for fast mining frequent itemsets. Expert Systems with Applications, 105, 129-143.</em></p> <p>For a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>.</p>
+    <!----------END------>
+    <div class="footer">
+      <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+      <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+    </div>
+
+  </div>
+</div>
+</body> </html>
+

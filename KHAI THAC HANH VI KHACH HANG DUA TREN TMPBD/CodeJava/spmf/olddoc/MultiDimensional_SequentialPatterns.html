@@ -1,0 +1,288 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Frequent Multi-dimensional Sequential Patterns from a Multi-dimensional Sequence Database  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining Frequent Multi-dimensional Sequential Patterns from a Multi-dimensional Sequence Database with SeqDIM, using PrefixSpan and Apriori  (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>SeqDim algorithm </strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">SeqDim_(PrefixSpan+Apriori)</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">ContextMDSequenceNoTime</span><span class="highlight">.txt"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight"><strong>output</strong>.txt</span>")
+    (4) set <em>minsup = 75% </em>and (5) click "<span class="highlight">Run
+      algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run
+      SeqDim_(PrefixSpan+Apriori)<strong> ContextMDSequenceNoTime</strong>.txt
+      output.txt 75%</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">ContextMDSequenceNoTime.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestMultiDimSequentialPatternMining.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is SeqDIM?</h2>
+<p>SeqDIM is an algorithm for discovering <strong>multi-dimensional
+    sequential patterns</strong> in a multi-dimensional sequence database.</p>
+  <p>Why multi-dimensional sequential pattern is interesting? The
+    reason is that regular sequential pattern mining algorithms do not
+    consider the context of sequences. For example, the context of a
+    sequence of transactions at a supermarket could be the profile of the
+    customer such as his age, the city where he lives, etc. </p>
+  <p>In multi-dimensional sequential pattern mining, a sequence
+    database is annotated with dimension to indicate the context of the
+    sequence. The dimensions are symbolic values.</p>
+  <p>Multi-dimensional sequential pattern mining algorithm discovers
+    sequential patterns with context information. This can be very useful
+    for real applications such as market basket analysis. For example, one
+    could find patterns specific to customers who are teenagers and lives
+    in a particular city, or items boughts by adults living in another city.</p>
+
+  <h2>What is the input?</h2>
+  <p>The input is a <strong>multi-dimensional sequence database (as
+    defined by <a href="pinto01.pdf" rel="nofollow">Pinto et al. 2001</a>) </strong>and a threshold named <strong>minsup</strong> (a value in
+    [0,1] representing a percentage). </p>
+  <p>A <strong>multi-dimensional database </strong>is a set of <strong>multi-dimensional
+    sequences </strong>and a set of <strong>dimensions</strong> d1, d2...
+    dn. A <strong>multi-dimensional sequence (MD-Sequence) </strong>is
+    composed of an <strong>MD-pattern</strong> and a <strong>sequence</strong>.
+    A <strong>sequence</strong> is an ordered list of itemsets (groups of
+    items). Note that it is assumed that no items appear twice in the same
+    itemset and that items in an itemset are lexically ordered. An <strong>MD-pattern</strong> is a set of symbolic values for the dimensions (here represented by
+    integer numbers). </p>
+  <p>For example, consider the following database, provided in the file
+    "<strong>ContextMDSequenceNoTime.txt</strong>" of the SPMF distribution<strong>.</strong> The database contains 4 MD-sequences. </p>
+
+<table align="center" border="1" width="573">
+  <tbody>
+    <tr>
+      <td colspan="5"><div align="center"><strong>MD-Sequences</strong></div></td>
+    </tr>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td colspan="3"><strong>MD-Patterns</strong></td>
+      <td><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td><br></td>
+      <td><strong>d1</strong></td>
+      <td><strong>d2</strong></td>
+      <td><strong>d3</strong></td>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td><strong>S1</strong></td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>(2 4), (3), (2), (1)</td>
+    </tr>
+    <tr>
+      <td><strong>S2</strong></td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>(2 6), (3 5), (6 7)</td>
+    </tr>
+    <tr>
+      <td><strong>S3</strong></td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>(1 8), (1), (2), (6)</td>
+    </tr>
+    <tr>
+      <td><strong>S4</strong></td>
+      <td>*</td>
+      <td>3</td>
+      <td>3</td>
+      <td>(2 5), (3 5)</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>For instance, the first MD-Sequence represents that items 2 and 4
+    appeared together, then were followed by 3, which was followed by item
+    2, wich was followed by item 1. The context of this sequence is the
+    value 1 for dimension d1, the value 1 for dimension d2 and the value 1
+    for dimension d3. Note that the value "*" in the fourth MD-sequence
+    means "any values".</p>
+
+  <h2>What is the output?</h2>
+  <p>The output is the set of all <strong>multi-dimensional sequential
+    patterns</strong> that appears in at least <strong>minsup</strong> sequences of the database. Here, we will not provide a formal
+    definition but rather show an example. For a formal definition of what
+    is a multi-dimensional sequential pattern you can refer to the paper by
+    Pinto et al. (2001) which explains it very well. </p>
+  <p> Let's look at the example. If we apply SeqDIM on the previous
+    database with a <strong>minsup of 50%</strong>, we obtain the
+    following result:</p>
+
+<table align="center" border="1" width="573">
+  <tbody>
+    <tr>
+      <td colspan="6"><div align="center"><strong>Frequent MD-Sequences</strong></div></td>
+    </tr>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td colspan="3"><strong>MD-Patterns</strong></td>
+      <td><strong>Sequences</strong></td>
+      <td><strong>Support</strong></td>
+    </tr>
+    <tr>
+      <td><br></td>
+      <td><strong>d1</strong></td>
+      <td><strong>d2</strong></td>
+      <td><strong>d3</strong></td>
+      <td><br></td>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td><strong>P1</strong></td>
+      <td>*</td>
+      <td>*</td>
+      <td>*</td>
+      <td>(3)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td><strong>P2</strong></td>
+      <td>*</td>
+      <td>*</td>
+      <td>*</td>
+      <td>(2)</td>
+      <td>100 %</td>
+    </tr>
+    <tr>
+      <td><strong>P3</strong></td>
+      <td>1</td>
+      <td>*</td>
+      <td>*</td>
+      <td>(2)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td><strong>P4</strong></td>
+      <td>*</td>
+      <td>*</td>
+      <td>*</td>
+      <td>(2), (3)</td>
+      <td>75 %</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>For instance, the third pattern (P3) represent the sequence
+    containing the item 2 only with the value 1 for dimension d1. Note that
+    the value"*" for dimension d2 and d3 means "any values". This pattern
+    P3 has a support of 75% because it appears in 75 % of the sequences of
+    the original database (it appears in S1, S2 and S3).</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a multi-dimensional sequence
+    from a sequence database. Each line is separated into two parts: (1) a
+    MD-pattern and (2) a sequence. </p>
+  <ul>
+    <li>The first part is a list of dimension values separated by
+      single spaces. A dimension value is a positive integer or the symbol
+      "*" meaning "any values". Finally, the value "-3" indicates the end of
+      the first part. Note that each line should have the same number of
+      dimension values.</li>
+    <li>The second part of each line is a sequence. Each item in a
+      sequence is represented by a postive integers and items from the same
+      itemset within a sequence are separated by single space. Note that it
+      is assumed that items within a same itemset are sorted according to a
+      total order and that no item can appear twice in the same itemset. The
+      value "-1" indicates the end of an itemset. The value "-2" indicates
+      the end of a sequence (it appears at the end of each line). </li>
+  </ul>
+  <p>For example, the input file "<strong>ContextMDSequenceNoTime.txt</strong>"
+    contains the following four lines (four sequences).</p>
+  
+    <p>1 1 1 -3 2 4 -1 3 -1 2 -1 1 -1 -2<br>
+      1 2 2 -3 2 6 -1 3 5 -1 6 7 -1 -2<br>
+      1 2 1 -3 1 8 -1 1 -1 2 -1 6 -1 -2<br>
+      * 3 3 -3 2 5 -1 3 5 -1 -2 </p>
+  
+  <p>This file contains four MD-sequences (four lines). Each line has 3
+    dimensions in each MD-Pattern. For example, consider the second line.
+    It represents a MD-sequence where the value for the three dimensions
+    are respectively 1, 2 and 2. Then, the sequence in this MD-Sequence is
+    the itemset {2, 6} followed by the itemset {3, 5}, followed by the
+    itemset {6, 7}.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. Each line is a frequent MD sequential pattern. Each
+    line is separated into three parts: (1) a MD-pattern, (2) a sequence
+    and (3) the support of the MD sequential pattern formed by the first
+    and second part. </p>
+  <ul>
+    <li>The first part is a list of dimension values separated by
+      single spaces between the symbols "[" and "]". A dimension value is a
+      positive integer or the symbol "*" meaning "any values". Note that each
+      line have the same number of dimension values.</li>
+    <li>The second part of each line is a sequence. A sequence is a
+      list of itemset. Each itemset is represented by {t=0, ...} where "..."
+      is a list of items separated by single spaces. </li>
+    <li>Each item in an itemset is represented by a postive integers.
+      Note that it is assumed that items within a same itemset are sorted
+      according to a total order and that no item can appear twice in the
+      same itemset. </li>
+    <li>The third part is the keyword "#SUP:" followed by an integer
+      indicating the support of the pattern as a number of sequences.</li>
+  </ul>
+  <p>For example, a few lines from the output file from the previous
+    example are shown below: </p>
+  
+    <p> [ 1 * * ]{t=0, 2 }{t=0, 3 } #SUP: 2<br>
+      [ * * * ]{t=0, 2 }{t=0, 3 } #SUP: 3<br>
+      [ * * * ]{t=0, 2 }{t=0, 3 5 } #SUP: 2 </p>
+  
+  <p>Consider the first line. It presents a MD-sequential pattern
+    having the dimension values 1, * and *. Furthemore, the line indicates
+    that this pattern is for the sequence containing the itemset {2}
+    followed by the itemset {3} and that the MD-Sequential-pattern has a
+    support of 2 transactions. The next lines follow the same format.</p>
+
+  <h2>Implementation details</h2>
+  <p>The SeqDIM algorithm is a meta-algorithm. It requires a sequential
+    pattern mining algorithm for discovering sequential patterns and an
+    itemset mining algorithm to deal with the dimensions. In our
+    implementations, we have used the <strong>PrefixSpan</strong> algorithm (<a href="prefixspan.pdf" rel="nofollow">Pei et al., 2004</a>)
+    for sequential pattern mining and the <strong>Apriori</strong> algorithm (<a href="apriori.pdf" rel="nofollow">Agrawal &amp; Srikant,
+      1994</a>) for dealing with the dimensions. PrefixSpan is a very fast
+    algorithm. However, Apriori is not the most efficient algorithm. It
+    could be replaced by FPGrowth in future version for more efficiency.</p>
+  <p>Note also that SeqDIM can generate a lot of patterns. A solution
+    to this problem is to use the algorithm by Songram et al., also offered
+    in SPMF. This latter algorithm eliminates a lot of redundancy in
+    patterns without any loss of information.</p>
+  <p>Also note that the implementation of SeqDIM in SPMF needs a little
+    bit refactoring as it is currently integrated with the Fournier-Viger
+    (2008) algorithm in the code. In a future version of SPMF, the two
+    algorithms will be separated.</p>
+
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The algorithm is described in this paper: </p>
+  <p><em>H. Pinto, J. Han, J Pei, K. Wang, Q. Chen, U. Dayal: <a href="https://www.philippe-fournier-viger.com/spmf/pinto01.pdf" rel="nofollow">Multi-Dimensional Sequential Pattern Mining</a>. CIKM
+    2001: 81-88</em></p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

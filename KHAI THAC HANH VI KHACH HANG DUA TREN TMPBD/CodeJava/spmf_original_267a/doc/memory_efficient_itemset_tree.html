@@ -1,0 +1,203 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Building, updating incrementally and using a Memory-Efficient Itemset-Tree to generate targeted frequent itemsets and association rules   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Building, updating incrementally and using a Memory-Efficient Itemset-Tree to generate targeted frequent itemsets and association rules (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>Memory-Efficient Itemset-Tree algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>This algorithm is not offered in the release version of
+    SPMF.</strong></li>
+  <li><strong>To run this example with the source code version of SPMF,</strong> launch the file <strong><span class="highlight">"MainTestMemoryEfficientItemsetTree.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is a Memory-Efficient Itemset-Tree (MEIT)?</h2>
+<p>An itemset-tree (IT) is a special data structure that can be used
+    for performing efficient queries about itemsets and association rules
+    in a transaction database without having to generate all of them
+    beforehand.</p>
+  <p>An itemset-tree has the nice property of being incremental, which
+    means that new transactions can be added to an existing itemset tree
+    very efficiently without having to rebuild the tree from scratch. An
+    itemset-tree also has the property of being compact.</p>
+  <p>The Memory-Efficient Itemset-Tree (MEIT) is a modification of the
+    original Itemset-Tree structure that uses about twice less memory than
+    the regular itemset-tree (see the paper describing MEIT for a
+    performance comparison). But it runs about twice slower. Therefore,
+    choosing between using an IT or MEIT is a trade-off between memory and
+    speed.</p>
+
+  <h2>How to use it?</h2>
+  <p>A Memory-Efficient Itemset-Tree (MEIT) is built by inserting a set
+    of transactions into the tree. A <strong>transaction</strong> is
+    simply a set of distinct items. For example, we could insert the
+    following 6 transactions (t1,t2...t5) into an itemset-tree. In this
+    example, the transaction t1 represents the set of items {1, 4}. This
+    set of transactions is provided in the file "<strong><span class="highlight">contextItemsetTree.txt</span></strong>" of the SPMF
+    distribution<strong>.</strong></p>
+
+<table align="center" border="1" width="495">
+  <tbody>
+    <tr>
+      <td width="156"><strong>transaction IDs</strong></td>
+      <td width="323"><strong>items</strong></td>
+    </tr>
+    <tr>
+      <td><strong>t1</strong></td>
+      <td>{1, 4}</td>
+    </tr>
+    <tr>
+      <td><strong>t2</strong></td>
+      <td>{2, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t3</strong></td>
+      <td>{1, 2, 3, 4, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t4</strong></td>
+      <td>{1, 2, 4}</td>
+    </tr>
+    <tr>
+      <td><strong>t5</strong></td>
+      <td>{2, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t6</strong></td>
+      <td>{2, 4}</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>The result of the insertion of these six transactions is the
+    following MEIT.</p>
+  {}   sup=6<br>  
+  [2 ]   sup=3<br>    
+  [5 ]   sup=2<br>    
+  [4 ]   sup=1<br>  
+  [1 ]   sup=3<br>    
+  [2 ]   sup=2<br>      
+  [4 ]   sup=1<br>      
+  [3 5 ]   sup=1<br>    
+  [4 ]   sup=1
+<p>The root is the empty itemset {} and the leafs are {5}, {4},
+    {4},{3 5} and {4}.</p>
+  <p>Once an itemset-tree has been created, it is possible to update it
+    by inserting a new transaction. For example, in this example provided
+    in the source code, we update the previous tree by adding a new
+    transaction {4, 5}. The result is this tree:</p>
+  {}   sup=7<br>  
+  [2 ]   sup=3<br>    
+  [5 ]   sup=2<br>    
+  [4 ]   sup=1<br>  
+  [1 ]   sup=3<br>    
+  [2 ]   sup=2<br>      
+  [4 ]   sup=1<br>      
+  [3 5 ]   sup=1<br>    
+  [4 ]   sup=1<br>  
+  [4 5 ]   sup=1
+<p>Next, it is shown how to query the tree to determine the support
+    of a target itemset efficiently. For example, if we execute the query
+    of finding the support of the itemset {2}, the support is determined to
+    be 5 because 2 appear in 5 transactions.</p>
+  <p>After that the source code offers an example of how to use the
+    itemset tree to get all itemsets that subsume an itemset and to get
+    their support. For example, if we use the itemset {1 2} for this query
+    the result is:</p>
+  <p>[1 2 ]    supp:2<br>
+    [1 2 3 ]    supp:1<br>
+    [1 2 4 ]    supp:2<br>
+    [1 2 5 ]    supp:1<br>
+    [1 2 3 4 ]    supp:1<br>
+    [1 2 3 5 ]    supp:1<br>
+    [1 2 4 5 ]    supp:1<br>
+    [1 2 3 4 5 ]    supp:1  </p>
+  <p> Another example provided is how to use the tree to find all
+    itemsets that subsume an itemset such that the support is higher or
+    equal to a user-specified threshold named <em>minsup </em>(a positive
+    integer representing a number of transactions). For example, if we
+    execute this query with the itemset {1} and minsup =2, we get this
+    result: </p>
+  <p>[1 ]    supp:3<br>
+    [1 2 ]    supp:2<br>
+    [1 4 ]    supp:3<br>
+    [1 2 4 ]    supp:2  </p>
+  <p>Lastly, another example is how to generate all association rules
+    having a target itemset as antecedent and a support and confidence
+    respectively higher or equal to some user-specificed thresholds <em>minsup </em>(a positive integer representing a number of transactions) and <em>minconf </em>(a value between 0 and 1). For example, if the target itemset is
+    {1} and minconf = 0.1 and minsup = 2, the result is:</p>
+  [ 1  ] ==&gt; [2  ]  sup=2  conf=0.666666666666666<br>
+  <br>
+  [ 1  ] ==&gt; [4  ]  sup=3  conf=1.0<br>
+  <br>
+  [ 1  ] ==&gt; [2 4  ]  sup=2  conf=0.66666666666666
+<p>Input and output file format</p>
+
+  <p>There is no need to use an input and output file with aa
+    memory-efficient itemset tree because it is an incremental data
+    structure that is designed for live update and live targeted queries
+    rather than batch processing.</p>
+  <p>However, it is possible to load a transaction database in a
+    memory-efficient itemset tree. In this case, a file is loaded. The file
+    is defined as a text file where each line represents a transactions.
+    Each item is represented by an integer and it is assumed that all
+    transactions are sorted according to a total order and that no item can
+    appear twice in the same transaction. On any given line, the items of
+    the corresponding transaction are listed such that each item is
+    separated from the following item by a single space. For example, the
+    file "contextItemsetTree.txt" that is provided contains the following
+    content:</p>
+  
+    <p>1 4<br>
+      2 5<br>
+      1 2 3 4 5<br>
+      1 2 4<br>
+      2 5<br>
+      2 4</p>
+  
+  <p>There is a total of six transactions (six lines) in the file. The
+    first line represents the transaction {1, 4} (containing items 1 and
+    4). The second line represents the transaction {2, 5}. The third line
+    represents the transaction {1, 2, 3, 4, 5}. The following lines follow
+    the same format. </p>
+
+  <h2>Performance</h2>
+  <p>The Memory-Efficient Itemset-Tree (MEIT) is an efficient data
+    structure for the case of a database that needs to be updated
+    frequently and where targeted queries need to be performed on itemsets
+    and association rules. </p>
+  <p>The MEIT is a modification of the original Itemset-Tree (MEIT).
+    According to our experiments, the MEIT uses about twice less memory
+    than the IT but is about twice slower for answering queries. Therefore,
+    choosing between MEIT and IT is a compromise between speed and memory.</p>
+
+  <h2>Where can I get more information about the Itemset-tree data
+    structure and related algorithms?</h2>
+  <p>This article describes the Memory-Efficient Itemset-tree:</p>
+  <p> <em>Fournier-Viger, P., Mwamikazi, E., Gueniche, T., Faghihi, U.
+    (2013). <a href="https://www.philippe-fournier-viger.com/ADMA2013_Memory_Efficient_Itemset_Tree.pdf">Memory
+      Efficient Itemset Tree for Targeted Association Rule Mining</a>. Proc.
+    9th International Conference on Advanced Data Mining and Applications
+    (ADMA 2013) Part II, Springer LNAI 8347, pp. 95-106. </em></p>
+
+
+  <p>For a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

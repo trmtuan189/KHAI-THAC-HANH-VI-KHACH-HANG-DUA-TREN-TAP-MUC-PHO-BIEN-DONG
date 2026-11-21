@@ -1,0 +1,293 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining High-Utility Itemsets from a Database with Positive or Negative Unit Profit using the FHN Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining High-Utility Itemsets from a Database with Positive or Negative Unit Profit using the FHN Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>FHN algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">FHN</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">DB_NegativeUtility.txt</span><span class="highlight">&quot;</span></strong>, (3) set the output file name (e.g. "<span class="highlight">output.txt</span>") (4) set the minimum utility to 30 <span class="highlight"> </span>and (5) click "<span class="highlight">Run
+      algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong> FHN </strong><strong>DB_NegativeUtility.txt </strong>output.txt 30 </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">DB_NegativeUtility.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestFHN_saveToFile.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is <strong>FHN</strong>?</h2>
+<p><strong>FHN </strong> (Fournier-Viger et al, 2014) is an
+    algorithm for discovering<strong> high-utility itemsets </strong>in a
+    transaction database containing utility information. It is an extension
+    of the <strong>FHM</strong> algorithm designed for mining patterns in
+    a transaction database where items may have negative unit profit values.</p>
+  <p>Items with negative values are interesting in real-life scenarios.
+    Often in a retail store, items may be sold at a loss. If traditional
+    high utility itemset mining algorithms such as Two-Phase, IHUP,
+    UPGrowth, HUI-Miner and FHM are appied on such database, it was
+    demonstrated that they may not discover the correct restults. To
+    address this issue, algorithms such as HUINIV-Mine and FHN were
+    proposed. At the time where FHN was proposed (2014), FHN is the
+    state-of-the-art algorithm for mining high-tility itemsets with both
+    positive and negative unit profit values.</p>
+  <p>This is the original implementation of FHN.</p>
+
+  <h2>What is the input?</h2>
+  <p><strong>FHN</strong> takes as input a transaction database with
+    utility information and a minimum utility threshold <em>min_utility </em>(a
+    positive integer)<em>.</em> Let's consider the following database
+    consisting of 10 transactions (t1,t2...t10) and 5 items (1, 2, 3, 4,
+    5). This database is provided in the text file "<strong>DB_NegativeUtility.txt</strong>"
+    in the package <strong>ca.pfv.spmf.tests </strong>of the SPMF
+    distribution<strong>.</strong></p>
+  <table align="center" border="1" width="721">
+    <tbody>
+      <tr>
+        <td width="56"><br></td>
+        <td width="156"><strong>Items</strong></td>
+        <td width="190"><strong>Transaction utility</strong></td>
+        <td width="291"><strong>Item utilities for this transaction</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>1 4 5</td>
+        <td>27</td>
+        <td>5 12 10</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>2 3 4</td>
+        <td>36</td>
+        <td>-3 -4 36</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>1 4</td>
+        <td>45</td>
+        <td>15 30</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>1 5</td>
+        <td>15</td>
+        <td>5 10</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>2 3 4</td>
+        <td>36</td>
+        <td>-3 -4 36</td>
+      </tr>
+      <tr>
+        <td><strong>t6</strong></td>
+        <td>2 3 5</td>
+        <td>20</td>
+        <td>-3 -2 20</td>
+      </tr>
+      <tr>
+        <td><strong>t7</strong></td>
+        <td>1</td>
+        <td>10</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td><strong>t8</strong></td>
+        <td>1 4</td>
+        <td>21</td>
+        <td>15 6</td>
+      </tr>
+      <tr>
+        <td><strong>t9</strong></td>
+        <td>2 3 4</td>
+        <td>24</td>
+        <td>-3 -2 24</td>
+      </tr>
+      <tr>
+        <td><strong>t10</strong></td>
+        <td>1 5</td>
+        <td>15</td>
+        <td>5 10</td>
+      </tr>
+    </tbody>
+  </table>
+  
+    <p>Each line of the <strong>database</strong> is: </p>
+    <ul>
+      <li> a set of items (the first column of the table), </li>
+      <li>the sum of the utilities (e.g. profit) of these items in this
+        transaction (the second column of the table),</li>
+      <li>the utility of each item for this transaction (e.g. profit
+        generated by this item for this transaction)(the third column of the
+        table).</li>
+    </ul>
+    <p>Note that the value in the second column for each line is the
+      sum of the values in the third column.</p>
+    <p>What are real-life examples of such a database? There are
+      several applications in real life. One application is a customer
+      transaction database. Imagine that each transaction represents the
+      items purchased by a customer. The first customer named "<strong>t1</strong>"
+      bought items 1, 4 and 5. The amount of profit generated by the sale of
+      each of these item is respectively 5 $, 12 $ and 10 $. The total amount
+      of money spent in this transaction is 5 + 12 + 10 = 27 $.</p>
+  
+
+    <h2>What is the output?</h2>
+    <p><em> </em>The output of<strong> FHN </strong>is the set of <strong>high
+    utility itemset</strong>s having a utility no less than a <em><strong>min_utility</strong></em> threshold (a positive integer) set by the user. To explain what is a
+    high utility itemset, it is necessary to review some definitions. An <strong>itemset</strong> is an unordered set of distinct items. The <strong>utility of an
+      itemset in a transaction </strong>is the sum of the utility of its
+    items in the transaction. For example, the utility of the itemset {1 4}
+    in transaction t1 is 5 + 12 = 17 and the utility of {1 4} in
+    transaction t3 is 15 + 30 = 45. The<strong> utility of an itemset in a
+      database</strong> is the sum of its utility in all transactions where
+    it appears. For example, the utility of {1 4} in the database is the
+    utility of {1 4} in t1 plus the utility of {1 4} in t3, plus the
+    utility of {1 4} in t8, for a total of 17 + 45 + 21 = 83. A<strong> high utility itemset</strong> is an itemset such that its utility is no
+    less than <em>min_utility</em> For example, if we run <strong>FHN </strong>with
+    a<strong> minimum utility of 30</strong>, we obtain 8 <strong>high-utility
+      itemsets</strong>:</p>
+
+<table align="center" border="1" width="226">
+  <tbody>
+    <tr>
+      <td width="113"><strong> itemsets</strong></td>
+      <td width="97"><strong>utility ($)</strong></td>
+    </tr>
+    <tr>
+      <td>{5}</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <td>{1 5}</td>
+      <td>45</td>
+    </tr>
+    <tr>
+      <td>{1}</td>
+      <td>55</td>
+    </tr>
+    <tr>
+      <td>{1 4}</td>
+      <td>83</td>
+    </tr>
+    <tr>
+      <td>{4}</td>
+      <td>144</td>
+    </tr>
+    <tr>
+      <td>{2 4}</td>
+      <td>87</td>
+    </tr>
+    <tr>
+      <td>{2 3 4}</td>
+      <td>77</td>
+    </tr>
+    <tr>
+      <td>{3 4}</td>
+      <td>86</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>If the database is a transaction database from a store, we could
+    interpret these results as all the groups of items bought together that
+    generated a profit of 30 $ or more. </p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> of <strong>FHN </strong>is
+    defined as follows. It is a text file. Each lines represents a
+    transaction. Each line is composed of three sections, as follows.</p>
+  <ul>
+    <li>First, the items contained in the transaction are listed. An
+      item is represented by a positive integer. Each item is separated from
+      the next item by a single space. It is assumed that all items within a
+      same transaction (line) are sorted according to a total order (e.g.
+      ascending order) and that no item can appear twice within the same
+      transaction.</li>
+    <li>Second, the symbol ":" appears and is followed by the
+      transaction utility (an integer).</li>
+    <li>Third, the symbol ":" appears and is followed by the utility of
+      each item in this transaction (an integer), separated by single spaces.</li>
+  </ul>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  
+    <p>@FILETYPE=&quot;Transaction database with utility values&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1 4 5:27:5 12 10<br>
+      2 3 4:36:-3 -4 36<br>
+      1 4:45:15 30<br>
+      1 5:15:5 10<br>
+      2 3 4:36:-3 -4 36<br>
+      2 3 5:20:-3 -2 20<br>
+      1:10:10<br>
+      1 4:21:15 6<br>
+      2 3 4:24:-3 -2 24<br>
+      1 5:15:5 10</p>
+  
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. Consider the first line of data. It means that the transaction {1, 4, 5}
+    has a total utility of 27 and that items 1, 4and 5 respectively have a
+    utility of 5, 12 and 10 in this transaction. The following lines follow
+    the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> of <strong>FHN</strong> is defined as follows. It is a text file, where each line represents a <strong>high
+    utility itemset</strong>. On each line, the items of the itemset are
+    first listed. Each item is represented by an integer, followed by a
+    single space. After, all the items, the keyword " #UTIL: " appears and
+    is followed by the utility of the itemset. For example, we show below
+    the output file for this example. </p>
+  <p>5 #UTIL: 50<br>
+    5 1 #UTIL: 45<br>
+    1 #UTIL: 55<br>
+    1 4 #UTIL: 83<br>
+    4 #UTIL: 144<br>
+    4 2 #UTIL: 87<br>
+    4 2 3 #UTIL: 77<br>
+    4 3 #UTIL: 86<br>
+  </p>
+  <p> For example, the second line indicates that the itemset {1, 5}
+    has a utility of 45. The other lines follows the same format.</p>
+
+  <h2>Performance</h2>
+  <p><strong>High utility itemset mining </strong>is a more difficult
+    problem than frequent itemset mining. Therefore, <strong>high-utility
+      itemset mining</strong> algorithms are generally slower than frequent
+    itemset mining algorithms. The <strong>FHN (2014) </strong>algorithm
+    is up to 100 times faster than HUINIV-Mine, the previous
+    state-of-the-art algorithm for high-utility itemset mining with
+    negative unit profit.</p>
+
+  <h2>Implementation details</h2>
+  <p>The version of <strong>FHN</strong> in SPMF is the original
+    implementation.</p>
+
+<p>Where can I get more information about the FHN algorithm?</p>
+
+  <p>This is the reference of the article describing the <strong>FHN</strong> algorithm:</p>
+  <p><em>Fournier-Viger, P. (2014). <a href="https://www.philippe-fournier-viger.com/FHN.pdf">FHN: Efficient
+    Mining of High-Utility Itemsets with Negative Unit Profits</a><a href="https://www.philippe-fournier-viger.com/ADMA2014_FHN_high_utility_itemsets_negative_profit.pdf">.</a> Proc.
+    10th International Conference on Advanced Data Mining and Applications
+    (ADMA 2014), Springer LNCS 8933, pp. 16-29.</em></p>
+
+
+  <p>Besides, for a general overview of <strong> high utility itemset mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_high_utility_itemset2019_draft.pdf">survey paper</a>. </p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

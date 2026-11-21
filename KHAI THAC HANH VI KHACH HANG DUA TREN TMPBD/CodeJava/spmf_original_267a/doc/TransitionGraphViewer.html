@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Example: View frequent weighted itemsets with the Visual Pattern Viewer (SPMF - Java)</title>
+    <link rel="stylesheet" href="docstyle.css"/>
+    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style2 {
+	color: #00CC00;
+	font-weight: bold;
+}
+.style4 {color: #0000FF; font-weight: bold; }
+-->
+    </style>
+</head>
+  <body>
+    <div width="100%" class="container">
+      <div class="content">
+        <!----------START------>
+<h1>Visualizing Sequential Patterns  with Transition Graph Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<p><span class="style2">Sequential patterns </span> are a type of patterns that can be discovered in sequence data by different algorithms offered in SPMF such as PrefixSpan and CM-SPAM.</p>
+<p>This page explains how to <strong>visualize</strong> the <strong class="style2">sequential patterns </strong> found by an algorithm using the <strong>Transition Graph Viewer</strong>, to visually analyze the transition between elements in sequences.. </p>
+<h2>How to run this example? </h2>
+<p>If you want to run this example using the graphical user interface of SPMF, follow these steps.</p>
+<p>1) First, select a <span class="style2">sequential pattern mining</span> algorithm offered in SPMF. Several algorithms are offered such as PrefixSpan, CM-SPAM, CM-SPADE, GSP, and SUI, and are described in the documentation of SPMF.</p>
+<p>2) Then, in the user interface of SPMF, after selecting an algorithm such as CM-SPAM and setting its input file path, output file path, and parameters, click on run algorithm button. Then, use the combo-box besides &quot;<span class="style1"><strong>Open output file using</strong></span>:&quot;, and select &quot;<span class="style1"><strong>Visualize_sequential_patterns_with_transition_graph_viewer</strong></span>&quot; so that the discovered patterns will be opened with the <strong>Transition Graph Viewer</strong>. </p>
+<p><img src="transitionGraphViewerSP.png" alt="visualize frequent weighted itemsets selection" width="624" height="746"> </p>
+<p>The discovered patterns will be displayed using the <strong>Visual Pattern Viewer</strong>:</p>
+<p><img src="transitionGraphViewerSP_when_opened.png" alt="visualize weighted itemsets viewer" width="1061" height="587"> </p>
+<p>The Transition Graph Viewer interface is quite intuitive. </p>
+<p>The center panel  displays all patterns as a transition graph. The size of nodes and edges represent the support (larger means a greater support).</p>
+<p>The left panel offers search and filtering functions.</p>
+<p>The right panel displays the list of sequential patterns and their measures (such as support). </p>
+<h2>Other ways of running the Visual Pattern Viewer </h2>
+  <p>It is also possible to run the Transition Graph Viewer Viewer as an algorithm from the GUI of SPMF.</p>
+  <p>In this case, in the user interface of SPMF, select &quot;<strong>Visualize_sequential_patterns_with_transition_graph_viewer</strong>&quot; as algorithm. Then, select a file containing <span class="style2"><strong>sequential patterns </strong></span> as input file. Then, click &quot;run algorithm&quot;.</p>
+  <p>This will display the patterns from the file using the Visual Pattern Viewer.</p>
+  <p>Besides, it is also possible to call the Transition Graph Viewer from the command line interface of SPMF. To open a file called  <span class="style4"> patternsFrequentSequentialPatterns.txt</span>, this syntax can be used: <br>
+    <br>
+    <span class="style4">java -jar spmf.jar run <strong>Visualize_sequential_patterns_with_transition_graph_viewer</strong> patternsFrequentSequentialPatterns.txt </span> in a folder containing <span class="highlight">spmf.jar</span> and the input file<strong></strong></p>
+  <h2>What is the input file format?</h2>
+  <p>The algorithm takes as input a file containing<strong><span class="style2"> sequential patterns </span></strong>.</p>
+  <p>The <strong>file format</strong> is defined as follows. It
+    is a text file, where each line represents a <strong class="style2">sequential patterns </strong>. For example, this is a valid input file:<br>
+    <br>
+  @FILETYPE=&quot;Frequent sequential patterns&quot;<br>
+  @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+  1 -1 #SUP: 4<br>
+  2 -1 #SUP: 4<br>
+  3 -1 #SUP: 4<br>
+  4 -1 #SUP: 3<br>
+  5 -1 #SUP: 3<br>
+  6 -1 #SUP: 3<br>
+  5 -1 6 -1 #SUP: 2<br>
+  6 -1 3 -1 #SUP: 2<br>
+  2 -1 6 -1 #SUP: 2<br>
+  6 -1 2 -1 #SUP: 2<br>
+  1 -1 6 -1 #SUP: 2<br>
+  6 -1 3 -1 2 -1 #SUP: 2<br>
+  6 -1 2 -1 3 -1 #SUP: 2<br>
+  5 -1 3 -1 #SUP: 2<br>
+  5 -1 2 -1 #SUP: 2<br>
+  5 -1 1 -1 #SUP: 2  </p>
+  <p>Please refer to the documentation of specific sequential pattern mining algorithms to see their output format. <br>
+    <br>
+  </p>
+  <div class="footer">
+          <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+          <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+        </div>
+      </div>
+  </div>
+    </table>
+  </body>
+</html>

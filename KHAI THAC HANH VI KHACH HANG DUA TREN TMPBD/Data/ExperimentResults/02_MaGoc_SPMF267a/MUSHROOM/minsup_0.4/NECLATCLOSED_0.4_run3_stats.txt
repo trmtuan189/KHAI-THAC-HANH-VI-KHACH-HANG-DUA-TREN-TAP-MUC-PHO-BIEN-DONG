@@ -1,0 +1,12 @@
+Algorithm: NECLATCLOSED
+Minsup: 0.4000
+Run: 3
+Closed itemsets: 124
+Elapsed time (ms): 189.013
+Sampled peak heap (MiB): 22.000
+Dataset: MUSHROOM
+Input: D:\KHAI THAC HANH VI KHACH HANG DUA TREN TMPBD\Data\BenchmarkDatasets\mushrooms.txt
+SPMF version: 2.67a
+Algorithm source: original archive, unchanged
+CHARM triangular matrix: not applicable
+Java version: 21.0.13

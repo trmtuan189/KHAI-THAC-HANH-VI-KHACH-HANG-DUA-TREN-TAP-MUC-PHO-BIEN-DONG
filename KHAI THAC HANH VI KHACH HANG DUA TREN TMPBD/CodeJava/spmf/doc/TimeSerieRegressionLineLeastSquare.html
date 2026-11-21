@@ -1,0 +1,147 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Calculate the regression line of a time series with the least square method, and perform time series forecasting  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Calculate the regression line of a time series with the least square method, and perform time series forecasting  (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to calculate the <strong>regression line of a time series with the least square method</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Calculate_linear_regression_of_time_series_(least_squares)</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextSAX.txt&quot;</span></strong>, (3) set the separator to the comma ',' and then (4) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run Calculate_linear_regression_of_time_series_(least_squares) contextSAX.txt output.txt , </span><br>
+    in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>contextSAX</strong>.txt</span>. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>to
+    run respectively <strong>this example</strong><strong>, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestTimeSeriesLinearRegressionLeastSquaresFromFile.java&quot;</span></strong>in
+    the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is the calculation of the <strong>regression line for a time series</strong>?</h2>
+<p>Let there be a time series (a series of vectors or points). The task of regression consists of trying to fit a line to replace these points such that the line minimizes the error the original points. There exists various methods for performing regression. This implementation relies on the<strong> least square method</strong>. This method consists of finding the line that minizes the least squared distances between original points and the regression line.</p>
+  <p>The output of regression is a regression line, which is here described by a linear function. This regression line can then be used for making predictions (time series forecasting). </p>
+  <p>In the source code version of SPMF, regression lines can also be used to perform predictions (time series forecasting - see details below).</p>
+
+  <h2>What is the input of this algorithm?</h2>
+  <p>The input is one or more time series. A <strong>time series </strong>is a sequence of floating-point decimal numbers (double values). <strong></strong>A time-series can also have a name (a string).</p>
+  <p>Time series are used in many applications. An example of time series is the price of a stock on the stock market over time. Another example is a sequence of temperature readings collected using sensors.</p>
+  <p>For this example, consider the four following <strong>time series</strong>:</p>
+  
+    
+      <table width="414" border="1">
+        <tbody>
+          <tr>
+            <td width="161"><strong>Name</strong></td>
+            <td width="237"><strong>Data points</strong></td>
+          </tr>
+          <tr>
+            <td>ECG1</td>
+            <td>1,2,3,4,5,6,7,8,9,10</td>
+          </tr>
+          <tr>
+            <td>ECG2</td>
+            <td>1.5,2.5,10,9,8,7,6,5</td>
+          </tr>
+          <tr>
+            <td>ECG3</td>
+            <td>-1,-2,-3,-4,-5</td>
+          </tr>
+          <tr>
+            <td>ECG4</td>
+            <td>-2.0,-3.0,-4.0,-5.0,-6.0 </td>
+          </tr>
+        </tbody>
+      </table>
+    
+  
+  <p>This example <strong>time series database </strong>is provided in the file <strong>contextSAX.txt </strong>of the SPMF distribution.</p>
+  <p>In SPMF, to read a time-series file, it is  necessary to indicate the &quot;separator&quot;, which is the character used to separate data points in the input file. In this example, the &quot;separator&quot; is the comma ',' symbol.</p>
+
+  <h2>What is the output?</h2>
+  <p>The output is the regression lines of the time series received as input. Each original time series is replaced by its regression line, calculated using the least square method. A regression line is a linear equation. </p>
+  <p>For example, in the above example, if the window size is set to 4 data points, the result is:<br>
+  </p>
+  
+    <table width="558" border="1">
+      <tbody>
+        <tr>
+          <td width="161"><strong>Name</strong></td>
+          <td width="381"><strong>Data points</strong></td>
+        </tr>
+        <tr>
+          <td>ECG1_LR</td>
+          <td>-1.0,0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0</td>
+        </tr>
+        <tr>
+          <td>ECG2_LR</td>
+          <td>1.9536489151873766,2.206114398422091,2.4585798816568047,2.7110453648915187,2.9635108481262327,3.2159763313609466,3.4684418145956606,3.720907297830375</td>
+        </tr>
+        <tr>
+          <td>ECG3_LR</td>
+          <td>-1.0,-2.0,-3.0,-4.0,-5.0</td>
+        </tr>
+        <tr>
+          <td>ECG4_LR</td>
+          <td>-2.0,-3.0,-4.0,-5.0,-6.0</td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <p>To see the result visually, it is possible to use the <strong>SPMF time series viewer</strong>, described in another example of this documentation. Here is a figure showing the oriignal time series (top) and the resulting regression lines corresponding to these time series.</p>
+  <p><img src="regression2.png" width="685" height="834" alt=""/></p>
+  <p>Since the 1st, 3rd and 4th time series are already linear equations, the regression lines for these time series are identical to the original time series.</p>
+  <p>The 2nd time series (in green) is more interesting. It can be seen that the regression line is different from the corresponding original time series (in green). This is because the original time series is not a linear equation.</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> used by the <strong>time series viewer</strong> defined
+    as follows. It is a text file.  The text file contains one or more time series. Each time series is represented by two lines in the input file. The first line contains the string &quot;@NAME=&quot; followed by the name of the time series. The second line is a list of data points, where data points are floating-point decimal numbers separated by a separator character (here the ',' symbol). </p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>@FILETYPE=&quot;Time series database&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    @NAME=ECG1<br>
+    1,2,3,4,5,6,7,8,9,10<br>
+    @NAME=ECG2<br>
+    1.5,2.5,10,9,8,7,6,5<br>
+    @NAME=ECG3<br>
+    -1,-2,-3,-4,-5<br>
+    @NAME=ECG4<br>
+    -2.0,-3.0,-4.0,-5.0,-6.0</p>
+  <p>The first two lines are metadata indicating the type of file and the source of the data. Then, the following lines are the data. Consider the first two lines of data. It indicates that the first time series name is &quot;ECG1&quot; and that it consits of the data points: 1, 2, 3, 4, 5, 6, 7, 8, 9, and 10. Then, three other time series are provided in the same file, which follows the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is the same as the input format.</p>
+  <p>@FILETYPE=&quot;Time series database&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    @NAME=ECG1_LR -1.0,0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0 <br>
+    @NAME=ECG2_LR 1.9536489151873766,2.206114398422091,2.4585798816568047,2.7110453648915187,2.9635108481262327,3.2159763313609466,3.4684418145956606,3.720907297830375 <br>
+    @NAME=ECG3_LR -1.0,-2.0,-3.0,-4.0,-5.0 <br>
+    @NAME=ECG4_LR -2.0,-3.0,-4.0,-5.0,-6.0</p>
+
+  <h2>Using regression to perform predictions (time series forecasting)</h2>
+  <p>In the source code version, additional features are implemented such as <strong>using the regression lines for making prediction</strong> <strong>(time series forecasting).</strong> There is an example &quot;<strong>MainTestTimeSeriesLinearRegressionLeastSquare</strong>&quot; in the package <strong>ca.pfv.spmf.tests</strong> of SPMF that shows how to use this feature. </p>
+  <p>For example, for the time series -1, -2.8, -3, -3, -3, -3.2, -2, it is found that the linear equation of the regression line is : Y(x) = 0.42469879518072196 + -1.0015060240963858 * x.  </p>
+  <p>Using this equation it is possible to make predictions. For example, we can predict that if x = 11 than  y = -10.59186746987952.</p>
+
+  <h2>Where can I get more information about the moving average?</h2>
+  <p>The regression line using the least square metohd is a very basic operation for time series. It is described in many websites and books.</p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

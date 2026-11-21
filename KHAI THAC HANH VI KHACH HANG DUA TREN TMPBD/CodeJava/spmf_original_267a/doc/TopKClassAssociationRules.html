@@ -1,0 +1,304 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining the
+      Top-K Class Association Rules (rules with a fixed consequent)  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+    <h1>Mining the
+      Top-K Class Association Rules (rules with a fixed consequent) (<a href="documentation.html">SPMF documentation)</a></h1>
+    <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+    <p>This example explains how to run the <strong>TopKClassRules algorithm</strong>
+      using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF
+        open-source data mining library</a>.</p>
+    <!--------------(4) Insert the example here:------------->
+    <h2>How to run this example?</h2>
+    <ul>
+      <li><strong>If you are using the graphical interface, </strong>(1) choose
+        the <strong> &quot;<span class="highlight">TopKClassRules</span>&quot;</strong>
+        algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span
+
+            class="highlight">contextIGB</span><span class="highlight">.txt&quot;</span></strong>,
+        (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+        (4) set <em>k = 7, </em><em>minconf = 0.8, and required items = 1,2 </em>
+        and then (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+      <li><strong>If you want to execute this example from the command line</strong>,
+        then execute this command: <br>
+        <span class="highlight">java -jar spmf.jar run <strong><span class="highlight">
+              TopKClassRules </span></strong><strong>contextIGB</strong>.txt
+          output.txt 7 80% 1,2 </span> in a folder containing <span class="highlight">spmf.jar</span>
+        and the example input file <span class="highlight">contextIGB.txt</span>.</li>
+      <li><strong>If you are using the source code version of SPMF, </strong>launch
+        the file <strong><span class="highlight">&quot;MainTestTopKClassRules.java&quot;</span></strong>
+        in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.
+      </li>
+    </ul>
+    <h2>What is TopKClassRules?</h2>
+    <p><strong>TopKClassRules</strong> is an algorithm for discovering the <strong>top-k
+          class association rules </strong>appearing in a transaction database.
+        It is a variation of the TopKRules algorithm (Fournier-Viger, 2012),
+        which has been adapted to find association rules with a consequent
+        containing a single item chosen from a set of items allowed by the user.
+        This algorithm is more simple than TopKRules as it is designed to solve
+        a special case of the <strong>top-k association rule mining problem</strong>.
+        However, the output is very useful for some applications as the user may
+        be interested in only finding rules with some specific items in the
+        consequent. </p>
+      <p>Why is it useful to discover top-k class association rules? Because
+        other association rule mining algorithms requires to set a minimum
+        support (<em>minsup</em>) parameter that is hard to set (usually users
+        set it by trial and error, which is time consuming). <strong>TopKRules</strong>
+        solves this problem by letting users directly indicate <em>k</em>, the
+        number of rules to be discovered instead of using <em>minsup</em>. The
+        output is the k most frequent class association rules in a database. </p>
+    
+      <h2>What is the input of TopKRules ?</h2>
+      <p><strong>TopKClass Rules </strong> takes four parameters as input:</p>
+      <ul>
+        <li>a transaction database,</li>
+        <li>a parameter <em>k </em>representing the number of association
+          rules to be discovered (a positive integer),</li>
+        <li>a parameter <em>minconf</em> representing the minimum confidence
+          that the association rules should have (a value in [0,1] representing
+          a percentage). </li>
+        <li>a set of items <em>allowedItems </em>that are items that are
+          allowed to appear in the consequent of rules. </li>
+      </ul>
+      <p>A <strong>transaction database</strong> is a set of transactions. Each
+        <strong>transaction</strong> is a set of items. For example, consider
+        the following transaction database. It contains 6 transactions (t1, t2,
+        ..., t5, t6) and 5 items (1,2, 3, 4, 5). For example, the first
+        transaction represents the set of items 1, 2, 4 and 5. This database is
+        provided as the file <strong>contextIGB.txt</strong> in the SPMF
+        distribution. It is important to note that an item is not allowed to
+        appear twice in the same transaction and that items are assumed to be
+        sorted by lexicographical order in a transaction.</p>
+      
+        <table align="center" width="316" border="1">
+          <tbody>
+            <tr>
+              <td width="144"><strong>Transaction id</strong></td>
+              <td width="156"><strong>Items</strong></td>
+            </tr>
+            <tr>
+              <td><strong>t1</strong></td>
+              <td>{1, 2, 4, 5}</td>
+            </tr>
+            <tr>
+              <td><strong>t2</strong></td>
+              <td>{2, 3, 5}</td>
+            </tr>
+            <tr>
+              <td><strong>t3</strong></td>
+              <td>{1, 2, 4, 5}</td>
+            </tr>
+            <tr>
+              <td><strong>t4</strong></td>
+              <td>{1, 2, 3, 5}</td>
+            </tr>
+            <tr>
+              <td><strong>t5</strong></td>
+              <td>{1, 2, 3, 4, 5}</td>
+            </tr>
+            <tr>
+              <td><strong>t6</strong></td>
+              <td>{2, 3, 4}</td>
+            </tr>
+          </tbody>
+        </table>
+      
+    
+        <h2>What is the output of TopKClassRules ?</h2>
+        <p><strong>TopKClassRules</strong> outputs the <strong>top-k class
+          association rules</strong>. </p>
+      <p>To explain what are <strong>top-k class association rules</strong>, it
+        is necessary to review some definitions. An <strong>itemset</strong> is
+        a set of distinct items. The <strong>support of an itemset </strong>is
+        the number of times that it appears in the database divided by the total
+        number of transactions in the database. For example, the itemset {1 3}
+        has a support of 33 % because it appears in 2 out of 6 transactions from
+        the database.</p>
+      <p>An <strong>association rule</strong> X--&gt; Y is an association
+        between two itemsets X and Y that are disjoint. The <strong>support of
+          an association rule</strong> is the number of transactions that
+        contains X and Y divided by the total number of transactions. The<strong>
+          confidence of an association rule </strong>is the number of
+        transactions that contains X and Y divided by the number of transactions
+        that contains X. A <strong>class association rule </strong>X --&gt; Y
+        is a special type of association rule where the itemset Y contains a
+        single item that must be chosen from a set <em>allowedItems</em>
+        specified by the user.</p>
+      <p>The<strong> top-k class association rules</strong> are the <em>k </em>most
+        frequent <strong>class association rules</strong> in the database
+        having a confidence higher or equal to <em>minconf</em>.</p>
+      <p>For example, if we run <strong>TopKClassRules</strong> with <em>k =7
+          , </em><em>minconf = 0.8, and allowedItems = 1,2 </em>, we obtain
+        the top-7 rules in the database having a confidence higher or equals to
+        80 %.</p>
+      <ul>
+        <li>1 ==&gt; 2, which has a support of 4 (it appears in 4 transactions)
+          and a confidence of 100 % </li>
+        <li> 5 ==&gt; 1, which has a support of 4 (it appears in 4 transactions)
+          and a confidence of 80 % </li>
+        <li> 3 ==&gt; 2, which has a support of 4 (it appears in 4 transactions)
+          and a confidence of 100 % </li>
+        <li> 4 ==&gt; 2, which has a support of 4 (it appears in 4 transactions)
+          and a confidence of 100 % </li>
+        <li> 2 5 ==&gt; 1, which has a support of 4 (it appears in 4
+          transactions) and a confidence of 80 % </li>
+        <li> 1 5 ==&gt; 2, which has a support of 4 (it appears in 4
+          transactions) and a confidence of 100 % </li>
+        <li> 5 ==&gt; 2, which has a support of 5 (it appears in 5 transactions)
+          and a confidence of 100 % </li>
+      </ul>
+      <p>For instance, the rule 1 ==&gt;2 means that if item1 appears, it is
+        likely to be associated with item 2 with a confidence of 100% in a
+        transaction. Moreover, this rule has a support of 4 because it appears
+        in five transactions (t1, t3, t4, t5) out of the six transactions
+        contained in this database.</p>
+      <p>It is important to note that for some values of <em>k</em>, the
+        algorithm may return slightly more than <em>k</em> rules. This can
+        happen if several rules have exactly the same support.</p>
+    
+      <h2>Input file format</h2>
+      <p>The <strong> input file format</strong> is a text file containing
+        transactions. Each lines represents a transaction. The items in the
+        transaction are listed on the corresponding line. An item is represented
+        by a positive integer. Each item is separated from the following item by
+        a space. It is assumed that items are sorted according to a total order
+        and that no item can appear twice in the same transaction. For example,
+        for the previous example, the input file is defined as follows:</p>
+      
+        <p>@FILETYPE=&quot;Simple transaction database&quot;<br>
+          @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+          1 2 4 5<br>
+          2 3 5<br>
+          1 2 4 5<br>
+          1 2 3 5<br>
+          1 2 3 4 5<br>
+          2 3 4</p>
+      
+      <p>The first two lines are metadata indicating the type of file and the source of the data. Then, the following lines are the transactions (records). Consider the first line of data. It means that the first transaction is
+    the itemset {1, 2, 4 and 5}. The following lines follow the same format.</p>
+      <p>Note that it is also possible to use <strong>the ARFF format</strong>
+        as an alternative to the default input format. The specification of the
+        ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+        Most features of the ARFF format are supported except that (1) the
+        character &quot;=&quot; is forbidden and (2) escape characters are not considered.
+        Note that when the ARFF format is used, the performance of the data
+        mining algorithms will be slightly less than if the native SPMF file
+        format is used because a conversion of the input file will be
+        automatically performed before launching the algorithm and the result
+        will also have to be converted. This cost however should be small. </p>
+    
+      <h2>Output file format</h2>
+      <p>The <strong>output file format</strong> is defined as follows. It is a
+        text file, where each line represents a class <strong>association rule</strong>.
+        On each line, the items of the rule antecedent are first listed. Each
+        item is represented by a positive integer, followed by a single space.
+        After, that the keyword &quot;==&gt;&quot; appears followed by a space. Then, the
+        items of the rule consequent are listed. Each item is represented by an
+        integer, followed by a single space. Then, the keyword &quot; #SUP: &quot; appears
+        followed by the support of the rule represented by an integer (a number
+        of transactions). Then, the keyword &quot; #CONF: &quot; appears followed by the
+        confidence of the rule represented by a double value (a value between 0
+        and 1, inclusively). For example, here is a few lines from the output
+        file if we run <strong>TopKClassRules</strong> on contextIGB.txt with
+        k=2 and minconf=0.8 (80 %):</p>
+      <p>@FILETYPE=&quot;Top-k class association rules&quot;<br>
+        @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+        1 ==&gt; 2 #SUP: 4 #CONF: 1.0<br>
+        5 ==&gt; 1 #SUP: 4 #CONF: 0.8<br>
+        3 ==&gt; 2 #SUP: 4 #CONF: 1.0<br>
+        4 ==&gt; 2 #SUP: 4 #CONF: 1.0<br>
+        2 5 ==&gt; 1 #SUP: 4 #CONF: 0.8<br>
+        1 5 ==&gt; 2 #SUP: 4 #CONF: 1.0<br>
+        5 ==&gt; 2 #SUP: 5 #CONF: 1.0</p>
+      <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. The first line indicates that the association rule {1}
+        --&gt; {2} has a support of 4 transactions and a confidence of 100 %.
+        The other lines follow the same format.</p>
+      <p>Note that if the ARFF format is used as input instead of the default
+        input format, the output format will be the same except that items will
+        be represented by strings instead of integers.</p>
+    
+      <h2>Optional feature: giving names to items</h2>
+      <p>Some users have requested the feature of given names to items instead
+        of using numbers. This feature is offered in the<strong>&nbsp;user
+          interface of SPMF</strong>&nbsp;and in the&nbsp;<strong>command line
+          of SPMF</strong>. To use this feature, your file must include
+        @CONVERTED_FROM_TEXT as first line and then several lines to define the
+        names of items in your file. For example, consider the example database
+        &quot;<strong>contextIGB.txt</strong>&quot;. Here we have modified the file to
+        give names to the items:&nbsp;<br>
+        <br>
+        @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple transaction database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+1 2 4 5<br>
+2 3 5<br>
+1 2 4 5<br>
+1 2 3 5<br>
+1 2 3 4 5<br>
+2 3 4</p>
+      <p>In this file, the first line indicates, that it is a file where names are given to items. The second and third line are metadata indicating the type of file and the source of the data.  
+    Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. Then the following lines define transactions in the SPMF format.</p>
+      <p>Then, if we apply the algorithm using this file using the user
+        interface of SPMF or the command line, the output file contains several
+        patterns, including the following ones:<br>
+        <br>
+        @FILETYPE=&quot;Top-k class association rules&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+bread ==&gt; apple #SUP: 4 #CONF: 0.8<br>
+        orange bread ==&gt; apple #SUP: 4 #CONF: 0.8<br>
+        apple bread ==&gt; orange #SUP: 4 #CONF: 1.0</p>
+      <p>Note that this feature could be also used from the <strong>source code</strong>
+        of SPMF using the ResultConverter class. However, there is currently no
+        example provided for using it from the source code.</p>
+    
+      <h2>Performance</h2>
+      <p><strong>TopKClassRules</strong> is a special case of the <strong>TopKRules
+          </strong>algorithm, a very efficient algorithm for mining the <strong>top-k
+          association rules</strong>.</p>
+      <p><strong>TopKRules/TopKClassrules</strong> provides the benefits that
+        they are very intuitive to use. </p>
+      <p>Besides, note that there is a variation of <strong>TopKRules</strong>
+        named <strong>TNR</strong> that is available in SPMF. The improvement
+        in TNR is that it eliminates some association rules that are deemed
+        &quot;redundant&quot; (rules that are included in other rules having the same
+        support and confidence - see the TNR example for the formal definition).
+        Using TNR is more costly than using TopKRules but it brings the benefit
+        of eliminating a type of redundancy in results. But TNR is not designed
+        to find class association rules. </p>
+    
+      <h2>Where can I get more information about this algorithm?</h2>
+      <p>TopKClassRules is a simple variation of the the TopKRules algorithm,
+        which was proposed in this paper:</p>
+      <p><em>Fournier-Viger, P., Wu, C.-W., Tseng, V. S. (2012). <a href="https://www.philippe-fournier-viger.com/spmf/top_k_association_rules_2012.pdf">Mining
+            Top-K Association Rules</a>. Proceedings of the 25th Canadian Conf.
+          on Artificial Intelligence (AI 2012), Springer, LNAI 7310, pp. 61-73.</em></p>
+    
+    
+      <p>For a good overview of <strong> itemset mining and association rule
+          mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey
+          paper</a>. </p>
+  				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

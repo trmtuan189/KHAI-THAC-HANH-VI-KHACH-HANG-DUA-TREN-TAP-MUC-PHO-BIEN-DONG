@@ -1,0 +1,282 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Periodic High--Utility Itemsets Using the PHMN+ Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {
+	color: #0033FF;
+	font-weight: bold;
+}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining Periodic High--Utility Itemsets Using the PHMN+ Algorithm  (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>PHMN+ algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;</strong><span class="style1">PHMN+</span><strong>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="style1">DB_UtilityPerHUIs.txt</span><span class="highlight">&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="style1">output.txt</span>&quot;)
+    (4) set the minimum utility threshold, minimum periodicity, the maximum periodicity, the minimum average periodicity and the maximm average periodicity, respectively to <span class="style1">20, 1, 3, 1, 2 </span>and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="style1">java -jar spmf.jar run<strong> PHMN+</strong> DB_UtilityPerHUIs.txt output.txt 20 1 3 1 2</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="style1"><strong>DB_UtilityPerHUIs</strong>.txt</span>. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>to
+    run respectively <strong>PHMN+</strong><strong>, </strong>launch
+    the file <strong><span class="highlight">&quot;</span><span class="style1">MainTestPHMNPlus.java</span><span class="highlight">&quot;</span></strong>in
+    the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is PHMN+ ?</h2>
+<p><strong>PHMN+ </strong> is an algorithm for discovering periodic high-utility
+    itemsets in a sequence of transactions (a transaction database) having information about the utility of items, and where the utility of itemsets can be either positive or negative.. It was proposed by Lai et al. (2023).. PHMN can discover patterns that periodically appears in a sequence of transactions and that generate a high profit (have a hih utility). Periodic high utility itemset mining has many applications such as discovering periodic purchase behaviors of customers of a retail store, which yield a high profit.</p>
+  <p>The <strong>PHMN+</strong> algorithm is inspired by the PHM algorithm also offered in SPMF, but can work also for negative utility values and have other difference in optimizations. </p>
+  <h2>What is the input of the PHMN+ algorithm?</h2>
+  <p>The input is a <strong>transaction database</strong> (a sequence of transactions) and four parameters that are set by the user: </p>
+    <ul>
+      <ul>
+        <li>a minimum utility threshold <em>minutil ( a positive integer</em>)</li>
+        <li>a minimum periodicity threshold <em>minper ( a positive integer)</em></li>
+        <li>a maximum periodicity threshold <em>maxper ( a positive integer)</em></li>
+        <li>a minimum average periodicity threshold <em>minavgper ( a positive integer)</em></li>
+        <li>a maximum average periodicity threshold <em>maxavgper ( a positive integer)</em></li>
+      </ul>
+    </ul>
+    <p>Note that two optional parameters are also offered to specify constraints on the minimum and maximum number of items that patterns should contain (positive integers).</p>
+    <p>A <strong>transaction database</strong> is a set of
+      transactions. Let's consider the following
+      database consisting of 7 transactions (t1,t2...t5,t6, t7) and 7 items (1, 2,
+      3, 4, 5, 6, 7). This database is provided in the text file &quot;<strong>DB_utilityPerHUIs.txt</strong>&quot;
+      in the package <strong>ca.pfv.spmf.tests </strong>of the SPMF
+      distribution<strong>.</strong></p>
+    <table align="center" border="1" width="721">
+      <tbody>
+        <tr>
+          <td width="56"><br></td>
+          <td width="156"><strong>Items</strong></td>
+          <td width="190"><strong>Transaction utility</strong></td>
+          <td width="291"><strong>Item utilities for this transaction</strong></td>
+        </tr>
+        <tr>
+          <td><strong>t1</strong></td>
+          <td>{1, 3}</td>
+          <td>6</td>
+          <td>5 1</td>
+        </tr>
+        <tr>
+          <td><strong>t2</strong></td>
+          <td>{5}</td>
+          <td>3</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td><strong>t3</strong></td>
+          <td>{1, 2, 3, 4, 5}</td>
+          <td>25</td>
+          <td>5 10 1 6 3</td>
+        </tr>
+        <tr>
+          <td><strong>t4</strong></td>
+          <td>{2, 3, 4, 5}</td>
+          <td>20</td>
+          <td>8 3 6 3</td>
+        </tr>
+        <tr>
+          <td><strong>t5</strong></td>
+          <td>{1, 3, 4}</td>
+          <td>8</td>
+          <td>5 1 2</td>
+        </tr>
+        <tr>
+          <td><strong>t6</strong></td>
+          <td>{1,3,5}</td>
+          <td>22</td>
+          <td>10 6 6</td>
+        </tr>
+        <tr>
+          <td><strong>t7</strong></td>
+          <td>{2, 3, 5}</td>
+          <td>9</td>
+          <td>4 2 3</td>
+        </tr>
+      </tbody>
+    </table>
+    
+      <p>Each line of the <strong>database</strong> is:</p>
+      <ul>
+        <li> a set of items (the first column of the table), </li>
+        <li>the sum of the utilities (e.g. profit) of these items in this
+          transaction (the second column of the table),</li>
+        <li>the utility of each item for this transaction (e.g. profit
+          generated by this item for this transaction)(the third column of the
+          table). <strong>Note</strong>: <strong class="style1">In this example the utility is always positive, but this algorithm can also accept negative utility values. </strong></li>
+      </ul>
+      <p>Note that the value in the second column for each line is the
+        sum of the values in the third column.</p>
+      <p>What are real-life examples of such a database? There are
+        several applications in real life. One application is a customer
+        transaction database. Imagine that each transaction represents the
+        items purchased by a customer on a given day. The first transaction named &quot;<strong>t1</strong>&quot;
+        represents the purchase of items 3, 5, 1, 2, 4 and 6. The amount of money spent for each
+        item is respectively 1 $, 3 $, 5 $, 10 $, 6 $ and 5 $. The total amount
+        of money spent in this transaction is 1 + 3 + 5 + 10 + 6 + 5 = 30 $.</p>
+    
+  
+
+      <h2>What is the output of the algorithm?</h2>
+      <p><strong>PHMN+</strong> is an algorithm for discovering <strong>periodic high-utility itemsets</strong>. An itemset is a group of items. The PHMN+ algorithm finds itemsets that appears periodically in a sequence of transactions and generate a high profit (have a high utility). To measure if an itemset  is periodic, the algorithm calculates its periods. To explain this in more details, it is necessary to introduce a few definitions.</p>
+  <p>The set of transactions containing an itemset X is denoted as g(X). For example, consider the itemset {1, 3}. The set g({1,3}) is equal to {t1, t3, t5, t6}. In other words, the itemset {1, 3} appears in the transactions t1, t3, t5 and t6. It is also said that these are four occurrences of the itemset {1,3}.</p>
+  <p>Now, to assess the <strong>periodicity</strong> of an itemset X, its list of periods is calculated. A <strong>period</strong> is the time in terms of number of transactions between two occurences of an itemset in the database (see the paper for the formal definition). For example, the periods of the itemset {1, 3} are {1,2,2,1,1}. The first period of {1,3} is 1 because {1,3} appears in the first transaction after the creation of the database. The second period of {1,3} is 2 because the itemset appears in transaction t3, which is two transactions after t1. The third period of {1,3} is 2 because the itemset appears in transactions t5, which is two transactions after t3. Then, the fourth period of {1,3} is 1 because the itemset appears in t6, which is one transaction after t5. Finally, the fifth period of {1,3} is 1 because there is one transaction appearing after the last occurrence of {1,3} in the database (in t6).</p>
+  <p>The PHMN+ algorithms utilize the list of periods of an itemset X to calculate its average periodicity, minimum periodicity and maximum periodicity. The <strong>average periodicity</strong> is calculated as the average of the periods of the itemset. The<strong> minimum periodicity </strong>is the smallest period among the periods of the itemset (note that the first and last periods are excluded from the calculation of the minimum periodicity - see the paper for details). The <strong>maximum periodicity</strong> is the largest period among the periods of the itemset.</p>
+  <p>The <strong>utility of an
+    itemset in a transaction </strong>is the sum of the utility of its
+    items in the transaction. For example, the utility of the itemset {1 3}
+    in transaction t1 is 5 + 1 = 6 and the utility of {1 3} in transaction
+    t3 is 5 + 1 = 6. The<strong> utility of an itemset in a database</strong> is the sum of its utility in all transactions where it appears. For
+    example, the utility of {13} in the database is the utility of {1 3}
+    in t1 plus the utility of {1 3} in t3,  plus the utility of {1 3} in t5,  plus the utility of {1 3} in t6, for a total of 6 + 6 + 6 + 16= 34. A<strong> high utility itemset</strong> is an itemset such that its utility is no
+    less than <em>min_utility.</em></p>
+  <p>The PHMN+ algorithm finds all the high-utility itemsets that have a minimum periodicity and maximum periodicity that are not less than the <em>minper</em> and <em>maxper</em> thresholds, and an average periodicity that is not less than <em>minavgper </em> and not greater than	maxavgper.Those itemsets are called <strong>periodic high-utility itemsets<em>.</em></strong></p>
+  <p>For example, if<strong> PHMN+</strong> is run on the previous
+    transaction database with a <em>minutil </em> = 20, <em>minper = </em>1, <em>maxper</em> = 3	, <em>minavgper</em> = 1 and <em>maxavgper</em> = 2, the <strong> PHMN+ </strong>algorithm finds 7 periodic high-utility itemsets.</p>
+
+<table align="center" border="1" width="499">
+  <tbody>
+    <tr>
+      <td width="114"><strong>itemset</strong></td>
+      <td width="69"><strong>utility</strong></td>
+      <td width="69"><strong>support (number of transactions where the itemset appear)</strong></td>
+      <td width="69"><strong>minimum periodicity</strong></td>
+      <td width="69"><strong>maximum periodicity</strong></td>
+      <td width="69"><strong>average periodicity</strong></td>
+    </tr>
+    <tr>
+      <td>{2}</td>
+      <td>22</td>
+      <td>3</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1.75</td>
+    </tr>
+    <tr>
+      <td>{2, 5}</td>
+      <td>31</td>
+      <td>3</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1.75</td>
+    </tr>
+    <tr>
+      <td>{2, 3, 5}</td>
+      <td>37</td>
+      <td>3</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1.75</td>
+    </tr>
+    <tr>
+      <td>{2, 3}</td>
+      <td>28</td>
+      <td>3</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1.75</td>
+    </tr>
+    <tr>
+      <td>{1}</td>
+      <td>25</td>
+      <td>4</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1.4</td>
+    </tr>
+    <tr>
+      <td>{1, 3}</td>
+      <td>34</td>
+      <td>4</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1.4</td>
+    </tr>
+    <tr>
+      <td>{3, 5}</td>
+      <td>27</td>
+      <td>4</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1.4</td>
+    </tr>
+  </tbody>
+</table>
+<h2>How should I interpret the results?</h2>
+<p>Each  periodic high-utility itemset is annotated with its utility (e.g. profit), support (number of transactions where it appears) as well as its minimum/maximum periodicity and average periodicity. For example, the itemset {1, 3} yield a profit of 22$, has a support of 4 because
+    it appears in four transactions (t1, t3, t5 and t6. The average periodicity of {1,3} is 1.4 because on average it appears every 1.4 transactions in terms of time. The smallest period of {1,3} (minimum periodicity) is 1 and the largest period of {1,3} is 2 transactions.This indicates that {3} appears quite periodically and is quite profitable.</p>
+
+<h2>Input file format</h2>
+<p>The <strong> input file format</strong> used by the algorithm is defined
+    as follows. It is a text file. An item is represented by a positive
+    integer. A transaction is a line in the text file. In each line
+    (transaction), items are separated by a single space. It is assumed
+    that all items within a same transaction (line) are sorted according to
+    a total order (e.g. ascending order) and that no item can appear twice
+    within the same line.</p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>@FILETYPE=&quot;Transaction database with utility values&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    3 1:6:1 5<br>
+    5:3:3<br>
+    3 5 1 2 4:25:1 3 5 10 6<br>
+    3 5 2 4:20:3 3 8 6<br>
+    3 1 4:8:1 5 2<br>
+    3 5 1:22:6 6 10<br>
+    3 5 2:9:2 3 4<br>
+    <br>
+  The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. The first line of data represents a transaction containing the item 3 and 1, with respective utility values of 1 and 5, and indicates that the total utility of this transaction is 6. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line represents a  periodic itemset. On each
+    line, the items of the itemset are first listed. Each item is
+    represented by an integer and it is followed by a single space. After,
+    all the items, the keyword #UTIL: appears followed by a single space, the utility of the itemset, and a single space. Then, the keyword &quot;#SUP:&quot; appears, which is followed by an
+    integer indicating the support of the itemset, expressed as a number of
+    transactions. Then, the keyword #MINPER: appears and is followed by a space,  an integer indicating the minimum periodicity of the itemset, and another space.Then, the keyword #MAXPER: appears and is followed by a space,  an integer indicating the maximal periodicity of the itemset, and another space. Then, the keyword #AVGPER: appears and is followed by a space,  a double value indicating the average periodicity of the itemset.</p>
+  <p>For example, here is the output file for this example.
+    The first line of patterns indicates that the itemset {2} is a  periodic high-utility itemset, having a utility of 22$, a support of 3 transactions, a minimum periodicity of 1 transactions, a maximum periodicity of 3 transactions and an average periodicity f 1.75 transactions..</p>
+  <p>@FILETYPE=&quot;Periodic high-utility itemsets&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    2 #UTIL: 22 #SUP: 3 #MINPER: 1 #MAXPER: 3 #AVGPER: 1.75<br>
+    2 5 #UTIL: 31 #SUP: 3 #MINPER: 1 #MAXPER: 3 #AVGPER: 1.75<br>
+    2 5 3 #UTIL: 37 #SUP: 3 #MINPER: 1 #MAXPER: 3 #AVGPER: 1.75<br>
+    2 3 #UTIL: 28 #SUP: 3 #MINPER: 1 #MAXPER: 3 #AVGPER: 1.75<br>
+    1 #UTIL: 25 #SUP: 4 #MINPER: 1 #MAXPER: 2 #AVGPER: 1.4<br>
+    1 3 #UTIL: 34 #SUP: 4 #MINPER: 1 #MAXPER: 2 #AVGPER: 1.4<br>
+    5 3 #UTIL: 27 #SUP: 4 #MINPER: 1 #MAXPER: 3 #AVGPER: 1.4  </p>
+
+  <h2>Performance</h2>
+  <p>PHMN+ is currently the only algorithm  for mining high-utility periodic patterns in sequence of transactions containing profit informaiton (items have weights/unit profit, and transactions indicate purchase quantities for items), which is offered in SPMF. It was shown that mining periodic high-utility itemsets can be faster than mining all high-utility itemsets, because PHMN+ can filter many non-periodical patterns.</p>
+
+  <h2>Where can I get more information about the PHMN+ algorithm?</h2>
+  <p>This is the article proposing the PHMN+ algorithm:</p>
+  <p><em>Lai et al. (2023) Mining periodic high-utility itemsets with both positive and negative utilities. EAAI journal, 123, 106182</em></p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

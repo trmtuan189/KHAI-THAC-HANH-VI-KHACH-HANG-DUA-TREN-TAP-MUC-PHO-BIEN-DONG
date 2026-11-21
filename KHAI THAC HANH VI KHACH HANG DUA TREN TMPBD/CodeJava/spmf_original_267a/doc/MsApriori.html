@@ -1,0 +1,275 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Frequent Itemsets with Multiple Support Thresholds Using the MSApriori Algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining Frequent Itemsets with Multiple Support Thresholds Using the MSApriori Algorithm  (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>MSApriori algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">MSApriori</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextIGB</span><span class="highlight">.txt"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight"><strong>output</strong>.txt</span>")
+    (4) set <em>beta</em> = 0.4 and <em>LS</em> = 0.2 and (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run MSApriori contextIGB.txt
+      output.txt 0.4 0.2</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextIGB.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestMSApriori_saveToFile.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is MISApriori?</h2>
+<p>MISApriori is an algorithm for mining frequent itemsets by using
+    multiple minimum supports. It is a generalization of the Apriori
+    algorithm, which uses a single minimum support threshold. </p>
+  <p>The idea behind MSApriori is that different minimum supports could
+    be used to consider the fact that some items are less frequent than
+    others in a dataset.</p>
+  <p>There are two implementations of MSApriori in SPMF. The first one is called <span class="highlight">&quot;<strong>MSApriori</strong></span>&quot;. The second one is an alternative implementation called &quot;<span class="highlight"><strong>MSApriori(Srinivas)</strong></span>&quot;, which use a hashing based optimization. This variant is available in the graphical user interface and can be run from the command line as follows:<br>
+    <span class="highlight">java -jar spmf.jar run MSApriori(Srinivas) contextIGB.txt
+      output.txt 0.4 0.2</span></p>
+
+  <h2>What is the input of this algorithm?</h2>
+  <p>The input of <strong>MSApriori</strong> is a transaction database
+    and two parameters named <em>beta </em>(a value between 0 and 1) and <em>LS</em> (a value between 0 and 1). These parameters are used to determine a
+    minimum support for each item. </p>
+  <p>A <strong>transaction database</strong> is a set of transactions.
+    Each <strong>transaction</strong> is a set of items. For example,
+    consider the following transaction database. It contains 6 transactions
+    (t1, t2, ..., t5, t6) and 5 items (1,2, 3, 4, 5). For example, the
+    first transaction represents the set of items 1, 2, 4 and 5. This
+    database is provided as the file <strong>contextIGB.txt</strong> in
+    the SPMF distribution. It is important to note that an item is not
+    allowed to appear twice in the same transaction and that items are
+    assumed to be sorted by lexicographical order in a transaction.</p>
+  <table align="center" border="1" width="316">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t6</strong></td>
+        <td>{2, 3, 4}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>What is the output of this algorithm?</h2>
+  <p>The output of <strong>MSApriori </strong>is the set of all
+    frequent itemsets contained in the database. </p>
+  <p>Contrarily to the original Apriori algorithm, <strong>MSApriori</strong> use <strong>multiple minimum supports thresholds</strong> instead of
+    just one. In fact, MSApriori uses a minimum support value for each
+    item. Because it would be time consuming to set a minimum support
+    threshold value for each item for a large database, the thresholds are
+    determined automatically by using two user-specified parameters named
+    beta (0 &lt;= B &lt;= 1) and LS (0 &lt;= LS &lt;= 1). </p>
+  <p>The<strong> minimum support of an item <em>k</em></strong> is
+    then defined as the greatest value between:</p>
+  <ul>
+    <li>LS</li>
+    <li>and B x f(<em>k</em>) where f(<em>k</em>) is the number of
+      transactions containing the item<em> k</em>.</li>
+  </ul>
+  <p>Note that if B is set to 0, there will be a single minimum support
+    for all items and this will be equivalent to the regular Apriori
+    algorithm.</p>
+  <p>The <strong>support of an itemset</strong> is the number of
+    transactions containing the itemset divided by the total number of
+    transactions. An itemset is a frequent itemset if its support is higher
+    or equal to the smallest minimum support threshold from the minimum
+    support thresholds of all its items. </p>
+  <p>Why MSApriori is useful? It is useful because it allows
+    discovering frequent itemsets containing rare items (if their minimum
+    support is set low).</p>
+  <p>If we run <strong>MSApriori</strong> on the previous transaction
+    database with <em>beta = </em>0.4 and <em>LS </em>= 0.2, we obtain
+    the following result:</p>
+  1 supp: 4<br>
+  2 supp: 6<br>
+  3 supp: 4<br>
+  4 supp: 4<br>
+  5 supp: 5<br>
+  1 2  Support: 4<br>
+  1 3  Support: 2<br>
+  1 4  Support: 3<br>
+  1 5  Support: 4<br>
+  2 3  Support: 4<br>
+  2 4  Support: 4<br>
+  2 5  Support: 5<br>
+  3 4  Support: 2<br>
+  3 5  Support: 3<br>
+  4 5  Support: 3<br>
+  1 2 3  Support: 2<br>
+  1 2 4  Support: 3<br>
+  1 2 5  Support: 4<br>
+  1 3 5  Support: 2<br>
+  1 4 5  Support: 3<br>
+  2 3 4  Support: 2<br>
+  2 3 5  Support: 3<br>
+  2 4 5  Support: 3<br>
+  1 2 3 5  Support: 2<br>
+  1 2 4 5  Support: <br>
+  <br>
+  Note that here the support is expressed by an integer value which
+  represents the number of transactions containing the itemset. For
+  example, itemset {2, 3 5} has a support of 3 because it appears in
+  three transactions, namely t2, t4 and t5. This integer value can be
+  converted as a percentage by dividing by the total number of
+  transactions.
+<h2>Input file format </h2>
+<p>The <strong> input file format</strong> of <strong>MSApriori </strong>is
+    defined as follows. It is a text file. Each lines represents a
+    transaction. The items in the transaction are listed. An item is
+    represented by a positive integer. Each item is separated from the
+    following item by a space. It is assumed that items are sorted
+    according to a total order and that no item can appear twice in the
+    same transaction. For example, for the previous example, the input file
+    is defined as follows:</p>
+  
+    <p>@FILETYPE=&quot;Simple transaction database&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1 2 4 5<br>
+      2 3 5<br>
+      1 2 4 5<br>
+      1 2 3 5<br>
+      1 2 3 4 5<br>
+      2 3 4</p>
+  
+  <p>The first two lines are metadata indicating the type of file and the source of the data. Then, the following lines are the transactions (records). Consider the first line of data. It means that the first transaction is
+    the itemset {1, 2, 4 and 5}. The following lines follow the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> of <strong>MSApriori </strong>is
+    defined as follows. It is a text file, where each line represents a <strong>frequent
+      itemset</strong>. On each line, the items of the itemset are first
+    listed. Each item is represented by an integer, followed by a single
+    space. After, all the items, the keyword "#SUP:" appears, which is
+    followed by a integer value indicating the support of that itemset.</p>
+  <p>@FILETYPE=&quot;Frequent itemsets with multiple thresholds&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1 #SUP: 4<br>
+    2 #SUP: 6<br>
+    3 #SUP: 4<br>
+    4 #SUP: 4<br>
+    5 #SUP: 5<br>
+    1 2 #SUP: 4<br>
+    1 3 #SUP: 2<br>
+    1 4 #SUP: 3<br>
+    1 5 #SUP: 4<br>
+    2 3 #SUP: 4<br>
+    2 4 #SUP: 4<br>
+    2 5 #SUP: 5<br>
+    3 4 #SUP: 2<br>
+    3 5 #SUP: 3<br>
+    4 5 #SUP: 3<br>
+    1 2 3 #SUP: 2<br>
+    1 2 4 #SUP: 3<br>
+    1 2 5 #SUP: 4<br>
+    1 3 5 #SUP: 2<br>
+    1 4 5 #SUP: 3<br>
+    2 3 4 #SUP: 2<br>
+    2 3 5 #SUP: 3<br>
+    2 4 5 #SUP: 3<br>
+    1 2 3 5 #SUP: 2<br>
+    1 2 4 5 #SUP: 3 </p>
+  <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. For example, the first line indicates that the itemset {1} has a
+    support of 4 transactions. The following lines follows the same format.</p>
+
+  <h2>Optional parameter(s): constraints on the size of itemsets </h2>
+  <p>Sometimes, there may be just too many itemsets, and itemsets containing many items may not be interesting. Thus, it is also possible to specify an optional parameter in the <strong>user</strong> <strong>interface of SPMF:</strong></p>
+
+<ul>
+  <li><strong>Max pattern length </strong>(integer) : This parameter allows to set a maximum number of items to appear on the an itemset. By default, this parameter is equal to the infinity if it is not set. </li>
+</ul>
+
+  <p>If you are using the command line interface of SPMF, it is also possible to use this optional parameter by adding it at the end of the command. For example: <br>
+      <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> MSApriori</span></strong><strong> contextIGB</strong>.txt
+    output.txt 0.4 0.2 2 </span><br>
+    means to run the above example to find only frequent itemsets having 2 items or less.</p>
+
+  <h2>Optional feature: giving names to items</h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database "<strong>contextIGB.txt</strong>". Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple transaction database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+1 2 4 5<br>
+2 3 5<br>
+1 2 4 5<br>
+1 2 3 5<br>
+1 2 3 4 5<br>
+2 3 4</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. The second and third line are metadata indicating the type of file and the source of the data.  
+    Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. Then the following lines define transactions in the SPMF format.</p>
+  <p>Then, if we apply a sequential pattern mining algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+      <br>
+      orange tomato bread  #SUP: 3<br>
+      orange milk bread  #SUP: 3<br>
+  apple orange tomato bread  #SUP: 2</p>
+  <p>Note that this feature could be also used from the <strong>source code</strong> of SPMF using the ResultConverter class. However, there is currently no example provided for using it from the source code.</p>
+
+  <h2>Performance</h2>
+  <p><strong>MSApriori</strong> is one of the first algorithm for
+    mining itemsets with multiple minimum support thresholds. It is not the
+    most efficient algorithm for this task because it is based on <strong>Apriori</strong> and thus suffer from the same limitations. If performance is important,
+    it is recommend to use <strong>CFPGrowth</strong>++, which is based on <strong>FPGrowth</strong> and is more efficient.</p>
+  <p>Note that there is one important difference between the input of
+    CFPGrowth++ and MSApriori in SPMF. The MISApriori works by setting the
+    multiple minimum supports by using the LS and BETA values. The
+    CFPGrowth++ implementation uses a list of minimum support values stored
+    in a text file instead. </p>
+
+  <h2>Where can I get more information about the MSApriori algorithm?</h2>
+  <p>This article describes the <strong>MSApriori</strong> algorithm:</p>
+  <p><em> B. Liu, W. Hsu, Y. Ma, "<a rel="nofollow" href="https://www.philippe-fournier-viger.com/spmf/MISApriori.pdf">Mining
+    Association Rules with Multiple Minimum Supports</a>" Proceedings of
+    the ACM SIGKDD International Conference on Knowledge Discovery &amp;
+    Data Mining (KDD-99), August 15-18, 1999, San Diego, CA, USA.</em></p>
+
+
+  <p>For a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

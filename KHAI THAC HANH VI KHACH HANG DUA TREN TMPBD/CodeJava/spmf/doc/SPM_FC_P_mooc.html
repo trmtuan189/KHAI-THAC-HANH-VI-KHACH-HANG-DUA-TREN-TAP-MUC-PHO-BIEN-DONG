@@ -1,0 +1,164 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Sequential Patterns with Flexible Time Constraints from a Time-Extended Sequence Database  with the SPM-FC-P algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Example: Mining Sequential Patterns with Flexible Time Constraints from a Time-Extended Sequence Database with the SPM-FC-P algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>SPM-FC_P algorithm </strong>using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">SPM_FC_P</span>" </strong>algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">mooc</span><span class="highlight">_small.txt"</span></strong>, (3) set the output file name
+    (e.g. "<span class="highlight"><strong>output</strong>.txt</span>") (4)
+    <strong>minsup</strong>= 0.08, <strong>alpha</strong>= 1.666, <strong>beta</strong> = 0.5,
+    <strong>gamma</strong>= 0.33, and (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight"><br>
+    java -jar spmf.jar run <strong>SPM_FC_P</strong> <strong>mooc_small.txt
+      output.txt 0.008 1.666 0.5 0.33 </strong></span> <br>
+      <br>
+      in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>mooc_small.txt</strong></span>.<br>
+  </li>
+  <li><strong>To run this example with the source code version of SPMF,</strong> launch the file <strong><span class="highlight">"MainTestSPM_FC_P_saveToFile.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is this algorithm?</h2>
+<p>The <strong>SPM_FC_P </strong>algorithm is an algorithm for discovering <strong>frequent sequential
+    patterns respecting some flexible time-constraints </strong>from sequences that contain time information. SPM_FC_P was designed specially for analyzing MOOC data (e-learning data) but can be applied to data from other domains as well where events are recorded as sequences and have timestamps. </p>
+<p>The SPM-FC_P algorithm was proposed by Song et al. (2022)), together with another algorithm called SPM_FC_L, also offered in SPMF. This is the original implementation of the SPM_FC_P algorithm. </p>
+<h2>What is the input?</h2>
+  <p>The input is a <strong>time-extended sequence</strong> <strong>database</strong> and some <strong>constraints</strong>.</p>
+  <p>A <strong>time-extended sequence database</strong> for this algorithm is a set of <strong>time-extended
+    sequences</strong>. A <strong>time-extended sequence </strong>is a
+    list of items (symbols or events), ordered by time, where each <strong>item</strong> is
+    anotated with a <strong>timestamp</strong> (an integer value). For example, a time-extended sequence could represents the sequence of courses that a given student has been enrolled in with the enrollment times as timestamps. </p>
+  <p>The file &quot;<strong>mooc_small.txt</strong>&quot; contained in the distribution of SPMF contains 21 sequences of such data, which was collected from an e-learning environment.</p>
+  <p>@FILETYPE=&quot;Sequence database with timestamps&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    &lt;2441&gt; 0 -1 &lt;2770&gt; 1 -1 &lt;2770&gt; 2 -1 &lt;2930&gt; 3 -1 &lt;4100&gt; 4 -1 &lt;4100&gt; 5 -1 &lt;4250&gt; 6 -1 &lt;5370&gt; 7 -1 -2<br>
+    &lt;821&gt; 8 -1 &lt;971&gt; 9 -1 &lt;1940&gt; 10 -1 &lt;2220&gt; 11 -1 &lt;2881&gt; 12 -1 &lt;4091&gt; 13 -1 &lt;4091&gt; 14 -1 &lt;4171&gt; 15 -1 &lt;4240&gt; 16 -1 -2<br>
+    &lt;180&gt; 17 -1 &lt;191&gt; 18 -1 &lt;191&gt; 19 -1 &lt;1120&gt; 20 -1 &lt;3250&gt; 9 -1 &lt;4111&gt; 2 -1 &lt;4541&gt; 21 -1 &lt;4541&gt; 22 -1 &lt;4541&gt; 23 -1 &lt;5450&gt; 24 -1 &lt;5450&gt; 25 -1 -2<br>
+    &lt;1880&gt; 17 -1 &lt;2310&gt; 26 -1 &lt;4020&gt; 2 -1 -2<br>
+    &lt;510&gt; 10 -1 &lt;510&gt; 27 -1 &lt;2841&gt; 28 -1 &lt;2841&gt; 29 -1 &lt;3001&gt; 15 -1 &lt;3471&gt; 17 -1 &lt;5450&gt; 25 -1 -2<br>
+    &lt;1091&gt; 30 -1 &lt;1091&gt; 14 -1 &lt;1321&gt; 31 -1 -2<br>
+    &lt;831&gt; 10 -1 &lt;870&gt; 23 -1 &lt;1130&gt; 19 -1 &lt;1131&gt; 17 -1 -2<br>
+    &lt;4561&gt; 14 -1 &lt;4561&gt; 17 -1 &lt;4561&gt; 10 -1 &lt;4611&gt; 30 -1 &lt;4691&gt; 26 -1 &lt;5110&gt; 42 -1 &lt;5361&gt; 168 -1 -2<br>
+    &lt;4551&gt; 357 -1 &lt;4551&gt; 117 -1 &lt;4560&gt; 2 -1 &lt;4560&gt; 428 -1 &lt;5201&gt; 378 -1 -2<br>
+    &lt;4560&gt; 291 -1 &lt;4560&gt; 200 -1 &lt;4560&gt; 277 -1 &lt;4560&gt; 287 -1 &lt;4560&gt; 300 -1 &lt;4560&gt; 299 -1 -2<br>
+    &lt;4560&gt; 433 -1 &lt;4560&gt; 223 -1 &lt;4560&gt; 408 -1 &lt;4560&gt; 227 -1 &lt;4560&gt; 300 -1 &lt;4580&gt; 118 -1 &lt;4580&gt; 432 -1 &lt;4580&gt; 350 -1 &lt;4581&gt; 436 -1 &lt;4581&gt; 181 -1 &lt;4601&gt; 430 -1 &lt;4601&gt; 307 -1 &lt;4601&gt; 214 -1 &lt;4601&gt; 349 -1 &lt;4601&gt; 158 -1 &lt;4601&gt; 428 -1 &lt;4601&gt; 451 -1 &lt;4611&gt; 291 -1 &lt;4611&gt; 341 -1 &lt;4611&gt; 464 -1 &lt;4611&gt; 163 -1 &lt;4621&gt; 439 -1 -2<br>
+    &lt;4560&gt; 433 -1 &lt;4560&gt; 223 -1 &lt;4560&gt; 408 -1 &lt;4560&gt; 227 -1 &lt;4560&gt; 300 -1 &lt;4580&gt; 118 -1 &lt;4580&gt; 432 -1 &lt;4580&gt; 350 -1 &lt;4581&gt; 181 -1 &lt;4591&gt; 450 -1 &lt;4601&gt; 430 -1 &lt;4601&gt; 307 -1 &lt;4601&gt; 214 -1 &lt;4601&gt; 282 -1 &lt;4601&gt; 349 -1 &lt;4601&gt; 158 -1 &lt;4601&gt; 428 -1 &lt;4601&gt; 451 -1 &lt;4611&gt; 291 -1 &lt;4611&gt; 341 -1 &lt;4611&gt; 464 -1 &lt;4611&gt; 163 -1 &lt;4621&gt; 457 -1 -2<br>
+    &lt;4560&gt; 15 -1 &lt;4560&gt; 5 -1 &lt;4560&gt; 398 -1 &lt;4560&gt; 262 -1 -2<br>
+    &lt;4560&gt; 271 -1 &lt;4561&gt; 18 -1 &lt;4561&gt; 49 -1 &lt;4561&gt; 19 -1 &lt;4561&gt; 137 -1 &lt;4561&gt; 347 -1 -2<br>
+    &lt;4560&gt; 457 -1 &lt;4560&gt; 386 -1 &lt;4560&gt; 264 -1 &lt;4561&gt; 46 -1 &lt;4621&gt; 256 -1 &lt;4621&gt; 336 -1 &lt;4761&gt; 68 -1 &lt;4761&gt; 269 -1 &lt;4761&gt; 122 -1 &lt;4761&gt; 291 -1 &lt;4770&gt; 57 -1 &lt;4770&gt; 239 -1 &lt;4770&gt; 89 -1 &lt;4770&gt; 262 -1 &lt;4770&gt; 177 -1 &lt;4771&gt; 17 -1 &lt;4771&gt; 18 -1 &lt;4771&gt; 254 -1 &lt;4771&gt; 15 -1 &lt;4771&gt; 251 -1 &lt;4771&gt; 58 -1 &lt;4771&gt; 517 -1 &lt;4771&gt; 92 -1 &lt;4771&gt; 138 -1 &lt;4771&gt; 140 -1 &lt;4771&gt; 20 -1 &lt;4781&gt; 123 -1 &lt;4781&gt; 65 -1 &lt;4781&gt; 206 -1 &lt;4791&gt; 40 -1 &lt;4791&gt; 4 -1 &lt;4801&gt; 313 -1 &lt;5010&gt; 595 -1 &lt;5010&gt; 477 -1 &lt;5010&gt; 609 -1 &lt;5011&gt; 84 -1 &lt;5050&gt; 266 -1 &lt;5051&gt; 53 -1 &lt;5060&gt; 292 -1 &lt;5060&gt; 169 -1 &lt;5060&gt; 26 -1 &lt;5060&gt; 268 -1 &lt;5060&gt; 41 -1 &lt;5060&gt; 49 -1 &lt;5061&gt; 171 -1 &lt;5061&gt; 22 -1 &lt;5070&gt; 282 -1 &lt;5070&gt; 48 -1 &lt;5070&gt; 112 -1 &lt;5070&gt; 64 -1 &lt;5071&gt; 309 -1 &lt;5080&gt; 63 -1 &lt;5080&gt; 353 -1 &lt;5080&gt; 29 -1 &lt;5080&gt; 312 -1 &lt;5091&gt; 235 -1 &lt;5110&gt; 119 -1 &lt;5111&gt; 39 -1 &lt;5111&gt; 437 -1 &lt;5111&gt; 121 -1 &lt;5111&gt; 658 -1 &lt;5130&gt; 111 -1 &lt;5130&gt; 11 -1 &lt;5130&gt; 217 -1 &lt;5130&gt; 21 -1 &lt;5130&gt; 87 -1 &lt;5130&gt; 16 -1 &lt;5130&gt; 174 -1 &lt;5130&gt; 267 -1 &lt;5230&gt; 172 -1 &lt;5230&gt; 551 -1 &lt;5230&gt; 545 -1 -2<br>
+    &lt;4560&gt; 306 -1 &lt;4560&gt; 162 -1 &lt;4560&gt; 203 -1 -2<br>
+    &lt;4561&gt; 58 -1 &lt;4561&gt; 2 -1 &lt;4561&gt; 15 -1 &lt;5060&gt; 515 -1 &lt;5091&gt; 140 -1 &lt;5330&gt; 10 -1 &lt;5461&gt; 146 -1 &lt;5461&gt; 53 -1 -2<br>
+    &lt;4561&gt; 58 -1 &lt;4561&gt; 2 -1 &lt;4561&gt; 15 -1 &lt;5060&gt; 515 -1 &lt;5091&gt; 140 -1 &lt;5330&gt; 10 -1 &lt;5461&gt; 146 -1 &lt;5461&gt; 53 -1 -2<br>
+    &lt;4561&gt; 140 -1 &lt;4561&gt; 103 -1 &lt;4561&gt; 3 -1 -2<br>
+    &lt;4561&gt; 571 -1 &lt;4561&gt; 219 -1 &lt;4561&gt; 116 -1 &lt;4561&gt; 239 -1 -2<br>
+    &lt;4561&gt; 14 -1 &lt;4561&gt; 10 -1 &lt;4561&gt; 193 -1 -2</p>
+  <p>In that file, the first two lines are optional metadata indicating the filetype and the source of the data. Then, each following line is a time-extended sequence. </p>
+  <p>Let's take the first sequence of that file as example:</p>
+  <p>&lt;2441&gt; 0 -1 &lt;2770&gt; 1 -1 &lt;2770&gt; 2 -1 &lt;2930&gt; 3 -1 &lt;4100&gt; 4 -1 &lt;4100&gt; 5 -1 &lt;4250&gt; 6 -1 &lt;5370&gt; 7 -1 -2</p>
+  <p>The first sequence is a time-extended sequence, which indicates that an event of type 0 occurred at time 2441, was followed by an event of type 1 at time 2770, and then it indicates that an event of type 2 was observed at time 2770. Thereafter, an event of type 3 occurred at time 2930. It was then followed by event of type 4 and an event of type 5 at time 4100, and then event of type 6 at time 4250, and finally an event of type 7 was observed after, at time 5370. The  following lines follow the same format.</p>
+  <p>Thus, a time-extended sequence database contains one or more lines, where each line is a time-extended sequence. Each line starts by a timestamp &lt;x&gt; where x is a double value indicating a time. Then, it is followed by an item (a positive integer) indicating an event type that occurred at that time. Then the separator -1 appears. Thereafter, another timestamp may appear followed by another item and another separator (-1). This is repeated until the end of the sequence, which is indicated by special value -2.</p>
+  <p>The SPM_FC_P algorithm  takes as input a time-extended sequence database in this format and outputs all the <strong>sequential patterns</strong> that respect some flexible time constraints that covers three aspects called the <strong>length</strong>, <strong>discreteness</strong> and <strong>validity</strong>.</p>
+  <p>To find sequential patterns using this algorithm, the  user needs to provide
+    four parameters, which define constraints on sequential patterns that should be found (see the paper by Song et al., 2022 for full
+    details):</p>
+  <ul>
+    <li><strong>minimum suppor</strong>t (<strong>minsup</strong>): it indicates that a sequential pattern should have some minimum occurrence frequency in the sequence database (a positive
+      integer between 0 and 1, representing a percentage)</li>
+    <li><strong>alpha</strong> : this is a weight indicating the importance of the <em>length</em> factor ( a double value between 0 and 1) </li>
+    <li><strong>beta</strong> : this is a weight indicating the importance of the <em>discreteness</em> factor (a double value between 0 and 1) </li>
+    <li><strong>gamma</strong> : this is a weight indicating the importance  of the <em>validity</em> factor (a double value between 0 and 1) </li>
+  </ul>
+
+  <h2>What is the output?</h2>
+  <p>The output is a set of sequential patterns meeting
+    the  constraints given by the user. For example, if we run the
+    algorithm with <strong>minsup</strong>= 8 %,  <strong>alpha</strong>= 1.666, <strong>beta</strong> = 0.5, <strong>gamma</strong>= 0.33, we obtain the following output file result containing 22 sequential patterns (lines):</p>
+  <p>@FILETYPE=&quot;Frequent sequential patterns&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+2 -1 #SUP: 5.659715238441243<br>
+    10 -1 #SUP: 6.598554602754884<br>
+    14 -1 #SUP: 3.890396857622682<br>
+    15 -1 #SUP: 5.628194886269107<br>
+    15 -1 140 -1 #SUP: 2.7626359604642126<br>
+    15 -1 140 -1 53 -1 #SUP: 2.746436015689154<br>
+    15 -1 53 -1 #SUP: 2.7470313468277694<br>
+    17 -1 #SUP: 5.6041631250255115<br>
+    17 -1 26 -1 #SUP: 2.6689813223553216<br>
+    18 -1 #SUP: 2.7670812882518043<br>
+    19 -1 #SUP: 2.8542766366521524<br>
+    26 -1 #SUP: 2.710812773435551<br>
+    53 -1 #SUP: 2.7704288427680224<br>
+    58 -1 #SUP: 2.7704288427680224<br>
+    58 -1 140 -1 #SUP: 2.7626359604642126<br>
+    58 -1 140 -1 53 -1 #SUP: 2.746436015689154<br>
+    58 -1 53 -1 #SUP: 2.7470313468277694<br>
+    140 -1 #SUP: 3.754568374549673<br>
+    140 -1 53 -1 #SUP: 2.7655326950097208<br>
+    291 -1 #SUP: 3.5988377933816493<br>
+    300 -1 #SUP: 2.6632903826061654<br>
+    428 -1 #SUP: 2.755010063800629</p>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line is a sequential
+    pattern. Each line starts by listing the items of the sequential
+    pattern, where each item is represented by a positive integer. The items of a sequential patterns are separated by single spaces and the symbol -1. Finally,
+    after all the items of a sequential pattern, the keyword "#SUP:" is
+    followed by a double value indicating the support of the pattern (its occurrence frequency). </p>
+  <p>For example, consider the first line:</p>
+  <p>2 -1 #SUP: 5.659715238441243</p>
+  <p>It represents a sequential pattern consisting of an event of type 2, and this pattern has a support of 5.6597.</p>
+  <p>Consider another example:</p>
+  <p>140 -1 53 -1 #SUP: 2.7655326950097208</p>
+  <p>This sequential pattern indicates that an event of type 140 was followed by an event of type 53, and that this pattern has a support of 2.765.</p>
+  <p>For more details about how to interpret these results, please see the paper by Song et al. (2022) </p>
+  <h2>Implementation details</h2>
+  <p>This is the original implementation of the SPM_FC_P algorithm. </p>
+  <h2>Optional parameter(s)</h2>
+  <p>This algorithm's implementation allows to specify
+    additional optional parameter(s) :</p>
+  <ul><li><strong>&quot;show sequences ids?&quot; </strong>(true/false) This parameter allows to
+      specify that sequence ids of sequences containing a pattern should be
+      output for each pattern found. For example, if the parameter is set to
+      true, each pattern in the output file will be followed by the keyword
+      #SID followed by a list of sequences ids (integers separated by space).
+      For example, a line terminated by &quot;#SID: 0 2&quot; means that the pattern on
+      this line appears in the first and the third sequences of the sequence
+      database (sequences with ids 0 and 2). </li>
+    </ul>
+  <p>These parameter(s) are available in the GUI of SPMF and also in
+    the example(s) <strong><span class="highlight">&quot;MainTest ...
+      .java&quot;</span></strong> provided in the source code of SPMF.</p>
+  <p>The parameter(s) can be also used in the command line with the Jar
+    file. If you want to use this optional parameter(s) in the command
+    line for the example described in this page,, it can be done as follows. Use this command: <br>
+    <br>
+      <span class="highlight">java -jar spmf.jar run <strong>SPM_FC_P</strong> <strong>mooc_small.txt
+      output.txt 0.008 1.666 0.5 0.33 true</strong><br>
+      <br>
+      </span>where last value &quot;true&quot; means to show the sequence ids in the output.</p>
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The SPM_FC_P algorithm is described in this paper</p>
+  <p>Song, W., Ye, W., Fournier-Viger, P. (2022). Mining sequential patterns with flexible constraints from MOOC data. Applied Intelligence </p>
+  <p>Besides, you may read this<a href="https://www.philippe-fournier-viger.com/dspr-paper5.pdf"> survey of sequential pattern mining</a>, which gives an overview of various sequential pattern mining algorithms.</p>
+  <!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

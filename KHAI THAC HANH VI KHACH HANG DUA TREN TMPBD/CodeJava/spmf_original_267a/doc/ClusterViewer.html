@@ -1,0 +1,99 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Visualizing clusters using the Cluster Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<!---------------------- (2) Change the title of the example in the <a> tag: --->
+<h1>Visualizing clusters using the Cluster Viewer (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to use the <strong>Cluster Viewer</strong> of the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Vizualize_clusters_of_instances</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">clustersDBScan.txt&quot;
+</span></strong>, (3) and click &quot;
+<span class="highlight">Run algorithm</span>&quot;
+.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run <strong>Vizualize_clusters_of_instances</strong> clustersDBScan.txt <br>
+    </span>in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>clustersDBScan</strong>.txt</span>. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>to
+    run respectively <strong>this example</strong><strong>, </strong>launch
+    the file <strong><span class="highlight">&quot;
+MainTestClusterViewerFile.java&quot;
+</span></strong>in
+    the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is the Cluster Viewer?</h2>
+The <strong>Cluster Viewer </strong> is a tool offered in SPMF for visualizing a set of clusters using a chart. The Cluster Viewer provides some basic functions like zooming in, zooming out, printing, and saving the picture as an image. It is useful for visualizing the clusters found by clustering algorithms such as DBScan, K-Means and others. 
+<p>What is the input of the Cluster Viewer?</p>
+
+  <p>The input is one or more clusters. A <strong>cluster </strong>is a list of instances. An instance is here a list of floating-point decimal numbers (a vector of double values). </p>
+  <p>Clusters are produced by clustering algorithms such as K-Means and DBScan. An example of clusters found by the DBScan algorithm is the following: </p>
+  
+    <table width="100%" border="1">
+      <tbody>
+        <tr>
+          <td width="161"><strong>Cluster</strong></td>
+          <td width="237"><strong>Data points</strong></td>
+        </tr>
+        <tr>
+          <td>Cluster1</td>
+          <td>(1, 0), (1, 1), (0, 1)</td>
+        </tr>
+        <tr>
+          <td>Cluster2</td>
+          <td>(10, 10), (10, 13)(13, 13)</td>
+        </tr>
+        <tr>
+          <td>Cluster3</td>
+          <td>(54, 54), (57, 55) (55, 55)</td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <p>This example set of clusters is provided in the file <strong>clustersDBScan.txt </strong>of the SPMF distribution.<br>
+  </p>
+
+  <h2>What is the result of running the time series viewer?</h2>
+  <p>Running theCluster Viewer will display the clusters visually. For example, for the above clusters, the clusters will be displayed as follows (note that this may vary depending on your version of SPMF). </p>
+  <p><img src="clusterviewer.png" width="886" height="641" alt=""/></p>
+  <p>&nbsp;</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> used by the <strong>cluster viewer</strong> is defined
+    as follows. It is a text file.</p>
+  <p>The text file first defines the attributes used to describe the instances that have been clustered. An attribute is defined using the keyword &quot;@ATTRIBUTEDEF=&quot; followed by an attribute name, which is a string. Each attribute is defined on a separated line.</p>
+  <p> Then, the list of clusters is given, each cluster is specified on a separated line. For each cluster, the list of instances contained in the cluster is specified. An instance is a name followed by a list of double values separated by &quot; &quot; and between the &quot;[&quot; and &quot;]&quot; characters.</p>
+  <p>For instance, the input file for this example is the following:</p>
+  <p>@FILETYPE=&quot;Clusters&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    @ATTRIBUTEDEF=X<br>
+    @ATTRIBUTEDEF=Y<br>
+    [Instance2 1.0 0.0][Instance0 1.0 1.0][Instance1 0.0 1.0]<br>
+    [Instance3 10.0 10.0][Instance4 10.0 13.0][Instance5 13.0 13.0]<br>
+    [Instance6 54.0 54.0][Instance9 57.0 55.0][Instance7 55.0 55.0]</p>
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section.It indicates that there are two attributes named &quot;X&quot; and &quot;Y&quot; and that there are three clusters. The first cluster contains three instances: (1, 0), (1, 1) and (0, 1).</p>
+
+  <h2>Implementation details</h2>
+  <p>The Cluster Viewer has been implemented by reusing and extending some code provided by Yuriy Guskov under the MIT License for displaying charts.</p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

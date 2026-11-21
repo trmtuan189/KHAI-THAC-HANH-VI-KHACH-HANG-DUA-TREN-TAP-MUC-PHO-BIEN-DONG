@@ -1,0 +1,209 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Self-Sufficient Itemsets using the Opus-Miner algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining Self-Sufficient Itemsets using the Opus-Miner algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>Opus-Miner algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">OPUS-Miner</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextOpusMiner.txt"</span></strong>, (3) set the output
+    file name (e.g. "<span class="highlight">output.txt</span>") (4) set
+    the parameters to 3, true, true, true, false, respectively <span class="highlight"> </span>and
+    (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> OPUS-Miner </span></strong>contextOpusMiner.txt
+      output.txt 3 true true true false </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextOpusMiner.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestOpusMiner.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is the algorithm?</h2>
+<p><strong>Opus-Miner</strong> is an algorithm mining <strong>statistically significant frequent itemsets</strong>, which are called <strong>self-sufficient itemsets</strong>. This algorithm is interesting because it not only discover frequent itemsets but aim to ensure that the patterns that are found are also statistically significant (dont occur frequently by chance). It is argued by Webb et al. that such itemset could be more interesting than frequent itemsets.</p>
+  <p>The Java version of OPUS-Miner included in SPMF is a conversion of the original C++ code, which was made available under the GPL license. Some small modifications have been done to make it work in Java, and to itnegrate it in SPMF.  </p>
+
+  <h2>What is the input?</h2>
+  <p>The input is a <strong>transaction database</strong> (aka
+      binary context) and a threshold named <em><strong>minsup</strong></em> (a value between 0 and 100 %). </p>
+    <p>A <strong>transaction database</strong> is a set of
+      transactions. Each <strong>transaction</strong> is a set of items. For
+      example, consider the following transaction database. It contains 5
+      transactions (t1, t2, ..., t5) and 5 items (1,2, 3, 4, 5). For example,
+      the first transaction represents the set of items 1, 2, 4 and 5. This
+      database is the first five transactions of the file <strong>contextOpusMiner.txt</strong> in the SPMF distribution, which contains <strong>115 transactions</strong>. It is important to note that an item is not
+      allowed to appear twice in the same transaction and that items are
+      assumed to be sorted by lexicographical order in a transaction.</p>
+  
+  <table align="center" border="1" width="316">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{1, 3}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{2, 3}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>What is the output?</h2>
+  <p>The output of <strong>Opus-Miner</strong> is a set of itemsets that is statistically significant, called self-sufficient itemsets.An itemset is an unordered set of distinct items. The <strong>support
+      of an itemset</strong> is the number of transactions that contain the
+    itemset divided by the total number of transactions. For example, if we consider the five transactions above, the
+    itemset {1, 2} has a support of 60% because it appears in 3
+    transactions out of 5 (it appears in t1, t2
+  and t5). </p>
+  <p>To apply the <strong>OPUS-Miner </strong>algorithm, several parameters must be set by the user:</p>
+  <ul>
+    <li><em>k</em>: This is the main parameter. It is the number of itemsets that the user wants to find. For example, if <em>k = 3, </em>OPUS-Miner will return the top-3 itemsets that have the highest value according to some interestingness measure. </li>
+    <li><em>check independency (filter): </em>if this option is set to true, itemsets that are not independently productive (statistically significant) when compared to their subsets will be eliminated. In simple words, it means that an itemset should be different from its subsets (not just be frequent because of its subsets).</li>
+    <li><em>search by lift</em>: if this parameter is set to true, the lift will be used as interestingness measure to select patterns, otherwise it will be the leverage measure that will be used. See the paper by Webb et al. for a description of these measures.</li>
+    <li><em>check redundancy:</em> if set to true, itemsets that are redundant will be eliminated. In the paper of Webb, an itemset is called redundant if it has a subset that has the same support. If you are familiar with the terminology of itemset mining, this is the same thing as saying that only the <em>generator </em><em>itemsets </em>will be kept.</li>
+    <li><em>correction for multicompare</em>: if set to true, the algorithm will make some adjustements to the alpha values used for statistical tests to account for the multiple statistical tests performed for large itemsets. If set to false, no correction will be done.</li>
+    <li><em>Print closure?</em>: This is an advanced parameter. If set to true, it will print the closure (smallest closed itemset that is a superset of)  each itemset that is output. If set to false, nothing will be printed.</li>
+  </ul>
+  <p>For example, if we run Opus-Miner on the file <strong>contextOpusMiner.txt</strong> provided in the SPMF distribution, with <em>k = 3, check independency = true, search by lift = true, check redundancy = true, correction for multicompare = true</em> and<em> print closure = false</em>, the following three <strong>self-sufficient itemsets </strong>are found:</p>
+
+<table align="center" border="1" width="554">
+  <tbody>
+    <tr>
+      <td width="181"><strong>Self-sufficient itemsets </strong></td>
+      <td width="68"><strong>Support</strong></td>
+      <td width="47"><strong>Lift</strong></td>
+      <td width="230"><strong>P value </strong></td>
+    </tr>
+    <tr>
+      <td>{1, 4}</td>
+      <td>23</td>
+      <td>1.6</td>
+      <td>1.3223990575406282E-6</td>
+    </tr>
+    <tr>
+      <td>{1, 3}</td>
+      <td>69</td>
+      <td>1.25</td>
+      <td>9.051081854861051E-12</td>
+    </tr>
+    <tr>
+      <td>{2, 5}</td>
+      <td>92</td>
+      <td>1.24</td>
+      <td>1.0993086787649736E-24</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>The first line indicates that the itemset	{1, 4} appeared in 23 transactions and has a lift of 1.6. The lift measure is interpreted as follows. A lift &gt; 1 means a positive correlation, = 1 means no correlation, while &lt; 1 means a negative correlation. Moreover, this iitemset was found to be statistically significant for a P-value of 1.3223990575406282E-6. </p>
+  <p>The other lines follow the same format. </p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> is defined as follows. It is a text file. An item is
+    represented by a positive integer. A transaction is a line in the text
+    file. In each line (transaction), items are separated by a single
+    space. It is assumed that all items within a same transaction (line)
+    are sorted according to a total order (e.g. ascending order) and that
+    no item can appear twice within the same line.</p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>1 2 4 5<br>
+    1 3<br>
+    1 2 3 5<br>
+    2 3 5<br>
+    1 2 3 5</p>
+  <p>Note that it is also possible to use <strong>the ARFF format</strong> as an alternative to the default input format. The specification of the
+    ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+    Most features of the ARFF format are supported except that (1) the
+    character "=" is forbidden and (2) escape characters are not
+    considered. Note that when the ARFF format is used, the performance of
+    the data mining algorithms will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It is a text file, where each line represents an <strong> itemset</strong>. On each line, the items of the itemset are first
+    listed. Each item is represented by an integer and it is followed by a
+    single space. After, all the items, the keyword "#SUP:" appears, which
+    is followed by an integer indicating the support of the itemset,
+    expressed as a number of transactions. Then, if the lift measure is used, the keyword #LIFT: appears followed by a double value indicating the lift values. Otherwise, the keyword #LEVERAGE: is used followed by a double value indicating the leverage. Then the keyword #PVALUE: appears followed by a double value indicating the P value. If the user sets <em>print-closure = true, </em>then the keyword #CLOSURE:   appears followed by the corresponding closed itemset. </p>
+  <p>For example, we show below the
+  output file for this example. </p>
+  <p>1 4 #SUP: 23 #LIFT: 1.6666666 #PVALUE: 1.3223990575406282E-6<br>
+    1 3 #SUP: 69 #LIFT: 1.25 #PVALUE: 9.051081854861051E-12<br>
+  2 5 #SUP: 92 #LIFT: 1.2499999 #PVALUE: 1.0993086787649736E-24</p>
+  <p>The output file here consists of three lines representing the three itemsets that have been found above. </p>
+  <p>Note that if the ARFF format is used as input instead of the
+    default input format, the output format will be the same except that
+    items will be represented by strings instead of integers.</p>
+
+  <h2>Optional feature: giving names to items</h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database "<strong>contextInverse.txt</strong>". Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+      @ITEM=1=apple<br>
+      @ITEM=2=orange<br>
+      @ITEM=3=tomato<br>
+      @ITEM=4=milk<br>
+      @ITEM=5=bread<br>
+      1 2 4 5<br>
+      1 3<br>
+      1 2 3 5<br>
+      2 3 <br>
+  1 2 4 5</p>
+  <p>... (only the first lines are shown above. </p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second line indicates that the item 1 is called "apple". The third line indicates that the item 2 is called "orange". Then the following lines follows the SPMF format.</p>
+  <p>Then, if we apply the algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns:<br>
+      <br>
+      apple milk #SUP: 23 #LIFT: 1.6666666 #PVALUE: 1.3223990575406282E-6<br>
+      apple tomato #SUP: 69 #LIFT: 1.25 #PVALUE: 9.051081854861051E-12<br>
+      orange bread #SUP: 92 #LIFT: 1.2499999 #PVALUE: 1.0993086787649736E-24</p>
+  <p>Note that this feature could be also used from the <strong>source code</strong> of SPMF using the ResultConverter class. However, there is currently no example provided for using it from the source code.</p>
+
+  <h2>Performance</h2>
+  <p><strong>Opus-Miner</strong> is the only algorithm for
+    mining self-sufficient itemsets offered in SPMF.</p>
+
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The<strong> Opus-Miner </strong>algorithm is described in
+    this p aper:</p>
+  <p>Webb, G. I., &amp; Vreeken, J. (2014). Efficient discovery of the most interesting associations. ACM Transactions on Knowledge Discovery from Data (TKDD), 8(3), 15.</p>
+
+
+  <p>For a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

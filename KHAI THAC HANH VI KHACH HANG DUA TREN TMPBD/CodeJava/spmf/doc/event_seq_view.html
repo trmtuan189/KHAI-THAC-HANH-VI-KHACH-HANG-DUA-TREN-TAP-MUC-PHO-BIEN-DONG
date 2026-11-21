@@ -1,0 +1,80 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Open an event sequence file using the SPMF Event Sequence Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View an event sequence file using the SPMF Event Sequence Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><strong>Event sequences </strong>are a type of data used by several data mining algorithms  such as EMMA, TKE, and MINEPI. </p>
+<p>SPMF offers a tool to view the content of an<strong> event sequence</strong> file in SPMF format. This tool is called the <strong>SPMF Event Sequence Viewer</strong>. </p>
+<p>This page explains how to use this tool with an example. </p>
+<h2>How to run this example? </h2>
+<p><strong>If you want to run this example from the</strong> <strong>graphical interface </strong>of SPMF<strong>, </strong>(1)
+      choose the algorithm <strong>&quot;<span class="style1">Open_an_event_sequence_with_event_sequence_viewer</span>&quot;</strong><strong>, </strong> (2) choose the <strong class="style1">contextEMMAWithNames.txt</strong> file as input,   and then (3) click &quot;<strong>run algorithm</strong>&quot; </p>
+<p><img src="eeee_view1.png" alt="graph viewer open" width="816" height="253"></p>
+  <ul>
+    <li><strong>If you want to run this example from the source code of SPMF, run the file <span class="style1">MainTestARFFViewer</span>, which is located in the package <span class="style1">ca.pfv.spmf.tests </span></strong></li>
+    <li><strong>If you want to execute this example from the</strong> <strong>command line interface of SPMF</strong>, then execute this command: <br>
+      <br>
+        <span class="highlight style1"><strong>java -jar spmf.jar run Open_an_event_sequence_with_event_sequence_viewer </strong><strong class="style1">contextEMMAWithNames.txt</strong><strong> </strong></span> <br>
+      <br>
+      in a folder containing <span class="highlight"><strong>spmf.jar</strong></span> and the file <strong><span class="style1"> </span></strong><strong class="style1">contextEMMAWithNames</strong><strong><span class="style1">.txt</span></strong> which is included with SPMF. </li>
+    </ul>
+  <h2>What is displayed?</h2>
+  <p>After running the example, the content of the file will be displayed by the Event Viewer. The picture below shows the user interface of this viewer. The <strong>window A</strong>) is the main window. It displays the event sequence using a table. The table has two rows. The first row indicates the type of events and the second row indicates the timestamps at which each event was observed. For example, in the picture below, the event &quot;apple&quot; was observed at time 1. Then, the event &quot;apple&quot; was observed again at time 2 and time 3. Then, the event orange was observed at time 3, and so on. </p>
+  <p>The EventSequenceViewer also offers two other important features: </p>
+  <ul>
+    <li>By clicking on the button &quot;<strong>View with Timeline Viewer</strong>&quot;, a new window is opened that provides a visual representation of the event sequence as a timeline, presented as <strong>window B)</strong> in the picture below. This window has some menus that let us change the appearance of the timeline and gives us the option to export this visualization as a picture. </li>
+    <li>By clicking on the button &quot;<strong>View item frequency distribution</strong>&quot;, a new window is opened that displays the frequency distribution of the different event types, presented as <strong>window C)</strong> in the picture below. This window provides the feature of exporting the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), as a picture, and this window allows us to change the appearance of the histogram (changing the bar width and sorting the data). </li>
+  </ul>
+  <p><img src="the_events_sequences.png" alt="graph viewer database graph" width="1401" height="950"></p>
+  <h2>What is the input?</h2>
+  <p>The algorithm  takes as input <strong>an event sequence, </strong>as used by algorithm such as <strong>TKE </strong>and <strong>EMMA </strong>. An event sequence is a sequence of events that have timestamps. <br>
+    <br> 
+    The database used in this example is provided  in the text file &quot;<strong class="style1">contextEMMAWithNames</strong><strong><span class="style1">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution. The content of this file is shown below. <br>
+    <br>
+    @CONVERTED_FROM_TEXT<br>
+    @FILETYPE=&quot;Transaction database with timestamps&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br> 
+    @ITEM=1=apple<br> 
+    @ITEM=2=orange<br> 
+    @ITEM=3=tomato<br> 
+    @ITEM=4=milk<br> 
+    1|1<br> 
+    1|2<br> 
+    1 2|3<br> 
+    1|6<br> 
+    1 2|7<br> 
+    3|8<br> 
+    2|9<br> 
+    4|11<br>
+    <br>
+    The format is defined as follows.<br>
+    <br>
+    The first line indicates that it contains text strings for representing events. The second and third lines are optional metadata information indicating the type of file and the source of the data. Then, the following lines  defines the names that are given to the event types. More precisely, the second line starts with the keyword @ITEM= and defines that the <strong>event type 1</strong> will be called <strong>apple</strong>. The third line indicates that event type 2 will be called <strong>orange</strong>. The fourth line indicates that event type 3 will be called <strong>tomato</strong>. And the fifth line indicates that event type 4 will be called <strong>milk</strong>. </p>
+  <p>After that there is the next section, which <strong>describes the events from the sequence</strong>. In that section, an <strong>item (event) </strong>is represented  by a positive integer (1, 2, 3, 4 in this example). And each line is a <strong>transaction (event set)</strong>. In each line  (event set), items are separated by a single space. It is assumed that all  items (events) within a same transaction (line) are sorted according to a total order  (e.g. ascending order) and that no item can appear twice within the same event set.  Each line is optionally followed by the character &quot;|&quot; and then the timestamp of the  event set (line). </p>
+  <p>For instance, the line 1|1 indicates that the event type 1 (which is Apple) was observed at time 1. Similarly, the line 1 2|3 indicates that the event types 1 (which is Apple) and 2 (which is Orange) where both observed at time 3. The other lines follow the same format.<br>
+    <br>
+    <!----------END------>
+  </p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

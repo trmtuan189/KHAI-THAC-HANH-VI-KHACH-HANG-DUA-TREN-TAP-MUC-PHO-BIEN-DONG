@@ -1,0 +1,145 @@
+package bakery.experiment;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
+
+import ca.pfv.spmf.algorithms.frequentpatterns.charm.AlgoCharm_Bitset;
+import ca.pfv.spmf.algorithms.frequentpatterns.neclatclosed.AlgoNEclatClosed;
+import ca.pfv.spmf.input.transaction_database_list_integers.TransactionDatabase;
+
+public class CompareAlgorithms {
+
+    private static final Path DATA_DIRECTORY = Path.of(
+        "D:/KHAI THAC HANH VI KHACH HANG DUA TREN TMPBD/Data"
+    );
+
+    public static void main(String[] args) throws Exception {
+        // Ví dụ tham số: CHARM 0.01 1
+        if (args.length != 3) {
+            throw new IllegalArgumentException(
+                "Nhap 3 tham so: CHARM hoac NECLATCLOSED, minsup, lan chay."
+            );
+        }
+
+        String algorithm = args[0].toUpperCase(Locale.ROOT);
+        double minsup = Double.parseDouble(args[1]);
+        int runNumber = Integer.parseInt(args[2]);
+
+        if (!algorithm.equals("CHARM")
+                && !algorithm.equals("NECLATCLOSED")) {
+            throw new IllegalArgumentException("Ten thuat toan khong hop le.");
+        }
+
+        if (!Double.isFinite(minsup) || minsup <= 0 || minsup > 1) {
+            throw new IllegalArgumentException("Minsup phai lon hon 0 va <= 1.");
+        }
+
+        if (runNumber < 1) {
+            throw new IllegalArgumentException("Lan chay phai tu 1 tro len.");
+        }
+
+        Path input = DATA_DIRECTORY.resolve("BenchmarkDatasets/retail.txt");
+        if (!Files.isRegularFile(input)) {
+            throw new IllegalArgumentException("Khong tim thay: " + input);
+        }
+
+        Path resultDirectory = DATA_DIRECTORY.resolve("ExperimentResults/Retail/minsup_0.5pct");
+        Files.createDirectories(resultDirectory);
+
+        String label = algorithm + "_" + minsup + "_run" + runNumber;
+        Path output = resultDirectory.resolve(label + "_patterns.txt");
+        Path statistics = resultDirectory.resolve(label + "_stats.txt");
+
+        // Bộ nhớ được quan sát là heap đang sử dụng của JVM.
+        MemoryMXBean memory = ManagementFactory.getMemoryMXBean();
+        AtomicLong peakHeap = new AtomicLong(
+            memory.getHeapMemoryUsage().getUsed()
+        );
+        AtomicBoolean sampling = new AtomicBoolean(true);
+
+        // Lấy mẫu khoảng mỗi 5 ms.
+        Thread sampler = new Thread(() -> {
+            while (sampling.get()) {
+                long used = memory.getHeapMemoryUsage().getUsed();
+                peakHeap.accumulateAndGet(used, Math::max);
+
+                try {
+                    Thread.sleep(5);
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        }, "heap-sampler");
+
+        sampler.setDaemon(true);
+        sampler.start();
+
+        long start = System.nanoTime();
+        long end;
+
+        try {
+            runAlgorithm(algorithm, input, output, minsup);
+            end = System.nanoTime();
+        } finally {
+            peakHeap.accumulateAndGet(
+                memory.getHeapMemoryUsage().getUsed(), Math::max
+            );
+            sampling.set(false);
+            sampler.interrupt();
+            sampler.join();
+        }
+
+        double elapsedMs = (end - start) / 1_000_000.0;
+        double peakHeapMiB = peakHeap.get() / (1024.0 * 1024.0);
+
+        // Đếm kết quả sau khi đã kết thúc phép đo thời gian.
+        long patternCount;
+        try (Stream<String> lines = Files.lines(output)) {
+            patternCount = lines
+                .filter(line -> line.contains("#SUP:"))
+                .count();
+        }
+
+        String report = String.format(Locale.ROOT,
+            "Algorithm: %s%n"
+            + "Minsup: %.4f%n"
+            + "Run: %d%n"
+            + "Closed itemsets: %d%n"
+            + "Elapsed time (ms): %.3f%n"
+            + "Sampled peak heap (MiB): %.3f%n",
+            algorithm, minsup, runNumber, patternCount,
+            elapsedMs, peakHeapMiB
+        );
+
+        Files.writeString(statistics, report);
+        System.out.println(report);
+        System.out.println("Patterns: " + output);
+        System.out.println("Statistics: " + statistics);
+    }
+
+    private static void runAlgorithm(
+            String algorithm, Path input, Path output, double minsup)
+            throws Exception {
+
+        if (algorithm.equals("CHARM")) {
+            TransactionDatabase database = new TransactionDatabase();
+            database.loadFile(input.toString());
+
+            AlgoCharm_Bitset charm = new AlgoCharm_Bitset();
+            charm.runAlgorithm(
+                output.toString(), database, minsup, false, 10000
+            );
+        } else {
+            AlgoNEclatClosed neclatClosed = new AlgoNEclatClosed();
+            neclatClosed.runAlgorithm(
+                input.toString(), minsup, output.toString()
+            );
+        }
+    }
+}

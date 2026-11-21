@@ -1,0 +1,154 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Compressing Patterns in Genome Sequences using the HMG Algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style4 {color: #0000FF; font-weight: bold; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<!---------------------- (2) Change the title of the example in the <a> tag: --->
+<h1><a href="documentation.html"> </a> Mining Compressing Patterns in Genome Sequences using the HMG Algorithm (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>HMG algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<p>Two version of the <strong>HMG</strong> algorithm are offered  in SPMF. The version called<strong> HMG-SA</strong> adopts a simulated annealing approach to find patterns, while the <strong>HMG-GA</strong> version utilizes a genetic algorithm. </p>
+<p>To run the example for <strong>HMG-SA</strong>: </p>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the &quot;<span class="highlight style1">HMG-SA</span>&quot; algorithm<strong>, </strong> (2) select the input file <span class="style1">&quot;<span class="style4">AeCa</span>&quot;</span><strong>,</strong> (3) set the
+    output file name (e.g.<span class="highlight"> &quot;</span><span class="style4">output.txt</span><span class="highlight">&quot;</span>) (4), set the number of patterns to find to <span class="highlight style1">2</span>, (5) set the <span class="style4">SPMF output style</span> to <strong>false</strong>, and click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight style1">java -jar spmf.jar run HMG-SA AeCa output.txt 2</span> in a folder containing <span class="highlight">spmf.jar</span> and the input file <span class="style1">&quot;<span class="style4">AeCa</span>&quot;</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong class="style1"><span class="highlight">&quot;</span><span class="style4">MainTestHMG_SA.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong class="style4">ca.pfv.SPMF.tests</strong>.</span> </li>
+  </ul>
+<p>To run the example for <strong>HMG-GA</strong>: </p>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the &quot;<span class="highlight style1">HMG-GA</span>&quot; algorithm<strong>, </strong> (2) select the input file <span class="style1">&quot;<span class="style4">AeCa</span>&quot;</span><strong>,</strong> (3) set the
+    output file name (e.g.<span class="highlight"> &quot;</span><span class="style4">output.txt</span><span class="highlight">&quot;</span>) (4), set the number of generations to <span class="style4"><strong>10 </strong></span>(4), set the number of patterns to find to <span class="style4"><strong>2</strong></span>,(5) set the crossover variant to <span class="style4"><strong>SINGLE</strong></span>, (6) set the mutation operator variant to <span class="style4"><strong>SINGLE</strong></span>, (7) set the <span class="style4">SPMF output style</span> to <strong>false</strong>, and click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+        <span class="highlight style1">java -jar spmf.jar run HMG-GA AeCa output.txt 30 2 SINGLE SINGLE false</span> in a folder containing <span class="highlight">spmf.jar</span> and the input file <span class="style1">&quot;<span class="style4">AeCa</span>&quot;</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong class="style1"><span class="highlight">&quot;</span><span class="style4">MainTestHMG_SA.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong class="style4">ca.pfv.SPMF.tests</strong>.</span></li>
+</ul>
+<h2>What is HMG?</h2>
+<p><strong>HMG </strong> is an algorithm for discovering <strong>compressing
+    sequential patterns</strong> in <strong>genome data</strong>. It was proposed by Nawaz et al. (2025). </p>
+<p>It is designed to find the <strong> patterns </strong>that best describes an input genome database (file).  </p>
+<p>A <strong>sequential pattern (</strong>also called <strong>k-mer) </strong> is  a consecutive subsequence of nucleotides, and the patterns are called &quot;<strong>compressing patterns</strong> &quot; because they are intended to capture the most important characteristics of the database. </p>
+<p>The user can choose the number of patterns to discover and this number will be returned by the algorithm.. </p>
+<p>The <strong>HMG</strong> algorithm uses a heuristic approach to search for the best compressing patterns and two methods are offered called <strong>HMG-GA</strong> (based on a genetic algorithm) and <strong>HMG-SA</strong> (based on simulated annealing).<br>  
+  <br>
+  For the <strong>HMG-GA </strong>method, the user has in addition the possibility of choosing the number of generations (a good default value is <strong>10</strong>), a crossover variant (<strong>SINGLE</strong> OR <strong>CYCLE</strong>) and a mutation variant (<strong>SINGLE</strong> or <strong>SCRAMBLE</strong>) for generating patterns.<br>
+  <br>
+  Besides the user can choose between two output formats:  strings of characters such as  ACGTA or the SPMF format. </p>
+<h2>What is the input of the HMG algorithm?</h2>
+<p>The input is a <strong>genomic sequence</strong>,  represented as a contiguous string of nucleotide characters (A, C, T, G). </p>
+<p>For example: ATAGCAGTAAAGTAACTACCAG, HMG processes this sequence to discover compressing k-mers (short nucleotide subsequences).</p>
+<h2>What is the output of the HMG algorithm?</h2>
+<p>HMG is an algorithm for iteratively discovering k-mers that provide the best compression of the genomic sequence. The core idea is to find a k-mer that appears frequently, replace all its occurrences with a unique code (e.g., a single symbol such as 'X'), and then repeat the process on the newly compressed sequence to find the next most compressing k-mer.<br>
+  For example, if HMG is run on the sequence <strong>ATAGCAGTAAAGTAACTACCAG </strong>with the user setting the required number of patterns to 2, HMG can discover two patterns:</p>
+<table align="center" border="1" width="100%">
+  <tbody>
+    <tr>
+      <td width="220"><strong>Pattern # </strong></td>
+      <td width="220"><strong>Selected k-mer </strong></td>
+      <td width="164"><strong>Support</strong></td>
+      <td width="374"><strong>Updated genome sequeunce</strong></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>TA</td>
+      <td><strong>4</strong></td>
+      <td>AXAGCAGXAAGXACXCCAG</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>CA</td>
+      <td><strong>2</strong></td>
+      <td>AXAGYGXAAGXAXCYG</td>
+    </tr>
+  </tbody>
+</table>
+<p><br>
+The first line represent the pattern TA, and it appears 4 times in the input sequence.<br>
+  The second line is the pattern CA, which occurs 2 times in the input sequence.
+</p>
+<p>Because <strong>HMG</strong> is a <strong>randomized algorithm </strong>applying a heuristic search to find patterns, if it is run multiple times, the output can be different set of patterns, but they should all be good patterns. </p>
+<h2><strong>Explanation of the Process:</strong></h2>
+<p>While selecting the first pattern, HMG analyzes the original sequence and finds that the k-mer <strong>TA</strong> appears 4 times (at positions 2, 7, 13, and 16). It has the highest compression potential. All occurrences of <strong>TA</strong> are replaced with a unique code X. The sequence is now compressed to AXAGCAGXAAGXACXCCAG.<br> 
+  For the next pattern, HMG now analyzes the compressed sequence AXAGCAGXAAGXACXCCAG. In this new context, it finds that the k-mer <strong>CA</strong> appears twice. It is selected and its occurrences are replaced with a code Y, resulting in AXAGYGXAAGXAXCYG.</p>
+<p>The final output would be the list of these discovered k-mers and their support (number of occurrences) within the sequence at the time they were found: </p>
+<p>TA #SUP: 4  <br>
+  CA #SUP: 2</p>
+<p>This output shows that <strong>TA</strong> was the most significant pattern in the original sequence, and <strong>CA</strong> was the most significant pattern remaining after the first compression step. Together, these k-mers efficiently capture the repetitive structures within the genome. </p>
+<h2>Parameters offered only for HMP-GA </h2>
+<p>If using the HMG-GA algorithm, two additional parameter(s) are  </p>
+<ul>
+  <li><strong>number of generations </strong>(integer) : This parameter controls the number of iterations used to refine a pattern before it is finalized. <strong>The suggested default value is 10.</strong> If this value is increased, the algorithm will search more to find potentially better patterns but it will take more time. </li>
+  <li><strong>mutation operator: </strong>Two values can be chosen<strong> (SINGLE </strong>or <strong>SCRAMBLE)</strong>. This parameter determine how the mutation operationsare performed to generate patterns.<strong> A suggested default value is SINGLE.</strong> </li>
+  <li><strong>crossover operator: </strong>Two values can be chosen<strong> (SINGLE </strong>or <strong>CYCLE)</strong>. This parameter determine how the crossover operations are performed to generate patterns. <strong>A suggested default value is SINGLE.</strong></li>
+</ul>
+<h2><strong>Input file format</strong></h2>
+<p>The <strong>default input file format</strong> is a text file containing a sequence of characters. For instance, the file AeCa used in this example contains data like this:<br>
+  <br>
+  GCCGCCCCCATGGTCCATACGGTGTGCGAATACGGCGTGGCCCTCCTTACCCCATCCAGGCCTCTCTACGCCCCACTTGTCTATAGTGCCTTTCACGACCCTGGCCACAAGGTCGATCGCGTACTCCCAGGAGACAGGCTCTAGCCTTCCTCCGAACCTTACGAGGGGCTTTGTCAGCCTCCTCTCGCCTGCTATGTTCCATGGGCTCCATATCCTCTCAGCCTGCGTTCCCCCCCTCACCGAATGGTTGCCCCAGTTTATGGGGCACTCGGGGCTGGGTATCTGTGCGACGTAAACCTCTCTCCAGCTTCCTGTGCCTCTACCCTTCTCCCAGGTCCTCCTTATCGTCTTTACAACCATAGCCTCGGAGATCCAGGGCTCTCCCTCCTCCGCGCTCAGACCCACGTGCTCCTTTGTAAAGTCCGGCTGCTTCACAAGATTCCTCCCATAAGCCTCGTCGACTATCTTATA</p>
+<p>Here only a small portion of the file is displayed. <br>
+  <br>
+Besides, the algorithm also accepts file in the FASTA format (.fasta or .fa). </p>
+<h2><strong>Output file format</strong></h2>
+<p>The <strong>default output file format</strong> is a text file containing a pattern on each line.<br>
+  For instance, in this example, the output file may be:<br>
+  <br>
+  TA #SUP: 4 <br>
+CA #SUP: 2<br>
+<br>
+This indicate that the pattern TA has a support of 4 and the pattern CA has a support of 2.</p>
+<h2><strong>Alternative output  file format</strong></h2>
+<p>There is an <strong>alternative output format that is offered</strong>, which is the SPMF format. It can be activated by setting the parameter <span class="style4">SPMF output style</span> to <strong>true</strong>. </p>
+<p>@CONVERTED_FROM_TEXT<br>
+  @ITEM=65=A<br>
+  @ITEM=67=C<br>
+  @ITEM=84=T<br>
+  84 -1 65 -1 -2 #SUP: 4 <br>
+  67 -1 65 -1 -2 #SUP: 2<br>
+  <br>
+  In this format, the file starts by 
+  @CONVERTED_FROM_TEXT followed by lines that give a numerical code to each nucleotice.</p>
+<p>Such line starts by @ITEM= followed by a code, then '=', and then the nucleotide as a letter.<br>
+  Then the following lines each describe a pattern.<br>
+  A pattern is a list of codes representing nucleotides separated by -1 and ending by -2, and then followed by the keyword #SUP: and then the support of the pattern.<br>
+  <br>
+  For example, 
+  the line 84 -1 65 -1 -2 #SUP: 4 means that the pattern TA has a support of 4. </p>
+<h2>Performance</h2>
+  <p>This is the Java version of <strong>HMG</strong> made by the original authors of HMG. </p>
+  <h2>Where can I get more information about the HMG algorithm?</h2>
+  <p> This is the paper proposing the <strong>HMG</strong> algorithm: </p>
+  <p><em>	Nawaz et al. (2025) Efficient genome sequence compression via the fusion of MDL-based heuristics. Information Fusion Volume 120, August 2025, 103083</em></p>
+
+
+  <p>&nbsp;</p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+	  </div>
+				
+	
+    </body>
+	</html>

@@ -1,0 +1,181 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Convert time series to sequences using the SAX algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Convert time series to sequences using the SAX algorithm (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to  <strong>convert a time series to sequences by applying the SAX algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">Convert_time_series_to_sequence_database_using_SAX</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextSAX.txt&quot;</span></strong>, (3) set the separator to the comma ',' (4) set the number of segment to 3, (5) set the number of symbols to 4, and then (6) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run Convert_time_series_to_sequence_database_using_SAX contextSAX.txt output.txt 3 4 , </span><br>
+    in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>contextSAX</strong>.txt</span>. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>to
+    run respectively <strong>this example</strong><strong>, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestConvertTimeSeriesFiletoSequenceFileWithSAX.java&quot;</span></strong>in
+    the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this algorithm<strong></strong>?</h2>
+<p>Calculating the<strong> SAX of a time series </strong>is a popular and simple way of transforming <strong>time series </strong>to a <strong>symbolic representation</strong>. In other words, SAX is a way of transforming a time series (a sequence of numbers) to a sequence of symbols.</p>
+  <p>This implementation takes a set of one or more time series as input. Then, it transform the time series to their SAX representation.</p>
+  <p>The <strong>SAX algorithm </strong>was proposed by Lin et al. (2007) and is quite popular.</p>
+  <p>The interest of applying the SAX algorithm to time series, is that after obtaining the SAX representation, we can apply traditional symbolic pattern mining algorithms such as <a href="https://www.philippe-fournier-viger.com/dspr-paper5.pdf">sequential pattern mining </a>and sequential rule mining algorithms, also offered in SPMF.</p>
+
+  <h2>What is the input of this algorithm?</h2>
+  <p>The input is one or more time series. A <strong>time series </strong>is a sequence of floating-point decimal numbers (double values). <strong></strong>A time-series can also have a name (a string).</p>
+  <p>Time series are used in many applications. An example of time series is the price of a stock on the stock market over time. Another example is a sequence of temperature readings collected using sensors.</p>
+  <p>For this example, consider the four following <strong>time series</strong>:</p>
+  
+    
+      <table width="414" border="1">
+        <tbody>
+          <tr>
+            <td width="161"><strong>Name</strong></td>
+            <td width="237"><strong>Data points</strong></td>
+          </tr>
+          <tr>
+            <td>ECG1</td>
+            <td>1,2,3,4,5,6,7,8,9,10</td>
+          </tr>
+          <tr>
+            <td>ECG2</td>
+            <td>1.5,2.5,10,9,8,7,6,5</td>
+          </tr>
+          <tr>
+            <td>ECG3</td>
+            <td>-1,-2,-3,-4,-5</td>
+          </tr>
+          <tr>
+            <td>ECG4</td>
+            <td>-2.0,-3.0,-4.0,-5.0,-6.0 </td>
+          </tr>
+        </tbody>
+      </table>
+    
+  
+  <p>This example <strong>time series database </strong>is provided in the file <strong>contextSAX.txt </strong>of the SPMF distribution.</p>
+  <p>In SPMF, to read a time-series file, it is  necessary to indicate the &quot;separator&quot;, which is the character used to separate data points in the input file. In this example, the &quot;separator&quot; is the comma ',' symbol.</p>
+  <p>To calculate the <strong>SAX representation of a time series</strong>, it is  necessary to also provides two additional parameters: a number of segments <em>w</em>, and a number of symbols <em>v</em>. </p>
+
+  <h2>What is the output?</h2>
+  <p>The output is the SAX representation of each time series received as input. For a given time series, the SAX representation is calculated as follows. First, the time series is divided into <em>w</em> segments, and each segments is replaced by the average of its data points. This is called the piecewise approximate aggregation (PAA) of the time series. Then, the value of each segment is replaced by a symbol. The number of symbol and the number of segment is selected by the user.</p>
+  <p>Now, the main question is how the symbols are chosen? The main idea in SAX is to assume that values follow a normal distribution and to choose the symbol to represent various interval of values such that each interval is equally probable under the normal distribution (see the paper of Lin et al. 2007 for a more detailed explanation). </p>
+  <p>For example, in the above example, if the number of segments (data points) is set to 3 data points, and the number of symbols is set to 4, the sax algorithm will create four symbols:</p>
+  
+    <table width="486" border="1">
+      <tbody>
+        <tr>
+          <td width="80">Symbol</td>
+          <td width="390">Interval of values represented by this symbol</td>
+        </tr>
+        <tr>
+          <td>a</td>
+          <td>[-Infinity,-0.9413981789451658]</td>
+        </tr>
+        <tr>
+          <td>b</td>
+          <td>[-0.9413981789451658,2.4642857142857144]</td>
+        </tr>
+        <tr>
+          <td>c</td>
+          <td>[2.4642857142857144,5.869969607516595]</td>
+        </tr>
+        <tr>
+          <td>d</td>
+          <td>[5.869969607516595,Infinity]</td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <p>Using the above symbols, the SAX algorithm generate the following SAX representation of each time series:</p>
+  
+    <table width="558" border="1">
+      <tbody>
+        <tr>
+          <td width="161"><strong>Name</strong></td>
+          <td width="381"><strong>Data points</strong></td>
+        </tr>
+        <tr>
+          <td>ECG1_PAA</td>
+          <td>b, c, d, </td>
+        </tr>
+        <tr>
+          <td>ECG2_PAA</td>
+          <td>c, d, d</td>
+        </tr>
+        <tr>
+          <td>ECG3_PAA</td>
+          <td>a, a, a</td>
+        </tr>
+        <tr>
+          <td>ECG4_PAA</td>
+          <td>a, a, a</td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <p>After obtaining this representation, it is possible to apply traditional pattern mining algorithm on the sequences of symbols. For example, in SPMF, several algorithms are provided for sequential pattern mining and sequential rule mining, which can be applied on sequence of symbols.</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> used by this algorithm is efined
+    as follows. It is a text file.  The text file contains one or more time series. Each time series is represented by two lines in the input file. The first line contains the string &quot;@NAME=&quot; followed by the name of the time series. The second line is a list of data points, where data points are floating-point decimal numbers separated by a separator character (here the ',' symbol). </p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>@NAME=ECG1<br>
+    1,2,3,4,5,6,7,8,9,10<br>
+    @NAME=ECG2<br>
+    1.5,2.5,10,9,8,7,6,5<br>
+    @NAME=ECG3<br>
+    -1,-2,-3,-4,-5<br>
+    @NAME=ECG4<br>
+    -2.0,-3.0,-4.0,-5.0,-6.0</p>
+  <p>Consider the first two lines. It indicates that the first time series name is &quot;ECG1&quot; and that it consits of the data points: 1, 2, 3, 4, 5, 6, 7, 8, 9, and 10. Then, three other time series are provided in the same file, which follows the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is a sequence database containing one or more sequence. It is defined as follows. The first line contains the string &quot;@CONVERTED_FROM_TIME_SERIES&quot; to indicate that this file was obtained by converting some time series to sequences. The following defines the symbols produced by the SAX algorithm. Each line defining a symbol starts with &quot;@ITEM=&quot; and is followed by a symbol name (a positive integer), followed by &quot;=&quot;, followed by the interval of values represented by this symbol. Then, the following lines are the sequences of symbols.  Each sequence is represented by two lines. The first line contains &quot;@NAME=&quot; and is followed by the name of the sequence. The second line is the sequence. A sequence is a list of symbols separated by -1, and ending with a -2.</p>
+  <p>For example, the output of this example is:</p>
+  <p>@CONVERTED_FROM_TIME_SERIES<br>
+    @ITEM=1=[-Infinity,-0.9413981789451658]<br>
+    @ITEM=2=[-0.9413981789451658,2.4642857142857144]<br>
+    @ITEM=3=[2.4642857142857144,5.869969607516595]<br>
+    @ITEM=4=[5.869969607516595,Infinity]<br>
+    @NAME=ECG1<br>
+    2 -1 3 -1 4 -1 -2<br>
+    @NAME=ECG2<br>
+    3 -1 4 -1 4 -1 -2<br>
+    @NAME=ECG3<br>
+    1 -1 1 -1 1 -1 -2<br>
+    @NAME=ECG4<br>
+    1 -1 1 -1 1 -1 -2</p>
+  <p>The first five lines indicates that four symbols are defined called 1, 2, 3, 4, which were called <em>a, b</em>, <em>c</em>, <em>d </em>previously in this example.</p>
+  <p>Then, four sequences are defined.</p>
+  <p>The first sequence is 2, 3, 4, which was previously called<em> b, c, d</em> in this example.</p>
+
+  <h2>Optional parameter</h2>
+  <p>This implementation of SAX offers an optional parameter called &quot;deactivatePAA&quot;. It is this used to directly convert timeseries to their SAX representation without first performing the transformation to the PAA representation. This parameter is optional. It is useful when converting several time series of different lengths to their SAX representation. When this parameter is set to true, the algorithm will preserve the original lengths of the time series rather than converting all of them to the same length. To this use this parameter in the user interface of SPMF, type the value &quot;true&quot;.  For the command line of SPMF, add the value &quot;true&quot; at the end of the line. For example: <span class="highlight">java -jar spmf.jar run Convert_time_series_to_sequence_database_using_SAX contextSAX.txt output.txt 3 4 , true</span></p>
+
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The <strong>SAX representation </strong> is described in the paper of Lin et al. (2007):</p>
+  <p> Lin, J., Keogh, E., Wei, L., Lonardi, S.: Experiencing SAX: a novel symbolic representation of time series. Data Mining and Knowledge Discovery 15, 107–144 (2007)  </p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

@@ -1,0 +1,240 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example:  Mining Irregular High-Utility Itemsets Using the PHM_irregular Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining Irregular High-Utility Itemsets Using the PHM_irregular Algorithm  (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>PHM_irregular algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">PHM_irregular</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">DB_UtilityPerHUIs.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight">output.txt</span>&quot;)
+    (4) set the <strong>minimum utility threshold</strong> to 20 and the<strong> regularity threshold</strong> to 2, respectively and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong> PHM</strong>_irregular DB_UtilityPerHUIs.txt output.txt 20 2</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>DB_UtilityPerHUIs</strong>.txt</span>. </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>to
+    run respectively <strong>PHM_irregular</strong><strong>, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestPHM_irregular.java&quot;</span></strong>in
+    the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is PHM_irregular ?</h2>
+<p><strong>PHM_irregular </strong>is a variation of the PHM algorithm for discovering irregular high utility itemsets in a sequence of transactions (a transaction database) having information about the utility of items. The <strong>PHM</strong> algorithm was proposed by Fournier-Viger et al. (2016). </p>
+  <p>An irregular high utility itemset is an itemset that <strong>does not</strong> periodically appear in a sequence of transaction and that generate a high profit (have a high utility). Discovering irregular high utility itemset  may have many applications such as discovering irregular purchase behaviors of customers of a retail store, which yield a high profit.</p>
+  <p>The <strong>PHM_irregular</strong> algorithm is a variation of the PHM algorithm also offered in SPMF, as the measure of regularity is basically equivalent to the measure of periodicity . </p>
+
+  <h2>What is the input of the PHM_irregular algorithm?</h2>
+  <p>The input is a <strong>transaction database</strong> (a sequence of transactions) and four parameters that are set by the user: </p>
+    <ul>
+      <ul>
+        <li>a minimum utility threshold <em>minutil ( a positive integer</em>)</li>
+        <li>a regularity threshold <em> ( a positive integer)</em> - <strong>note</strong>: this is equivalent to the minper threshold of the PHM algorithm </li>
+      </ul>
+    </ul>
+    <p>Note that two optional parameters are also offered to specify constraints on the minimum and maximum number of items that patterns should contain (positive integers).</p>
+    <p>A <strong>transaction database</strong> is a set of
+      transactions. Let's consider the following
+      database consisting of 7 transactions (t1,t2...t5,t6, t7) and 7 items (1, 2,
+      3, 4, 5, 6, 7). This database is provided in the text file &quot;<strong>DB_utilityPerHUIs.txt</strong>&quot;
+      in the package <strong>ca.pfv.spmf.tests </strong>of the SPMF
+      distribution<strong>.</strong></p>
+    <table align="center" border="1" width="721">
+      <tbody>
+        <tr>
+          <td width="56"><br></td>
+          <td width="156"><strong>Items</strong></td>
+          <td width="190"><strong>Transaction utility</strong></td>
+          <td width="291"><strong>Item utilities for this transaction</strong></td>
+        </tr>
+        <tr>
+          <td><strong>t1</strong></td>
+          <td>{1, 3}</td>
+          <td>6</td>
+          <td>5 1</td>
+        </tr>
+        <tr>
+          <td><strong>t2</strong></td>
+          <td>{5}</td>
+          <td>3</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td><strong>t3</strong></td>
+          <td>{1, 2, 3, 4, 5}</td>
+          <td>25</td>
+          <td>5 10 1 6 3</td>
+        </tr>
+        <tr>
+          <td><strong>t4</strong></td>
+          <td>{2, 3, 4, 5}</td>
+          <td>20</td>
+          <td>8 3 6 3</td>
+        </tr>
+        <tr>
+          <td><strong>t5</strong></td>
+          <td>{1, 3, 4}</td>
+          <td>8</td>
+          <td>5 1 2</td>
+        </tr>
+        <tr>
+          <td><strong>t6</strong></td>
+          <td>{1,3,5}</td>
+          <td>22</td>
+          <td>10 6 6</td>
+        </tr>
+        <tr>
+          <td><strong>t7</strong></td>
+          <td>{2, 3, 5}</td>
+          <td>9</td>
+          <td>4 2 3</td>
+        </tr>
+      </tbody>
+    </table>
+    
+      <p>Each line of the <strong>database</strong> is:</p>
+      <ul>
+        <li> a set of items (the first column of the table), </li>
+        <li>the sum of the utilities (e.g. profit) of these items in this
+          transaction (the second column of the table),</li>
+        <li>the utility of each item for this transaction (e.g. profit
+          generated by this item for this transaction)(the third column of the
+          table).</li>
+      </ul>
+      <p>Note that the value in the second column for each line is the
+        sum of the values in the third column.</p>
+      <p>What are real-life examples of such a database? There are
+        several applications in real life. One application is a customer
+        transaction database. Imagine that each transaction represents the
+        items purchased by a customer on a given day. The first transaction named &quot;<strong>t1</strong>&quot;
+        represents the purchase of items 3, 5, 1, 2, 4 and 6. The amount of money spent for each
+        item is respectively 1 $, 3 $, 5 $, 10 $, 6 $ and 5 $. The total amount
+        of money spent in this transaction is 1 + 3 + 5 + 10 + 6 + 5 = 30 $.</p>
+    
+  
+
+      <h2>What is the output of the algorithm?</h2>
+      <p><strong>PHM_irregular </strong> is an algorithm for discovering <strong>irregular high-utility itemsets</strong>. An itemset is a group of items. The <strong>PHM_irregular</strong> algorithm finds itemsets that irregularly appears  in a sequence of transactions and generate a high profit (have a high utility). To measure if an itemset  is irregular, the algorithm calculates its periods. To explain this in more details, it is necessary to introduce a few definitions.</p>
+  <p>The set of transactions containing an itemset X is denoted as g(X). For example, consider the itemset {1, 3}. The set g({1,3}) is equal to {t1, t3, t5, t6}. In other words, the itemset {1, 3} appears in the transactions t1, t3, t5 and t6. It is also said that these are four occurrences of the itemset {1,3}.</p>
+  <p>Now, to assess the <strong>irregularity (i.e. non periodicity) </strong> of an itemset X, its list of periods is calculated. A <strong>period</strong> is the time in terms of number of transactions between two occurences of an itemset in the database (see the paper for the formal definition). For example, the periods of the itemset {1, 3} are {1,2,2,1,1}. The first period of {1,3} is 1 because {1,3} appears in the first transaction after the creation of the database. The second period of {1,3} is 2 because the itemset appears in transaction t3, which is two transactions after t1. The third period of {1,3} is 2 because the itemset appears in transactions t5, which is two transactions after t3. Then, the fourth period of {1,3} is 1 because the itemset appears in t6, which is one transaction after t5. Finally, the fifth period of {1,3} is 1 because there is one transaction appearing after the last occurrence of {1,3} in the database (in t6).</p>
+  <p>The PHM_irregular algorithms utilize the list of periods of an itemset X to calculate its regularity. The<strong> regularity (also known as  periodicity in PHM) </strong>is the smallest period among the periods of the itemset (<em>note that the first and last periods are excluded from the calculation of the regularity </em>- see the paper for details). </p>
+  <p>The <strong>utility of an
+    itemset in a transaction </strong>is the sum of the utility of its
+    items in the transaction. For example, the utility of the itemset {1 3}
+    in transaction t1 is 5 + 1 = 6 and the utility of {1 3} in transaction
+    t3 is 5 + 1 = 6. The<strong> utility of an itemset in a database</strong> is the sum of its utility in all transactions where it appears. For
+    example, the utility of {13} in the database is the utility of {1 3}
+    in t1 plus the utility of {1 3} in t3,  plus the utility of {1 3} in t5,  plus the utility of {1 3} in t6, for a total of 6 + 6 + 6 + 16= 34. A<strong> high utility itemset</strong> is an itemset such that its utility is no
+    less than <em>min_utility.</em></p>
+  <p>The<strong> PHM_irregular</strong> algorithm finds all the high-utility itemsets that have a regularity that is no less than the <em>regularity </em> threshold. Those itemsets are called <strong>irregular high-utility itemsets<em>.</em></strong></p>
+  <p>For example, if<strong> PHM_irregular</strong> is run on the previous
+    transaction database with a <em>minutil </em> = 20, <em>minper = </em>1, <em>maxper</em> = 3	, <em>minavgper</em> = 1 and <em>maxavgper</em> = 2, the <strong> PHM_irregular </strong>algorithm finds 7 irregular high-utility itemsets.</p>
+
+<table align="center" border="1" width="274">
+  <tbody>
+    <tr>
+      <td width="114"><strong>itemset</strong></td>
+      <td width="69"><strong>utility</strong></td>
+      <td width="69"><strong>regularity ( periodicity) </strong></td>
+    </tr>
+    <tr>
+      <td>{4, 2, 1}</td>
+      <td>21</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{4,2, 1, 5}</td>
+      <td>24</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{4, 2, 1, 5, 3}</td>
+      <td>25</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{4, 2, 1, 3}</td>
+      <td>22</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{4, 1, 3}</td>
+      <td>20</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{1, 5}</td>
+      <td>24</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{1, 5, 3}</td>
+      <td>31</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<h2>How should I interpret the results?</h2>
+<p>Each  irregular high-utility itemset is annotated with its utility (e.g. profit), and its regularity (periodicty). For example, the itemset {1, 5} yield a profit of 24$, has a regularity of 3.</p>
+
+<h2>Input file format</h2>
+<p>The <strong> input file format</strong> used by the algorithm is defined
+    as follows. It is a text file. An item is represented by a positive
+    integer. A transaction is a line in the text file. In each line
+    (transaction), items are separated by a single space. It is assumed
+    that all items within a same transaction (line) are sorted according to
+    a total order (e.g. ascending order) and that no item can appear twice
+    within the same line.</p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>3 1:6:1 5<br>
+    5:3:3<br>
+    3 5 1 2 4:25:1 3 5 10 6<br>
+    3 5 2 4:20:3 3 8 6<br>
+    3 1 4:8:1 5 2<br>
+    3 5 1:22:6 6 10<br>
+    3 5 2:9:2 3 4</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file, where each line represents an irregular itemset. On each
+    line, the items of the itemset are first listed. Each item is
+    represented by an integer and it is followed by a single space. After,
+    all the items, the keyword #UTIL: appears followed by a single space, the utility of the itemset, and a single space. Then, the keyword &quot;#REG:&quot; appears, which is followed by the regularity of the itemset.</p>
+  <p>For example, here is the output file for this example.
+    The first line indicates that the itemset {1, 2, 4} is an irregular high-utility itemset, having a utility of 21$ and a regularity of 4 transactions.</p>
+  <p>4 2 1 #UTIL: 21 #REG: 4<br>
+4 2 1 5 #UTIL: 24 #REG: 4<br>
+4 2 1 5 3 #UTIL: 25 #REG: 4<br>
+4 2 1 3 #UTIL: 22 #REG: 4<br>
+4 1 3 #UTIL: 20 #REG: 3<br>
+1 5 #UTIL: 24 #REG: 3<br>
+1 5 3 #UTIL: 31 #REG: 3</p>
+
+  <h2>Where can I get more information about the <strong>PHM_irregular </strong>and <strong>PHM</strong> algorithm?</h2>
+  <p>This is the article proposing the original PHM algorithm for periodic high utility itemset mining:</p>
+  <p><em>Fournier-Viger, P., Lin, C.W., Duong, Q.-H., Dam, T.-L. (2016). PHM: Mining Periodic High-Utility Itemsets. Proc. 16th Industrial Conference on Data Mining. Springer LNAI 9728, 15 pages.</em></p>
+  <p>The PHM_irregular is a simple variation of the PHM algorithm that has been published in this chapter:</p>
+  <p>Fournier-Viger, P., Wu. Y., Dinh, D.-T., Song, W., Lin, J.C.W. (2021). <strong><a href="Draft_Finding_periodic_high_utility_patterns.pdf">Discovering Periodic High Utility Itemsets in a Discrete Sequence</a></strong>. In the book “Periodic Pattern Mining: Theory, Algorithms and Application”, Springer, to appear.</p>
+  <p>Besides, for a general overview of <strong> high utility itemset mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_high_utility_itemset2019_draft.pdf">survey paper</a>. </p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

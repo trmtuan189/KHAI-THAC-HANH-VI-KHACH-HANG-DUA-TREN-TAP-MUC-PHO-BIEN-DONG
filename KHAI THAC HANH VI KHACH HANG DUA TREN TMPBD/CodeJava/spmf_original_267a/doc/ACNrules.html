@@ -1,0 +1,506 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example:How to train the ACN Classifier to Perform Classification  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<!---------------------- (2) Change the title of the example in the <a> tag: --->
+<h1><a href="documentation.html"> </a>How to train  the ACN Classifier to Perform Classification (<a href="documentation.html">SPMF documentation</a>)</h1>
+<p>This example explains how to run the <strong>ACN algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<h2>What is <strong>ACN</strong>? </h2>
+<p>The <strong>ACN </strong>algorithm is an <strong>algorithm </strong>for <strong>classification, </strong>proposed <strong>in the following paper:</strong></p>
+  
+    <p>G. Kundu, M. M. Islam, S. Munir, and M. F. Bari, An associative classifier with negative rules, in in 2008 11th IEEE International Conference on ComputationalScience and Engineering, July 2008, pp. 369-375.</p>
+  
+  <p> The <strong>ACN algorithm</strong> takes as input a dataset that consists of a set of records, described using   attributes, assumed to be nominal attributes (strings). The goal of <strong>classification</strong> is to guess the missing value of an attribute called the<em> target attribute </em>based on the values for the other attributes. For example, consider  data about customers of a bank. Each record (customer) may be described using various attributes such as <em>age</em>, <em>gender</em>, <em>city</em>, <em>education</em> and <em>steal-money?. </em>Consider that <em>steal-money? </em>is an attribute that indicate whether a customer has stolen some money or not (yes or no). The goal of classification can be to guess whether a customer will steal money (yes or no) given the values of other attributes (the <em>age, gender city </em>and <em>education) </em>of a customer.</p>
+  <p>To do classification, the ACN algorithm first creates a model using training data (records where the target attribute value is known). A model (a <em>classifier</em>) is a set of rules called <em>class association rules. </em>After the model is created, it can be used to guess the missing value of the target attribute for a new record. For instance, using data about previous customers at the bank, it is possible to learn rules that can help to guess whether the new customers will steal money or not. There exists many algorithms for <strong>classication</strong> in the data mining literature. Rule-based classification models such as <strong>ACN </strong>generally can make some good predictions but other models may work better. However, rule-based models have the advantage of being easily interpretable by humans. </p>
+  <p>This is a Java implementation of ACN. It was originally obtained under the GPCMAR license from the LAC library from Padillo et al. (2020), which contained code from the SPMF implementation of Charm. The code of ACN from LAC was cleaned, improved and optimized, and  integrated into SPMF. </p>
+
+  <h2>A) How to train the ACN model to  make a prediction </h2>
+  <h3>How to run this example?</h3>
+  <ul>
+    <ul>
+      <li><strong>This Example </strong> is not available in the
+        graphical user interface of SPMF.</li>
+      <li><strong>If you are using the source code version of SPMF, </strong>launch
+        the file <strong><span class="highlight">&quot;</span><span class="highlight">MainTestACN_single_prediction.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.test</strong></span></li>
+    </ul>
+  </ul>
+  <h3>What is the input?</h3>
+  <p>The input is a <strong>dataset</strong> that contains a set of records described according to some attributes . For instance, in this example, we use a dataset called <strong class="highlight">tennisExtended.txt</strong>. This dataset is provided
+      in the file &quot;<span class="highlight"><strong class="highlight">tennisExtended.txt</strong>.</span>&quot; of the SPMF distribution<strong>. </strong>This dataset defines <strong>7 attributes </strong>(outlook, temp, humid, wind, play, day and moon) and contains <strong>19 instances </strong>(<strong>records</strong>). </p>
+    
+  <ul>
+    
+      <table align="center" border="1" width="100%">
+        <tbody>
+          <tr height="20">
+            <td height="20"><strong>play</strong></td>
+            <td><strong>outlook</strong></td>
+            <td><strong>temp</strong></td>
+            <td><strong>humid</strong></td>
+            <td><strong>wind</strong></td>
+            <td><strong>day</strong></td>
+            <td><strong>moon</strong></td>
+          </tr>
+          <tr height="20">
+            <td height="20">no</td>
+            <td>sunny</td>
+            <td>hot</td>
+            <td>high</td>
+            <td>weak</td>
+            <td>tuesday</td>
+            <td>full</td>
+          </tr>
+          <tr height="20">
+            <td height="20">no</td>
+            <td>sunny</td>
+            <td>hot</td>
+            <td>high</td>
+            <td>strong</td>
+            <td>tuesday</td>
+            <td>small</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>overcast</td>
+            <td>hot</td>
+            <td>high</td>
+            <td>weak</td>
+            <td>tuesday</td>
+            <td>full</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>rainy</td>
+            <td>mild</td>
+            <td>high</td>
+            <td>strong</td>
+            <td>tuesday</td>
+            <td>small</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>rainy</td>
+            <td>cool</td>
+            <td>normal</td>
+            <td>weak</td>
+            <td>monday</td>
+            <td>full</td>
+          </tr>
+          <tr height="20">
+            <td height="20">no</td>
+            <td>rainy</td>
+            <td>cool</td>
+            <td>normal</td>
+            <td>strong</td>
+            <td>monday</td>
+            <td>small</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>overcast</td>
+            <td>cool</td>
+            <td>normal</td>
+            <td>strong</td>
+            <td>monday</td>
+            <td>full</td>
+          </tr>
+          <tr height="20">
+            <td height="20">no</td>
+            <td>sunny</td>
+            <td>mild</td>
+            <td>high</td>
+            <td>weak</td>
+            <td>monday</td>
+            <td>small</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>sunny</td>
+            <td>cool</td>
+            <td>normal</td>
+            <td>weak</td>
+            <td>monday</td>
+            <td>full</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>rainy</td>
+            <td>mild</td>
+            <td>normal</td>
+            <td>weak</td>
+            <td>monday</td>
+            <td>small</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>sunny</td>
+            <td>mild</td>
+            <td>normal</td>
+            <td>strong</td>
+            <td>friday</td>
+            <td>full</td>
+          </tr>
+          <tr height="20">
+            <td height="20">no</td>
+            <td>rainy</td>
+            <td>cool</td>
+            <td>normal</td>
+            <td>strong</td>
+            <td>friday</td>
+            <td>small</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>overcast</td>
+            <td>cool</td>
+            <td>normal</td>
+            <td>strong</td>
+            <td>friday</td>
+            <td>full</td>
+          </tr>
+          <tr height="20">
+            <td height="20">no</td>
+            <td>sunny</td>
+            <td>mild</td>
+            <td>high</td>
+            <td>weak</td>
+            <td>friday</td>
+            <td>small</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>sunny</td>
+            <td>cool</td>
+            <td>normal</td>
+            <td>weak</td>
+            <td>friday</td>
+            <td>full</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>overcast</td>
+            <td>hot</td>
+            <td>high</td>
+            <td>weak</td>
+            <td>friday</td>
+            <td>small</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>rainy</td>
+            <td>mild</td>
+            <td>high</td>
+            <td>strong</td>
+            <td>friday</td>
+            <td>full</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>rainy</td>
+            <td>mild</td>
+            <td>normal</td>
+            <td>weak</td>
+            <td>friday</td>
+            <td>small</td>
+          </tr>
+          <tr height="20">
+            <td height="20">yes</td>
+            <td>sunny</td>
+            <td>mild</td>
+            <td>normal</td>
+            <td>strong</td>
+            <td>tuesday</td>
+            <td>full</td>
+          </tr>
+        </tbody>
+      </table>
+    
+  </ul>
+  <h3>What is the model created by <strong>ACN</strong>?</h3>
+  <p>The ACN algorithm can be used to create a model that can be used to perform classification. The goal is to use that model to guess what is the missing value of  a target attribute for a new record. For example, lets say that there is a new record where the value of the attribute &quot;<strong>play</strong>&quot; is unknown:<br>
+    </p>
+    <table width="100%" border="1" align="center">
+      <tbody>
+
+        <tr height="20">
+          <td height="20"><span class="highlight">????</span></td>
+          <td>rainy</td>
+          <td>mild</td>
+          <td>high</td>
+          <td>strong</td>
+          <td>monday</td>
+          <td>small</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>&nbsp;</p>
+    <p>The goal of classification is to build a model that will be able to predict the value  <span class="highlight">????</span> as either <strong>yes</strong> or <strong>no</strong>. </p>
+    <p>To build a model,  ACN takes as input:</p>
+    <ul>
+      <li>a<strong> training dataset</strong> that is used to build the model.</li>
+      <li><em>minSup</em>: a minimum support threshold (a percentage, represented as a number between 0 and 1)</li>
+      <li><em>minConf: </em>a minimum confidence  (a percentage, represented as a number between 0 and 1)</li>
+      <li><em>minCorr</em>: a minimum correlation threshold ( a value between 0 and 1) </li>
+      <li><em>minAcc</em>: a minimum accuracy threshold ( a value between 0 and 1) </li>
+    </ul>
+    <p>The model created by ACN contains a set of rules. A rule is an implication of the form X ==&gt; Y where Y is a target attribute value (e.g. <strong>yes </strong>or <strong>no</strong>) and X is a set of values from other attributes. For instance, a rule {<strong>mild,normal</strong>} ==&gt; {<strong>yes</strong>} would indicate that if a record contains the values {<strong>mild</strong>} and {<strong>normal</strong>} then it is likely to have the value <strong>yes </strong>for the attribute <strong>play</strong>. The ACN algorithm can also create some <strong>negative rules </strong>such<strong> {NOT mild, normal} ==&gt; {no}.</strong> This rule indicates that if <strong>{mild</strong>} does <strong>not</strong> appear and <strong>{normal}</strong> appears in a record then the value of the attribute <em>play</em> is likely to be <strong>no</strong>. </p>
+    <p>To select a good set of rules to build a model, ACN relies on a few measures called the <strong>support, confidence</strong> and the <strong>Pearson correlation</strong>.</p>
+    <p>The <strong>support of a rule</strong> X ==&gt; Y means how many records of the dataset contains the values X and Y together, divided by the total number of records.. For example, the <strong>support</strong> of the rule {<strong>mild,normal</strong>} ==&gt; {<strong>yes</strong>} is 4/19 because values {mild,normal,yes} appear in 4 records and there is a total of 19 records. </p>
+    <p>The <strong>confidence</strong> of a rule X==&gt; Y is how many records of the dataset contains the values X and Y together, divided by the number of records that contains the values of X. For example, the <strong>confidence</strong> of the rule {<strong>mild,normal</strong>} ==&gt; {<strong>yes</strong>} is 4/4 because values {mild,normal,yes} appear in 4 records and there is 4 records that contain {mild,normal}. </p>
+    <p>The <strong>Pearson correlation</strong> is a measure of how X and Y are correlated for a rule X ==&gt; Y. A higher value means a higher correlation. For a definition, please see the original research paper. </p>
+    <p>The <strong>accuracy </strong>of a rule of a rule X ==&gt; Y for prediction is the number of good predictions that can be made using this rule on some records divided by the number of those records. </p>
+    <p>By applying the <strong>ACN</strong> algorithm, a<strong> model is generated</strong> containing a set of rules where each rule has a support that is no less than <em>minSup</em>,  a confidence that is no less than <em>minConf</em> , a correlation that is no less than <em>minCorr</em> and an accuracy that is no less than <em>minAcc</em>. In this example, the parameters are set as <em>minSup</em> = 0.1, <em>minConf </em>= 0.8, <em>minCor</em> = 0.2, <em>minAcc </em>= 0.2 and the following rules are obtained </p>
+  
+    
+      <p>sunny high ==&gt; no #SUP: 4 #CONF: 1.0 #PEARSON: 0.7601169500660921<br>
+        sunny high weak ==&gt; no #SUP: 3 #CONF: 1.0 #PEARSON: 0.6373774391990981<br>
+        sunny high small ==&gt; no #SUP: 3 #CONF: 1.0 #PEARSON: 0.6373774391990981<br>
+        sunny small ==&gt; no #SUP: 3 #CONF: 1.0 #PEARSON: 0.6373774391990981<br>
+        -high full ==&gt; yes #SUP: 7 #CONF: 1.0 #PEARSON: 0.5188745216627708<br>
+        normal full ==&gt; yes #SUP: 7 #CONF: 1.0 #PEARSON: 0.5188745216627708<br>
+        rainy cool normal strong small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny mild high weak small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        rainy cool normal strong ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        rainy cool normal small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        rainy cool strong small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        rainy normal strong small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny hot high tuesday ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny mild high weak ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny mild high small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny mild weak small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny high weak small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        cool normal strong small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        mild high weak small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        rainy cool strong ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        rainy cool small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        rainy normal strong ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny hot high ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny hot tuesday ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny mild high ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny mild weak ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny mild small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny high tuesday ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny weak small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        cool normal small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        cool strong small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        mild high weak ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        normal strong small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        sunny hot ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        cool small ==&gt; no #SUP: 2 #CONF: 1.0 #PEARSON: 0.5048781642974014<br>
+        -sunny weak ==&gt; yes #SUP: 5 #CONF: 1.0 #PEARSON: 0.405998971470575<br>
+        cool normal full ==&gt; yes #SUP: 5 #CONF: 1.0 #PEARSON: 0.405998971470575<br>
+        cool full ==&gt; yes #SUP: 5 #CONF: 1.0 #PEARSON: 0.405998971470575<br>
+        normal weak ==&gt; yes #SUP: 5 #CONF: 1.0 #PEARSON: 0.405998971470575<br>
+        strong full ==&gt; yes #SUP: 5 #CONF: 1.0 #PEARSON: 0.405998971470575<br>
+        -sunny mild ==&gt; yes #SUP: 4 #CONF: 1.0 #PEARSON: 0.3508232077228117<br>
+        DEFAULT ==&gt; yes      </p>
+    
+    <p>where each line is a rule. The keywords #SUP:, #CONF:, and #PEARSON: are used to respectively indicate the support, confidence and correlation of a rule.</p>
+    <p>The last line DEFAULT ==&gt; yes indicate that by default the class value is assumed to be &quot;yes&quot; if no rules can be used to make a prediction. </p>
+    <p>Using the trained model, the ACN algorithm can make a prediction for the record:  </p>
+    <table width="100%"border="1" align="center">
+      <tbody>
+        <tr height="20">
+          <td height="20"><span class="highlight">????</span></td>
+          <td>rainy</td>
+          <td>mild</td>
+          <td>high</td>
+          <td>strong</td>
+          <td>monday</td>
+          <td>small</td>
+        </tr>
+      </tbody>
+        </table>
+    <p>The prediction is: <span class="highlight">yes</span></p>
+  
+    <h3>Optional feature: saving a model to a file using serialization to load it again into memory later </h3>
+    <p> Training is generally really fast. But if you want to save a trained model to a file and load it in memory later, it is possible. Saving the model done by uncommenting the following lines of code in the example:</p>
+    
+      <p>classifier.saveTrainedClassifierToFile(&quot;classifier.ser&quot;); // Save the model the a file</p>
+    
+    <p> Loading a saved model is done using the following lines of code in the example:</p>
+    
+      <p>classifier = Classifier.loadTrainedClassifierToFile(&quot;classifier.ser&quot;); </p>
+    
+  
+      <h3>Optional feature: saving the model as a set of rules into a text file (for the purpose of analysis)</h3>
+      <p>If you want to see the rules of the trained model, you may save them to a text file by uncommenting the following code in the example:</p>
+    
+      <p>String rulesPath = &quot;rulesPath.txt&quot;<br>
+      ((RuleClassifier)classifier).writeRulesToFileSPMFFormatAsStrings(rulesPath,dataset); </p>
+    
+    <p>where <strong> rulesPath.txt</strong> is the output file path and dataset is the training dataset.	</p>
+    <p>Note that rules saves in this format cannot be loaded back in memory. If you want to save and load a model in memory, you should save rules using serialization (see above) instead.</p>
+  
+    <h3>Input format (default) </h3>
+    <p>A few input file formats are supported by this algorithm. The first one is a text file such as the dataset &quot;<strong class="highlight">tennisExtended.txt</strong>.&quot; used in this example:</p>
+    
+      <p>play outlook temp humid wind day moon<br>
+        no sunny hot high weak tuesday full<br>
+        no sunny hot high strong tuesday small<br>
+        yes overcast hot high weak tuesday full<br>
+        yes rainy mild high strong tuesday small<br>
+        yes rainy cool normal weak monday full<br>
+        no rainy cool normal strong monday small<br>
+        yes overcast cool normal strong monday full<br>
+        no sunny mild high weak monday small<br>
+        yes sunny cool normal weak monday full<br>
+        yes rainy mild normal weak monday small<br>
+        yes sunny mild normal strong friday full<br>
+        no rainy cool normal strong friday small<br>
+        yes overcast cool normal strong friday full<br>
+        no sunny mild high weak friday small<br>
+        yes sunny cool normal weak friday full<br>
+        yes overcast hot high weak friday small<br>
+        yes rainy mild high strong friday full<br>
+        yes rainy mild normal weak friday small<br>
+        yes sunny mild normal strong tuesday full</p>
+    
+    <p>The first line indicates the names of the attributes, each separated by a space. Then each of the following   lines is a record where attribute values are separated by spaces. There are 19 records. </p>
+  
+    <h3>Alternative input format (ARFF) </h3>
+    <p>It is also possible to use a dataset encoded using <strong>the ARFF format</strong> as an alternative to the default dataset format. The specification of the
+    ARFF format can be found <a rel="nofollow" href="http://weka.wikispaces.com/ARFF+%28stable+version%29">here</a>.
+    Most features of the ARFF format are supported except that all attribute values are treated as nominal values. This is due to the design of ACN, which is only defined for handling nominal values. If numerical values are in the data, they will be treated as nominal values (strings). To load a file using the ARFF format, the following lines of code can be used in the example:</p>
+    
+      <p>String datasetPath = fileToPath(&quot;weather-train.arff&quot;);<br>
+        ARFFDataset dataset = new ARFFDataset(datasetPath, targetClassName); </p>
+    
+    <p>Using these lines, the dataset<span class="highlight"> weather-train.aff </span>will be used, which contains the following content:</p>
+    
+      <p>@relation weather.tennis</p>
+      <p>@attribute outlook {sunny,overcast,rainy}<br>
+        @attribute temperature {hot,mild,cool}<br>
+        @attribute humidity {high,normal}<br>
+        @attribute windy {strong,weak}<br>
+        @attribute play {yes,no}</p>
+      <p>@data<br>
+        sunny,hot,high,weak,no<br>
+        sunny,hot,high,strong,no<br>
+        overcast,hot,high,weak,yes<br>
+        rainy,mild,high,weak,yes<br>
+        rainy,cool,normal,weak,yes<br>
+        rainy,cool,normal,strong,no<br>
+        overcast,cool,normal,strong,yes<br>
+        sunny,mild,high,weak,no<br>
+        sunny,cool,normal,weak,yes<br>
+        rainy,mild,normal,weak,yes<br>
+        sunny,mild,normal,strong,yes</p>
+    
+    <p>This dataset defines 5 attributes and 11 records (note that it is slightly different from the file <span class="highlight">tennisExtended.txt </span>in the above example).  </p>
+  
+    <h3>Alternative input format (CSV)</h3>
+    <p>It is also possible to load a dataset encoded in <strong>the CSV format</strong> as an alternative to the default format and ARFF format. The CSV format is a file where values and attribute values are separated by commas. To load a file encoded according to the CSV format, the following lines of code can be used in the example:</p>
+    
+      <p>String datasetPath = fileToPath(&quot;tennisExtendedCSV.txt&quot;);<br>
+        CSVDataset dataset = new CSVDataset(datasetPath, targetClassName); </p>
+    
+    <p>Using these lines, the dataset<span class="highlight"> tennisExtendedCSV.txt </span>can be read, which contains the following content:</p>
+    
+      <p>play,outlook,temp,humid,wind,day,moon<br>
+        no,sunny,hot,high,weak,tuesday,full<br>
+        no,sunny,hot,high,strong,tuesday,small<br>
+        yes,overcast,hot,high,weak,tuesday,full<br>
+        yes,rainy,mild,high,strong,tuesday,small<br>
+        yes,rainy,cool,normal,weak,monday,full<br>
+        no,rainy,cool,normal,strong,monday,small<br>
+        yes,overcast,cool,normal,strong,monday,full<br>
+        no,sunny,mild,high,weak,monday,small<br>
+        yes,sunny,cool,normal,weak,monday,full<br>
+        yes,rainy,mild,normal,weak,monday,small<br>
+        yes,sunny,mild,normal,strong,friday,full<br>
+        no,rainy,cool,normal,strong,friday,small<br>
+        yes,overcast,cool,normal,strong,friday,full<br>
+        no,sunny,mild,high,weak,friday,small<br>
+        yes,sunny,cool,normal,weak,friday,full<br>
+        yes,overcast,hot,high,weak,friday,small<br>
+        yes,rainy,mild,high,strong,friday,full<br>
+        yes,rainy,mild,normal,weak,friday,small<br>
+        yes,sunny,mild,normal,strong,tuesday,full </p>
+    
+    <p>The first line indicates the names of the attributes, each separated by a comma. Then each of the following   lines is a record where attribute values are separated by commas. There are 19 records. </p>
+  
+
+    <h2><strong>B) How to run batch experiments to test the ACN model for classification</strong></h2>
+    <p>In the SPMF library there is some code to automatically run experiments with ACN on a dataset. </p>
+    <h3>How to run this example?</h3>
+    <ul>
+    <li><strong>This Example </strong> is not available in the
+      graphical user interface of SPMF.</li>
+    <li><strong>If you are using the source code version of SPMF, </strong>launch
+      the file <strong><span class="highlight">&quot;</span><span class="highlight">MainTestACN_batch_holdout.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.test</strong></span></li>
+  </ul>
+  <h3>What is this example about?</h3>
+  <p>In this example, the dataset <span class="highlight">tennisExtended.txt</span> from the previous example is read into memory. It is then split into two parts : a training dataset (the first 50% of the records) and a testing dataset (the last 50% of the records).</p>
+    <p>The ACN algorithm is then applied to build a model using the training dataset for the target attribute <strong>play</strong>. </p>
+    <p>Then, the model is applied to guess the values of the attribute <strong>play</strong> for all records in the test dataset. Statistics are then calculated in terms of various <strong>measures</strong> for evaluating a classifier and the results are presented in the console. The results have the following format (but are actually slightly different) </p>
+    <p>=== MODEL TRAINING RESULTS ===<br>
+      #NAME:		ACN<br>
+      #RULECOUNT:	75 <span class="highlight">the number of rules in the model </span><br>
+      #TIMEms:	150 <span class="highlight">the time for training the model </span><span class="highlight"> (ms)</span><br>
+    #MEMORYmb:	10<span class="highlight"> the memory used for training the model  (MB)</span></p>
+    
+      <p>==== CLASSIFICATION RESULTS ON TRAINING DATA =====<br>
+        #NAME:		ACN<br>
+        #ACCURACY:	0.7778 <span class="highlight">accuracy of the model on training data</span><br>
+        #RECALL:	0.8 <span class="highlight">recall of the model on training data</span>  <span class="highlight"> </span><br>
+        #PRECISION:	0.8333  <span class="highlight">precision of the model on training data</span><br>
+        #KAPPA:	0.5714   <span class="highlight">Kappa Score  of the model on the training  data </span><br>
+        #FMICRO:	0.778 <span class="highlight">The F1  measure (micro) of the model on the training  data </span><br>
+        #FMACRO:	0.775 <span class="highlight">The F1  measure (macro of the model on the training  data </span><br>
+        #TIMEms:	1 <span class="highlight">the time for making predictions using the training data (ms)</span><br>
+        #MEMORYmb:	10 <span class="highlight">the memory usage for making predictions using the training data (MB)</span><br>
+        #NOPREDICTION:	0.0 <span class="highlight">the percentage of records for which no prediction was made for the training data</span></p>
+      <p>==== CLASSIFICATION RESULTS ON TESTING DATA =====<br>
+        #NAME:		ACN<br>
+        #ACCURACY:	1 <span class="highlight">accuracy of the model on the testing data </span><br>
+        #RECALL:	1  <span class="highlight">recall of the model on the testing  data </span><br>
+        #PRECISION:	1  <span class="highlight">precision of the model on the testing  data </span><br>
+        #KAPPA:	1 <span class="highlight">Kappa Score  of the model on the testing  data </span><br>
+        #FMICRO:	1 <span class="highlight">The F1  measure (micro) of the model on the testing  data </span><br>
+        #FMACRO:	1 <span class="highlight">The F1  measure (macro) of the model on the testing  data </span><br>
+        #TIMEms:	0<span class="highlight"> the time for making predictions using the testing data (ms)</span><br>
+        #MEMORYmb:	10 <span class="highlight">the memory usage for making predictions using the testing data (MB)</span><br>
+        #NOPREDICTION:	0.0 <span class="highlight">the percentage of records for which no prediction was made for the testing data </span>
+        <!-------------------  (5)  Do not change the following part -------------------->
+        <!------------------------------------------------------------------------------->
+</p>
+    
+    <p>These measures are commonly used for evaluating classification models (classifiers). </p>
+  
+    <h3>Optional feature: Using K-Fold Cross validation </h3>
+    <p>The above example has shown how to split a dataset into two parts (training and testing) to evaluate a classifier. This approach called <strong>holdout </strong>is useful. However, a problem is that only part of the data is used for training (e.g. 50%) and only part of the data (e.g. 50%) is used for testing. To be able to use all the data for training and all the data for testing, there is an alternative way of testing a classifier, which is called <strong>k-fold cross-validation. </strong>To use k-fold cross-validation, the user must set a parameter <strong>k</strong> (a positive integer) indicating the number of folds (parts). For example, lets say that a dataset has 100 records and that k = 5. Then the dataset will be divided into 5 parts, each containing 20 records. Then, to evaluate the classifier, five experiments will be done:</p>
+  
+  <ul>
+    <li>Records 1 to 20 are used for training, and the other 80 records are used for testing</li>
+    <li>Records 21 to 40 are used for training, and the other 80 records are used for testing</li>
+    <li>Records 41 to 60 are used for training, and the other 80 records are used for testing</li>
+    <li>Records 61 to 80 are used for training, and the other 80 records are used for testing</li>
+    <li>Records 81 to 100 are used for training, and the other 80 records are used for testing   </li>
+  </ul>
+  
+    <p>Then, the average of the results are presented to the user for the five experiments.</p>
+    <p>To try  <strong>k-fold cross-validation</strong> instead of <strong>holdout</strong>, you may run the example <strong><span class="highlight">&quot;</span><span class="highlight">MainTestACN_batch_kfold.java</span><span class="highlight">&quot;</span></strong> in the package <strong class="highlight">ca.pfv.spmf.test</strong> of the SPMF distribution</p>
+  
+
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+				
+	
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

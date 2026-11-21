@@ -1,0 +1,76 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example:  Calculate Statistics for a Time-Interval Sequence Database   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+                <!----------START------>
+                <h1>Calculate Statistics for a Time-Interval  Sequence Database (<a href="documentation.html">SPMF documentation</a>)</h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+                <p>This example explains how to <strong> calculate statistics for a time-interval sequence database</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+                <!--------------(4) Insert the example here:------------->
+                <h2>How to run this example? </h2>
+                <ul>
+                  <li><strong>If you are using the graphical interface, </strong>(1)
+                    choose the <strong>&quot;<span class="highlight style1">Calculate_stats_for_an_interval_sequence_database</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the input file <span class="style1"><strong>test.csv</strong></span> (3) click &quot;<span class="style1">Run algorithm</span>&quot;.</li>
+                  <li><strong>If you want to execute this example from the command line</strong>,
+                    then execute this command: <br>
+        <span class="style1"><strong>java -jar spmf.jar run Calculate_stats_for_an_interval_sequence_database test.csv no_output_file</strong></span> in a folder containing <span class="highlight">spmf.jar</span> and the input file <span class="style1"><strong>test.csv</strong></span>.</li>
+                  <li><strong>If you are using the source code version of SPMF, </strong>launch
+                    the file <strong><span class="highlight">&quot;</span><span class="style1">MainTestStatsIntervalSeqDatabase.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+                </ul>
+                <h2>What is this tool?</h2>
+                <p>This tool is a tool for generating statistics about a time-interval sequence
+                  database, as used by algorithms such as FastTIRP and VertTIRP.</p>
+                <h2>What is the input?</h2>
+                <p>The input is a sequence database. </p>
+                <p>A time-interval sequence database is a set of sequences, where each sequence contains multiple events. Each event is represented by a time interval, that is a start time and an end time. In other words, each event has a duration.</p>
+                <p>For example, here is a picture of a <strong>time interval sequence database </strong>containing three sequences, here called S1, S2 and S3:.</p>
+                <p><img src="timeintervalseqdb.png" alt="time interval sequence database" width="775" height="286"> </p>
+                <p>The first sequence (S1) indicates that an event of type C started at time 8 and ended at time 11, that an event of type A started at time 8 and ended at time 12, and an event of type B started at time 10 and ended at time 12. </p>
+                <p>The second sequence (S2) indicates that an event of type C started at time 8 and ended at time 12, that an event of type A started at time 10 and ended at time 16, and an event of type B started at time 15 and ended at time 18. </p>
+                <p>The third sequence (S3) indicates that an event of type C started at time 10 and ended at time 16, that an event of type A started at time 15 and ended at time 19,  an event of type B started at time 14 and ended at time 16, and another event of type B started at time 14 and ended at time 19.</p>
+                <p>Time interval sequence databases can be used inmany applications. For example, it can be used to encode data about daily activities (A = having a meeting, B = making a phone call, C = eating).</p>
+                <p>The above example is provided in the file <strong>test.csv</strong> of the SPMF distribution. The content is as follows:<br>
+                    <br>
+                  8,12,1;10,12,2;8,11,3;<br>
+                  8,12,3;10,16,1;15,18,2;<br>
+                  10,16,3;14,19,2;15,19,1;14,16,2;</p>
+                <p>In this format, each <strong>event type</strong> is an integer (A = 1, B = 2, C =3).</p>
+                <p>Then, each line is a <strong>sequence.</strong> This file has three lines and thus three sequences. <br>
+                    <br>
+                  In a sequence (line), each <strong>event</strong> is represented using the format X,Y,Z; where X is the start time, Y is the end time, and Z is the event type.</p>
+                <p>For instance, the first line indicates that an event of type 1 (which was called A in the above example) has started at time 8 and ended at time 12, that an event of type 2 (which was called B in the above example) started at time 10 and ended at time 12, and that an event of type 3 (called C in the above example) started at time 8 and ended at time 11. The other lines follow the same format. </p>
+                <h2>What is the output?</h2>
+                <p>The output is statistics about the  database. For example,
+                  if we use the tool on the previous database given as example,
+                  we get the following statistics:</p>
+                <p><span class="style1">=============  Interval sequence database stats- STATS =============<br>
+                  Dataset: C:\Users\Phil\Desktop\test_files\test.csv<br>
+                  Number of sequences: 3<br>
+                  Number of distinct event types: 3<br>
+                  Number of time intervals: 9<br>
+                  Average duration of time intervals: 3.9 standard deviation: 1.374772708486752 variance: 1.8900000000000001<br>
+                  Average number of time intervals per sequence: 3.0<br>
+                  =============================================================</span>
+                    <!----------END------>
+                </p>
+                <div class="footer">
+                  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+                  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+                </div>
+			  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

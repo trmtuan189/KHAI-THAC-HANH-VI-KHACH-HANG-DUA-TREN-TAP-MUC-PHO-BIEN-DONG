@@ -1,0 +1,71 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View a numeric cost sequence database file with the Cost Sequence Database Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View a numeric cost sequence database file with the Cost Sequence Database Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><strong>Sequence databases with numeric cost information </strong>are a type of data taken as input by several data mining algorithms  offered in SPMF such as<strong> CEPN</strong>.</p>
+<p>SPMF offers a tool to view the content of a <strong>sequence database with numeric cost information</strong>. This tool is called the <strong>SPMF Cost Sequence Database Viewer</strong>. </p>
+<p>This page explains how to use this tool with an example. </p>
+<h2>How to run this example? </h2>
+<p><strong>If you want to run this example from the</strong> <strong>graphical interface of SPMF, </strong>(1)
+      choose the algorithm <strong>&quot;<span class="style1">Open_sequence_database_cost_numeric_utility_file_with_viewer</span>&quot;</strong><strong>, </strong> (2) choose the <strong class="style1">example_CEPN.txt</strong> file as input,   and then (3) click &quot;<strong>run algorithm</strong>&quot; . </p>
+<p align="center"><img src="window_of_cost_view.png" alt="graph viewer open" width="801" height="231"></p>
+  <ul>
+    <li><strong>If you want to run this example from the source code of SPMF, run the file <span class="style1">MainTestSequenceCostUtilityNumericViewer</span>, which is located in the package <span class="style1">ca.pfv.spmf.tests </span></strong></li>
+    <li><strong>If you want to execute this example from the</strong> <strong>command line interface of SPMF</strong>, then execute this command: <br>
+      <br>
+        <span class="highlight style1"><strong>java -jar spmf.jar run Open_sequence_database_cost_numeric_utility_file_with_viewer </strong><strong class="style1">example_CEPN.txt</strong><strong> </strong></span> <br>
+      <br>
+      in a folder containing <span class="style1"><strong>spmf.jar</strong></span> and the file <strong><span class="style1"> </span></strong><strong class="style1">example_CEPN</strong><strong><span class="style1">.txt</span></strong> which is included with SPMF. </li>
+    </ul>
+  <h2>What is displayed?</h2>
+  <p>After running the example, the content of the file will be displayed by the tool. The picture below shows the user interface of this viewer. </p>
+  <p>The <strong>window A</strong>) show in the picture below is the main window. It displays the cost sequence database using a table. The table has five rows in this example. Each row is a sequence from the sequence database. </p>
+  <p>Take the first row as example. The cell in the first column of the first row indicates that the ID of this sequence is 0. The cell in the second column indicates that the first itemset of that sequence contains the item 1 with a cost value of 20. The cell in the third column indicates that the second itemset of that sequence contains the item 2 with a cost value of 40. The fourth cell in that row indicates that the third itemset contains the item 4 with a cost value of 20. Lastly, the last column indicates that the utility of this whole sequence is 80. </p>
+  <p>The other sequences follow the same format.</p>
+  <p>This view as a table can be useful to understand the content of a cost sequence database file. </p>
+  <p>Besides, there are three buttons that provides additional features: </p>
+  <ul>
+    <li>By clicking on the button &quot;<strong>View sequence length distribution </strong>&quot;, a new window is opened, presented as <strong>window B)</strong> in the picture below. This window displays the frequency histogram of the different sequence lengths in the current file. The number of sequences is the Y axis and the different sequence lengths are the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    <li>By clicking on the button &quot;<strong>View item frequency distribution </strong>&quot;, a new window is opened, presented as <strong>window C)</strong> in the picture below. This window displays the frequency of the different items in the current file. The different items are displayed on the X axis and their frequency (support or number of occurrences) are presented on the Y axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    <li>By clicking on the button &quot;<strong>View item cost distribution </strong>&quot;, a new window is opened, presented as <strong>window D)</strong> in the picture below. This window displays  the cost values of the different items in the current file. The different items are presented on the X axis and their cost values are displayed on the Y axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    </ul>
+  <p align="center"><img src="costcostcostdb.png" alt="graph viewer database graph" width="1401" height="1230"></p>
+  <h2>What is the input?</h2>
+  <p>The algorithm  takes as input <strong>a cost-event sequence database, </strong>as used by algorithm such <strong>CEPN</strong>.</p>
+  <p>    The database used in this example is provided  in the text file &quot;<strong class="style1">example_CEPN</strong><strong><span class="style1">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution, which follows the file format for <strong>CEPN</strong>. </p>
+  <p>In that format, a sequence database contains multiple sequences, and<strong> each sequence is an ordered list of events, each event has a cost value (a positive integer), </strong> and <strong>each sequence has a utility</strong> value ( a numeric value such that a high value indicates a better outcome or result). </p>
+  <p>The file <span class="highlight"><strong class="style1">example_CEPN.txt</strong> contains the following content: </span></p>
+  <p>1[20] -1 2[40] -1 3[50] -1 4[20] -1 -2 SUtility:80<br>
+    2[25] -1 4[12] -1 3[30] -1 5[25] -1 -2 SUtility:60<br>
+    1[25] -1 5[14] -1 2[30] -1 -2 SUtility:50<br>
+    1[40] -1 2[16] -1 4[40] -1 -2 SUtility:40<br>
+    2[20] -1 5[24] -1 3[20] -1 -2 SUtility:70</p>
+  <p>Each line is a sequence. Moreover, each sequence (line) is an ordered list of events separated by -1.</p>
+  <p> An event is represented by a positive integer and it is followed by a <strong>cost value</strong> (e.g.  time spent on the event) indicated between squared brackets [ ]. A cost is a positive integer. </p>
+  <p>The end of a sequence is indicated by -2. Finally, at the end of each line, the keyword &quot;SUtility:&quot; is followed by a positive integer which indicates how good the outcome of this sequence is (e.g. it could represents a final exam score) </p>
+  <p> For example, the first line indicates that event &quot;1&quot; had a cost of 20, was followed by event &quot;2&quot; with a cost of 40, followed by event &quot;3&quot; with a cost of 50, followed by event &quot;4&quot; with a cost of 20. Moreover, this sequence has a utility of 80, which means a quite good outcome (compared to other sequences in this database). The other sequences follow the same format.</p>
+  <p>This database could for example represents sequences of learning activities made by learners, where the events 1,2,3,4 and 5 are learning activities, cost values are the time spent on a learning activity and the utility is the grade obtained at a final exam. </p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

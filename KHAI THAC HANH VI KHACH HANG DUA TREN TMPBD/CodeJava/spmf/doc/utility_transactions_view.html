@@ -1,0 +1,101 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: View a utility transaction database file with the transaction database Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>View a utility transaction database file with the  transaction database Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p><strong>Utility transaction databases </strong>are a type of data taken as input by  data mining algorithms  offered in SPMF such as<strong> FHM, EFIM, UP-Growth </strong>and<strong> Two-Phase </strong>.</p>
+<p>SPMF offers a tool to view the content of a utility transaction database<strong></strong>. This tool is called the <strong>SPMF utility transaction database viewer</strong>. </p>
+<p>This page explains how to use this tool with an example. </p>
+<h2>How to run this example? </h2>
+<p><strong>If you want to run this example from the</strong> <strong>graphical interface of SPMF, </strong>(1)
+      choose the algorithm <strong>&quot;<span class="style1">Open_utility_transaction_database_file_with_viewer</span>&quot;</strong><strong>, </strong> (2) choose the <strong class="style1">DB_Utility.txt</strong> file as input,   and then (3) click &quot;<strong>run algorithm</strong>&quot; . </p>
+<p align="center"><img src="too_much_utility.png" alt="graph viewer open" width="802" height="220"></p>
+  <ul>
+    <li><strong>If you want to run this example from the source code of SPMF, run the file <span class="style1">MainTestUtilityTransactionViewer</span>, which is located in the package <span class="style1">ca.pfv.spmf.tests </span></strong></li>
+    <li><strong>If you want to execute this example from the</strong> <strong>command line interface of SPMF</strong>, then execute this command: <br>
+      <br>
+        <span class="highlight style1">java -jar spmf.jar run Open_utility_transaction_database_file_with_viewer DB_Utility.txt</span> <br>
+      <br>
+      in a folder containing <span class="style1"><strong>spmf.jar</strong></span> and the file <strong><span class="style1"> </span></strong><strong class="style1">DB_Utility</strong><strong><span class="style1">.txt</span></strong> which is included with SPMF. </li>
+    </ul>
+  <h2>What is displayed?</h2>
+  <p>After running the example, the content of the file will be displayed by the tool. The picture below shows the user interface of this viewer. </p>
+  <p>The <strong>window A</strong>) show in the picture below is the main window. It displays the <strong> utility transaction database</strong> using a table. The table has four rows in this example. Each row (except the last one) is a transaction from the utility transaction database.</p>
+  <p>Imagine that each transaction represents the
+      items purchased by a customer. . </p>
+  <p>Take the first row as example.
+      <br>
+    The cell in the first column indicates that the ID of this transaction is 0. <br>
+    The cell in the second column indicates that this transaction 0 contains the item 1 and the utility was 5 $. <br>
+    The cell in the third column indicates that this transaction 0 contains the item 2 and the utility was 10 $. <br>
+    The cell in the fourth column indicates that this transaction 0 contains the item 3 and the utility was 1 $. <br>
+    The cell in the fifth column indicates that this transaction 0 contains the item 4 and the utility was 6 $. <br>
+    The cell in the sixth column indicates that this transaction 0 contains the item 5 and the utility was 3 $. <br>
+The cell in the fifth column indicates that this transaction 0 contains the item 6 and the utility was 5 $. <br>
+The cell in the sixth column indicates that this transaction 0 does not contain the item 7.<br>
+The cell in the seventh column indicates that the total amount
+      of money (utility) spent in this transaction is 1 + 3 + 5 + 10 + 6 + 5 = 30 $</p>
+  <p>The other transactions follow the same format.<br>
+    <br>
+  Then the last line of the table provides the sum of each column. For example, the cell in the last row and second column indicates that the total amount of utility for item 1 in this database is 5 + 5 + 10 = 20 $. </p>
+  <p>This view as a table can be useful to understand the content of a utility transaction database file. </p>
+  <p>Besides, there are buttons that provides additional features: </p>
+  <ul>
+    <li>By clicking on the button &quot;<strong>View transaction length distribution </strong>&quot;, a new window is opened, presented as <strong>window B)</strong> in the picture below. This window displays the frequency histogram of the different transaction lengths in the current file. The number of transactions is the Y axis and the different transaction lengths are the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+    <li>By clicking on the button &quot;<strong>View transaction utility distribution </strong>&quot;, a new window is opened, presented as <strong>window C)</strong> in the picture below. This window displays the frequency histogram of the different transaction lengths in the current file in terms of utility.. The number of transactions is the Y axis and the different transaction utility values are the X axis. There are some buttons in this window to export  the data from the frequency histogram  as a CSV file so that it can be imported in other software (e.g. Excel), or as a picture. Besides some options are provided to adjust the bar width and the order in which the X axis is sorted. </li>
+  </ul>
+  <p align="center"><img src="super_super_utility.png" alt="graph viewer database graph" width="1385" height="872"></p>
+  <h2>What is the input?</h2>
+  <p>The algorithm  takes as input <strong>a utility transaction database </strong>in SPMF format<strong>, </strong>as used by algorithm such <strong>FHM, EFIM </strong>and<strong> UP-Growth .</strong></p>
+  <p>    The database used in this example is provided  in the text file &quot;<strong class="style1">DB_Utility</strong><strong><span class="style1">.txt</span>&quot;</strong> in the package ca.pfv.spmf.tests  of the SPMF distribution. </p>
+  <p>The <strong> input file format</strong> is
+    defined as follows. It is a text file. Each lines represents a
+    transaction. Each line is composed of three sections, as follows.</p>
+  <ul>
+    <li>First, the items contained in the transaction are listed. An
+      item is represented by a positive integer. Each item is separated from
+      the next item by a single space. It is assumed that all items within a
+      same transaction (line) are sorted according to a total order (e.g.
+      ascending order) and that no item can appear twice within the same
+      transaction.</li>
+    <li>Second, the symbol ":" appears and is followed by the
+      transaction utility (an integer).</li>
+    <li>Third, the symbol ":" appears and is followed by the utility of
+      each item in this transaction (an integer), separated by single spaces.</li>
+  </ul>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>@FILETYPE=&quot;Transaction database with utility values&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    3 5 1 2 4 6:30:1 3 5 10 6 5<br>
+    3 5 2 4:20:3 3 8 6<br>
+    3 1 4:8:1 5 2<br>
+    3 5 1 7:27:6 6 10 5<br>
+    3 5 2 7:11:2 3 4 2 </p>
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. Consider the first line of data. It means that the transaction {3, 5, 1,
+    2, 4, 6} has a total utility of 30 and that items 3, 5, 1, 2, 4 and 6
+    respectively have a utility of 1, 3, 5, 10, 6 and 5 in this
+    transaction. The following lines follow the same format.</p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

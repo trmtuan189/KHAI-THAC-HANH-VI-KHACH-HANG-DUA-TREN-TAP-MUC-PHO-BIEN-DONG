@@ -1,0 +1,74 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example:  Calculate Statistics for a Sequence Database with Cost and Numeric Utility Information   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+                <!----------START------>
+                <h1>Calculate Statistics for a Sequence Database with Cost and Numeric Utility Information(<a href="documentation.html">SPMF documentation</a>)</h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+                <p>This example explains how to <strong> calculate statistics for a sequence databasewith cost and numeric utility information </strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+                <!--------------(4) Insert the example here:------------->
+                <h2>How to run this example? </h2>
+                <ul>
+                  <li><strong>If you are using the graphical interface, </strong>(1)
+                    choose the <strong>&quot;<span class="highlight style1">Calculate_stats_for_a_sequence_database_with_cost_numeric_utility</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the input file <span class="style1"><strong>example_CEPN.txt</strong></span> (3) click &quot;<span class="style1">Run algorithm</span>&quot;.</li>
+                  <li><strong>If you want to execute this example from the command line</strong>,
+                    then execute this command: <br>
+        <span class="style1"><strong>java -jar spmf.jar run Calculate_stats_for_a_sequence_database_with_cost_numeric_utility example_CEPN.txt no_output_file</strong></span> in a folder containing <span class="highlight">spmf.jar</span> and the input file <span class="style1"><strong>example_CEPN.txt</strong></span>.</li>
+                  <li><strong>If you are using the source code version of SPMF, </strong>launch
+                    the file <strong><span class="highlight">&quot;</span><span class="style1">MainTestSequenceDBCostUtilityStats.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+                </ul>
+                <h2>What is this tool?</h2>
+                <p>This tool is a tool for generating statistics about a sequence database with cost and numeric utility information, as used by algorithms such as CEPN.</p>
+                <h2>What is the input?</h2>
+                <p>The input is a <strong>sequence database where each sequence is an ordered list of events, each event has a cost value (a positive integer), </strong>and <strong>each sequence has a utility</strong> value ( a numeric value such that a high value indicates a better outcome or result). </p>
+                <p>For example, consider the following sequence database, which is provided in the file <strong>example_CEPN</strong>.txt of the SPMF distribution:</p>
+                <p class="style1">1[20] -1 2[40] -1 3[50] -1 4[20] -1 -2 SUtility:80<br>
+                  2[25] -1 4[12] -1 3[30] -1 5[25] -1 -2 SUtility:60<br>
+                  1[25] -1 5[14] -1 2[30] -1 -2 SUtility:50<br>
+                  1[40] -1 2[16] -1 4[40] -1 -2 SUtility:40<br>
+                2[20] -1 5[24] -1 3[20] -1 -2 SUtility:70</p>
+                <p>This database contains five lines. Each line is a sequence.</p>
+                <p>Moreover, each sequence (line) is an ordered list of events separated by -1.</p>
+                <p>An event is represented by a positive integer and it is followed by a <strong>cost value</strong> (e.g. spent time on the event) indicated between squared brackets [ ]. A cost is a positive integer.</p>
+                <p>The end of a sequence is indicated by -2. Finally, at the end of each line, the keyword "SUtility:" is followed by a positive integer which indicates how good the outcome of this sequence is (e.g. it could represents a final exam score)</p>
+                <p>For example, the first line indicates that event "1" had a cost of 20, was followed by event "2" with a cost of 40, followed by event "3" with a cost of 50, followed by event "4" with a cost of 20. Moreover, this sequence has a utility of 80, which means a quite good outcome (compared to other sequences in this database). The other sequences follow the same format.</p>
+                <p>This database could for example represents sequences of learning activities made by learners, where the events 1,2,3,4 and 5 are learning activities, cost values are the time spent on a learning activity and the utility is the grade obtained at a final exam.</p>
+                <h2>What is the output?</h2>
+                <p>The output is statistics about the  database. For example,
+                  if we use the tool on the previous database given as example,
+                  we get the following statistics:</p>
+                <p><span class="style1">                  ============  SEQUENCE COST UTILITY DATABASE STATS ==========<br>
+                  File size (MB): 0.00<br>
+                  Number of sequences : 5<br>
+                  Max item: 5<br>
+                  Average number of itemsets per sequence : 3.4 standard deviation: 0.4898979485566356 variance: 0.24<br>
+                  Average number of items per itemset : 1.0 standard deviation: 0.0 variance: 0.0<br>
+                  Average cost per item: 26.529411764705884 standard deviation: 10.23901217121137 variance: 104.83737024221456<br>
+                  Average cost per sequence: 90.2 standard deviation: 23.481056194302674 variance: 551.36<br>
+                  Average utility per sequence: 60.0 standard deviation: 14.142135623730951 variance: 200.00000000000003<br>
+                  =========================================================
+                </span></p>
+                <p><br>
+                  <!----------END------>
+                </p>
+                <div class="footer">
+                  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+                  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+                </div>
+			  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

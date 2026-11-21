@@ -1,0 +1,241 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining the Top-K Sequential Rules (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining the Top-K Sequential Rules  (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>TopSeqRules algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> &quot;<span class="highlight">TopSeqRules</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextPrefixSpan</span><span class="highlight">.txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    (4) set <em>k = 3 </em> and <em>minconf = 0.8</em>. (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong><span class="highlight"> TopSeqRules</span></strong> <strong>contextPrefixSpan</strong>.txt
+      output.txt 3 80%</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextPrefixSpan.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;MainTestTopSeqRules.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is TopSeqRules?</h2>
+<p><strong>TopSeqRules</strong> is an algorithm for discovering the <strong>top-<em>k </em></strong> <strong>sequential rules</strong> appearing in a
+    sequence database. </p>
+  <p>Why is it important to discover top-k sequential rules? Because
+    other sequential rule mining algorithms requires the user to set a
+    minimum support (<em>minsup</em>) parameter that is hard to set
+    (usually users set it by trial and error, which is time consuming). The
+    TopSeqRules algorithm solve this problem by letting users directly
+    indicate <em>k</em>, the number of rules to be discovered. </p>
+
+  <h2>What is the input of TopSeqRules ?</h2>
+  <p><strong>TopSeqRules </strong> takes three parameters as input:</p>
+  <ul>
+    <li>a sequence database,</li>
+    <li>a parameter <em>k </em>representing the number of rules to be
+      discovered (an integer &gt;=1),</li>
+    <li>a parameter <em>minconf</em> representing the minimum
+      confidence that the rules should have (a value in [0,1] representing a
+      percentage). </li>
+  </ul>
+  <p>A <strong>sequence database</strong> is a set of sequences where
+    each sequence is a list of itemsets. An itemset is an unordered set of
+    items. For example, the table shown below contains four sequences. The
+    first sequence, named S1, contains 5 itemsets. It means that item 1 was
+    followed by items 1 2 and 3 at the same time, which were followed by 1
+    and 3, followed by 4, and followed by 3 and 6. It is assumed that items
+    in an itemset are sorted in lexicographical order. This database is
+    provided in the file &quot;<strong>contextPrefixSpan.txt</strong>&quot; of the
+    SPMF distribution<strong>.</strong></p>
+
+<table align="center" border="1" width="461">
+  <tbody>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td>S1</td>
+      <td>(1), (1 2 3), (1 3), (4), (3 6)</td>
+    </tr>
+    <tr>
+      <td>S2</td>
+      <td >(1 4), (3), (2 3), (1 5)</td>
+    </tr>
+    <tr>
+      <td>S3</td>
+      <td>(5 6), (1 2), (4 6), (3), (2)</td>
+    </tr>
+    <tr>
+      <td>S4</td>
+      <td>(5), (7), (1 6), (3), (2), (3)</td>
+    </tr>
+  </tbody>
+</table>
+<h2>What is the output of TopSeqRules ?</h2>
+<p><strong>TopSeqRules</strong> outputs the <em>k </em>most
+    frequent <strong>sequential rules</strong> having a confidence higher
+    or equal to <em>minconf</em>.</p>
+  <p>A <strong>sequential rule</strong> X==&gt;Y is a sequential
+    relationship between two sets of items X and Y such that X and Y are
+    disjoint, and that X is unordered and Y is unordered. The<strong> support of a sequential rule</strong> X==&gt;Y is the number of
+    sequences that contains X&#8746;Y divided by the number of sequences in the
+    database. The <strong>confidence of a sequential rule</strong> is the
+    number of sequences that contains X&#8746;Y, divided by the number of
+    sequences that contains X. </p>
+  <p>For example, if we run TopSeqRules with <em>k = 3 </em> and <em>minconf
+    = 0.8</em>, the result is the following rules:</p>
+  <table border="1" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td><strong>Rule</strong></td>
+        <td><strong>Support</strong></td>
+        <td><strong>Confidence</strong></td>
+      </tr>
+      <tr>
+        <td valign="top" width="213"><p>{3 } ==&gt; {4 } </p></td>
+        <td valign="top" width="213"><p>75 % (3 sequences)</p></td>
+        <td valign="top" width="213"><p>100 %</p></td>
+      </tr>
+      <tr>
+        <td valign="top" width="213"><p>{1 } ==&gt; {3 } </p></td>
+        <td valign="top" width="213"><p>100 % (4 sequences)</p></td>
+        <td valign="top" width="213"><p>100 %</p></td>
+      </tr>
+      <tr>
+        <td valign="top">{1,4 } ==&gt; {3
+          } </td>
+        <td valign="top">75 % (3 sequences)</td>
+        <td valign="top">100 %</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>These rules are the top three rules appearing in the sequence
+    database having a confidence higher or equals to 80 %.</p>
+  <p>For example, the rule 1 4 ==&gt; 3 means that if 1 an 4 appears in
+    any order they will be followed by 3 with a confidence of 100 %.
+    Moreover, this rule has a support 75 % because it appears in three
+    sequences (S1, S2 and S3) out of four sequences.</p>
+  <p>It is important to note that for some values of <em>k</em>, the
+    algorithm may return slightly more rules than <em>k</em>. This can
+    happen if several rules have exactly the same support, and it is normal.</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a sequence from a sequence
+    database. Each item from a sequence is a postive integer and items from
+    the same itemset within a sequence are separated by single spaces. Note
+    that it is assumed that items within a same itemset are sorted
+    according to a total order and that no item can appear twice in the
+    same itemset. The value &quot;-1&quot; indicates the end of an itemset. The value
+    &quot;-2&quot; indicates the end of a sequence (it appears at the end of each
+    line). For example, the sample input file &quot;<strong>contextPrefixSpan.txt</strong>&quot;
+    contains the following four lines (four sequences).</p>
+  
+    <p>@FILETYPE=&quot;Simple sequence database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  
+    <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. The first line of data represents a sequence where the itemset {1} is
+      followed by the itemset {1, 2, 3}, followed by the itemset {1, 3},
+      followed by the itemset {4}, followed by the itemset {3, 6}. The next
+      lines follow the same format.</p>
+    <p>Note that it is also possible to use <strong>a text file containing a text (several sentences)</strong> if the text file has the &quot;.text&quot; extension, as an alternative to the default input format. If the algorithm is applied on a text file from the graphical interface or command line interface, the text file will be automatically converted to the SPMF format, by dividing the text into sentences separated by &quot;.&quot;, &quot;?&quot; and &quot;!&quot;, where each word is considered as an item. Note that when a text file is used as input of
+    a data mining algorithm, the performance will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. Each line is a sequential rule. Each item from a
+    sequential rule is a postive integer. On each line, the items from the
+    rule antecedent are first listed, separated by single spaces. Then the
+    keyword &quot;==&gt;&quot; appears, followed by the items from the rule
+    consequent, separated by single spaces. Then, the keyword &quot;#SUP:&quot;
+    appears followed by an integer indicating the support of the rule as a
+    number of sequences. Then, the keyword &quot;#CONF:&quot; appears followed by a
+    double values in the [0, 1] interval indicating the confidence of the
+    rule. For example, an output file is shown below:</p>
+  
+    <p>@FILETYPE=&quot;Top-k frequent sequential rules&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1 ==&gt; 2 #SUP: 4 #CONF: 1.0<br>
+      1 ==&gt; 2,3 #SUP: 4 #CONF: 1.0<br>
+      1 ==&gt; 3 #SUP: 4 #CONF: 1.0</p>
+  
+  <p>Consider the second line. It indicates that the rule {1} ==&gt;
+    {2, 3} has a support of 4 sequences and a confidence of 100 %. The
+    other lines follow the same format.</p>
+
+  <h2>Optional feature: giving names to items </h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextPrefixSpan.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple sequence database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+@ITEM=6=noodle<br>
+@ITEM=7=rice<br>
+@ITEM=-1=|<br>
+1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second and third line indicate the type of file and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. The 11th line indicates that the symbol &quot;-1&quot; must be replaced by &quot;|&quot;. Then the following lines define four sequences in the SPMF format. </p>
+  <p>Then, if we apply a sequential pattern mining algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:</p>
+  <p>apple ==&gt; orange,tomato #SUP: 4 #CONF: 1.0<br>
+    apple ==&gt; tomato #SUP: 4 #CONF: 1.0</p>
+  <p>Note that this feature could be also used from the source code of SPMF using the ResultConverter class. However, there is currently no example provided.</p>
+
+  <h2>Performance</h2>
+  <p><strong>TopSeqRules</strong> is a very efficient algorihtm. It is
+    based on the RuleGrowth algorithm, which is one of the most efficient
+    algorithm for mining <strong>sequential rules</strong>. </p>
+  <p>It is more intuitive to use TopSeqRules than RuleGrowth. However,
+    it should be note that the problem of <strong>top-k sequential rule
+      mining</strong> is more computationally expensive than the problem of
+    sequential rule mining. Therefore, it is recommended to use TopSeqRules
+    for <em>k </em>values of up to 1000 or 2000 depending on the dataset.
+    If more rules should be found, it could be better to use RuleGrowth or
+    TRuleGrowth.</p>
+  <p>Besides, note that there is a variation of TopSeqRules named TNS
+    that is available in SPMF. The improvement in TNS is that it eliminate
+    some sequential rules that are deemed &quot;redundant&quot; (rules that are
+    included in other rules having the same support and confidence - see
+    the TNS example for the formal definition). Using TNS is more costly
+    than using TopSeqRules but it brings the benefit of eliminating some
+    redundancy in the results.</p>
+
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The TopSeqRules algorithm is described in this paper:</p>
+  <p><em>Fournier-Viger, P. &amp; Tseng, V. S. (2011). <a href="https://www.philippe-fournier-viger.com/spmf/TopSeqRules_sequential_rules_2.pdf">Mining
+    Top-K Sequential Rules</a>. Proceedings of the 7th Intern. Conf.
+    on Advanced Data Mining and Applications (ADMA 2011). LNAI 7121,
+    Springer, pp.180-194.</em></p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

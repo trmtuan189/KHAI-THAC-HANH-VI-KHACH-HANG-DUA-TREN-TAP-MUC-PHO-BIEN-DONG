@@ -1,0 +1,6 @@
+@FILETYPE="Item profit table"
+@SOURCE="SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/"
+1, 42
+2, 87
+3, 94
+4, 97

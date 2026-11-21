@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Example: Mining Erasable Itemsets from a Product Database with the META algorithm (SPMF - Java)</title>
+    <link rel="stylesheet" href="docstyle.css"/>
+  </head>
+  <body>
+    <div width="100%" class="container">
+      <div class="content">
+        <!----------START------>
+        <h1>Mining Erasable Itemsets from a Product Database with the META algorithm
+          (<a href="documentation.html">SPMF documentation</a>)
+        </h1>
+
+        <p>This example explains how to run the <strong>META algorithm</strong> using the
+          <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+
+        <h2>How to run this example?</h2>
+        <ul>
+          <li><strong>If you are using the graphical interface,</strong> (1) choose the
+            <strong>&quot;<span class="highlight">META</span>&quot;</strong> algorithm,
+            (2) select the input file <strong>&quot;<span class="highlight">contextVME.txt</span>&quot;</strong>,
+            (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;),
+            (4) set the threshold to <span class="highlight">15%</span>, and
+            (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+          <li><strong>If you want to execute this example from the command line,</strong>
+            then execute this command:<br>
+            <span class="highlight">java -jar spmf.jar run <strong>META</strong>
+            <strong>contextVME</strong>.txt output.txt 15%</span>
+            in a folder containing <span class="highlight">spmf.jar</span> and the
+            example input file <span class="highlight">contextVME.txt</span>.</li>
+          <li><strong>If you are using the source code version of SPMF,</strong> launch
+            the file <strong><span class="highlight">&quot;MainTestMETA.java&quot;</span></strong>
+            in the package <span class="highlight"><strong>ca.pfv.spmf.algorithms.frequentpatterns.meta</strong></span>.</li>
+        </ul>
+
+        <h2>What is the META algorithm?</h2>
+        <p><strong>META</strong> (Mining Erasable iTemsets with the Anti-monotone property)
+          was proposed by Deng et al. (2009) for
+          mining <strong>erasable itemsets</strong> from a product database with profit
+          information. Unlike VME and MEI, which use a vertical tid-list representation
+          to compute gains without rescanning the database, META uses a horizontal
+          representation and rescans the database once per level to compute the gain of
+          each candidate. META explicitly exploits the anti-monotone property of erasable
+          itemsets (Property 2 in the paper): if an itemset is not erasable, all of its
+          supersets are also not erasable. Consequently, during candidate generation,
+          META checks that all (k&minus;1)-subsets of a candidate k-itemset are erasable
+          before admitting it as a candidate (the No_Unerasable_Subset check). This
+          subset-checking step is the main structural difference between META on one
+          side and VME/MEI on the other.</p>
+
+        <h2>What is the input?</h2>
+        <p><strong>META</strong> takes as input a <strong>product database</strong> and a
+          threshold (a value between 0 and 100%). A product is defined as a set of items
+          used to assemble the product, annotated with a profit (a positive integer) that
+          indicates how much money the company earns by selling it. For example, let's
+          consider the following product database, consisting of 6 products and 7 items.
+          This product database is provided in the file
+          &quot;<strong>contextVME.txt</strong>&quot; of the SPMF distribution:</p>
+
+        <table align="center" border="1" width="332">
+          <tbody>
+            <tr>
+              <td width="74"><br></td>
+              <td width="47"><strong>profit</strong></td>
+              <td width="61"><strong>items</strong></td>
+            </tr>
+            <tr><td><strong>product 1</strong></td><td>50$</td><td>{2, 3, 4, 6}</td></tr>
+            <tr><td><strong>product 2</strong></td><td>20$</td><td>{2, 5, 7}</td></tr>
+            <tr><td><strong>product 3</strong></td><td>50$</td><td>{1, 2, 3, 5}</td></tr>
+            <tr><td><strong>product 4</strong></td><td>800$</td><td>{1, 2, 4}</td></tr>
+            <tr><td><strong>product 5</strong></td><td>30$</td><td>{6, 7}</td></tr>
+            <tr><td><strong>product 6</strong></td><td>50$</td><td>{3, 4}</td></tr>
+          </tbody>
+        </table>
+
+        <h2>What is the output?</h2>
+        <p>The output is the complete set of <strong>erasable itemsets</strong> whose gain
+          is lower than or equal to the user-specified threshold. In the META paper, the
+          term <em>gain</em> is used instead of <em>loss</em> to denote the sum of profits
+          of all products that share at least one item with the candidate itemset. Both
+          terms refer to the same quantity.</p>
+        <p>Formally, the <strong>gain of an itemset A</strong> is defined as the sum of the
+          profits of all products P such that P.Items &cap; A &ne; &empty;. For example,
+          the gain of itemset {5, 6} is the sum of profits of products containing 5 or 6:
+          50&nbsp;$ + 20&nbsp;$ + 50&nbsp;$ + 30&nbsp;$ = 150&nbsp;$. The total profit
+          (Sum_val) of the database is 1000&nbsp;$. An itemset is erasable if its gain is
+          at most &xi; &times; Sum_val.</p>
+        <p>By running <strong>META</strong> with a <strong>threshold of 15%</strong>, we
+          obtain the same 8 erasable itemsets as VME and MEI (gain &le;
+          15% &times; 1000&nbsp;$ = 150&nbsp;$):</p>
+
+        <table align="center" border="1" width="297">
+          <tbody>
+            <tr>
+              <td width="138"><strong>erasable itemsets</strong></td>
+              <td width="143"><strong>gain (loss of profit)</strong></td>
+            </tr>
+            <tr><td>{3}</td><td>150.0</td></tr>
+            <tr><td>{5}</td><td>70.0</td></tr>
+            <tr><td>{6}</td><td>80.0</td></tr>
+            <tr><td>{7}</td><td>50.0</td></tr>
+            <tr><td>{5, 6}</td><td>150.0</td></tr>
+            <tr><td>{5, 7}</td><td>100.0</td></tr>
+            <tr><td>{6, 7}</td><td>100.0</td></tr>
+            <tr><td>{5, 6, 7}</td><td>150.0</td></tr>
+          </tbody>
+        </table>
+
+        <p>This means that if the items from one of those erasable itemsets are no longer
+          purchased, the loss of profit will be lower than or equal to 15%.</p>
+
+        <h2>Input file format</h2>
+        <p>The <strong>input file format</strong> of <strong>META</strong> is identical to
+          that of VME and MEI. It is a text file where each line represents a transaction
+          (product). Each line is composed of two sections:</p>
+        <ul>
+          <li>First, the profit of the transaction is indicated by an integer number,
+            followed by a single space.</li>
+          <li>Second, the items in the transaction are listed. An item is represented by a
+            positive integer. Each item is separated from the following item by a space.
+            It is assumed that items are sorted according to a total order and that no item
+            can appear twice in the same transaction.</li>
+        </ul>
+        <p>For example, the input file for the previous example is defined as follows:</p>
+        <p>@FILETYPE=&quot;Transaction database with profit information&quot;<br>
+          @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+          50 2 3 4 6<br>
+          20 2 5 7<br>
+          50 1 2 3 5<br>
+          800 1 2 4<br>
+          30 6 7<br>
+        50 3 4</p>
+        <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. The first transaction is {2, 3, 4, 6} has a profit of 50 and it contains the items 2, 3, 4 and 6. The following lines follow the same format.</p>
+
+        <h2>Output file format</h2>
+        <p>The <strong>output file format</strong> of <strong>META</strong> is similar to
+          that of VME and MEI. It is a text file where each line represents an
+          <strong>erasable itemset</strong>. On each line, the items of the itemset are
+          first listed. Each item is represented by an integer followed by a single space.
+          After all the items, the keyword &quot;#LOSS:&quot; appears, followed by a
+          numeric value indicating the gain (loss of profit) for that itemset.</p>
+        <p>
+          @FILETYPE=&quot;Erasable itemsets&quot;<br>
+          @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+          3 #LOSS: 150.0<br>
+          5 #LOSS: 70.0<br>
+          6 #LOSS: 80.0<br>
+          7 #LOSS: 50.0<br>
+          5 6 #LOSS: 150.0<br>
+          5 7 #LOSS: 100.0<br>
+          6 7 #LOSS: 100.0<br>
+          5 6 7 #LOSS: 150.0        </p>
+        <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. For example, the first line indicates that the itemset {3} would generate a
+          gain (loss of profit) of 150.0. The following lines follow the same format.</p>
+
+        <h2>Performance</h2>
+        <p>META exploits the anti-monotone property of erasable itemsets to prune the
+          search space. The No_Unerasable_Subset check ensures that no candidate with an
+          unerasable subset is ever evaluated, which can substantially reduce the number
+          of database scans needed at higher levels. However, because META rescans the
+          entire database horizontally at each level, it may be slower than VME or MEI on
+          very large databases where the vertical representation provides a greater
+          advantage. META is most competitive when the number of erasable itemsets is small
+          and the subset-pruning step eliminates many candidates early.</p>
+
+        <h2 id="reference">Where can I get more information about the META algorithm?</h2>
+        <p>Here is the article describing the META algorithm:</p>
+        <p><em>Z. H. Deng, G. Fang, Z. Wang, X. Xu:
+          Mining Erasable Itemsets.
+          Proceedings of the 8th IEEE International Conference on Machine Learning and
+          Cybernetics, Baoding, Hebei, China, 2009, pp. 67&ndash;73.</em></p>
+        <p>For a good overview of <strong>frequent itemset mining algorithms</strong>, you
+          may read this
+          <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">
+          survey paper</a>.</p>
+
+        <!----------END------>
+        <div class="footer">
+          <p><a href="documentation.html">
+            &lt;&lt; Return to table of contents of SPMF documentation</a></p>
+          <p>Copyright &copy; 2008-2026            <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>.
+            All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,295 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Low-cost High Utility Itemsets using the LCIM algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Low-cost High Utility Itemsets using the LCIM algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>LCIM algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">LCIM</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">DB_cost</span><span class="highlight">.txt"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight">output.txt</span>")
+    (4) set the minimum utility to 10, the maximum cost to 10 and minsup to 0.30 (which means 30%) <span class="highlight"> </span>and
+    (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight style1">java -jar spmf.jar run<strong> LCIM DB_cost</strong>.txt
+      output.txt 10 10 0.30 </span> <br>
+      in a folder containing <span class="highlight">spmf.jar</span> and the example <strong>input file DB_cost.txt</strong>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestLCIM.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is LCIM?</h2>
+<p><strong>LCIM</strong> (Nawaz et al., 2022) is an algorithm for discovering low-cost high-utility itemsets in a transaction database containing utility and cost information.  </p>
+<p>So what does it mean? To explain this in a simple way, let's start by explaining what is the utility and cost. The utility means some desirable property of the data, while the cost means some undesirable property. Let's take an example. In the context of e-learning data, the utility may be the grades obtained by students after doing some learning activities. Obtaining higher grades is something desirable. And the cost may be the time spend for studying or the money spent on some learning activities. Thus, in that context, we may want to find ways to obtain high utility (grades) while reducing the cost (the time or money spent to be more efficient at studying). There are many times of data that can be expressed in terms of utility and cost. For example, another example is hospital data. In that context, the utility may be a measure of the benefits from receiving some medical treatments while the cost may be the money spent on those treatments. The LCIM is thus an algorithm to analyze data with utility and cost values. </p>
+<p>The type of data that LCIM take as input is called a transaction database. It means a set of records containing items (symbols), where items and cost values are also included. The output of LCIM is some sets of values that often appear together (what is called an itemset) and have in general a low cost and a high utility. Finding these patterns can then help to understand the data. An example of input and output data is explained in more details below. </p>
+<h2>What is the input?</h2>
+  <p><strong>LCIM</strong> takes as input a transaction database
+    with utility and cost information three parameters called the minimum utility threshold <em>min_utility </em>(a positive integer)<em>, maxcost </em>(an integer)<em>, </em>and <em>minsup</em> (a double value) <em>.</em> Let's consider the following
+    database consisting of 5 transactions (t1,t2...t5) and 7 items (1, 2,
+    3, 4, 5, 6, 7). This database is provided in the text file "<strong>DB_cost.txt</strong>"
+    in the package <strong>ca.pfv.spmf.tests </strong>of the SPMF
+    distribution<strong>.</strong></p>
+  <table align="center" border="1" width="721">
+    <tbody>
+      <tr>
+        <td width="56"><br></td>
+        <td width="156"><strong>Items</strong></td>
+        <td width="190"><strong>Transaction utility</strong></td>
+        <td width="291"><strong>Item cost values for this transaction</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>3 5 1 2 4 6</td>
+        <td>40</td>
+        <td>1 3 5 10 6 5</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>3 5 2 4</td>
+        <td>20</td>
+        <td>3 3 8 6</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>3 1 4</td>
+        <td>8</td>
+        <td>1 5 2</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>3 5 1 7</td>
+        <td>37</td>
+        <td>6 6 10 5</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>3 5 2 7</td>
+        <td>21</td>
+        <td>2 3 4 2</td>
+      </tr>
+    </tbody>
+  </table>
+  
+    <p>Each line of the <strong>database</strong> is:</p>
+    <ul>
+      <li> a set of items (the second column of the table) representing some nominal values, </li>
+      <li>a utility value (an integer) that is assigned to this transaction (the third column of the table),</li>
+      <li>a cost value (integer) for each item of this transaction (the fourth column of the
+        table).</li>
+      </ul>
+    <p>Let's explain what this means with a real example. Let's say that this data is from e-learning. Each transaction (record) is a set of items that may represent the courses taken by students. Here the items are called 1,2,3,4,5,6,7, which means different courses. For example, the first transaction <em>t1</em> indicates that a student took the courses 3, 5, 1, 2, 4 and 6 (without any specific order). Then, the utility of the transaction <em>t1</em> is 40, which  represents the grade that the student obtained after taking an exam after taking the courses. For example, the student described by transaction <em>t1</em> received a utility (grade) of 40 at the final exam. Then, the last column indicates the cost of each item, which may represent the time spent on each course. For example, the transaction <em>t1</em> has the cost values 1, 3, 5, 10, 6 and 5, which means that the student spent 1 time unit on course 3, 3 time units on course 5, 5 time units on course 1, 10 time units on course 2, 6 time units on course 4, and 5 time units on course 6. The database contains five transactions (t1, t2, t3, t4, and t5), which may indicate the information for five students. </p>
+    <p>It is to be noted that here we use the example of e-learning but other types of data could also be represented using that same format such as medical data, or shopping data. </p>
+    <h2>What is the output?</h2>
+    <p><em> </em>The output of<strong> LCIM </strong>is the set of <strong>low-cost high utility itemset</strong>s. A low cost high utility itemset is a set of items that appear in several transactions and that generally has a high utility and a low cost. For example, in the context of e-learning, it can be a set of courses that lead to high grades and generally does not require a lot of time for studying. </p>
+    <p>To be more precise, a low-cost high utility itemset is an itemset that must satisfy three criteria:</p>
+    <ul>
+      <li>Its average utility must be no less than the <em>min_utility </em>threshold set by the user.</li>
+      <li>Its average cost must be no greater than the <em>max_cost </em>threshold set by the user.</li>
+      <li>Its support (occurrence frequency) must be no less than the <em>minsup</em> threshold set by the user.      </li>
+    </ul>
+    <p>To explain this more clearly, it is necessary to review some definitions. An <strong>itemset</strong> is
+      an unordered set of distinct items. The <strong>support</strong> of an itemset is the number of transactions that contains the itemset. For example, the support of the itemset {7, 5} is 2 because the items 7 and 5 appears together in two transactions (t4 and t5). The support can be expressed as number like 2 indicating two transactions, or it can be expressed as a percentage. For instance, the support of itemset {7, 5} can be said to be 40% (or 0.40) because that itemset appears in two transactions from the five transactions in the input database (2 / 5 = 0.40).</p>
+    <p>The <strong>utility</strong> of itemset is the sum of the utility of transactions where that itemset appears. For example, the itemset {7, 5} appears in transactions t4 and t5, which have a utility of 37 and 21, respectively. Thus the utility of {7, 5} is said to be 37 + 21 = 58. The <strong>average utility </strong>of itemset is its utility divided by its support. For example, the average utility of itemset {7, 5} is 58 / 2 = 29. It is to be noted that this definition of average utility is not the same as in some other research papers. </p>
+    <p>The <strong>cost of an itemset</strong> is the sum of its cost values for the transactions where the itemset appears.  For example, the itemset {7, 5} appears in transactions t4 and t5. In the transaction t4, the cost values of items 7 and 5 are 5 and 6, respectively. In the transaction t5, the cost values of items 7 and 5 are 2 and 3, respectively. Thus, the cost of itemset {7, 5} is 5 + 6 + 2 + 3 = 16. The <strong>average cost </strong>of an itemset is its cost divided by its support. For example, the average cost of itemset {7, 5} is 16 / 2 = 8.</p>
+    <p>For example, if we run <strong>LCIM </strong>with a<strong> min_utility = 10, max_cost = 10 </strong>and<strong> minsup = 0.3 </strong>, we obtain <strong>14 low-cost</strong> <strong>high-utility
+        itemsets</strong>:</p>
+    <table align="center" border="1" width="596">
+  <tbody>
+    <tr>
+      <td width="113"><strong> itemsets</strong></td>
+      <td width="97"><strong>average utility</strong></td>
+      <td width="179"><strong>average cost</strong> </td>
+      <td width="179"><strong> support</strong></td>
+    </tr>
+    <tr>
+      <td>{7}</td>
+      <td>29</td>
+      <td>3.50</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{7, 5}</td>
+      <td>29</td>
+      <td>8.00</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{7, 3}</td>
+      <td>29</td>
+      <td>7.50</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{1}</td>
+      <td>31.66</td>
+      <td>6.66</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{1, 4}</td>
+      <td>29</td>
+      <td>9.00</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{1, 3}</td>
+      <td>31.66</td>
+      <td>9.33</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{2}</td>
+      <td>27</td>
+      <td>7.33</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{2, 3}</td>
+      <td>27</td>
+      <td>9.33</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{4}</td>
+      <td>26</td>
+      <td>4.66</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{4, 5}</td>
+      <td>30</td>
+      <td>9.00</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>{4, 3}</td>
+      <td>26</td>
+      <td>6.33</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>{5 }</td>
+      <td>29.5</td>
+      <td>3.75</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{5, 3}</td>
+      <td>29.5</td>
+      <td>6.75</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>{3}</td>
+      <td>27.2</td>
+      <td>2.60</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+
+    <p>If the database is a transaction database about e-learning, we could
+    interpret these results as all the groups of items that represent some efficient ways of learning, that is sets of courses that lead to high grades and do not require a high effort in terms of studying time.</p>
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> of <strong>LCIM </strong>is
+    defined as follows. It is a text file. Each lines represents a
+    transaction. Each line is composed of three sections, as follows.</p>
+  <ul>
+    <li>First, the items contained in the transaction are listed. An
+      item is represented by a positive integer. Each item is separated from
+      the next item by a single space. It is assumed that all items within a
+      same transaction (line) are sorted according to a total order (e.g.
+      ascending order) and that no item can appear twice within the same
+      transaction.</li>
+    <li>Second, the symbol ":" appears and is followed by the
+      transaction utility (an integer).</li>
+    <li>Third, the symbol ":" appears and is followed by the cost of
+      each item in this transaction (an integer), separated by single spaces.</li>
+  </ul>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  
+    <p>@FILETYPE=&quot;Transaction database with utility and cost values&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      3 5 1 2 4 6:40:1 3 5 10 6 5<br>
+      3 5 2 4:20:3 3 8 6<br>
+      3 1 4:18:1 5 2<br>
+      3 5 1 7:37:6 6 10 5<br>
+      3 5 2 7:21:2 3 4 2</p>
+  
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. Consider the first line of data. It means that the transaction {3, 5, 1,
+    2, 4, 6} has a total utility of 40 and that items 3, 5, 1, 2, 4 and 6
+    respectively have a cost of 1, 3, 5, 10, 6 and 5 in this
+    transaction. The following lines follow the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> of <strong>LCIM </strong>is
+    defined as follows. It is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line represents a <strong>low-cost high
+      utility itemset</strong>. On each line, the items of the itemset are
+    first listed. Each item is represented by an integer, followed by a
+    single space. After, all the items, the keyword " #AUTIL: " appears and
+    is followed by the average utility of the itemset. After that, the keyword " #ACOST: " appears and
+    is followed by the average cost of the itemset. Then, the keyword " #SUP: " appears and
+    is followed by the support of the itemset. </p>
+  <p>For example, we show below
+    the output file for this example. </p>
+  <p>@FILETYPE=&quot;High-utility itemsets&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    7 #AUTIL: 29.0 #ACOST: 3.5 #SUP: 2<br>
+    7 5 #AUTIL: 29.0 #ACOST: 8.0 #SUP: 2<br>
+    7 3 #AUTIL: 29.0 #ACOST: 7.5 #SUP: 2<br>
+    1 #AUTIL: 31.666666666666668 #ACOST: 6.666666666666667 #SUP: 3<br>
+    1 4 #AUTIL: 29.0 #ACOST: 9.0 #SUP: 2<br>
+    1 3 #AUTIL: 31.666666666666668 #ACOST: 9.333333333333334 #SUP: 3<br>
+    2 #AUTIL: 27.0 #ACOST: 7.333333333333333 #SUP: 3<br>
+    2 3 #AUTIL: 27.0 #ACOST: 9.333333333333334 #SUP: 3<br>
+    4 #AUTIL: 26.0 #ACOST: 4.666666666666667 #SUP: 3<br>
+    4 5 #AUTIL: 30.0 #ACOST: 9.0 #SUP: 2<br>
+    4 3 #AUTIL: 26.0 #ACOST: 6.333333333333333 #SUP: 3<br>
+    5 #AUTIL: 29.5 #ACOST: 3.75 #SUP: 4<br>
+    5 3 #AUTIL: 29.5 #ACOST: 6.75 #SUP: 4<br>
+    3 #AUTIL: 27.2 #ACOST: 2.6 #SUP: 5  </p>
+  <p>For instance, the second line indicates that the itemset {7, 5} has
+    an average utility of 29, an average cost of 8 and a support of 2 (40%). The following lines follows the same format.</p>
+
+  <h2>Performance</h2>
+  <p>The LCIM algorithm is the first algorithm for the problem of low-cost high utility itemset mining. This is the original implementation of the algorithm, containing all the optimizations described in the research paper. </p>
+
+  <h2>Implementation details</h2>
+  <p>Note that the input format
+    is not exactly the same as described in the original article. But it is
+    equivalent.</p>
+
+  <h2>Where can I get more information about the algorithm?</h2>
+  <p>The LCIM algorithm was presented in this paper: </p>
+  <p>Nawaz, M. S., Fournier-Viger, P., Alhusaini, N., He, Y., Wu, Y. and Bhattacharya, D. (2022). <strong>LCIM: Mining Low Cost  High Utility Itemsets </strong>. Proc. of the 15th Multi-disciplinary International Conference on Artificial Intelligence (MIWAI 2022), 12 pages, Springer LNAI, to appear.</p>
+  <p>While the LCIM algorithm is designed for analyzing transactions, there exists similar algorithms that are designed for analyzing sequences with utility and cost value. For this type of data, the CEPB, CorCEPB and CEPN algorithms are available in SPMF. Those are presented in this paper:</p>
+  <p>Fournier-Viger, P., Li, J., Lin, J. C., Chi, T. T., Kiran, R. U. (2019). Mining Cost-Effective Patterns in Event Logs. Knowledge-Based Systems (KBS), Elsevier, 191: 105241 </p>
+  <p>Besides, for a general overview of <strong> high utility itemset mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_high_utility_itemset2019_draft.pdf">survey paper</a>. </p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

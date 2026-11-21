@@ -1,0 +1,262 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Sequential Patterns with Time Constraints from a Time-Extended Sequence Database containing Valued Items (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Sequential Patterns with Time Constraints from a Time-Extended Sequence Database containing Valued Items  (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>Fournier08 algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<p><strong>To run this example with the source code version of SPMF,</strong> launch the file <strong><span class="highlight">&quot;MainTestSequentialPatternsMining3.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</p>
+  <p><strong>This example is not available in the release version of
+    SPMF.</strong></p>
+
+  <h2>What is this algorithm?</h2>
+  <p>The <a href="https://www.philippe-fournier-viger.com/fournier-viger_sequential_patterns_micai08.pdf">Fournier-Viger
+    et al., 2008</a> algorithm is a sequential pattern mining algorithm
+    combining features from several other sequential pattern mining
+    algorithms. It also offers some original features. In this example, we
+    show how it can be used to discover <strong> sequential patterns with
+      time-constraints from a sequence database where items are annotated
+      with integer values. </strong></p>
+  <p>To create an algorithm that can do that, we have extended the
+    Hirate &amp; Yamana (2006) algorithm to accept items with integer
+    values.</p>
+
+  <h2>What is the input?</h2>
+  <p>The input is a <strong>time-extended sequence</strong> <strong>database
+    where items are annotated with integer values </strong>(<a href="https://www.philippe-fournier-viger.com/fournier-viger_sequential_patterns_micai08.pdf">Fournier-Viger
+      et al., 2008</a>), a <em>minsup </em>threshold (a value in [0, 1]
+    representing a percentage) and some <strong>constraints</strong>.</p>
+
+
+  <p>Such a database is defined as a set of sequences. A sequence is
+    here a list of itemsets (groups of items), where each item is a symbol
+    represented by an integer and each item is annotated with an integer
+    representing a value associated with the item. Furthermore, an itemset
+    has a timestamp indicating the time at which it occured. Note that an
+    item is not allowed to occur more than once in an itemset and that
+    items in an itemset are assumed to be lexically ordered.</p>
+  <p>For example, consider the following database. These integer values
+    that are annotation to items are indicated with a bold font and blue
+    color. Consider the sequence S1 of this database. At time 0, the item 1
+    occured with the value 2, and item 2 is not annotated with a value. At
+    time 1, item 3 appeared. At time 2, item 6 occured. At time 3, item 5
+    occured with the value 1.</p>
+
+<table align="center" border="1" width="461">
+  <tbody>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td>S1</td>
+      <td>(<strong>0</strong>, 1(<span class="highlight">2</span>) 2), (<strong>1</strong>,
+        3), (<strong>2</strong>, 6), (<strong>3</strong>, 5(<span class="highlight">1</span>))</td>
+    </tr>
+    <tr>
+      <td>S2</td>
+      <td >(<strong>0</strong>, 1(<span class="highlight">2</span>)
+        2), (<strong>1</strong>, 4(<span class="highlight">8</span>)), (<strong>2</strong>,
+        3), (<strong>3</strong>, 5(<span class="highlight">2</span>) 6 7)</td>
+    </tr>
+    <tr>
+      <td>S3</td>
+      <td>(<strong>0</strong>, 1(<span class="highlight">3</span>) 2), (<strong>1</strong>,
+        4(<span class="highlight">7</span>)), (<strong>2</strong>, 3), (<strong>3,</strong> 5(<span class="highlight">4</span>))</td>
+    </tr>
+    <tr>
+      <td>S4</td>
+      <td>(<strong>0</strong>, 1(<span class="highlight">3</span>) 2), (<strong>1</strong>,
+        4(<span class="highlight">6</span>)), (<strong>2</strong>, 5(<span class="highlight">5</span>)), (<strong>3</strong>, 6 7)</td>
+    </tr>
+  </tbody>
+</table>
+<h2>What is the output?</h2>
+<p>To mine sequential patterns from a time-extended sequence database
+    where items can be annotated with integer values, we have added an
+    original mechanism in the <strong>Fournier-Viger et al. algorithm. </strong>Because
+    it is a little bit complicated to explain, please refer to <a href="https://www.philippe-fournier-viger.com/fournier-viger_sequential_patterns_micai08.pdf">Fournier-Viger
+      et al., 2008 </a>for a detailed description. </p>
+  <p>As PrefixSpan, the algorithm grows patterns one item at a time by
+    recursively projecting a database by a frequent item. However, we have
+    modified this step so that when the support of an item that is
+    annotated is higher or equals to 2 * <em>minsup</em>, the database
+    projection operation calls the K-Means algorithm [15] to try to
+    separate these values in two or more clusters. Thereafter, the database
+    will be projected separately for each group of values. Thus, the
+    different groups will be considered as different items. </p>
+  <p>This is best illustrated with an example. If we mine patterns from
+    the first table with <em>minsup = 50%</em>, we can get 56 sequential
+    patterns. Note however that the number of patterns found can vary
+    because K-Means is a randomized algorithm. For this example, six
+    patterns found are presented in the next table:</p>
+
+<table align="center" border="1" width="681">
+  <tbody>
+    <tr>
+      <td width="20"><strong>ID</strong></td>
+      <td width="489"><strong>Sequential Patterns</strong></td>
+      <td width="150"><strong>Support</strong></td>
+    </tr>
+    <tr>
+      <td>P1</td>
+      <td>(<strong>0</strong>, 3)</td>
+      <td>75%</td>
+    </tr>
+    <tr>
+      <td>P2</td>
+      <td>(<strong>0</strong>, 5 (<span class="highlight">average: 3 min:1
+        max:5</span>))</td>
+      <td>100 %</td>
+    </tr>
+    <tr>
+      <td>P3</td>
+      <td>(<strong>0</strong>, 6)</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>P4</td>
+      <td>(<strong>0</strong>, 3), (<strong>1</strong>, 6)</td>
+      <td>50 %</td>
+    </tr>
+    <tr>
+      <td>P5</td>
+      <td>(<strong>0</strong>, 1 (<span class="highlight">average: 3 min:
+        3 max: 3</span>) 2), (<strong>1</strong> 4 (<span class="highlight">average:
+          6.5 min: 6 max: 7</span>))</td>
+      <td>50 %</td>
+    </tr>
+    <tr>
+      <td>P6</td>
+      <td>(<strong>0</strong>, 1 ((<strong class="highlight">average: </strong><span class="highlight">2 min: 2 max: 2</span>) 2), (<strong>3</strong>, 5 (<span class="highlight">average: 3.5 min: 1 max: 2</span>))</td>
+      <td>50 %</td>
+    </tr>
+    <tr>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>When the algorithm was executed, as some point, it considered
+    projecting the database with item &quot;1&quot; because this item is frequent.
+    Item &quot;1&quot; is annotated with values 2, 2, 3 and 3 in sequences S1, S2, S3
+    and S4, respectively. The algorithm applied the K-Means to find
+    clusters. Two clusters were found. They are {2, 2}and {3, 3}. We can
+    see this in sequences P5 and P6. In sequence P5, item &quot;1&quot; represents
+    the cluster {3, 3}, whereas sequence P6 include item &quot;1&quot; with the
+    cluster {2, 2}. This feature of clustering is useful as it allows to
+    group similar values together for an item and treat them differently.</p>
+  <p>In the source code of <strong><span class="highlight">MainTestSequentialPatternsMining3.java</span></strong>,
+    there is a few parameters for K-Means. Two of these parameters are
+    particularly important:</p>
+  <ul>
+    <li><strong>MaxK</strong> (an integer value &gt;=1): This parameter
+      is the maximum number of clusters to create. If you set this parameter
+      to two for example, no more than two clusters will be made every time
+      that K-Means is called. If you want to desactivate the clustering, this
+      parameter should be set to 1 (only one cluster will always be made).</li>
+    <li><strong>numberOfTriesForEachK </strong>(an integer value
+      &gt;=1): This parameter indicates the number of times that K-Means
+      should be run each time there is some values to be clustered. Normally,
+      this value should be set to 1. If you set this parameter to a value
+      different than 1, K-Means will be run the number of times that you
+      specify and the maximum number of clusters found will be kept. This
+      parameter was added because K-Means is a randomized algorithm.</li>
+  </ul>
+  <p class="highlight"><span class="highlight">Important note:</span> <span class="highlight">If the clustering described in this example is used
+    jointly with the mining of closed sequential patterns (described in a
+    previous example), the set of patterns found may not be a lossless
+    representation of all patterns. </span></p>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a time-extended sequence from
+    a sequence database. Each line is a list of itemsets, where each
+    itemset has a timestamp represented by a positive integer and each item
+    is represented by a positive integer. Each itemset is first represented
+    by its timestamp between the &quot;&lt;&quot; and &quot;&gt; symbol. Then, the items
+    of the itemset appear separated by single spaces. Finally, the end of
+    an itemset is indicated by &quot;-1&quot;. After all the itemsets, the end of a
+    sequence (line) is indicated by the symbol &quot;-2&quot;. Note that it is
+    assumed that items are sorted according to a total order in each
+    itemset and that no item appears twice in the same itemset.
+    Furthermore, items can be annotated with a positive integer value
+    specified between the &quot;(&quot; and &quot;)&quot; symbols.</p>
+  <p>For example, the input file &quot;<strong>contextSequencesTimeExtended_ValuedItems.txt</strong>&quot;
+    contains the following four lines (four sequences).</p>
+  
+    <p>&lt;0&gt; 1(2) 2 -1 &lt;1&gt; 3 -1 &lt;2&gt; 6 -1 &lt;3&gt; 5(1)
+      -1 -2<br>
+      &lt;0&gt; 1(2) 2 -1 &lt;1&gt; 4(8) -1 &lt;2&gt; 3 -1 &lt;3&gt; 5(2) 6 7
+      -1 -2<br>
+      &lt;0&gt; 1(3) 2 -1 &lt;1&gt; 4(7) -1 &lt;2&gt; 3 -1 &lt;3&gt; 5(4) -1
+      -2<br>
+      &lt;0&gt; 1(3) 2 -1 &lt;1&gt; 4(6) -1 &lt;2&gt; 5(5) -1 &lt;3&gt; 6 7
+      -1 -2</p>
+  
+  <p>Consider the first line. It indicates that at time &quot;0&quot; the item 1
+    appears with the value 2 and the item 2 with no value (a value of 0 is
+    assumed by default). Then, at time 1, the item 3 appears with no value.
+    Then, at time 2, the item 6 appears with no value. Then at time 3, the
+    item 5 appears with the value 1. The following sequences follow the
+    same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. Each line is a sequential pattern. Each line starts by
+    listing the itemsets of the sequential pattern, where each itemset has
+    a relative timestamp represented by a positive integer between the
+    &quot;&lt;&quot; and &quot;&gt; symbol. Then the timestamp is followed by each item in
+    the itemset, each represented by a positive integer. The items of the
+    itemset appear separated by single spaces and the symbol &quot;-1&quot; indicates
+    the end of an itemset. Finally, after all the itemsets of a sequential
+    pattern, the keyword &quot;#SUP:&quot; is followed by an integer indicating the
+    support of the pattern as a number of sequences. Note that each item
+    can be annotated with information about values specified between the
+    &quot;(&quot; and &quot;)&quot; symbols. Information about values are a double value
+    indicating the average value for this item in this pattern and the
+    minimum and maximum values. For example, here is a few lines from the
+    output file from the previous example: </p>
+  
+    <p>&lt;0&gt; 1 (2.5, min=2.0 max=3.0) -1 &lt;3&gt; 7 -1 #SUP: 2<br>
+      &lt;0&gt; 1 (2.5, min=2.0 max=3.0) -1 &lt;3&gt; 6 7 -1 #SUP: 2<br>
+      &lt;0&gt; 1 (2.5, min=2.0 max=3.0) -1 &lt;3&gt; 6 -1 #SUP: 2</p>
+  
+  <p>Consider the first line. It represents a sequential pattern. The
+    first itemset occured has a relative timestamp of 0. Furthermore, it
+    contains the item 1 with an average value of 2.5 and a minimum and
+    maximum values respectively of 2 and 3. Then, a second itemset appears
+    with a relative timestamp of 3. It contains the item 7. The support of
+    the sequential pattern is 2 sequences. The two other lines follow the
+    same format.</p>
+
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The algorithm is described in this paper:</p>
+  <p><em> Fournier-Viger, P., Nkambou, R &amp; Mephu Nguifo, E. (2008),<a href="https://www.philippe-fournier-viger.com/fournier-viger_sequential_patterns_micai08.pdf"> A Knowledge Discovery Framework for Learning Task Models from User
+    Interactions in Intelligent Tutoring Systems</a>. Proceedings of the
+    7th Mexican International Conference on Artificial Intelligence (MICAI
+    2008). LNAI 5317, Springer, pp. 765-778.</em></p>
+  <p>Besides, you may read this<a href="https://www.philippe-fournier-viger.com/dspr-paper5.pdf"> survey of sequential pattern mining</a>, which gives an overview of sequential pattern mining algorithms.</p>
+
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

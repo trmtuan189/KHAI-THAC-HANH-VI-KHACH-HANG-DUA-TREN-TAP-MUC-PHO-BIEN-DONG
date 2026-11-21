@@ -1,0 +1,246 @@
+<!doctype html>
+<html  lang="en">
+<head>
+<meta charset="utf-8">
+<!---------------------- (1) Change the title of the example  in the <title> tag : --->
+<title>Example: Mining Sequential Rules Common to Several Sequences with the CMRules algorithm (SPMF - Java) </title>
+<link rel="stylesheet" type="text/css" href="documentation.css" media="screen" />
+</head>
+
+<body>
+<!---------------------- (2) Change the title of the example in the <a> tag: --->
+<h3><a href="documentation.html"> SPMF documentation</a> &gt; Mining Sequential Rules Common to Several Sequences with the CMRules algorithm</h3>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>CMRules algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> "<span class="highlight">CMRules</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextPrefixSpan</span><span class="highlight">.txt"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight"><strong>output</strong>.txt</span>")
+    (4) set <em>minsup</em> = 75 %, <em>minconf</em>= 50% (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run <strong><span class="highlight">CMRules </span></strong><strong>contextPrefixSpan</strong>.txt
+      output.txt 75% 50%</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextPrefixSpan.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestCMRules.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is CMRules?</h2>
+<p><strong>CMRules</strong> is an algorithm for discovering <strong>sequential
+    rules</strong> that appears in sequence databases. This algorithm was
+    proposed by Fournier-Viger et al. in 2010.</p>
+
+<h2>What is the input of CMRules ?</h2>
+<p>The input of <strong>CMRules</strong> is a sequence database and
+    two user-specified thresholds named <em>minsup </em>(a value in [0,
+    1] representing a percentage) and <em>minconf</em> (a value in [0, 1]
+    representing a percentage).</p>
+  <p>A <strong>sequence database</strong> is a set of sequences where
+    each sequence is a list of itemsets. An itemset is an unordered set of
+    items. For example, the table shown below contains four sequences. The
+    first sequence, named S1, contains 5 itemsets. It means that item 1 was
+    followed by items 1 2 and 3 at the same time, which were followed by 1
+    and 3, followed by 4, and followed by 3 and 6. It is assumed that items
+    in an itemset are sorted in lexicographical order. This database is
+    provided in the file "<strong>contextPrefixSpan.txt</strong>" of the
+    SPMF distribution<strong>.</strong></p>
+
+<table align="center" border="1" width="461">
+  <tbody>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td>S1</td>
+      <td>(1), (1 2 3), (1 3), (4), (3 6)</td>
+    </tr>
+    <tr>
+      <td>S2</td>
+      <td bgcolor="#ffffff">(1 4), (3), (2 3), (1 5)</td>
+    </tr>
+    <tr>
+      <td>S3</td>
+      <td>(5 6), (1 2), (4 6), (3), (2)</td>
+    </tr>
+    <tr>
+      <td>S4</td>
+      <td>(5), (7), (1 6), (3), (2), (3)</td>
+    </tr>
+  </tbody>
+</table>
+<h2>What is the output of CMRules ?</h2>
+<p>Given a sequence database, and parameters named <em>minsup</em> and <em>minconf, </em><strong>CMRules</strong> outputs all <strong>sequential
+    rules</strong> having a support and confidence respectively higher than <em>minsup</em> and <em>minconf</em>.</p>
+  <p>A <strong>sequential rule</strong> X==&gt;Y is a sequential
+    relationship between two sets of items X and Y such that X and Y are
+    disjoint, and that X is unordered and Y is unordered. The support of a
+    rule X==&gt;Y is the number of sequences that contain all items of X  before all items from Y divided by
+    the number of sequences in the database. The confidence of a rule is
+    the number of sequences that contain all items of X  before all items from Y, divided by the number of
+    sequences that contains items in X. </p>
+  <p>In this example, we apply <strong>CMRules</strong><strong> </strong>with
+    minsup = 75 %, minconf= 50%. We obtains <strong>9 sequential rules:</strong></p>
+
+<table align="center" border="1" width="315">
+  <tbody>
+    <tr>
+      <td><strong>Rule</strong></td>
+      <td><strong>Support</strong></td>
+      <td><strong>Confidence</strong></td>
+    </tr>
+    <tr>
+      <td>1 ==&gt; 2</td>
+      <td>100 %</td>
+      <td>100 %</td>
+    </tr>
+    <tr>
+      <td height="25">1 ==&gt;3</td>
+      <td>100 % </td>
+      <td>100 %</td>
+    </tr>
+    <tr>
+      <td>2 ==&gt; 3</td>
+      <td>75 %</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>3 ==&gt; 2</td>
+      <td>75 %</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>4 ==&gt; 3</td>
+      <td>75 %</td>
+      <td>100 %</td>
+    </tr>
+    <tr>
+      <td>1 3 ==&gt; 2 </td>
+      <td>75 %</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>1 2 ==&gt; 3 </td>
+      <td>75 %</td>
+      <td>75 %</td>
+    </tr>
+    <tr>
+      <td>1 4 ==&gt; 3 </td>
+      <td>75 %</td>
+      <td>100 %</td>
+    </tr>
+    <tr>
+      <td>1 ==&gt; 2 3 </td>
+      <td>100 %</td>
+      <td>100 %</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>For example, the rule 1 4 ==&gt; 3 means that if 1 an 4 appears in
+    any order they will be followed by 3 with a confidence of 100 %.
+    Moreover, this rule has a support of 75 % because it appears in three
+    sequences (S1, S2 and S3) out of four sequences.</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a sequence from a sequence
+    database. Each item from a sequence is a postive integer and items from
+    the same itemset within a sequence are separated by single spaces. Note
+    that it is assumed that items within a same itemset are sorted
+    according to a total order and that no item can appear twice in the
+    same itemset. The value "-1" indicates the end of an itemset. The value
+    "-2" indicates the end of a sequence (it appears at the end of each
+    line). For example, the sample input file "<strong>contextPrefixSpan.txt</strong>"
+    contains the following four lines (four sequences).</p>
+  
+    <p>@FILETYPE=&quot;Simple sequence database&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+      1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+      5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+    5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. The first line of data represents a sequence where the itemset {1} is
+    followed by the itemset {1, 2, 3}, followed by the itemset {1, 3},
+    followed by the itemset {4}, followed by the itemset {3, 6}. The next
+  lines follow the same format.</p>
+  <p>Note that it is also possible to use <strong>a text file containing a text (several sentences)</strong> if the text file has the ".text" extension, as an alternative to the default input format. If the algorithm is applied on a text file from the graphical interface or command line interface, the text file will be automatically converted to the SPMF format, by dividing the text into sentences separated by &quot;.&quot;, &quot;?&quot; and &quot;!&quot;, where each word is considered as an item. Note that when a text file is used as input of
+    a data mining algorithm, the performance will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the sequential rules (one by line). Each item from a
+    sequential rule is a postive integer. On each line, the items from the
+    rule antecedent are first listed, separated by single spaces. Then the
+    keyword "==&gt;" appears, followed by the items from the rule
+    consequent, separated by single spaces. Then, the keyword "#SUP:"
+    appears followed by an integer indicating the support of the rule as a
+    number of sequences. Then, the keyword "#CONF:" appears followed by a
+    double values in the [0, 1] interval indicating the confidence of the
+    rule. For example, a few lines from the output file from the previous
+    example is shown below:</p>
+  
+    <p>@FILETYPE=&quot;Frequent sequential rules&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1,2 ==&gt; 3 #SUP: 3 #CONF: 1.0<br>
+      1,3 ==&gt; 2 #SUP: 3 #CONF: 1.0<br>
+      1 ==&gt; 2,3 #SUP: 4 #CONF: 1.0<br>
+      1,4 ==&gt; 3 #SUP: 3 #CONF: 1.0</p>
+  
+  <p> Consider the first line. It indicates that the rule {1, 2} ==&gt;
+    {3} has a support of 3 sequences and a confidence of 100 %. The next
+    lines follow the same format</p>
+
+  <h2>Optional feature: giving names to items </h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database "<strong>contextPrefixSpan.txt</strong>". Here we have modified the file to give names to the items: <br>
+    <br>
+    @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple sequence database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+@ITEM=6=noodle<br>
+@ITEM=7=rice<br>
+@ITEM=-1=|<br>
+1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second and third line indicate the type of file and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. The 11th line indicates that the symbol &quot;-1&quot; must be replaced by &quot;|&quot;. Then the following lines define four sequences in the SPMF format. </p>
+  <p>Then, if we apply a sequential pattern mining algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+      <br>
+      apple,orange,bread,noodle ==&gt; tomato #SUP: 2 #CONF: 1.0<br>
+      apple,bread,noodle ==&gt; orange,tomato #SUP: 2 #CONF: 1.0<br>
+    bread ==&gt; apple,orange,tomato,noodle #SUP: 2 #CONF: 0.6666666666666666</p>
+  <p>Note that this feature could be also used from the source code of SPMF using the ResultConverter class. However, there is currently no example provided.</p>
+
+  <h2>Performance</h2>
+  <p>CMRules is a relatively efficient algorihtm. However, the
+    RuleGrowth algorithm is faster. </p>
+  <p>What is interesting about CMRules is that it uses an association
+    rule mining based approach for discovering sequential rules. Therefore
+    it could be used to discover both sequential rules and association
+    rules at the same time.</p>
+
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The CMRules algorithm is described in this paper:</p>
+  <p><em>Fournier-Viger, P., Faghihi, U., Nkambou, R., Mephu Nguifo, E.
+    (2012). <a href="https://www.philippe-fournier-viger.com/CMRULES_journal_sequential_rules.pdf">CMRules:
+      Mining Sequential Rules Common to Several Sequences</a><strong>. </strong>Knowledge-based
+    Systems, Elsevier, 25(1): 63-76.</em></p>
+
+<!------------------------------------------------------------------------------->
+<!-------------------  (5)  Do not change the following part -------------------->
+<!------------------------------------------------------------------------------->
+<p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+<p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+</body>
+</html>

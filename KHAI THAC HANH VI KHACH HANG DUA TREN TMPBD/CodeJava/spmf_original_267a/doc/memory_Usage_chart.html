@@ -1,0 +1,39 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Monitor the JVM's Memory using the Memory Viewer (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Monitor the JVM's Memory using the Memory Viewer     (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to use<strong> the SPMF Memory Viewer to monitor the memory usage of the JVM</strong>.</p>
+<!--------------(4) Insert the example here:------------->
+
+  <h2>How to run this example? </h2>
+  <p>If you are using the <strong>graphical interface </strong>of SPMF<strong>, </strong>(1)
+      choose the <strong>&quot;MemoryViewer&quot;</strong> algorithm<strong>, </strong> and then (2) click "<span class="highlight">Run algorithm</span>".</p>
+  <h2>What is this tool?</h2>
+  <p>The  <strong>Memory Viewer</strong> is a simple tool that display the current memory usage of the JVM in a separated window.</p>
+  <p>After launching the <strong>Memory Viewer</strong>, you can keep the window of the Memory Viewer open and then run another algorithm. Then, the Memory Viewer will track the memory usage over time.</p>
+  <p>The <strong>MemoryViewer c</strong>hecks the memory usage every second, and keep the most recent 100 values.</p>
+  <p>Here is a picture of the memory viewer in action::</p>
+  <p><img src="memory_viewerjvm.png" alt="memory viewer of spmf" width="488" height="305"></p>
+  <p>Note that this tool will only monitor the performance of algorithms that are running in the same JVM as SPMF. </p>
+  <p>Thus, if you select the option “<strong>Run in a separated process</strong>” of SPMF to run an algorithm in a separated JVM, the memory will not be monitored.
+    <!----------END------>
+	  </p>
+  <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

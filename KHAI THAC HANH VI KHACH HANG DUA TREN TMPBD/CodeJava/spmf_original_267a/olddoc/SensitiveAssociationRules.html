@@ -1,0 +1,227 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Hiding Sensitive Association Rules with the FHSAR algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Hiding Sensitive Association Rules with the FHSAR algorithm (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>FHSAR algorithm </strong>using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">FHSAR</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextIGB.</span><span class="highlight">txt&quot;</span></strong>,
+    (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+    (4) set <em>minsup</em> = 50 %, <em>minconf</em>= 60% and <em>sar_file
+      = </em>&quot;<span class="highlight">sar.txt</span>&quot;(5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run <strong><span class="highlight"> FHSAR </span></strong><strong>contextIGB</strong>.txt
+      output.txt 50% 60% sar.txt</span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">contextIGB.txt</span>.</li>
+  <li><strong>To run this example with the source code version of SPMF,</strong> launch the file <strong><span class="highlight">&quot;MainTestFHSAR_saveToFile.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is FHSAR?</h2>
+<p>FHSAR is an algorithm for hiding sensitive association rules in a
+    transaction database. </p>
+  <p>What are the applications? For example, consider a company that
+    want to release a transaction database to the public. But it does not
+    want to disclose some sensitive associations between items that appear
+    in the database and that could give a competitive advantage to their
+    competitor. The FHSAR algorithm can hide these associations by
+    modifying the database.</p>
+
+  <h2>What is the input?</h2>
+  <p>The FHSAR algorithm is designed to hide sensitive association
+    rules in a transaction database so that they will not be found for a
+    given <em>minsup</em> and <em>minconf</em> threshold generally used
+    by association rule mining algorithms. The input are: <em>minsup </em>(a
+    value in [0,1] that represents a percentage), <em>minconf </em>(a
+    value in [0,1] that represents a percentage)<em>, </em>a transaction
+    database and some sensitive association rules to be hidden. </p>
+  <p>A <strong>transaction database</strong> is a set of transactions.
+    Each <strong>transaction</strong> is a set of distinct items. For
+    example, consider the following transaction database. It contains 6
+    transactions (t1, t2, ..., t5, t6) and 5 items (1, 2, 3, 4, 5). For
+    example, the first transaction represents the set of items 1, 2, 4 and
+    5. This database is provided as the file <strong>contextIGB.txt</strong> in the SPMF distribution. It is important to note that an item is not
+    allowed to appear twice in the same transaction and that items are
+    assumed to be sorted by lexicographical order in a transaction.</p>
+  <table align="center" border="1" width="316">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{1, 2, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t6</strong></td>
+        <td>{2, 3, 4}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <p>An <strong>association rule</strong> X==&gt;Yis an association
+    between two sets of items X and Y such that X and Y are disjoint. The <strong>support
+      of an association rule </strong>X==&gt;Yis the number of transactions
+    that contains both X and Y divided by the total number of transactions.
+    The <strong>confidence of an association rule</strong> X==&gt;Y is the
+    number of transactions that contains both X and Y divided by the number
+    of transactions that contain X. For example, the rule {1 2} ==&gt; {4
+    5} has a support of 50 % because it appears in 3 transactions out of 5.
+    Furthermore, it has a confidence of 75 % because {1 2} appears in 4
+    transactions and {1, 2, 4, 5} appears in 3 transactions.</p>
+
+  <h2>What is the output?</h2>
+  <p>The output is a new transaction database such that the sensitive
+    rules will not be found if an association rule mining algorithm is
+    applied with <em>minsup</em> and <em>minconf</em>. </p>
+  <p> For example, we can apply FHSAR with the parameters minsup = 0.5
+    and minconf = 0.60 to hide the following association rules provided in
+    the file &quot;<strong>sar.txt</strong>&quot;:</p>
+  <ul>
+    <li>4 ==&gt; 1</li>
+    <li>1 2 ==&gt; 4 5</li>
+    <li>5 ==&gt; 2</li>
+  </ul>
+  <p>the result is a new transaction database where these rules are
+    hidden for the given thresholds <em>minsup</em> and <em>minconf</em>:</p>
+  <table align="center" border="1" width="316">
+    <tbody>
+      <tr>
+        <td width="144"><strong>Transaction id</strong></td>
+        <td width="156"><strong>Items</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>{4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>{3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>{4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>{1, 2, 3, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>{1, 2, 3, 4, 5}</td>
+      </tr>
+      <tr>
+        <td><strong>t6</strong></td>
+        <td>{2, 3, 4}</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Note that the result of the algorithm is not always the same
+    because I use the HashSet data structure to represent transactions
+    internally and this data structure do not keep the order. Therefore,
+    the items that are removed may not be the same if the algorithm is run
+    twice.</p>
+
+  <h2>Input file format</h2>
+  <p>This algorithm takes two files as input.</p>
+  <p>The <strong> first file </strong>is a text file containing
+    transactions (a transaction database) (e.g.<strong> contextIGB.txt</strong>).
+    Each line represents a transaction. The items in the transaction are
+    listed on the corresponding line. An item is represented by a positive
+    integer. Each item is separated from the following item by a space. It
+    is assumed that items are sorted according to a total order and that no
+    item can appear twice in the same transaction. For example, for the
+    previous example, the input file is defined as follows:</p>
+  
+    <p>1 2 4 5<br>
+      2 3 5<br>
+      1 2 4 5<br>
+      1 2 3 5<br>
+      1 2 3 4 5<br>
+      2 3 4</p>
+  
+  <p>This file contains six lines (six transactions). Consider the
+    first line. It means that the first transaction is the itemset {1, 2,
+    4, 5}. The following lines follow the same format. </p>
+  <p>The <strong> second file </strong>is a text file containing
+    sensitive association rules to be hidden (e.g. <strong>sar.txt</strong>).
+    Each line is an association rule. First, the rule antecedent is
+    written. It is an itemset, where each item is represented by a positive
+    integer, and each item is separated from the following item by a single
+    space. Note that it is assumed that items within an itemset cannot
+    appear more than once and are sorted according to a total order. Then
+    the keyword &quot; ==&gt; &quot; appears followed by the rule consequent. The
+    consequent is an itemset where each item is represented by a positive
+    integer, and each item is separated from the following item by a single
+    space. For example, consider the file <strong>sar.txt</strong>.</p>
+  <p>4 ==&gt; 1<br>
+    1 2 ==&gt; 4 5<br>
+    5 ==&gt; 2</p>
+  <p>This file contains three lines (three association rules). The
+    second line indicates that the rule {1, 2} ==&gt; {4, 5} should be
+    hidden by the FHSAR algorithm.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file representing a transaction database. Each line
+    represents a transaction. The items in the transaction are listed on
+    the corresponding line. An item is represented by a positive integer.
+    Each item is separated from the following item by a space. It is
+    assumed that items are sorted according to a total order and that no
+    item can appear twice in the same transaction. For example, for the
+    previous example, an output file generated by the FHSAR algorithm is:</p>
+  <p>4 5<br>
+    3 5<br>
+    4 5<br>
+    1 2 3 5<br>
+    1 2 3 4 5<br>
+    2 3 4</p>
+  <p>In this example, the first line represents the transaction {4, 5}.
+    Other lines follow the same format.</p>
+
+  <h2>Where can I get more information about the FHSAR algorithm?</h2>
+  <p>This algorithm was proposed in this paper:</p>
+  <p> C.-C.Weng, S.-T. Chen, H.-C. Lo: <a rel="nofollow" href="https://www.philippe-fournier-viger.com/spmf/FHSAR.pdf">A Novel
+    Algorithm for Completely Hiding Sensitive Association Rules</a>. ISDA
+    (3) 2008: 202-208</p>
+
+
+  <p>For a good overview of <strong> itemset mining and association rule mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

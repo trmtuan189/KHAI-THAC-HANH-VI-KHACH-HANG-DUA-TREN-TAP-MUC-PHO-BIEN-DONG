@@ -1,0 +1,89 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Using a TEXT file as input in the source code version of SPMF  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Using a TEXT file as input in the source code version of SPMF   (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to <strong> use a TEXT file as input in the source code version of SPMF</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<p>The GUI interface and command line interface of SPMF can read text files as input if they have the &quot;<strong>.text</strong>&quot; extension, since version 2.01 of SPMF and this is totally
+  transparent to the user. This is supported for most sequential pattern mining algorithms and sequential rule mining algorithms. It however is not supported for itemset mining or association rule mining algorithms, for now. In this example, we will describe another possibility. It is to use a TEXT file as input when running an algorithm from the source code. This example explains how
+to do it and it is quite simple.</p>
+<p>But before presenting the example, let's explain a few things about
+  how the TEXT filesupport is implemented in SPMF:</p>
+<ul>
+  <li>The TEXT format is only supported for algorithms that take a
+    sequence database as input (most sequential rule and sequential pattern mining
+    algorithm such as CMRules and CM-SPAM).</li>
+  <li>To convert a text file in a sequence database, the text is separated by sentence ending by &quot;?&quot;, &quot;!&quot; or &quot;.&quot;. Then each sentence is viewed as a sequence of words.</li>
+  <li>The words in a text files are naturally represented as strings while the
+    SPMF format and algorithms use an integer representation which is much
+    more memory and time efficient for the algorithms concerned. To provide a support for TEXT files while keeping the very efficient integer representation of our
+    algorithms, we decided to implement the support for text files in a way that did
+    not require to modify the source code of the algorithms. The solution
+    is to convert the input before running an algorithm and then, to
+    convert the output.</li>
+</ul>
+<p>Having said that, we will now explain how to use the TEXT file format in
+  the source code with an example. We will use the ERMiner algorithm but
+  the steps are the same for the other algorithms. We will first show how
+  to run the ERMiner algorithm if the input file is in SPMF format. Then,
+  we will show how to run the Apriori algorithm if the input is a text file 
+  to illustrate the differences.</p>
+<h3><strong>If the input is in SPMF format</strong></h3>
+<p>To run ERMiner with a file &quot;contextPrefixSpan.txt&quot; in SPMF format with the
+  parameter minsup = 0.4, the following code is used:</p>
+
+  <p> AlgoERMiner algo = new AlgoERMiner(); <br>
+    algo.runAlgorithm(input, output, 3, 0.5);</p>
+
+  <h3><strong>If the input is a TEXT file</strong></h3>
+  <p>Now let's say that the input file is a text document.</p>
+
+  <p>// We first need to convert the input file from TEXT to SPMF
+    format. To do that, we create a sequence database converter. Then we
+    call its method &quot;convertTEXTandReturnMap&quot; to convert the input file to
+    the SPMF format. It produces a converted input file named
+    &quot;example2_converted.arff&quot;. Moreover, the conversion method returns a map
+    containing mapping information between the data in ARFF format and the
+    data in SPMF format.</p>
+  <p> SequenceDatabaseConverter converter = new SequenceDatabaseConverter();<br>
+    Map&lt;Integer, String&gt; mapping = converter.convertTEXTandReturnMap(&quot;example2.text&quot;, &quot;example2_converted.txt&quot;, Integer.MAX_VALUE);</p>
+  <p>// Then we run the algorithm with the converted file
+    &quot;example2_converted.txt&quot;. This creates a file &quot;output.txt&quot; containing the
+    result.</p>
+  <p> AlgoERMiner algo = new AlgoERMiner();<br>
+    algo.runAlgorithm(&quot;example2_converted.txt&quot;, &quot;output.txt&quot;, 3, 0.5);</p>
+  <p>// Finally, we need to use the mapping to convert the output file
+    so that the result is shown using the words that are found in the TEXT
+    file rather than the integer-based representation used internally by
+    the ERMiner algorithm. This is very simple and performed as follows.
+    The result is a file named &quot;final_output.txt&quot;.</p>
+  <p> ResultConverter converter2 = new ResultConverter();<br>
+    converter2.convert(mapping, &quot;output.txt&quot;, &quot;final_output.txt&quot;);</p>
+
+<p>What is the cost of using a TEXT file in terms of performance?
+  The only additional cost when using a text file is the cost of converting the
+  input and output files, which is generally much smaller than the cost
+  of performing  data mining. In the future, we plan to add support
+  for SQL databases, Excel files and other formats by using a similar
+  conversion mechanism that does not affect the performance of the mining
+  phase. We also plan to add support for the visualizations of patterns.</p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

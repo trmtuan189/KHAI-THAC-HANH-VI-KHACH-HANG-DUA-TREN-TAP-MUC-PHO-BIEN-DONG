@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Example: View frequent weighted itemsets with the Visual Pattern Viewer (SPMF - Java)</title>
+    <link rel="stylesheet" href="docstyle.css"/>
+    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+.style2 {
+	color: #00CC00;
+	font-weight: bold;
+}
+.style4 {color: #0000FF; font-weight: bold; }
+-->
+    </style>
+</head>
+  <body>
+    <div width="100%" class="container">
+      <div class="content">
+        <!----------START------>
+<h1>View frequent weighted itemsets with the Visual Pattern Viewer (<a href="documentation.html">SPMF documentation</a>) </h1>
+<p><span class="style2">Frequent weighted itemsets</span> are a type of patterns that can be produced by different algorithms offered in SPMF.</p>
+<p>This page explains how to <strong>visualize</strong> the <strong class="style2">frequent weighted itemsets</strong> found by an algorithm using the <strong>Visual Pattern Viewer</strong>. </p>
+<h2>How to run this example? </h2>
+<p>If you want to run this example using the graphical user interface of SPMF, follow these steps.</p>
+<p>1) First, select a <span class="style2">frequent weighted itemset</span> mining algorithm offered in SPMF. Several algorithms are offered such as NFWI, NFWCI, WIT-FWI, WIT-FWI-MOD, and WIT-FWI-DIFF, and are described in the documentation of SPMF.</p>
+<p>2) Then, in the user interface of SPMF, after selecting an algorithm such as WFIM and setting its input file path, output file path, and parameters, click on the combo-box besides &quot;<span class="style1"><strong>Open output file using</strong></span>:&quot;, and select &quot;<span class="style1"><strong>Visualize_Frequent_Weighted_Itemsets</strong></span>&quot; so that the discovered patterns will be opened with the visual pattern viewer. </p>
+<p><img src="Visualize_WeightedFIM_SELECT.png" alt="visualize frequent weighted itemsets selection" width="771" height="479"> </p>
+<p>3) Then click on &quot;<strong>Run algorithm</strong>&quot; to run the algorithm. </p>
+<p>After the algorithm terminates, the discovered patterns will be displayed using the <strong>Visual Pattern Viewer</strong>:</p>
+<p><img src="Visualize_WeightedFIM_VIEW.png" alt="visualize weighted itemsets viewer" width="963" height="317"> </p>
+<p>The Visual Pattern Viewer interface is quite intuitive. It displays each pattern with its value for each evaluation measure using a colored bar.  </p>
+<p>The Visual Pattern Viewer offers several features such as:</p>
+<ul>
+  <li>Viewing patterns using different layouts (grid, horizontal and vertical layout).</li>
+  <li>Sorting patterns by size and measure values.</li>
+  <li>Searching and filtering using measure values</li>
+  <li>Displaying statistics about the number of patterns found.</li>
+</ul>
+<h2>Other ways of running the Visual Pattern Viewer </h2>
+  <p>It is also possible to run the Visual Pattern Viewer as an algorithm from the GUI of SPMF.</p>
+  <p>In this case, in the user interface of SPMF, select &quot;<strong class="style4">Visualize_Frequent_Weighted_Itemsets</strong>&quot; as algorithm. Then, select a file containing <span class="style2"><strong>frequent weighted itemsets</strong></span> as input file. Then, click &quot;run algorithm&quot;.</p>
+  <p>This will display the patterns from the file using the Visual Pattern Viewer.</p>
+  <p>Besides, it is also possible to call the Visual Pattern Viewer from the command line interface of SPMF. To open a file called <strong>patternsFrequentWeightedItemsets.txt</strong>, this syntax can be used:<br>
+    <br>
+    <span class="style4">java -jar spmf.jar run Visualize_Frequent_Weighted_Itemsets patternsFrequentWeightedItemsets.txt </span> in a folder containing <span class="highlight">spmf.jar</span> and the input file.</p>
+  <h2>What is the input file format?</h2>
+  <p>The algorithm takes as input a file containing<strong><span class="style2"> frequent weighted itemsets</span></strong>.</p>
+  <p>The <strong>file format</strong> is defined as follows. It
+    is a text file, where each line represents a <strong class="style2">frequent weighted itemset</strong>.    </p>
+  <p>Two formats are supported for frequent weighted itemset. </p>
+  <p>1) <strong>The format used by the WTI-FWI, NFWI and NFWCI algorithms: </strong>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. On each line, the items of the itemset are first listed. Each item is
+    represented by an integer and it is followed by a single space. After
+    all the items, the keyword &quot;#WSUP:&quot; appears, which is followed by a
+    real number indicating the weighted support of the itemset, expressed as a 
+    ratio between 0 and 1. For example, here is a sample output file containing 11 frequent weighted itemsets:</p>
+  <p>@FILETYPE=&quot;Frequent weighted itemsets&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1 #WSUP: 0.5783<br>
+    1 3 #WSUP: 0.4106<br>
+    5 #WSUP: 0.6044<br>
+    2 5 #WSUP: 0.4012<br>
+    3 5 #WSUP: 0.5222<br>
+    4 #WSUP: 0.6739<br>
+    2 4 #WSUP: 0.4681<br>
+    3 4 #WSUP: 0.4099<br>
+    2 #WSUP: 0.6953<br>
+    2 3 #WSUP: 0.4313<br>
+    3 #WSUP: 0.7360<br>
+    <br>
+    The first line indicates that the itemset containing item 1 has a weighted support of 0.5783. 
+    The second line indicates that the itemset containing items 1 and 3 has a weighted support of 0.4106. 
+    Other lines follow the same format. <br>
+    <br>
+    1) <strong>The format used by the WFIM algorithm:</strong> The pattern file is a text file where each line represents one
+          <strong>weighted frequent itemset.</strong> The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. On each line, the items of the itemset
+          are first listed as positive integers separated by single spaces. After all the
+          items, the keyword <strong>&quot;#SUP:&quot;</strong> appears, followed by the
+          support count of the itemset. Then the keyword <strong>&quot;#WAVG:&quot;</strong> appears, followed by the average weight of the items in the itemset (a real number 
+        formatted to 4 decimal places).</p>
+  <p>For example, the output file for this example is:</p>
+  <p> @FILETYPE=&quot;Frequent weighted itemsets&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    3 #SUP: 7 #WAVG: 1.0000<br>
+    3 2 #SUP: 4 #WAVG: 0.8500<br>
+    3 4 #SUP: 4 #WAVG: 0.7500<br>
+    3 5 #SUP: 5 #WAVG: 0.7250<br>
+    3 1 #SUP: 4 #WAVG: 0.7000<br>
+    2 #SUP: 7 #WAVG: 0.7000<br>
+    2 4 #SUP: 5 #WAVG: 0.6000<br>
+    2 5 #SUP: 4 #WAVG: 0.5750<br>
+    2 1 #SUP: 4 #WAVG: 0.5500<br>
+    4 #SUP: 7 #WAVG: 0.5000<br>
+    4 5 #SUP: 4 #WAVG: 0.4750<br>
+    4 1 #SUP: 4 #WAVG: 0.4500<br>
+    5 #SUP: 6 #WAVG: 0.4500<br>
+    1 #SUP: 6 #WAVG: 0.4000 </p>
+  <p>For example, the first line indicates that the itemset {3} has a support count of 7
+    (appears in 7 out of 10 transactions) and an average weight of 1.0000. The weighted
+    support can be computed as wsup({3}) = 1.0000 &times; 7 = 7.0000. The following lines 
+    follow the same format.<br>
+      <br>
+  </p>
+  <div class="footer">
+          <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+          <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+        </div>
+      </div>
+  </div>
+    </table>
+  </body>
+</html>

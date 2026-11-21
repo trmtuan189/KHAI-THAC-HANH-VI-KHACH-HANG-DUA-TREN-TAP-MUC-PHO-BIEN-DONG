@@ -1,0 +1,349 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Frequent Closed Sequential Patterns by Post-Processing using SPAM or PrefixSpan (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Frequent Closed Sequential Patterns by Post-Processing using SPAM or PrefixSpan  (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to mine <strong>closed sequential patterns by post-processing</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>What is this?</h2>
+<p>This example shows how to use the PrefixSpan and SPAM algorithms
+    to discover all sequential patterns and keep only closed patterns by
+    post-processing. This should be less efficient than using a dedicated
+    algorithm for closed pattern mining like ClaSP, CloSpan and BIDE+.</p>
+
+<h2>How to run this example?</h2>
+<p>If you want to use SPAM with post-processing: </p>
+  <ul>
+    <li><strong>If you are using the graphical interface, </strong>(1)
+      choose the <strong>&quot;<span class="highlight">SPAM_PostProcessingClosed</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextPrefixSpan</span><span class="highlight">.txt&quot;</span></strong>,
+      (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+      (4) set <em>minsup = 50%</em><em>, </em>(5)
+      click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+    <li><strong>If you want to execute this example from the command
+      line</strong>, then execute this command: <br>
+      <span class="highlight">java -jar spmf.jar run SPAM_PostProcessingClosed contextPrefixSpan.txt output.txt 50% </span> in a folder
+      containing <span class="highlight">spmf.jar</span> and the example input
+      file <span class="highlight">contextPrefixSpan.txt</span>.</li>
+    <li><strong>If you are using the source code version of SPMF, </strong>launch
+      the file <strong><span class="highlight">&quot;MainTestSPAM_PostProcessingStepForClosedMining_saveToFile.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.
+      (other variations are also available in the source code)</li>
+  </ul>
+  <p>If you want to use PrefixSpan with post-processing:</p>
+  <ul>
+    <li><strong>If you are using the graphical interface, </strong>(1)
+      choose the <strong> &quot;<span class="highlight">PrefixSpan_PostProcessingClosed</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">contextPrefixSpan</span><span class="highlight">.txt&quot;</span></strong>,
+      (3) set the output file name (e.g. &quot;<span class="highlight"><strong>output</strong>.txt</span>&quot;)
+      (4) set <em>minsup = 50% </em>, and (5)
+      click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+    <li><strong>If you want to execute this example from the command
+      line</strong>, then execute this command: <br>
+      <span class="highlight">java -jar spmf.jar run PrefixSpan_PostProcessingClosed contextPrefixSpan.txt output.txt 50% </span> in a folder
+      containing <span class="highlight">spmf.jar</span> and the example input
+      file <span class="highlight">contextPrefixSpan.txt</span>.</li>
+    <li><strong>If you are using the source code version of SPMF, </strong>launch
+      the file <strong><span class="highlight">&quot;MainTestPrefixSpan_PostProcessingStepForClosedMining_saveToFile.java&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span></li>
+  </ul>
+
+  <h2>What is the input ?</h2>
+  <p>The input <strong> i</strong>s a sequence database and a
+    user-specified threshold named <em>minsup</em> (a value in [0,1]
+    representing a percentage). </p>
+  <p>A <strong>sequence database</strong> is a set of sequences where
+    each sequence is a list of itemsets. An itemset is an unordered set of
+    items. For example, the table shown below contains four sequences. The
+    first sequence, named S1, contains 5 itemsets. It means that item 1 was
+    followed by items 1 2 and 3 at the same time, which were followed by 1
+    and 3, followed by 4, and followed by 3 and 6. It is assumed that items
+    in an itemset are sorted in lexicographical order. This database is
+    provided in the file &quot;<strong>contextPrefixSpan.txt</strong>&quot; of the
+    SPMF distribution<strong>.</strong> Note that it is assumed that no
+    items appear twice in the same itemset and that items in an itemset are
+    lexically ordered.</p>
+
+<table align="center" border="1" width="461">
+  <tbody>
+    <tr>
+      <td><strong>ID</strong></td>
+      <td><strong>Sequences</strong></td>
+    </tr>
+    <tr>
+      <td>S1</td>
+      <td>(1), (1 2 3), (1 3), (4), (3 6)</td>
+    </tr>
+    <tr>
+      <td>S2</td>
+      <td >(1 4), (3), (2 3), (1 5)</td>
+    </tr>
+    <tr>
+      <td>S3</td>
+      <td>(5 6), (1 2), (4 6), (3), (2)</td>
+    </tr>
+    <tr>
+      <td>S4</td>
+      <td>(5), (7), (1 6), (3), (2), (3)</td>
+    </tr>
+  </tbody>
+</table>
+<h2>What is the output?</h2>
+<p><strong>The output is </strong>all frequent <strong>closed
+    sequential pattern</strong>s that occurs in a sequence database.</p>
+  <p>To explain more formally what is a closed sequential pattern, it
+    is necessary to review some definition.</p>
+  <p>A <strong>sequential pattern</strong> is a sequence. A <strong>sequence</strong> <strong>SA</strong> = X1, X2, ... Xk, where X1, X2... Xk are itemsets<strong> is said to occur in another sequence SB</strong> = Y1, Y2, ... Ym,
+    where Y1, Y2... Ym are itemsets, if and only if there exists integers 1
+    &lt;= i1 &lt; i2... &lt; ik &lt;= m such that X1 &#8838; Yi1, X2 &#8838; Yi2, ...
+    Xk &#8838; Yik.</p>
+  <p>The <strong>support of a sequential pattern </strong>is the
+    number of sequences where the pattern occurs divided by the total
+    number of sequences in the database.</p>
+  <p>A <strong>frequent sequential pattern </strong>is a sequential
+    pattern having a support no less than the <em>minsup</em> parameter
+    provided by the user.</p>
+  <p>A <strong>closed sequential pattern </strong>is a sequential
+    pattern such that it is not strictly included in another pattern having
+    the same support. </p>
+  <p>Why mining closed sequential patterns? It can be shown that the
+    set of closed sequential patterns is generally much smaller than the
+    set of sequential patterns and that no information small. Moreover,
+    finding closed sequential patterns is often much more efficient than
+    discovering all patterns.</p>
+  <p>For example, for <em>minsup</em>= 50 %, the following patterns
+    are found in the previous sequence database . </p>
+  <table align="center" border="1" width="299">
+    <tbody>
+      <tr>
+        <td width="46"><strong>ID</strong></td>
+        <td width="133"><strong>Closed Sequential Pattern</strong></td>
+        <td width="98"><strong>Support</strong></td>
+      </tr>
+      <tr>
+        <td>S1</td>
+        <td>(6)</td>
+        <td>75 %</td>
+      </tr>
+      <tr>
+        <td>S2</td>
+        <td>(5)</td>
+        <td>75 %</td>
+      </tr>
+      <tr>
+        <td>S3</td>
+        <td >(2), (3)</td>
+        <td >75 %</td>
+      </tr>
+      <tr>
+        <td>S4</td>
+        <td >(1), (2)</td>
+        <td >100 %</td>
+      </tr>
+      <tr>
+        <td>S5</td>
+        <td >(1), (3)</td>
+        <td >100 %</td>
+      </tr>
+      <tr>
+        <td>S6</td>
+        <td >(1 2), (6)</td>
+        <td >50 %</td>
+      </tr>
+      <tr>
+        <td>S7</td>
+        <td >(4), (3)</td>
+        <td >75 %</td>
+      </tr>
+      <tr>
+        <td>S8</td>
+        <td >(1) (2), (3)</td>
+        <td >50 %</td>
+      </tr>
+      <tr>
+        <td>S9</td>
+        <td >(1), (2 3), (1)</td>
+        <td >50 %</td>
+      </tr>
+      <tr>
+        <td>S10</td>
+        <td >(1), (3), (2)</td>
+        <td >75 %</td>
+      </tr>
+      <tr>
+        <td>S11</td>
+        <td >(1), (3), (3)</td>
+        <td >75 %</td>
+      </tr>
+      <tr>
+        <td>S12</td>
+        <td >(1 2), (4), (3)</td>
+        <td >50 %</td>
+      </tr>
+      <tr>
+        <td>S13</td>
+        <td >(6), (2), (3)</td>
+        <td >50 %</td>
+      </tr>
+      <tr>
+        <td>S14</td>
+        <td >(5), (2), (3)</td>
+        <td >50 %</td>
+      </tr>
+      <tr>
+        <td>S15</td>
+        <td >(4), (3), (2)</td>
+        <td >50 %</td>
+      </tr>
+      <tr>
+        <td>S16</td>
+        <td >(5), (6), (3), (2)</td>
+        <td >50 %</td>
+      </tr>
+      <tr>
+        <td>S17</td>
+        <td >(5), (1), (3), (2)</td>
+        <td >50 %</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>For instance, the sequential pattern &quot;(1,2),(6)&quot; appears in the
+    first and third sequence (it has therefore a support of 50%). Another
+    pattern is &quot;(4), (3)&quot;. It appears in the first, second and third sequence (it
+    has thus a support of 75 %).</p>
+
+  <h2>Optional parameter(s)</h2>
+  <p>The algorithm<strong> i</strong>mplementation allows to specify
+    additional optional parameter(s) :</p>
+  <ul>
+    <li>&quot;show sequences ids?&quot; (true/false) This parameter allows to
+      specify that sequence ids of sequences containing a pattern should be
+      output for each pattern found. For example, if the parameter is set to
+      true, each pattern in the output file will be followed by the keyword
+      #SID followed by a list of sequences ids (integers separated by space).
+      For example, a line terminated by &quot;#SID: 1 3&quot; means that the pattern on
+      this line appears in the first and the third sequences of the sequence
+      database. </li>
+  </ul>
+  <p>These parameter(s) are available in the GUI of SPMF and also in
+    the example(s) <strong><span class="highlight">&quot;</span><span class="highlight">MainTestSPAM_PostProcessingStepForClosedMining</span><span class="highlight"> ... .java&quot;</span></strong> provided in the source code
+    of SPMF.</p>
+  <p>The parameter(s) can be also used in the command line with the Jar
+    file. If you want to use these optional parameter(s) in the command
+    line, it can be done as follows. Consider this example:<br>
+    <span class="highlight">java -jar spmf.jar run <strong><span class="highlight">SPAM_PostProcessingClosed</span></strong><strong> contextPrefixSpan</strong>.txt output.txt 50% true<br>
+    </span>This command means to apply the algorithm on the file
+    &quot;contextPrefixSpan.txt&quot; and output the results to &quot;output.txt&quot;.
+    Moreover, it specifies that the user wants to find patterns for <em>minsup</em> = 50%, and sequence ids should be output for each pattern found.</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a sequence from a sequence
+    database. Each item from a sequence is a postive integer and items from
+    the same itemset within a sequence are separated by single space. Note
+    that it is assumed that items within a same itemset are sorted
+    according to a total order and that no item can appear twice in the
+    same itemset. The value &quot;-1&quot; indicates the end of an itemset. The value
+    &quot;-2&quot; indicates the end of a sequence (it appears at the end of each
+    line). For example, the input file &quot;contextPrefixSpan.txt&quot; contains the
+    following four lines (four sequences).</p>
+  
+    <p>@FILETYPE=&quot;Simple sequence database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  
+    <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section. The first line of data represents a sequence where the itemset {1} is
+      followed by the itemset {1, 2, 3}, followed by the itemset {1, 3},
+      followed by the itemset {4}, followed by the itemset {3, 6}. The next
+      lines follow the same format.</p>
+    <p>Note that it is also possible to use <strong>a text file containing a text (several sentences)</strong> if the text file has the &quot;.text&quot; extension, as an alternative to the default input format. If the algorithm is applied on a text file from the graphical interface or command line interface, the text file will be automatically converted to the SPMF format, by dividing the text into sentences separated by &quot;.&quot;, &quot;?&quot; and &quot;!&quot;, where each word is considered as an item. Note that when a text file is used as input of
+    a data mining algorithm, the performance will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. Each line is a frequent sequential pattern. Each item
+    from a sequential pattern is a postive integer and items from the same
+    itemset within a sequence are separated by single spaces. The value
+    &quot;-1&quot; indicates the end of an itemset. On each line, the sequential
+    pattern is first indicated. Then, the keyword &quot; #SUP: &quot; appears
+    followed by an integer indicating the support of the pattern as a
+    number of sequences. For example, a few lines from the output file from
+    the previous example are shown below:</p>
+  
+    <p> @FILETYPE=&quot;Frequent closed sequential patterns&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot; <br>
+1 2 -1 4 -1 3 -1 #SUP: 2<br>
+      1 2 -1 6 -1 #SUP: 2<br>
+      1 -1 2 -1 3 -1 #SUP: 2</p>
+  
+  <p>The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns. The first line indicates that the frequent sequential pattern
+    consisting of the itemset {1, 2}, followed by the itemset {4}, followed
+    by the itemset {3} has a support of 2 sequences. The next lines follow
+    the same format.</p>
+
+  <h2>Optional feature: giving names to items </h2>
+  <p>Some users have requested the feature of given names to items instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of items in your file. For example, consider the example database &quot;<strong>contextPrefixSpan.txt</strong>&quot;. Here we have modified the file to give names to the items: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+@FILETYPE=&quot;Simple sequence database&quot;<br>
+@SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+@ITEM=1=apple<br>
+@ITEM=2=orange<br>
+@ITEM=3=tomato<br>
+@ITEM=4=milk<br>
+@ITEM=5=bread<br>
+@ITEM=6=noodle<br>
+@ITEM=7=rice<br>
+@ITEM=-1=|<br>
+1 -1 1 2 3 -1 1 3 -1 4 -1 3 6 -1 -2<br>
+1 4 -1 3 -1 2 3 -1 1 5 -1 -2<br>
+5 6 -1 1 2 -1 4 6 -1 3 -1 2 -1 -2<br>
+5 -1 7 -1 1 6 -1 3 -1 2 -1 3 -1 -2</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to items. Then, the second and third line indicate the type of file and the source of the data. Then, the fourth line indicates that the item 1 is called &quot;apple&quot;. The fifth line indicates that the item 2 is called &quot;orange&quot;, and so on. The 11th line indicates that the symbol &quot;-1&quot; must be replaced by &quot;|&quot;. Then the following lines define four sequences in the SPMF format. </p>
+  <p>Then, if we apply a sequential pattern mining algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+      <br>
+    apple | #SUP: 4 <br>
+    orange | #SUP: 4 <br>
+    tomato | #SUP: 4 <br>
+    apple | orange | #SUP: 4 </p>
+  <p>Note that this feature could be also used from the source code of SPMF using the ResultConverter class. However, there is currently no example provided.</p>
+  <h2>Performance</h2>
+  <p> Mining closed patterns by post-processing should be less
+    efficient than using a dedicated algorithms for closed sequential
+    pattern mining.</p>
+
+  <h2>Implementation details</h2>
+  <p>The implementations of SPAM and PrefixSpan used in this example
+    are made by Antonio Gomariz Pe&ntilde;alver (AGP).</p>
+  <p>In the source code, there is also two test files that shows how to
+    keep the result into memory instead of saving it to a file.</p>
+  <ul>
+    <li class="highlight">MainTestSPAM_PostProcessingStepForClosedMining_saveToMemory.java</li>
+    <li class="highlight">MainTestPrefixSpan_PostProcessingStepForClosedMining_saveToMemory.java</li>
+  </ul>
+
+  <h2>Where can I get more information?</h2>
+  <p>For information about SPAM and PrefixSpan, see the examples about
+    PrefixSpan and SPAM.</p>
+  <p>Besides, you may read this<a href="https://www.philippe-fournier-viger.com/dspr-paper5.pdf"> survey of sequential pattern mining</a>, which gives an overview of sequential pattern mining algorithms.</p>
+				<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

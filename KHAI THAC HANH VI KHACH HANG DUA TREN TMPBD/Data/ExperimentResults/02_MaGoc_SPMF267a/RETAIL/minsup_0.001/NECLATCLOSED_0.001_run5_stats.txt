@@ -1,0 +1,12 @@
+Algorithm: NECLATCLOSED
+Minsup: 0.0010
+Run: 5
+Closed itemsets: 7553
+Elapsed time (ms): 8368.885
+Sampled peak heap (MiB): 252.495
+Dataset: RETAIL
+Input: D:\KHAI THAC HANH VI KHACH HANG DUA TREN TMPBD\Data\BenchmarkDatasets\retail.txt
+SPMF version: 2.67a
+Algorithm source: original archive, unchanged
+CHARM triangular matrix: not applicable
+Java version: 21.0.13

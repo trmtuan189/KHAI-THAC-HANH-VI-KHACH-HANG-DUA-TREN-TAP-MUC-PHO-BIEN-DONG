@@ -1,0 +1,340 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Frequent Sequential Patterns Using the NOSEP Algorithmn  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0066CC}
+.style3 {color: #0066CC; font-weight: bold; }
+.style4 {color: #FFFFFF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining  Nonoverlapping Sequential Patterns in One or Many Sequences Using the NOSEP Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>NOSEP algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong> "<span class="highlight style1">NOSEP</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;</strong><span class="style3">contextNOSEP.txt</span><strong><span class="highlight">"</span></strong>,
+    (3) set the output file name (e.g. "<span class="style3">output.txt</span>")
+    (4) set the minimum  length constraint, the  maximum length constraint, the minimum gap constraints, the maximum gap, the  given minimum support threshold, respectively to <span class="style3">1, 20, 0, 2, 3 </span>and (4) click  &quot;Run algorithm&quot;.</li>
+  <li><strong>If you want to execute this example from the command
+    line</strong>, then execute this command: <br>
+    <span class="style3">java -jar spmf.jar run<strong><span class="highlight"> NOSEP</span></strong><strong> contextNOSEP</strong>.txt
+      output.txt 1 20 0 2 3 </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="style3">contextNOSEP.txt</span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"<span class="style3">MainTestNOSEP.java</span>"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span></li>
+</ul>
+<h2>What is NOSEP?</h2>
+<p><strong>NOSEP</strong> is an algorithm for discovering
+    nonoverlapping sequential patterns in one or multiple sequences of symbols (characters, events, etc.), proposed by Wu et al.
+    (2018).</p>
+  <p>A particularity of this algorithm is that it can count the multiple occurrences of a pattern in a same sequence. This is different from traditional sequential pattern mining algorithms that only check if a pattern appear in a sequence but do not consider how many times they appear. Another great benefit of NOSEP is that it can be applied to a single sequence or to many sequences. </p>
+  <p>This is a Java version, converted from the original C++ implementation by Youxi Wu et al. (available at : <a href="https://github.com/wuc567/Pattern-Mining">https://github.com/wuc567/Pattern-Mining</a>) </p>
+
+  <h2>What is the input of NOSEP?</h2>
+  <p>The  input is a sequence of symbols (e.g. events or characters) and five parameters that are set by the user:</p>
+
+<ul>
+  <li>    the minimum length constraint  <em>minlen</em></li>
+  <li>the maximum length constraint  <em>maxlen</em></li>
+  <li>the minimum gap constraints  <em>mingap</em></li>
+  <li>the maximum gap constraints  <em>maxgap</em></li>
+  <li>the given minimum support threshold  <em>minsup</em></li>
+</ul>
+
+  <p>A <strong>sequence </strong>is defined  as a list of symbols (characters). For example, the sequence A,A,G,T,A,C,G,A,C,G,C,A,T,C,T,A is a sequence of symbols from the set {A,C,G,T} that is a biological sequence. This sequence indicates that the symbol A is followed by A, followed by G, followed by T, then followed by A and so on.</p>
+  <p>To run the NOSEP algorithm, an input file must be given, which contains one or more sequences. In the input file format, the symbols are encoded as positive integer numbers. For example, lets say that 1 = A, 3 = C, 7 = G and 20 = T. Then the above sequence is encoded as follow according to the input file format: </p>
+  <p>    1 -1 1 -1 7 -1 20 -1 1 -1 3 -1 7 -1 1 -1 3 -1 7 -1  3 -1 1 -1 20 -1 3 -1 20 -1 1 -1 -2</p>
+  <p>In that format, the symbol -1 is used as a separator between characters and the symbol -2 indicates the end of the sequence. The above sequence is an encoding of A,A,G,T,A,C,G,A,C,G,C,A,T,C,T,A that can be given to the NOSEP algorithm. This sequence is provided as the file <span class="highlight"><strong>contextNOSEP.txt </strong></span>in the SPMF distribution, and will be used for this example.</p>
+
+  <h2>What is the output of NOSEP?</h2>
+  <p>The output of NOSEP is all the subsequences that appear at least <em>minsup </em>times in the input sequence and respect the constraints set by the user. For example, in the above example, it can be intuitively observed that the subsequence A,C appears several times in the input sequence. Three occurrences of A,C are illustrated here in bold: A,A,G,T, <strong>A,C</strong>,G,<strong>A,C,</strong>G,C,<strong>A</strong>,T,<strong>C</strong>,T,A. It can be observed from this example that sometimes the occurrences will have some gaps (this means that some symbols can be skipped). For instance, the third occurrence of A,C skips one symbol T. Because the gaps can be interesting or not to the user, the NOSEP algorithm let the user set some constraints on the minimum and maximum lengths of gaps that are allowed. Moreover, rather than finding all possible occurrences of each pattern, the NOSEP algorithm will only look for the non-overlapping occurrences. NOSEP also allow to set constraints on the minimum and maximum lengths of patterns, to avoid finding patterns that are for example too long or too short. </p>
+  <p>For example, in the above example, if we set the parameters as: </p>
+
+<ul>
+  <li>minlen = 1 </li>
+  <li>maxlen = 20</li>
+  <li>mingap = 0</li>
+  <li>maxgap =2</li>
+  <li>minsup = 3</li>
+</ul>
+
+  <p> It means that we are looking for patterns (subsequences) that have at least three non overlapping occurrences. Moreover, we set the constraints that these patterns must have from 1 to 20 symbols, and the gaps between symbols cannot be smaller than 0 and greater than 2. Then the ouput is like this:</p>
+  <table width="712" border="1">
+    <tr>
+      <td width="186">Pattern (in SPMF format) </td>
+      <td width="201">Meaning</td>
+      <td width="303">Support (number of occurrences </td>
+    </tr>
+    <tr>
+      <td>1 -1 </td>
+      <td>A</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td> 3 -1 </td>
+      <td>C</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>7 -1 </td>
+      <td>G</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>20 -1 </td>
+      <td>T</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 1 -1 </td>
+      <td>A, A </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td> 1 -1 3 -1 <br></td>
+      <td>A, C </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 7 -1 <br></td>
+      <td>A, G </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>3 -1 1 -1 <br></td>
+      <td>C, A </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>3 -1 3 -1 <br></td>
+      <td>C, C </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>7 -1 1 -1 <br></td>
+      <td>G, A </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>7 -1 3 -1 <br></td>
+      <td>G, C </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 1 -1 7 -1 <br></td>
+      <td>A, A, G </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 3 -1 1 -1 <br></td>
+      <td>A, C, A </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 7 -1 1 -1 <br></td>
+      <td>A, G, A </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 7 -1 3 -1 <br></td>
+      <td>A, G, C </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>7 -1 1 -1 3 -1 <br></td>
+      <td>G, A, C </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>7 -1 3 -1 3 -1 <br></td>
+      <td>G, C, C </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 1 -1 7 -1 1 -1<br></td>
+      <td>A, A, G </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 1 -1 7 -1 3 -1<br></td>
+      <td>A, A, G, C </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 7 -1 1 -1 3 -1 <br></td>
+      <td>A, G, A, C </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 7 -1 3 -1 3 -1 <br></td>
+      <td>A, G, C, C </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>7 -1 1 -1 3 -1 1 -1 <br></td>
+      <td>G, A, C, A </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 1 -1 7 -1 1 -1 3 -1 <br></td>
+      <td>A, A, G, A, C </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 1 -1 7 -1 3 -1 3 -1 <br></td>
+      <td>A, A, G, C, C </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 7 -1 1 -1 3 -1 1 -1 <br></td>
+      <td>A, G, A, C, A </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1 -1 1 -1 7 -1 1 -1 3 -1 1 -1 </td>
+      <td>A, A, G, A, C, A </td>
+      <td>3</td>
+    </tr>
+  </table>
+  <p>For example, consider the last pattern 1 -1 1 -1 7 -1 1 -1 3 -1 1 -1. This patterns represents the pattern A, A, G, A, C, A, that is that the symbol A is followed by A, and then followed by G, then by A, then by C and finally by A. This patterns has a support of 3 because it has three non overlapping occurrence satisfying the constraints in the example sequence. </p>
+  <p>Now, if you would like to have a more formal definition of the concept of patterns found by NOSEP, it is necessary to review some definitions. </p>
+  <p>NOSEP is an <em>Apriori</em>-based mining  algorithm. It aims at finding patterns with gap constraints. It is based on these definitions (with more details in the <a href="NOSEP.pdf">research paper</a>) <br>
+    <br>
+  <strong>(Pattern With Gap Constraints and Sequence</strong>): Let there be a set of symbols (characters or event types) <em>∑</em>. A pattern <strong>p</strong> with gap  constraints can be described as <em>p</em>1[ <em>min</em>_1<em>, </em><em>max</em>_1  ]<em>p</em>2 ··· [ <em>min_m</em>−1<em>, </em><em>max_m</em>−1 ]<em>pm</em>, where <em>pj </em>∈<em>∑</em>, <em>minj </em>and <em>maxj </em>are  two nonnegative integers and represent the minimum gap constraint and maximum  gap constraint, respectively, 1 ≤ <em>j </em>≤ <em>m</em>.</p>
+  <p>    (<strong>Occurrence</strong>): A group of <em>m</em> integers L = &lt;<em>l</em>1<em>,  l</em>2<em>,... lm</em>&gt; is called an occurrence of <strong>p</strong> in a sequence <strong>s</strong>, if and only if 1 ≤<em>l</em>1 &lt; <em>l</em>2 &lt; ··· &lt; <em>l</em><em>m</em> ≤ n, <em>min_j</em> ≤<em>l</em>j+1 − <em>l</em>j  − 1 ≤ <em>maxj</em>, <em>p</em>1 = <em>sl</em>1 ,<em>p</em>2 = <em>sl</em>2 ,. . . , and <em>pm</em> = <em>slm</em> . </p>
+  <p>(<strong>Length Constraints</strong>):The length constraints can be written as len = [<em>minlen, maxlen</em>],  where <em>minlen</em> and <em>maxlen</em> are the minimum length constraint and the maximum length  constraint, respectively. If <em>L </em>= &lt;<em>l</em>1<em>, l</em>2<em>,...  lm</em>&gt; satisfies <em>minlen</em> ≤ <em>lm </em>− <em>l</em>1 + 1 ≤ <em>maxlen</em>, then <em>L </em>is an occurrence with length constraints.</p>
+  <p>    (<strong>Non-Overlapping Occurrence Set and Support</strong>)<em>: </em>Let <em>L </em>= &lt;<em>l</em>1<em>, l</em>2<em>,...  lm</em>&gt; and <em>L</em>' = &lt;<em>l</em>'1<em>, l</em>'2<em>,...  l'm</em>&gt; be two occurrences. If and only if ∀1 ≤ <em>j </em>≤ <em>m </em>: <em>lj </em>= <em>l</em>'<em>j</em>, <em>L </em>and <em>L</em>'  are two nooverlapping occurrences. If any two occurrences in a set are  nonoverlapping, then the set is called nonoverlapping occurrence set. The  support of <strong>p </strong>in <strong>s</strong><strong> </strong>under the nonoverlapping  condition, which is denoted by <em>sup</em>(<strong>p</strong><em>, </em><strong>s</strong>), is the  size of the maximum nonoverlapping occurrence set.</p>
+  <p><strong>(Frequent Pattern and NOS</strong>):If the support of pattern <strong>p</strong>in sequence <strong>s</strong>or  in sequence database SDBis  no less than the given minimum support threshold <em>minsup</em>, then pattern <strong>p</strong>is called the frequent pattern. The goal of NOS is to mine all the frequent  patterns with the gap and length constraints in sequence <strong>s</strong>or in sequence database SDB.</p>
+  <p>    (<strong>Nettree</strong>): Nettree is similar to a tree data structure, consisting of  root, leaf, level, parent, child, and so on. Nevertheless, Nettree has three  characteristics that are evidently different from the tree structure.<br>
+    1) A Nettree may have <em>n</em> roots,  where <em>n</em> &gt; 1.<br>
+    2) To describe a node effectively, node <em>i</em> in the <em>jth</em> level is denoted by <em>nij</em> since the same node label can occur on different levels.<br>
+    3) Any node except the root may have more than one parent and all its  parents must be at the same level; that is the nonroot node <em>nij</em> (<em>j</em> &gt; 1) may have multiple parents{<em>ni</em>1<em>j</em>−1,<em> ni</em>2<em>j</em>−1,..., <em>nimj</em>−1} (<em>m</em> ≥ 1), and thus there may be multiple paths from a node to a root node.</p>
+
+  <h2>Input file format</h2>
+  <p>The <strong>input file format</strong> is defined as follows. It
+    is a text file where each line represents a sequence. An input file can contain one or more sequence.. Each symbol from a sequence is a positive integer and each symbol in a sequence is separated by &quot; -1 &quot;.
+     The value
+    "-2" indicates the end of a sequence (it appears at the end of each
+    line). For example, the input file "<strong>contextNOSEP.txt</strong>" contains one sequence (one line) </p>
+  
+    <p>1 -1 1 -1 7 -1 20 -1 1 -1 3 -1 7 -1 1 -1 3 -1 7 -1 3 -1 1 -1 20 -1 3 -1 20 -1 1 -1 -2</p>
+  
+  <p>This line indicates that the symbol 1 was followed by symbol 1, followed by 7, followed by 20, and so on. </p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is defined as follows. It
+    is a text file. Each line is a frequent sequential pattern. Each symbol
+    from a sequential pattern is a positive integer. The value
+    "-1" is used to separate symbols . On each line, the sequential
+    pattern is first indicated. Then, the keyword "#SUP:" appears followed
+    by an integer indicating the support of the pattern as a number of
+    occurrences. For example, a few lines from the output file from the
+    previous example are shown below:</p>
+  
+    <p>1 -1 #SUP: 6<br>
+      3 -1 #SUP: 4<br>
+      7 -1 #SUP: 3<br>
+      20 -1 #SUP: 3<br>
+      1 -1 1 -1 #SUP: 3<br>
+      1 -1 3 -1 #SUP: 3<br>
+      1 -1 7 -1 #SUP: 3<br>
+      3 -1 1 -1 #SUP: 3<br>
+      3 -1 3 -1 #SUP: 3<br>
+      7 -1 1 -1 #SUP: 3<br>
+      7 -1 3 -1 #SUP: 3<br>
+      1 -1 1 -1 7 -1 #SUP: 3<br>
+      1 -1 3 -1 1 -1 #SUP: 3<br>
+      1 -1 7 -1 1 -1 #SUP: 3<br>
+      1 -1 7 -1 3 -1 #SUP: 3<br>
+      7 -1 1 -1 3 -1 #SUP: 3<br>
+      7 -1 3 -1 3 -1 #SUP: 3<br>
+      1 -1 1 -1 7 -1 1 -1 #SUP: 3<br>
+      1 -1 1 -1 7 -1 3 -1 #SUP: 3<br>
+      1 -1 7 -1 1 -1 3 -1 #SUP: 3<br>
+      1 -1 7 -1 3 -1 3 -1 #SUP: 3<br>
+      7 -1 1 -1 3 -1 1 -1 #SUP: 3<br>
+      1 -1 1 -1 7 -1 1 -1 3 -1 #SUP: 3<br>
+      1 -1 1 -1 7 -1 3 -1 3 -1 #SUP: 3<br>
+      1 -1 7 -1 1 -1 3 -1 1 -1 #SUP: 3<br>
+    1 -1 1 -1 7 -1 1 -1 3 -1 1 -1 #SUP: 3</p>
+  
+  <p>The fifth line indicates that the frequent sequential pattern
+    consisting of the symbol 1 followed by the symbol 1 has a
+    support of 3 (three occurrences in the input sequence).</p>
+
+  <h2>Optional feature: giving names to symbols </h2>
+  <p>Some users have requested the feature of given names to symbols instead of using numbers. This feature is offered in the<strong> user interface of SPMF</strong> and in the <strong>command line of SPMF</strong>. To use this feature, your file must include @CONVERTED_FROM_TEXT as first line and then several lines to define the names of symbols in your file. For example, consider the example database &quot;<strong>contextNOSEP.txt</strong>&quot;. Here we have modified the file to give names to the symbols: <br>
+      <br>
+      @CONVERTED_FROM_TEXT<br>
+      @symbol=1=A<br>
+      @symbol=3=C<br>
+      @symbol=7=G<br>
+      @symbol=20=T<br>
+      @symbol=-1=|<br>
+      1 -1 1 -1 7 -1 20 -1 1 -1 3 -1 7 -1 1 -1 3 -1 7 -1 3 -1 1 -1 20 -1 3 -1 20 -1 1 -1 -2</p>
+  <p>In this file, the first line indicates, that it is a file where names are given to symbols. Then, the second line indicates that the symbol 1 is called &quot;A&quot;. The third line indicates that the symbol 3 is called &quot;C&quot;. The fourth line indicates that the symbol 7 represents the letter G, and the fifth line indicates that the symbol 20 represents the letter T. Finally, the 6th line indicates that the symbol &quot;-1&quot; must be replaced by &quot;|&quot;. Then the following lines define the input sequence for the example </p>
+  <p>Then, if we apply a sequential pattern mining algorithm using this file using the user interface of SPMF or the command line, the output file contains several patterns, including the following ones:<br>
+      <br>
+      A | #SUP: 6<br>
+      C | #SUP: 4<br>
+      G | #SUP: 3<br>
+      T | #SUP: 3<br>
+      A | A | #SUP: 3<br>
+      A | C | #SUP: 3<br>
+      A | G | #SUP: 3<br>
+      C | A | #SUP: 3<br>
+      C | C | #SUP: 3<br>
+      G | A | #SUP: 3<br>
+      G | C | #SUP: 3<br>
+      A | A | G | #SUP: 3<br>
+      A | C | A | #SUP: 3<br>
+      A | G | A | #SUP: 3<br>
+      A | G | C | #SUP: 3<br>
+      G | A | C | #SUP: 3<br>
+      G | C | C | #SUP: 3<br>
+      A | A | G | A | #SUP: 3<br>
+      A | A | G | C | #SUP: 3<br>
+      A | G | A | C | #SUP: 3<br>
+      A | G | C | C | #SUP: 3<br>
+      G | A | C | A | #SUP: 3<br>
+      A | A | G | A | C | #SUP: 3<br>
+      A | A | G | C | C | #SUP: 3<br>
+      A | G | A | C | A | #SUP: 3<br>
+      A | A | G | A | C | A | #SUP: 3</p>
+  <p>Note that this feature could be also used from the source code of SPMF using the ResultConverter class. However, there is currently no example provided about how to do it.</p>
+
+  <h2>Applying NOSEP on text file</h2>
+  <p>	Note that it is also possible to use <strong>a text file containing a text (containing one ore more sentences such as a book)</strong> if the text file has the ".text" extension, as an alternative to the default input format. If the algorithm is applied on a text file from the graphical interface or command line interface, the text file will be automatically converted to the SPMF format, by dividing the text into sentences separated by &quot;.&quot;, &quot;?&quot; and &quot;!&quot;, where each word is considered as an symbol. Note that when a text file is used as input of
+    a data mining algorithm, the performance will be slightly less than if the native
+    SPMF file format is used because a conversion of the input file will be
+    automatically performed before launching the algorithm and the result
+    will also have to be converted. This cost however should be small. </p>
+
+  <h2>Performance</h2>
+  <p> NOSEP  not only meets the Apriori property but also is a complete algorithm. It  employs an effective algorithm to completely calculate the support and also  adopts an effective pattern growth approach to effectively reduce the candidate  patterns. (see paper for more detail on experimental  result) </p>
+
+  <h2>Where can I get more information about NOSEP?</h2>
+  <p>The NOSEP algorithm is described in this article:</p>
+  <p>Youxi Wu, Yao Tong, Xingquan Zhu, Xindong Wu: 
+    <a href="NOSEP.pdf">NOSEP: Nonoverlapping Sequence Pattern Mining With Gap Constraints.</a> IEEE Trans. Cybern. 48(10): 2809-2822 (2018)</p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>French Bakery · Gợi ý mua kèm</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1A17;--muted:#6B6860;--line:#E7E2D8;--stone:#F1EDE4;--butter:#FFF0C2;--acc:#D93F1F;--acc-d:#B8340F}
+*{box-sizing:border-box}
+body{margin:0;background:#FAF8F4;color:var(--ink);font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input{font:inherit;color:inherit}button{cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.serif{font-family:Fraunces,Georgia,serif}
+.wrap{max-width:1320px;margin:0 auto;padding:0 32px}
+header{background:#fff;border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;gap:32px;flex-wrap:wrap;padding-top:16px;padding-bottom:16px}
+.brand{font-size:26px;font-weight:600;letter-spacing:-.02em}
+.search{flex:1;min-width:240px;max-width:520px;display:flex;align-items:center;gap:10px;background:var(--stone);border-radius:999px;padding:10px 18px;color:var(--muted)}
+.search input{border:0;background:none;outline:none;flex:1;color:var(--ink)}
+.cartbtn{margin-left:auto;display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:10px 18px;font-weight:500;font-size:14px}
+.badge{background:var(--acc);border-radius:999px;min-width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.strip{background:var(--ink);color:#E9E4D8;font-size:12.5px}
+.strip .wrap{display:flex;gap:28px;flex-wrap:wrap;padding-top:9px;padding-bottom:9px}
+.strip b{color:#fff}
+main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:32px;align-items:start;padding-top:32px;padding-bottom:48px}
+h2{margin:0}
+.rh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.rh h2{font-size:26px;line-height:1.2;font-weight:500;letter-spacing:-.01em}
+.rh h2 em{font-style:normal;color:var(--acc)}
+.eyebrow{font-size:12px;font-weight:600;color:var(--acc-d);letter-spacing:.08em;text-transform:uppercase}
+.rb{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:14px}
+.feat{background:var(--butter);border-radius:18px;padding:20px 24px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.big{font-size:64px;line-height:1;font-weight:600;letter-spacing:-.04em;color:var(--acc-d);text-align:center}
+.cap{font-size:11px;color:#4A3F1E;margin-top:4px;text-align:center}
+.pill{background:var(--ink);color:#fff;border-radius:6px;font-size:11px;font-weight:600;padding:1px 7px}
+.cmp{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.cmp span{font-size:11px;color:#4A3F1E;width:112px;flex:none}
+.trk{flex:1;height:7px;background:rgba(27,26,23,.1);border-radius:4px}
+.trk i{display:block;height:100%;border-radius:4px}
+.cmp b{font-size:12px;min-width:38px;text-align:right}
+.btn{border-radius:999px;padding:8px 18px;font-size:13px;font-weight:600;border:1px solid var(--ink);background:#fff;color:var(--ink)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.second{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.mx{display:flex;gap:18px}
+.mx small{display:block;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.mx b{font-size:18px}
+.more{margin-top:12px;font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{border:0;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:500;background:var(--stone)}
+.chip.on{background:var(--ink);color:#fff}
+.empty{background:#fff;border:1px dashed #D9D3C7;border-radius:18px;padding:20px 24px}
+.tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:36px 0 14px}
+.tools h2{font-size:26px;font-weight:500;letter-spacing:-.01em}
+.pg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.pc{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.pc.in{border:2px solid var(--acc)}.pc.rec{border:2px solid #F2B8A8}
+.pi{height:128px;display:flex;align-items:center;justify-content:center}
+.pi svg{width:150px;height:100px}
+.pt{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px}
+.pn{font-weight:600;font-size:13.5px;line-height:1.25}
+.ps{font-size:12px;color:var(--muted);margin-top:2px}
+.tag{font-size:11px;font-weight:600;color:#A8300F}
+.pb{width:34px;height:34px;flex:none;border-radius:50%;border:1px solid #D9D3C7;background:#fff;font-size:19px;line-height:1}
+.pc.rec .pb{background:var(--acc);border-color:var(--acc);color:#fff}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--acc);margin-left:6px;vertical-align:middle}
+.legend{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px;font-size:12.5px;color:var(--muted)}
+aside{position:sticky;top:24px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px}
+aside h2{font-size:20px;font-weight:600}
+.ch{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.ci{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #EFEBE3}
+.ci:last-of-type{border-bottom:1px solid #EFEBE3}
+.mono{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+.q{display:flex;align-items:center;gap:8px;margin-top:2px}
+.q button{width:24px;height:24px;border-radius:50%;border:1px solid #D9D3C7;background:#fff;line-height:1}
+.rm{border:0;background:none;color:var(--muted);font-size:20px;line-height:1}
+.nudge{background:var(--butter);border-radius:12px;padding:12px 14px;font-size:13px;color:#4A3F1E;margin:16px 0}
+.full{width:100%;border:0;border-radius:999px;padding:13px;font-size:15px;font-weight:600;background:var(--ink);color:#fff}
+.ghost{width:100%;background:none;border:0;color:var(--muted);padding:12px;font-size:13px;margin-top:4px}
+.alert{background:#FFF4F2;border:1px solid #F4C7C0;color:#8A2C1F;border-radius:12px;padding:14px;margin:24px auto;max-width:1256px}
+@media(max-width:1280px){.pg{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1100px){main{grid-template-columns:1fr}aside{position:static}.rb{grid-template-columns:1fr}}
+@media(max-width:700px){.wrap{padding:0 18px}.pg{grid-template-columns:repeat(2,minmax(0,1fr))}.rh h2{font-size:22px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="s-bag" viewBox="0 0 120 80"><g transform="rotate(-18 60 40)"><rect x="8" y="30" width="104" height="22" rx="11" fill="#D9984E"/><rect x="8" y="30" width="104" height="9" rx="4.5" fill="#E8B66B" opacity=".6"/><path d="M30 33l9 16M52 33l9 16M74 33l9 16M96 33l9 16" stroke="#9A6330" stroke-width="3" stroke-linecap="round"/></g></symbol>
+<symbol id="s-boule" viewBox="0 0 120 80"><ellipse cx="60" cy="46" rx="42" ry="30" fill="#D9984E"/><ellipse cx="60" cy="38" rx="34" ry="19" fill="#E8B66B" opacity=".55"/><path d="M42 30l36 26M78 30L42 56" stroke="#9A6330" stroke-width="3.5" stroke-linecap="round"/></symbol>
+<symbol id="s-cro" viewBox="0 0 120 80"><g fill="#D9984E"><ellipse cx="60" cy="44" rx="20" ry="26"/><ellipse cx="38" cy="50" rx="14" ry="20" transform="rotate(35 38 50)"/><ellipse cx="82" cy="50" rx="14" ry="20" transform="rotate(-35 82 50)"/><ellipse cx="22" cy="60" rx="9" ry="13" transform="rotate(55 22 60)"/><ellipse cx="98" cy="60" rx="9" ry="13" transform="rotate(-55 98 60)"/></g><path d="M48 24c4 12 4 30 0 42M72 24c-4 12-4 30 0 42M32 34c2 10 0 22-6 32M88 34c-2 10 0 22 6 32" stroke="#9A6330" stroke-width="3" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="s-pc" viewBox="0 0 120 80"><rect x="16" y="24" width="88" height="40" rx="16" fill="#D9984E"/><rect x="16" y="24" width="88" height="16" rx="8" fill="#E8B66B" opacity=".6"/><path d="M40 26v36M60 26v36M80 26v36" stroke="#9A6330" stroke-width="3" stroke-linecap="round"/><rect x="92" y="36" width="14" height="14" rx="4" fill="#4A2C1A"/></symbol>
+<symbol id="s-tart" viewBox="0 0 120 80"><path d="M24 40h72l-8 28H32z" fill="#D9984E"/><ellipse cx="60" cy="38" rx="36" ry="12" fill="#FFF3D6"/><circle cx="48" cy="30" r="9" fill="#D93F1F"/><circle cx="68" cy="29" r="9" fill="#D93F1F"/><circle cx="58" cy="24" r="7" fill="#B8340F"/></symbol>
+<symbol id="s-cup" viewBox="0 0 120 80"><path d="M34 30h46v20a20 20 0 01-20 20h-6a20 20 0 01-20-20z" fill="#F5F0E6" stroke="#9A6330" stroke-width="3"/><path d="M80 36h6a8 8 0 010 16h-8" fill="none" stroke="#9A6330" stroke-width="3"/><path d="M26 74h62" stroke="#9A6330" stroke-width="3" stroke-linecap="round"/><path d="M48 14c-4 5 4 7 0 12M62 14c-4 5 4 7 0 12" stroke="#B9B2A4" stroke-width="3" fill="none" stroke-linecap="round"/></symbol>
+</defs></svg>
+
+<header><div class="wrap hd">
+<div class="brand serif">French Bakery<span style="color:var(--acc)">.</span></div>
+<label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" aria-label="Tìm sản phẩm" placeholder="Tìm sản phẩm, ví dụ: croissant" autocomplete="off"></label>
+<button class="cartbtn" id="gocart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.2 11H6.2L5 7z"/><path d="M9 7a3 3 0 016 0"/></svg>Giỏ hàng<span class="badge" id="badge">0</span></button>
+</div></header>
+<div id="err"></div>
+<div class="strip"><div class="wrap" id="meta"></div></div>
+
+<main class="wrap" id="app">
+<section>
+<div class="rh"><h2 class="serif" id="rtitle"></h2><span class="eyebrow">Khuyến nghị mua kèm</span></div>
+<div id="recs"></div>
+<div class="tools">
+<div style="display:flex;align-items:baseline;gap:12px"><h2 class="serif">Sản phẩm</h2><span style="font-size:13px;color:var(--muted)" id="count"></span></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="chip on" data-f="top">Bán chạy</button><button class="chip" data-f="rule">Có gợi ý</button><button class="chip" data-f="all">Tất cả</button></div>
+</div>
+<div class="pg" id="grid"></div>
+<div class="legend"><span><i class="dot" style="margin:0 6px 0 0"></i>Có gợi ý mua kèm. Món không có dấu thường được mua riêng lẻ.</span><button class="btn" id="more" data-more="1">Xem thêm sản phẩm</button></div>
+</section>
+<aside id="cartbox"><div class="ch"><h2 class="serif">Giỏ hàng</h2><span style="font-size:13px;color:var(--muted)" id="ccount"></span></div><div id="cart"></div></aside>
+</main>
+
+<script src="bakery_recs.js"></script>
+<script>
+(function(){
+const D=window.BAKERY_RECS, $=id=>document.getElementById(id);
+if(!D){$('err').innerHTML='<div class="alert"><b>Không tìm thấy dữ liệu.</b> Hãy đặt file <code>bakery_recs.js</code> (do ExportRecommendations.java tạo ra) cùng thư mục với file này.</div>';$('app').style.display='none';return}
+const M=D.meta,N=M.transactions;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').toLowerCase();
+const vn=n=>Number(n).toLocaleString('vi-VN'), pct=x=>Math.round(x*100)+'%';
+const d1=x=>x.toFixed(1).replace('.',',');
+const nm=id=>D.products[id]||('SP #'+id), sup=id=>D.itemSupport[id]||0;
+const ids=Object.keys(D.products).map(Number).sort((a,b)=>sup(b)-sup(a)||a-b);
+const hasRule=new Set(D.rules.filter(r=>r.a.length===1).map(r=>r.a[0]));
+const st={cart:new Map(),q:'',f:'top',shown:12,msg:''};
+function art(n){
+ if(/CROISSANT/.test(n))return'cro';
+ if(/PAIN AU CHOCOLAT|PAIN CHOCO/.test(n))return'pc';
+ if(/TART|FLAN|FONDANT|ROYAL|ECLAIR|MILLES|CHOU|SAVARIN|GAL |GALETTE|FINANCIER|COOKIE|BRIOCHE|NOIX|PARIS BREST|NANTAIS|KOUIGN|BRETON|CHAUSSON|SUCETTE|CHOCOLAT|GACHE|CONFISERIE|PATISSERIE|VIENNOISERIE/.test(n))return'tart';
+ if(/CAFE|BOISSON|^THE$|^EAU/.test(n))return'cup';
+ if(/BAGUETTE|FICELLE|BANETTE|BANETTINE|SAND|FORMULE|PATES/.test(n))return'bag';
+ return'boule';
+}
+const tile=id=>id%2?'#FFF0C2':'#F1EDE4';
+function recommend(){
+ const best=new Map();
+ for(const r of D.rules){
+  if(st.cart.has(r.b))continue;
+  if(!r.a.every(x=>st.cart.has(x)))continue;
+  const o=best.get(r.b);
+  if(!o||r.lift>o.lift||(r.lift===o.lift&&r.conf>o.conf))best.set(r.b,r);
+ }
+ return[...best.values()].sort((x,y)=>y.lift-x.lift||y.conf-x.conf||y.sup-x.sup);
+}
+$('meta').innerHTML=[['Thuật toán',M.algorithm],['hóa đơn',vn(N)],['minsup',String(+(M.minsup*100).toFixed(3)).replace('.',',')+'%'],['tập đóng',vn(M.closedItemsets)],['luật mua kèm',vn(M.ruleCount)]]
+ .map(([k,v],i)=>i?'<span><b>'+esc(v)+'</b> '+k+'</span>':'<span>'+k+' <b>'+esc(v)+'</b></span>').join('');
+
+function renderRecs(recs){
+ const names=[...st.cart.keys()].map(nm), box=$('recs');
+ if(!st.cart.size){
+  $('rtitle').textContent='Chọn một sản phẩm để xem khuyến nghị';
+  const tries=ids.filter(i=>hasRule.has(i)).slice(0,5);
+  box.innerHTML='<div class="empty"><p style="margin:0 0 10px;color:var(--muted)">Thêm món vào giỏ, khuyến nghị mua kèm sẽ hiện ngay tại đây, kèm confidence, lift và support.</p><div class="more" style="margin:0"><span>Thử với:</span>'+tries.map(i=>'<button class="chip" data-add="'+i+'">'+esc(nm(i))+'</button>').join('')+'</div></div>';
+  return;
+ }
+ $('rtitle').innerHTML=names.length===1?'Khách mua <em>'+esc(names[0])+'</em> thường mua thêm':'Với <em>'+esc(names.join(', '))+'</em> trong giỏ, nên mua thêm';
+ if(!recs.length){
+  const pop=D.popular.filter(i=>!st.cart.has(i)).slice(0,4);
+  box.innerHTML='<div class="empty"><p style="margin:0 0 10px"><b>Chưa có luật mua kèm đạt ngưỡng</b> (confidence ≥ '+pct(M.minConfidence)+', lift ≥ '+d1(M.minLift)+'). Các món bán chạy thường được mua riêng lẻ, hoặc dữ liệu chưa đủ.</p><div class="more" style="margin:0"><span>Món bán chạy nhất (không phải luật mua kèm):</span>'+pop.map(i=>'<button class="chip" data-add="'+i+'">'+esc(nm(i))+'</button>').join('')+'</div></div>';
+  return;
+ }
+ const r=recs[0],base=sup(r.b)/N,why=r.a.map(nm).join(' + '),s=recs[1];
+ let h='<div class="rb"><article class="feat"><div><div class="big serif">'+pct(r.conf)+'</div><div class="cap">hóa đơn có cả hai món</div></div><div style="flex:1;min-width:200px">'+
+  '<div style="display:flex;align-items:center;gap:8px;margin-bottom:2px"><span class="pill">Gợi ý số 1</span><span style="font-size:12px;color:#4A3F1E">Lift '+d1(r.lift)+'×</span></div>'+
+  '<h3 class="serif" style="font-size:22px;line-height:1.2;font-weight:600;margin:0 0 10px">'+esc(nm(r.b))+'</h3>'+
+  '<div class="cmp"><span>Bình thường</span><div class="trk"><i style="width:'+Math.max(base*100,1)+'%;background:var(--ink)"></i></div><b>'+d1(base*100)+'%</b></div>'+
+  '<div class="cmp" style="margin-bottom:12px"><span>Có '+esc(why)+'</span><div class="trk"><i style="width:'+Math.round(r.conf*100)+'%;background:var(--acc)"></i></div><b style="color:var(--acc-d)">'+pct(r.conf)+'</b></div>'+
+  '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><span style="font-size:12px;color:#4A3F1E">Support <b style="color:var(--ink)">'+vn(r.sup)+'</b> hóa đơn</span><button class="btn pri" data-add="'+r.b+'">Thêm vào giỏ</button></div></div></article>';
+ h+=s?'<article class="second"><div style="font-size:11px;font-weight:600;color:var(--muted)">Gợi ý số 2</div><h3 style="margin:0;font-size:17px;font-weight:600">'+esc(nm(s.b))+'</h3><div style="font-size:12px;color:var(--muted)">'+(s.lift<1.5?'Liên quan yếu: món này vốn được mua nhiều ở mọi loại giỏ':'Vì giỏ có '+esc(s.a.map(nm).join(' + ')))+'</div><div class="mx"><div><small>Confidence</small><b>'+pct(s.conf)+'</b></div><div><small>Lift</small><b>'+d1(s.lift)+'×</b></div><div><small>Support</small><b>'+vn(s.sup)+'</b></div></div><button class="btn" style="align-self:flex-start;margin-top:auto" data-add="'+s.b+'">Thêm</button></article>':'<div></div>';
+ h+='</div>';
+ if(recs.length>2)h+='<div class="more"><span>Còn '+(recs.length-2)+' gợi ý khác:</span>'+recs.slice(2,6).map(x=>'<button class="chip" data-add="'+x.b+'">'+esc(nm(x.b))+' · '+pct(x.conf)+'</button>').join('')+'</div>';
+ box.innerHTML=h;
+}
+
+function renderGrid(recs){
+ const k=norm(st.q.trim()),recSet=new Set(recs.slice(0,3).map(x=>x.b));
+ const rows=ids.filter(i=>(!k||norm(nm(i)).includes(k))&&(st.f==='all'||(st.f==='rule'?hasRule.has(i):sup(i)>0)));
+ $('count').textContent=Math.min(st.shown,rows.length)+' trên '+rows.length+' món';
+ $('grid').innerHTML=rows.length?rows.slice(0,st.shown).map(i=>{
+  const n=nm(i),inC=st.cart.has(i),isRec=recSet.has(i)&&!inC;
+  return'<article class="pc'+(inC?' in':isRec?' rec':'')+'"><div class="pi" style="background:'+tile(i)+'"><svg viewBox="0 0 120 80" aria-hidden="true"><use href="#s-'+art(n)+'" width="120" height="80"/></svg></div><div class="pt"><div>'+(isRec?'<div class="tag">Gợi ý cho bạn</div>':'')+'<div class="pn">'+esc(n)+'</div><div class="ps">'+(sup(i)?vn(sup(i))+' hóa đơn':'dưới ngưỡng minsup')+(hasRule.has(i)?'<i class="dot"></i>':'')+'</div></div>'+(inC?'<span class="tag">Đã thêm</span>':'<button class="pb" data-add="'+i+'" aria-label="Thêm '+esc(n)+'">+</button>')+'</div></article>';
+ }).join(''):'<p style="color:var(--muted)">Không tìm thấy sản phẩm phù hợp.</p>';
+ $('more').style.display=rows.length>st.shown?'':'none';
+ document.querySelectorAll('[data-f]').forEach(b=>b.classList.toggle('on',b.dataset.f===st.f));
+}
+
+function renderCart(recs){
+ let total=0;st.cart.forEach(q=>total+=q);
+ $('badge').textContent=total;$('ccount').textContent=total+' sản phẩm';
+ if(!st.cart.size){$('cart').innerHTML='<p style="color:var(--muted);font-size:14px;margin:0">'+(st.msg||'Giỏ hàng trống. Chọn sản phẩm để bắt đầu.')+'</p>';return}
+ let h='';
+ st.cart.forEach((q,i)=>{h+='<div class="ci"><div class="mono serif" style="background:'+tile(i)+'">'+esc(nm(i).charAt(0))+'</div><div style="flex:1"><div style="font-weight:500;font-size:14px">'+esc(nm(i))+'</div><div class="q"><button data-dec="'+i+'" aria-label="Giảm số lượng">−</button><span style="font-size:13px">'+q+'</span><button data-inc="'+i+'" aria-label="Tăng số lượng">+</button></div></div><button class="rm" data-rm="'+i+'" aria-label="Xóa '+esc(nm(i))+'">×</button></div>'});
+ if(recs.length)h+='<div class="nudge">Thêm <b style="color:var(--ink)">'+esc(nm(recs[0].b))+'</b> vào giỏ: '+pct(recs[0].conf)+' khách mua '+esc(recs[0].a.map(nm).join(' + '))+' cũng mua món này.</div>';
+ else h+='<div style="height:16px"></div>';
+ h+='<button class="full" data-done="1">Hoàn tất giỏ hàng</button><button class="ghost" data-clear="1">Xóa giỏ hàng</button>';
+ $('cart').innerHTML=h;
+}
+function render(){const recs=recommend();renderRecs(recs);renderGrid(recs);renderCart(recs)}
+document.addEventListener('click',e=>{
+ const t=e.target.closest('button');if(!t)return;const d=t.dataset;
+ if(d.add){const i=+d.add;st.cart.set(i,st.cart.get(i)||1);st.msg='';render()}
+ else if(d.inc){const i=+d.inc;st.cart.set(i,st.cart.get(i)+1);render()}
+ else if(d.dec){const i=+d.dec,q=st.cart.get(i)-1;q>0?st.cart.set(i,q):st.cart.delete(i);render()}
+ else if(d.rm){st.cart.delete(+d.rm);render()}
+ else if(d.clear){st.cart.clear();render()}
+ else if(d.done){st.cart.clear();st.msg='Đã hoàn tất giỏ hàng. Đây là bản demo, không có đặt hàng thật.';render()}
+ else if(d.f){st.f=d.f;st.shown=12;render()}
+ else if(d.more){st.shown+=12;render()}
+});
+$('q').addEventListener('input',e=>{st.q=e.target.value;st.shown=12;render()});
+$('gocart').addEventListener('click',()=>$('cartbox').scrollIntoView({behavior:'smooth',block:'start'}));
+render();
+})();
+</script>
+</body>
+</html>

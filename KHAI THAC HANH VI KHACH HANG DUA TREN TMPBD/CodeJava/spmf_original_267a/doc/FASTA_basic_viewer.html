@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>View the content of a FASTA file using the SPMF FASTA Viewer (SPMF - Java)</title>
+    <link rel="stylesheet" href="docstyle.css"/>
+    <style type="text/css">
+<!--
+.style1 {color: #0000FF}
+-->
+    </style>
+  </head>
+  <body>
+    <div width="100%" class="container">
+      <div class="content">
+        <!----------START------>
+
+        <h1>View the content of a FASTA file using the FASTA Viewer
+          (<a href="documentation.html">SPMF
+            documentation</a>)
+        </h1>
+
+        <p>SPMF provides a FASTA Viewer Tool to view the content of a FASTA file
+          from the graphical user interface of SPMF. The viewer supports files with
+          the extensions <strong>.fasta</strong>, <strong>.fa</strong>,
+          <strong>.fna</strong>, and <strong>.ffn</strong>.</p>
+
+        <p>This webpage explains how to use this tool with an example.</p>
+
+        <h2>How to run this example?</h2>
+
+        <p><strong>If you want to run this example from the graphical interface</strong>
+          of SPMF, (1) choose the
+          <strong>&quot;<span class="style1">Open_FASTA_file_with_viewer</span>&quot;</strong>
+          algorithm, (2) choose the <strong><span class="style1">FastaDouble.fasta</span></strong> file
+          as input, and then (3) click &quot;<strong>run algorithm</strong>&quot;.</p>
+
+        <p><img src="fasta_viewer_open.png" alt="FASTA viewer open dialog"
+                width="721" height="142"></p>
+
+        <ul>
+          <li>
+            <strong>If you want to run this example from the source code of SPMF,
+              run the file <span class="style1">MainTestFastaViewer</span>, which is
+              located in the package
+              <span class="style1">ca.pfv.spmf.gui.viewers.fastaviewer</span>.            </strong>          </li>
+          <li>
+            <strong>If you want to execute this example from the command line
+              interface of SPMF</strong>, then execute this command:<br><br>
+            <span class="highlight style1"><strong>java -jar spmf.jar run
+              Open_FASTA_file_with_viewer <span class="style1">FastaDouble.fasta</span></strong></span><br>
+              <br>
+            in a folder containing <span class="highlight"><strong>spmf.jar</strong></span>
+            and the file <strong><span class="style1">FastaDouble.fasta</span></strong>,
+            which is included with SPMF.          </li>
+        </ul>
+
+        <h2>What is a FASTA file?</h2>
+
+        <p>The FASTA format is a widely used text-based format for representing
+          nucleotide or peptide sequences in bioinformatics. Each entry in a FASTA
+          file consists of:</p>
+        <ul>
+          <li>A <strong>header line</strong> beginning with the <code>&gt;</code>
+            character, followed by a sequence identifier and an optional
+            description.</li>
+          <li>One or more lines of <strong>sequence data</strong> (nucleotides or
+            amino acids).</li>
+          <li>Lines beginning with <code>;</code> are treated as comments and are
+            ignored.</li>
+        </ul>
+
+        <p>Example of a FASTA file:</p>
+        <pre>
+>SEQUENCE_1
+MTEITAAMVKELRESTGAGMMDCKNALSETNGDFDKAVQLLREKGLGKAAKKADRLAAEG
+LVSVKVSDDFTIAAMRPSYLSYEDLDMTFVENEYKALVAELEKENEERRRLKDPNKPEHK
+IPQFASRKQLSDAILKEAEEKIKEELKAQGKPEKIWDNIIPGKMNSFIADNSQLDSKLTLAAAACGAAAACG
+MGQFYVMDDKKTVEQVIAEKEKEFGGKIKIVEFICFEVGEGLEKKTEDFAAEVAAQL
+>SEQUENCE_2
+SATVSEINSETDFVAKNDQFIALTKDTTAHIQSNSLQSVEELHSSTINGVKFEEYLKSQI
+ATIGENLVVRRFATLKAGANGVVNGYIHTNGRVGVVIAAACDSAEVASKSRDLLRQICMH
+        </pre>
+
+        <h2>What will be displayed?</h2>
+
+        <p>After running the example, the FASTA Viewer window will open and display
+          the content of the file. The viewer offers two complementary views:</p>
+
+        <ul>
+          <li><strong>Text View</strong> &ndash; displays the raw FASTA content
+            with the header and sequence for each entry, useful for inspecting the
+            exact content of the file.</li>
+          <li><strong>Table View</strong> &ndash; displays each sequence as a row
+            in a sortable table, showing the sequence number, header, length, GC
+            content percentage, and a preview of the sequence. Double-clicking a
+            row opens a detailed view of that sequence.</li>
+        </ul>
+
+        <p><img src="fasta_viewer_main.png" alt="FASTA viewer main window"
+                width="865" height="453"></p>
+
+        <h2>Features of the FASTA Viewer</h2>
+
+        <h3>Viewing and Navigation</h3>
+        <ul>
+          <li>Switch between <strong>Text View</strong> and
+            <strong>Table View</strong> using the tabs at the top of the main
+            panel.</li>
+          <li>The <strong>statistics bar</strong> at the bottom of the window
+            shows the total number of sequences, total base count, average
+            sequence length, and overall GC content.</li>
+          <li>Click any column header in Table View to sort sequences by that
+            column.</li>
+          <li>Double-click any row in Table View to open a
+            <strong>Sequence Details</strong> dialog showing the full sequence,
+            per-nucleotide counts, and GC/AT content.</li>
+        </ul>
+
+        <h3>Search and Filter</h3>
+        <ul>
+          <li>Type in the <strong>Search</strong> field in the toolbar to filter
+            sequences in real time. In Text View, matching entries are highlighted;
+            in Table View, non-matching rows are hidden.</li>
+          <li>Enable the <strong>Case sensitive</strong> checkbox for
+            case-sensitive matching.</li>
+          <li>Press <strong>ESC</strong> to clear the search field.</li>
+        </ul>
+
+        <h3>Export</h3>
+        <ul>
+          <li>Use <strong>File &rarr; Export&hellip;</strong> to save all sequences
+            to a new FASTA file.</li>
+          <li>Use <strong>File &rarr; Export Selected&hellip;</strong> to save only
+            the sequences selected in Table View.</li>
+          <li>Use <strong>Edit &rarr; Copy Selected</strong> (or
+            <strong>Ctrl+C</strong>) to copy selected sequences to the
+            clipboard in FASTA format.</li>
+        </ul>
+
+        <h3>Analysis Tools</h3>
+        <ul>
+          <li><strong>Analysis &rarr; Show Detailed Statistics</strong> &ndash;
+            opens a tabbed dialog with general statistics, nucleotide composition,
+            and a length distribution table.</li>
+          <li><strong>Analysis &rarr; Nucleotide Composition</strong> &ndash;
+            shows a table and colour bar chart of nucleotide frequencies across
+            all sequences.</li>
+          <li><strong>Analysis &rarr; GC Content Analysis</strong> &ndash; shows
+            per-sequence GC percentages and a histogram of GC content
+            distribution.</li>
+          <li><strong>Analysis &rarr; Length Distribution</strong> &ndash; shows a
+            bucketed table and histogram of sequence lengths.</li>
+        </ul>
+
+        <h3>Bioinformatics Tools</h3>
+        <ul>
+          <li><strong>Tools &rarr; Count Codons</strong> &ndash; counts all
+            tri-nucleotide codons across the dataset (with optional degeneracy
+            grouping) and writes results to a file.</li>
+          <li><strong>Tools &rarr; Count K-mers</strong> &ndash; counts all k-mers
+            of a user-specified length and writes results to a file.</li>
+          <li><strong>Tools &rarr; Count Top-K K-mers</strong> &ndash; counts all
+            k-mers and reports only the most frequent ones.</li>
+          <li><strong>Tools &rarr; Reverse Complement</strong> &ndash; computes the
+            reverse complement of all sequences and allows copying or exporting the
+            results.</li>
+          <li><strong>Tools &rarr; Translate to Protein</strong> &ndash; translates
+            all sequences using the standard genetic code (reading frame +1) and
+            allows copying or exporting the protein sequences.</li>
+          <li><strong>Tools &rarr; Filter by Length&hellip;</strong> &ndash; keeps
+            only sequences within a user-specified length range and exports
+            them.</li>
+          <li><strong>Tools &rarr; Find ORFs</strong> &ndash; searches all six
+            reading frames for Open Reading Frames (ORFs) above a minimum length
+            and displays results in a sortable table that can be exported.</li>
+        </ul>
+
+        <p>Above is a description of version 1.0 of the FASTA Viewer included in
+          SPMF. More features may be added in future versions.</p>
+
+        <!----------END------>
+        <div class="footer">
+          <p><a href="documentation.html">&lt;&lt;
+            Return to table of contents of SPMF documentation</a></p>
+          <p>Copyright &copy; 2008-2026            <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>.
+            All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

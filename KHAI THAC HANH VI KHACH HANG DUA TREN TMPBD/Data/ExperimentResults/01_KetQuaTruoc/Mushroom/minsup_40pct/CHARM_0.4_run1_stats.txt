@@ -1,0 +1,6 @@
+Algorithm: CHARM
+Minsup: 0.4000
+Run: 1
+Closed itemsets: 124
+Elapsed time (ms): 183.659
+Sampled peak heap (MiB): 21.000

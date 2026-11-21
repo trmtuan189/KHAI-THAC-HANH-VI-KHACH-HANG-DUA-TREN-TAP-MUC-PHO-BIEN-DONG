@@ -1,0 +1,184 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining Recent Frequent Itemsets from a Data Stream using the estDec Algorithm   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining Recent Frequent Itemsets from a Data Stream using the estDec Algorithm  (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>estDec algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>This example is not available in the release version of
+    SPMF.</strong></li>
+  <li><strong>To run this example with the source code version of SPMF,</strong> launch the file <strong><span class="highlight">"MainTestEstDec_saveToFile.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>.</li>
+</ul>
+<h2>What is estDec?</h2>
+<p><strong>estDec</strong> is an algorithm for <strong>mining recent
+    frequent itemsets </strong>from a<strong> data stream</strong>. It was
+    proposed by Chang et al. (2003).</p>
+  <p>Why is it useful? Because most itemset mining algorithms such as
+    Apriori, FPGrowth and Eclat are batch algorithms. This means that if
+    the input transaction database is updated, those algorithms need to be
+    run again from zero to update the result, which is inefficient. <strong>Stream
+      mining algorithms</strong> such as <strong>estDec</strong> are
+    designed for discovering patterns in a stream (a potentially infinite
+    sequence of transactions) and for updating the results incrementally
+    after each new transaction. Stream mining algorithms assume that each
+    transaction in a database can only be read once. The <strong>estDec</strong> <strong>algorithm</strong> is also interesting because it mines <strong>recent </strong>frequent itemsets, which means that it put more weight on
+    recent transactions than on older transactions when searching from
+    frequent itemsets. This allows <strong>estDec </strong>to learn new
+    trends and to forgot older trends.</p>
+
+  <h2>What is the input of estDec?</h2>
+  <p>The input of <strong>estDec</strong> is a stream of transactions
+    and a support threshold <em>minsup</em>. Each <strong>transaction</strong> is a set of items (symbols). For example, consider the following six
+    transactions (t1, t2, ..., t6) and 5 items (1,2, 3, 4, 5). For example,
+    the first transaction represents the set of items 1, 2, 4 and 5. It is
+    important to note that an item is not allowed to appear twice in the
+    same transaction and that items are assumed to be sorted by
+    lexicographical order in a transaction. <strong>estDec</strong> is an
+    algorithm for processing a stream. This means that <strong>estDec</strong> is allowed to read each transaction only once because a stream is
+    assumed to be potentially infinite and coming at high speed.</p>
+
+<table align="center" border="1" width="404">
+  <tbody>
+    <tr>
+      <td width="116"><strong>Transaction ID</strong></td>
+      <td width="203"><strong>Items</strong></td>
+    </tr>
+    <tr>
+      <td><strong>t1</strong></td>
+      <td>{1, 2, 4, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t2</strong></td>
+      <td>{2, 3, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t3</strong></td>
+      <td>{1, 2, 4, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t4</strong></td>
+      <td>{1, 2, 3, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t5</strong></td>
+      <td>{1, 2, 3, 4, 5}</td>
+    </tr>
+    <tr>
+      <td><strong>t6</strong></td>
+      <td>{2, 3, 5}</td>
+    </tr>
+  </tbody>
+</table>
+<h2>What is the output of estDec?</h2>
+<p><strong>estDec</strong> produces as output the set of <strong>recent
+    frequent itemset</strong>s contained in the transactions that <strong>estDec</strong> has seen until now. It is said that <strong>estDec </strong>mines <strong>recent </strong>frequent itemsets because estDec utilizes a decay function
+    so that <strong>estDec </strong>puts more weight on recent
+    transactions than on older ones (frequency of an itemset). This allows <strong>estDec </strong>to learn new trends and to forgot older trends.</p>
+  <p>The output is a set of <strong>recent frequent itemsets</strong>.
+    The <strong>support count of an itemset </strong>is the number of
+    transactions that contains the itemset. For example, the itemset {1, 2,
+    4} has a support count of 1 because it only appear in t1. The <strong>support </strong>of an itemset is the number of transaction were the itemset
+    appears divided by the total number of transactions seen until now. A
+    frequent itemset is an itemset that has a support higher or equal to <em>minsup</em>. </p>
+  <p>The <strong>estDec</strong> algorithm is an approximate
+    algorithm. It approximate the support of itemsets and returns itemsets
+    that have an estimated support higher than <em>minsup</em>.</p>
+  <p>For example, consider the example <strong><span class="highlight">MainTestEstDec_saveToFile.java</span></strong>.
+    This example consists of loading the transactions from a file named "<span class="highlight">contextIGB.tx</span>t" provided in the SPMF
+    distribution. Then, this example show how to save the result to a file.
+    Here is the output:</p>
+  <p>3 5 #SUP: 0.5000519860383547<br>
+    2 #SUP: 0.8333622131312072<br>
+    1 2 3 #SUP: 0.33335643690463074<br>
+    3 #SUP: 0.5000519860383547<br>
+    1 4 #SUP: 0.3333448844517001<br>
+    3 4 #SUP: 0.19334881331065332<br>
+    1 3 5 #SUP: 0.33335643690463074<br>
+    1 2 5 #SUP: 0.5000173262771588<br>
+    2 5 #SUP: 0.8333622131312072<br>
+    1 #SUP: 0.5000173262771588<br>
+    2 3 5 #SUP: 0.5000519860383547<br>
+    1 5 #SUP: 0.5000173262771588<br>
+    2 3 #SUP: 0.5000519860383547<br>
+    4 #SUP: 0.3333448844517001<br>
+    1 4 5 #SUP: 0.3333448844517001<br>
+    2 4 5 #SUP: 0.3333448844517001<br>
+    1 2 #SUP: 0.5000173262771588<br>
+    5 #SUP: 0.8333622131312072<br>
+    1 3 #SUP: 0.33335643690463074<br>
+    2 4 #SUP: 0.3333448844517001<br>
+    1 2 4 #SUP: 0.3333448844517001<br>
+    4 5 #SUP: 0.3333448844517001<br>
+  </p>
+  <p>For example, consider line 1. It indicates that the pattern {1, 2,
+    5} is a recent frequent itemsets with an estimated support of 50%</p>
+  <p>Note that we also provide a second example named <strong><span class="highlight">MainTestEstDec_saveToMemory.java</span></strong>. This
+    example shows how to process a set of transactions from memory instead
+    of from a file and to keep the result into memory instead of saving the
+    result to a file. This is especially useful, if you wish to integrate
+    estDec into another Java program. The example also shows how to set the
+    decay rate.</p>
+
+  <h2>Input file format</h2>
+  <p>The estDec algorithm can either take as input a stream in memory
+    or read transactions from a file. The <strong> input file format</strong> of <strong>estDec </strong>is defined as follows. It is a text file.
+    An item is represented by a positive integer. A transaction is a line
+    in the text file. In each line (transaction), items are separated by a
+    single space. It is assumed that all items within a same transaction
+    (line) are sorted according to a total order (e.g. ascending order) and
+    that no item can appear twice within the same line.</p>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  <p>1 2 4 5<br>
+    2 3 5<br>
+    1 2 4 5<br>
+    1 2 3 5<br>
+    1 2 3 4 5<br>
+    2 3 5</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> of <strong>estDec</strong> is defined as follows. It is a text file, where each line represents a <strong>recently
+    frequent itemset</strong>. On each line, the items of the itemset are
+    first listed. Each item is represented by an integer and it is followed
+    by a single space. After, all the items, the keyword "#SUP:" appears,
+    which is followed by an integer indicating the support of the itemset,
+    expressed as a number of transactions. For example, here are few lines
+    of the output file for this example. </p>
+  <p>3 5 #SUP: 0.5000519860383547<br>
+    2 #SUP: 0.8333622131312072<br>
+    1 2 3 #SUP: 0.33335643690463074</p>
+  <p>The output file here consists of the first line indicates that the
+    itemset {1, 2, 3} has an estimated support of 50 %.</p>
+
+  <h2>Performance</h2>
+  <p><strong>estDec</strong> is a reasonably efficient algorithm. </p>
+
+  <h2>Where can I get more information about this algorithm?</h2>
+  <p>The <strong>estDec</strong> algorithm is described in this paper:</p>
+  <p>Joong Hyuk Chang, Won Suk Lee: Finding recent frequent itemsets
+    adaptively over online data streams. KDD 2003: 487-492</p>
+
+
+  <p>For a good overview of <strong>frequent itemset mining algorithms</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_Itemset_Mining.pdf">survey paper</a>. </p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

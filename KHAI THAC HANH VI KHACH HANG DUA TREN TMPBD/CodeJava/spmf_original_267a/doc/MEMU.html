@@ -1,0 +1,155 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining High Average-Utility Itemsets with Multiple Thresholds in a Transaction Database using the MEMU Algorithm  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+                <h1>Mining High Average-Utility Itemsets with Multiple Thresholds in a Transaction Database using the MEMU Algorithm (<a href="documentation.html">SPMF documentation</a>) </h1>
+                <!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>MEMU algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">MEMU</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">UtilityDB</span><span class="highlight">.txt"</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight">output.txt</span>")
+    (4) set beta to 2 and the GLMAU to 25, (5) set the profit file to <strong>&quot;<span class="highlight">UtilityDB_profit</span><span class="highlight">.txt"</span></strong> nd
+    (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run MEMU UtilityDB.txt output.txt 2 25 UtilityDB_profit.txt </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong><span class="highlight">UtilityDB_profit</span></strong>.txt</span> and <strong><span class="highlight">UtilityDB.txt.</span></strong></li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestMEMU.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is MEMU?</h2>
+<p><strong>MEMU</strong>&nbsp;is an algorithm for  mining <strong>average-utility itemsets </strong>by using<strong> multiple minimum average-utility thresholds</strong>. Unlike some other algorithms such as HAUI-Miner, the MEMU algorithms allows to set a different threshold for each item, rather than a single threshold to evaluate all items. Setting multiple thresholds is useful because it allows to set lower minimum average-utility thresholds for  low profit  items. Therefore, it  allows discovering high average-utility itemsets containing low profit items. Unlike the HAUI-MMU algorithm, the MEMU algorithm allows to set all the thresholds automatically using a math formula where the user has to define two values : GLMAU and BETA </p>
+
+<h2>What is the input?</h2>
+<p>The input of&nbsp;<strong>MEMU</strong>&nbsp;is  a transaction database and two parameters called BETA and GLMAU (positive integers). These parameters then allow the algorithm to calculate a list of minimum average-utility thresholds  indicating the <strong>minimum average-utility threshold</strong> for each item.<br>
+    A&nbsp;transaction  database&nbsp;is a set of transactions, where each transaction is a list  of distinct items (symbols). For example, let's consider the following  transaction database. It consists of 4 transactions (t1, t2, ..., t4) and 4  items (1, 2, 3, 4). For instance, transaction t1 is the set of items {1, 2, 3}. In a transaction database, each item has a corresponding purchase quantity. For examle, in the first transaction, the quantity of item 1 is 2, the quantity of item 2 is 3, and the quantity of item 3 is 6. This database is provided in the file &quot;<span class="highlight"><strong><span class="highlight">UtilityDB</span></strong>.txt</span>&quot; of the SPMF distribution. It is  important to note that an item is not allowed to appear twice in the same  transaction.</p>
+  <table border="1" cellspacing="3" cellpadding="0" width="747">
+    <tr>
+      <td width="236">        Transaction ID </td>
+      <td width="250"><p align="center">Items </p></td>
+      <td width="249" valign="top"><p align="center">Quantities</p></td>
+    </tr>
+    <tr>
+      <td><p align="center">t1 </p></td>
+      <td><p align="center">1 2 3 </p></td>
+      <td valign="top"><p align="center">2 3 6 </p></td>
+    </tr>
+    <tr>
+      <td><p align="center">t2 </p></td>
+      <td><p align="center">1 2 </p></td>
+      <td valign="top"><p align="center">3 4 </p></td>
+    </tr>
+    <tr>
+      <td><p align="center">t3 </p></td>
+      <td><p align="center">2 3 </p></td>
+      <td valign="top"><p align="center">5 9 </p></td>
+    </tr>
+    <tr>
+      <td><p align="center">t4 </p></td>
+      <td><p align="center">2 4 </p></td>
+      <td valign="top"><p align="center">7 10  </p></td>
+    </tr>
+  </table>
+  <p>Besides a table indicating the unit profit of each item is required. For example, consider the following table:</p>
+  <table width="747" border="1" cellpadding="0" cellspacing="3">
+    <tr>
+      <td width="236">        Item </td>
+      <td width="250"><p align="center">Unit profit  </p></td>
+    </tr>
+    <tr>
+      <td><p align="center">1 </p></td>
+      <td><p align="center">5 </p></td>
+    </tr>
+    <tr>
+      <td><p align="center">2 </p></td>
+      <td><p align="center">4</p></td>
+    </tr>
+    <tr>
+      <td><p align="center">3 </p></td>
+      <td><p align="center">6</p></td>
+    </tr>
+    <tr>
+      <td><p align="center">4 </p></td>
+      <td><p align="center">2</p></td>
+    </tr>
+  </table>
+  <p>It indicates that the unit profit yield by selling the items 1, 2, 3 and 4 are 5, 4, 6 and 2, respectively. This table is provided in the file &quot;<span class="highlight"><strong><span class="highlight">UtilityDB</span></strong>_profit.txt</span>&quot; </p>
+  <p>Note that in research papers, unit profit is often called &quot;external utility&quot; while purchase quantities are called &quot;internal utility&quot;. This is the terminology used by researchers. Although in the above example, utility is used to represent quantities and profit, it could be more generally be used to represent the relative importance of items to the user. Thus, it can be also applied to other types of data. </p>
+
+  <h2>What is the output?</h2>
+  <p><em> </em>The <strong>output file format</strong><strong> </strong>is defined as follows. It is a text file, where each line represents a <strong>high average-utility itemset</strong>. On each line, the items of the itemset are first listed. Each item is represented by an integer, followed by a single space. After, all the items, the keyword " #AUTIL: " appears and is followed by the average-utility of the itemset, and then #mau followed by the minimum average-utility count of the itemset (see the research paper for a definition). For example, we show below the output file for this example.</p>
+  <p>@FILETYPE=&quot;High average-utility itemsets&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1 #AUTIL: 25,00 #mau: 25,00<br>
+    1 2 #AUTIL: 26,50 #mau: 25,00<br>
+    2 #AUTIL: 76,00 #mau: 25,00<br>
+    2 3 #AUTIL: 61,00 #mau: 25,00<br>
+  3 #AUTIL: 90,00 #mau: 25,00</p>
+  <p>For example, the second  line indicates that the itemset { 1, 2}  has an average-utility of 25 and its minimum  average-utility count is 25. The other lines follows the same format.</p>
+
+  <h2>Input file format</h2>
+  <p align="left">MEMU&nbsp;takes  two files as input, defined as follows.</p>
+  <p align="left"> The&nbsp;first  file&nbsp;(e.g. <strong>UtilityDB.txt</strong>) is a text file containing   transactions. Each lines represents a
+    transaction.  Each line is a list of positive numbers where an item is followed by a space and then its quantity. Then, the next item appears, followed by a space, followed by its quantity, and so on... This is the file UtilityDB.txt used in the example. </p>
+  <p>@FILETYPE=&quot;Transaction database with utility values (MEMU)&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1 2 2 3 3 6<br>
+    1 3 2 4<br>
+    2 5 3 9<br>
+    2 7 4 10  </p>
+  <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section where each line is a transaction. </p>
+  <p>The&nbsp;second  file&nbsp;is a text file (e.g. <strong>UtilityDB_profit.txt</strong>) which provides the unit profit of each item. Each is an item, followed by a space, followed by its unit profit. This is the file UtilityDB_profit.txt used in the example. </p>
+  <p>@FILETYPE=&quot;Item profit table&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1, 5<br>
+    2, 4<br>
+    3, 6<br>
+    4, 2<br>
+    <br>
+  The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section providing the mapping from iten to unit profit. Consider the first line of data.  It means that the   unit profit of item 1 is 5. The following lines follow the same format.  </p>
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> is
+    defined as follows. It is a text file. The first two lines are metadata indicating the type of patterns in this file and the source of the data. Then the following lines provide the list of patterns, where each line represents a <strong>high
+      average-utility itemset</strong>. On each line, the items of the itemset are
+    first listed. Each item is represented by an integer, followed by a
+    single space. After, all the items, the keyword " #AUTIL: " appears and
+  is followed by the average-utility of the itemset, and then the keyword #mau followed by the minimum average count.For example, we show below the output file for this example.</p>
+  <p>@FILETYPE=&quot;High average-utility itemsets&quot;<br>
+    @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+    1 #AUTIL: 25,00 #mau: 25,00<br>
+    1 2 #AUTIL: 26,50 #mau: 25,00<br>
+    2 #AUTIL: 76,00 #mau: 25,00<br>
+    2 3 #AUTIL: 61,00 #mau: 25,00<br>
+    3 #AUTIL: 90,00 #mau: 25,00</p>
+  <p>For example, the second  line indicates that the itemset { 1, 2}  has an average-utility of 25 and its minimum  average-utility count is 25. The other lines follows the same format. </p>
+
+  <h2>Implementation details</h2>
+  <p>This is the original implementation of the algorithm.</p>
+
+  <h2>Where can I get more information about the MEMU algorithm?</h2>
+  <p>This is the reference of the article describing the MEMU
+    algorithm:</p>
+  <p><em> Lin, C.-W., Ren, S., Fournier-Viger, P., Hong, T.-P. (2018). MEMU: More Efficient Algorithm to Mine High Average-Utility Patterns with Multiple Minimum Average-Utility Thresholds. IEEE Access, to appear.</em></p>
+
+
+  <p>Besides, for a general overview of <strong> high utility itemset mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_high_utility_itemset2019_draft.pdf">survey paper</a>. </p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

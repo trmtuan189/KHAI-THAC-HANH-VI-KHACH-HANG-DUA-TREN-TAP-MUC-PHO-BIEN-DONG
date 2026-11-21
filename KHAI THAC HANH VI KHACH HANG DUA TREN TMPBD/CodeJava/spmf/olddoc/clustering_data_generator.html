@@ -1,0 +1,98 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Generating a Synthetic Clustering Dataset (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {
+	color: #0000FF;
+	font-weight: bold;
+}
+.style2 {color: #0000FF}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Generating a Synthetic Clustering Dataset (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to  <strong> generate a synthetic transaction database</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>
+    <ul>
+      <li>(1)
+        choose the <strong>&quot;<span class="highlight style2">Generate_a_clustering_dataset</span>&quot;</strong> algorithm<strong>, </strong> </li>
+      <li>(2) set the output file name (e.g. "<span class="highlight style2"><strong>output</strong>.txt</span>")</li>
+      <li> (3) set the algorithm parameters as follows:
+        <ul>
+          <li>Point per cluster = <span class="style1">300</span></li>
+            <li>Attribute count = <span class="style1">2</span></li>
+            <li>Visualize generated data = <span class="style1">true</span><br>
+            </li>
+            <li>Distribution cluster 1 = <span class="style1">Normal(10,3) Normal(20,3)</span></li>
+            <li>Distribution cluster 2 = <span class="style1">Uniform(-5,5) Uniform(-5,5)</span></li>
+            <li>Distribution cluster 3 =  <span class="style1">Normal(20,2) Normal(0,2)              </span></li>
+        </ul>
+      </li>
+      <li>(4) click "<span class="highlight"><strong>Run algorithm</strong></span>".</li>
+    </ul>
+  </li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"<span class="style2">MainTestGenerateClusteringData.java</span>"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this tool?</h2>
+<p>This tool is a random generator for creating a synthetic dataset to be used for testing clustering <strong></strong>algorithms.The generator allows to generate a dataset that contains a given number of clusters that follow some distributions such as the Normal or Uniform distribution, and that have a selected number of attributes, and number of instances per cluster. If running this tool from the graphical interface of SPMF, the number of clusters must be from 1 to 5. But if using the source code version of SPMF, the number of clusters is not restricted.</p>
+<p>Synthetic databases are often used in the data mining litterature
+    to evaluate algorithms. In particular, they are useful for comparing
+    the scalability of algorithms, or for evaluating algorithm with respect to some ground-truth.</p>
+<h2>What is the input?</h2>
+  <p>The <strong>tool for generating a clustering dataset </strong>takes
+    these prameters as input:</p>
+  
+    
+      <p>1) <strong>the number of points (instances) per cluster (positive integer)</strong>. In this example, it is set to 300 because so that each cluster will have 300 points. In the graphical interface of SPMF, all clusters must have the same number of points. In the source code version of SPMF, it is possible to also generate clusters with different number of points. </p>
+      <p>2) <strong>the number of attributes (positive integer). </strong>For instance, in this example, it is set to 2. This means that each instance (point) in the generated database will be a vector of 2 values (it will be in 2 dimension).</p>
+      <p>3) <strong>Visualize generated data (boolean). </strong> If set to true, the generated data will be displayed using the Instance Viewer Tool of SPMF after the data has been generated. Otherwise, the data will not be displayed and will be only saved to the output file.</p>
+      <p>4)  <strong>The distributions to be used for generating the attributes of each cluster</strong>.  For instance, in this example, we have three clusters and two dimensions. For the first cluster, we set <span class="style1">Normal(10,3) Normal(20,3)</span>, which means that points in the first cluster will be generated with two attributes. The first attribute will follow a normal distribution with a mean of 10 and a standard deviation of 3, while the second attribute will follow a normal distribution with a mean of 20 and a standard deviation of 3. The second cluster has also two attributes. The first one follows a uniform distribution with a minimum value of -5 and a maximum value of 5. The second one also  follows a uniform distribution with a minimum value of -5 and a maximum value of 5. The distributions of the third cluster can be explained in the same way. Note that all clusters should have the same number of dimensions, which is 2 in this example. </p>
+      <h2>What is the output?  </h2>
+      <p>The algorithm outputs a database of instances respecting
+    the parameters provided. It is a text file. A random number generator is used to generate
+    the database, and thus if the tool is run several times, the output will be different.</p>
+      <p>The format of the output file is as follows.   </p>
+      <p>Each line is an instance (point), described as a list of double values separated by single spaces. These values are the values for the attributes (dimensions). For example, <strong>here is a few lines </strong>from a file generated for this example:</p>
+      <p>8.223056957474475 18.305806094148416<br>
+        18.53173409031428 17.12800320556778<br>
+        11.78815889838998 15.172209880225482<br>
+        14.465913286699111 18.73693056669763<br>
+        12.132693927624041 20.89521556764735<br>
+        8.034607447696011 24.794130080242603<br>
+        6.79806783859077 28.83137892160805<br>
+        9.11577562802012 18.94254052873174<br>
+        10.092137470883381 17.236132146276898<br>
+        11.063982605866594 18.171935123957358<br>
+        9.523453050588738 19.51941579740386</p>
+      <p>...... .... </p>
+      <p>The first line is an instance point with the value 8.223056957474475 for the first attribute (dimension) and the value 18.305806094148416 for the second attribute. The other lines follow the same format.      </p>
+      <h2>Visualizing the output </h2>
+      <p>If the parameter 
+        <!----------END------>
+        <strong>Visualize generated data</strong> is set to true, when running this tool, the generated dataset will be displayed visually using the <strong>Instance Viewer Tool of SPMF:</strong></p>
+      <p><img src="instance_viewer_synthetic_dataset.png" alt="instance viewer for clustering" width="767" height="587"></p>
+      <h2>Applying clustering algorithms on the generated dataset </h2>
+      <p>Then, after the dataset is generated, we can apply some clustering algorithms on it such as K-Means, DB-Scan and others, which are offered in SPMF. You may see the documentation of each specific clustering algorithm to see how to use them. </p>
+      <div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

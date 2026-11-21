@@ -1,0 +1,211 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Fix a Transaction Database with utility and time information  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	</head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Fix a Transaction Database with Utility and Time Information  (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to <strong>fix a transaction database with utility and time information</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+
+  <h2>How to run this example? </h2>
+  <ul>
+    <li><strong>If you are using the graphical interface, </strong>(1)
+      choose the <strong>&quot;<span class="highlight">Fix_a_transaction_database_with_utility_time</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the input file <span class="highlight"><strong>DB_broken</strong>.txt</span> (3) set the output file to &quot;output.txt&quot;, and then (4) click "<span class="highlight">Run algorithm</span>".</li>
+    <li><strong>If you want to execute this example from the command
+      line</strong>, then execute this command: <br>
+      <span class="highlight">java -jar spmf.jar run <strong>Fix_a_transaction_database_with_utility_time DB_broken.txt</strong> output.txt</span> in a folder containing <span class="highlight">spmf.jar</span> and the
+      input file <span class="highlight">DB_broken.txt</span>.</li>
+    <li><strong>If you are using the source code version of SPMF, </strong>launch
+      the file <strong><span class="highlight">"MainTestFixTDBTimeUtility.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+  </ul>
+  <h2>What is this tool?</h2>
+  <p>The tool "Fix_a_transaction_database" is a small program that
+      fix some common problems in a transaction database file in SPMF format.
+      The tool fixes two common problems: (1) an item appears more than once
+      in a transaction, (2) transactions are not sorted. To fix the first
+      problem the tool will keep only one occurrence of each item in a
+      transaction. So if an items appears more than once in a transaction, it
+      will appears only once after applying the tool. To fix the second
+      problem, the tool sorts each transaction according to the
+      lexicographical ordering (because it is required by most itemset and
+      association rule mining algorithms).</p>
+  
+  <h2>What is the input?</h2>
+  <p>The input is a transaction database  with utility information in the SPMF format.<em> </em>Let's consider the following  database consisting of 8 transactions (t1,t2...t8) and 5 items (1, 2, 3, 4, 5),  and each transaction is associated with a timestamp. This database is provided  in the text file &quot;<strong>DB_broken.txt</strong>&quot; in the  package <strong>ca.pfv.spmf.tests </strong>of the SPMF distribution</p>
+    <table border="1" cellspacing="3" cellpadding="0" width="663">
+      <tr>
+        <td width="98"><p align="left"><strong>Items</strong> </p></td>
+        <td width="153"><p align="left"><strong>Transaction utility</strong> </p></td>
+        <td width="263"><p align="left"><strong>Item utilities for this transaction</strong> </p></td>
+        <td width="112" valign="top"><p align="left"><strong>Timestamp</strong></p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left"><span class="highlight"><strong>5</strong></span> 2 3 <span class="highlight"><strong>5 5</strong></span> </p></td>
+        <td width="153"><p align="left" class="highlight"><strong>9</strong></p></td>
+        <td width="263"><p align="left">1000 4 2 3 1000</p></td>
+        <td width="112" valign="top"><p align="left">1</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">2 3 4 5</p></td>
+        <td width="153"><p align="left">18</p></td>
+        <td width="263"><p align="left">8 3 4 3</p></td>
+        <td width="112" valign="top"><p align="left">3</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">2 3 4 5</p></td>
+        <td width="153"><p align="left">9</p></td>
+        <td width="263"><p align="left">4 2 10 3</p></td>
+        <td width="112" valign="top"><p align="left">3</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">1 2 3 4 5</p></td>
+        <td width="153"><p align="left">58</p></td>
+        <td width="263"><p align="left">10 20 2 20 6</p></td>
+        <td width="112" valign="top"><p align="left">5</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">1 3 5</p></td>
+        <td width="153"><p align="left">22</p></td>
+        <td width="263"><p align="left">10 6 6</p></td>
+        <td width="112" valign="top"><p align="left">6</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">2 3 5</p></td>
+        <td width="153"><p align="left">14</p></td>
+        <td width="263"><p align="left">8 3 3</p></td>
+        <td width="112" valign="top"><p align="left">7</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">1 3 4</p></td>
+        <td width="153"><p align="left">16</p></td>
+        <td width="263"><p align="left">10 2 4</p></td>
+        <td width="112" valign="top"><p align="left">9</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">1 3 5</p></td>
+        <td width="153"><p align="left">22</p></td>
+        <td width="263"><p align="left">10 6 6</p></td>
+        <td width="112" valign="top"><p align="left">10</p></td>
+      </tr>
+    </table>
+    <p>Each line of the <strong>database</strong> is:</p>
+    <ul type="disc">
+      <li>a set of items (the       first column of the table), </li>
+      <li>the sum of the       utilities (e.g. profit) of these items in this transaction (the second       column of the table),</li>
+      <li>the utility of each       item for this transaction (e.g. profit generated by this item for this       transaction)(the third column of the table).</li>
+      <li>the timestamp which       indicated when this transaction was made (the fourth column of the table) </li>
+    </ul>
+    <p>Note  that the value in the second column for each line is the sum of the values in  the third column. And the value of the fourth column is optional. </p>
+    <p>In this example database, there is a few problems, highlighted in red above. These problems are in the first transaction. It can be observed that the item <span class="highlight"><strong>5 </strong></span>appears three times in the first column, which is not allowed. Moreover, the value in the second column is incorrect (it should be the sum of the values in the third column. Besides, the items in the first column are not sorted according to some order (a requirement). </p>
+  
+    <h2>What is the output?</h2>
+    <p>The output is a transaction database where each transaction is
+      sorted and no item appears more than once, and the second column is correctly calculated. For example, the output
+      using the above example is:</p>
+    <table border="1" cellspacing="3" cellpadding="0" width="663">
+      <tr>
+        <td width="98"><p align="left"><strong>Items</strong> </p></td>
+        <td width="153"><p align="left"><strong>Transaction utility</strong> </p></td>
+        <td width="263"><p align="left"><strong>Item utilities for this transaction</strong> </p></td>
+        <td width="112" valign="top"><p align="left"><strong>Timestamp</strong></p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left"> 2 3<span class="highlight"><strong> 5 </strong></span></p></td>
+        <td width="153"><p align="left" class="highlight"><strong>1109</strong></p></td>
+        <td width="263"><p align="left"> 4 2 <span class="highlight"><strong>1103</strong></span> </p></td>
+        <td width="112" valign="top"><p align="left">1</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">2 3 4 5</p></td>
+        <td width="153"><p align="left">18</p></td>
+        <td width="263"><p align="left">8 3 4 3</p></td>
+        <td width="112" valign="top"><p align="left">3</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">2 3 4 5</p></td>
+        <td width="153"><p align="left">9</p></td>
+        <td width="263"><p align="left">4 2 10 3</p></td>
+        <td width="112" valign="top"><p align="left">3</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">1 2 3 4 5</p></td>
+        <td width="153"><p align="left">58</p></td>
+        <td width="263"><p align="left">10 20 2 20 6</p></td>
+        <td width="112" valign="top"><p align="left">5</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">1 3 5</p></td>
+        <td width="153"><p align="left">22</p></td>
+        <td width="263"><p align="left">10 6 6</p></td>
+        <td width="112" valign="top"><p align="left">6</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">2 3 5</p></td>
+        <td width="153"><p align="left">14</p></td>
+        <td width="263"><p align="left">8 3 3</p></td>
+        <td width="112" valign="top"><p align="left">7</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">1 3 4</p></td>
+        <td width="153"><p align="left">16</p></td>
+        <td width="263"><p align="left">10 2 4</p></td>
+        <td width="112" valign="top"><p align="left">9</p></td>
+      </tr>
+      <tr>
+        <td width="98"><p align="left">1 3 5</p></td>
+        <td width="153"><p align="left">22</p></td>
+        <td width="263"><p align="left">10 6 6</p></td>
+        <td width="112" valign="top"><p align="left">10</p></td>
+      </tr>
+    </table>
+    <p>The modifications are highlighted in red color, and are in the first transaction. Rather than having the item &quot;5&quot; three times in the first column, it appears once. Moreover, the transaction utility (second column) is now correctly calculated as 1109. Lastly, in the third column the utility values of 5 is not 1000 + 100 + 3 = 1103 since we have combined the three occurrences of item &quot;5&quot; together. </p>
+  
+
+    <h2>Input file format</h2>
+    <p align="left">The <strong>input file format</strong> of <strong>LHUI-Miner </strong>is  defined as follows. It is a text file. Each line represents a transaction. Each  line is composed of four sections, as follows.</p>
+  <ul>
+    <li>First, the  items contained in the transaction are listed. An item is represented by a  positive integer. Each item is separated from the next item by a single space.  It is assumed that all items within a same transaction (line) are sorted  according to a total order (e.g. ascending order) and that no item can appear  twice within the same transaction.</li>
+    <li>Second, the  symbol &quot;:&quot; appears and is followed by the transaction utility (an  integer).</li>
+    <li>Third, the  symbol &quot;:&quot; appears and is followed by the utility of each item in  this transaction (an integer), separated by single spaces.</li>
+    <li>Fourth, the  symbol &quot;:&quot; appears and is followed by the timestamp (an integer)  indicating when the transaction were made.</li>
+  </ul>
+  <p align="left">For example, for the previous example, the input file is  defined as follows:</p>
+  <p align="left">5 2 3 5 5:9:1000 4 2 3 100:1<br>
+    2 3 4 5:18:8 3 4 3:3<br>
+    2 3 4 5:9:4 2 10 3:3<br>
+    1 2 3 4 5:58:10 20 2 20 6:5<br>
+    1 3 5:22:10 6 6:6<br>
+    2 3 5:14:8 3 3:7<br>
+    1 3 4:16:10 2 4:9<br>
+  1 3 5:22:10 6 6:10</p>
+  <p align="left">Consider the last line. It means that the transaction {1,  3, 5} has a total utility of 22 and that items 1, 3 and 5 respectively have a  utility of 10, 6 and 6 in this transaction, and the transaction were made at  time 10. The other lines follow the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong> output file format</strong> is the same as the input
+    format. But the problems contained in the input file have been fixed.</p>
+  <p>2 3 5:1109:4 2 1103:1<br>
+    2 3 4 5:18:8 3 4 3:3<br>
+    2 3 4 5:19:4 2 10 3:3<br>
+    1 2 3 4 5:58:10 20 2 20 6:5<br>
+    1 3 5:22:10 6 6:6<br>
+    2 3 5:14:8 3 3:7<br>
+    1 3 4:16:10 2 4:9<br>
+  1 3 5:22:10 6 6:10</p>
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

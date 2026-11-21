@@ -1,0 +1,214 @@
+package bakery.experiment;
+ 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
+ 
+/**
+ * Đọc kết quả CHARM (tập đóng) + bảng sản phẩm, sinh luật mua kèm rồi ghi ra
+ * file JavaScript cho giao diện Miette.
+ *
+ * Chạy MỘT LẦN (Run As > Java Application). Giao diện chỉ tra cứu file kết quả,
+ * không chạy lại thuật toán.
+ *
+ * Tính chất cốt lõi: support(X) = max support của các tập đóng chứa X.
+ *   confidence(A -> B) = sup(A + B) / sup(A)
+ *   lift(A -> B)       = confidence / (sup(B) / N)
+ */
+public class ExportRecommendations {
+ 
+    // ===== SỬA CÁC DÒNG NÀY CHO KHỚP MÁY CỦA BẠN =====
+    static final String PATTERNS_FILE =
+    		"D:/KHAI THAC HANH VI KHACH HANG DUA TREN TMPBD/Data/ExperimentResults/minsup_0.02pct/CHARM_2.0E-4_run1_patterns.txt";
+    static final String PRODUCTS_FILE =
+            "D:/KHAI THAC HANH VI KHACH HANG DUA TREN TMPBD/Data/products.csv";
+    static final String OUTPUT_FILE =
+            "D:/KHAI THAC HANH VI KHACH HANG DUA TREN TMPBD/Data/bakery_recs.js";
+ 
+    static final int TOTAL_TRANSACTIONS = 135686;   // số giao dịch của dữ liệu Bakery
+    static final double MINSUP = 0.0002;            // ngưỡng đã chạy CHARM (0,02%)
+    static final double MIN_CONFIDENCE = 0.1;       // chỉ giữ luật có confidence >= 10%
+    static final double MIN_LIFT = 1.0;             // chỉ giữ luật có lift >= 1
+    static final int MAX_ANTECEDENT = 3;            // vế trái tối đa 3 sản phẩm
+    // ==================================================
+ 
+    record Closed(int[] items, int support) {}
+ 
+    record Rule(int[] antecedent, int consequent, int supportCount, double confidence, double lift) {}
+ 
+    public static void main(String[] args) throws IOException {
+        List<Closed> closed = readClosed(Path.of(PATTERNS_FILE));
+        Map<Integer, String> names = readProducts(Path.of(PRODUCTS_FILE));
+ 
+        // Support của từng sản phẩm đơn lẻ
+        Map<Integer, Integer> itemSupport = new HashMap<>();
+        for (Closed c : closed) {
+            for (int item : c.items()) itemSupport.merge(item, c.support(), Math::max);
+        }
+ 
+        // Vế trái: mọi tập con 1..MAX_ANTECEDENT món của các tập đóng có từ 2 món trở lên
+        Set<List<Integer>> antecedents = new HashSet<>();
+        for (Closed c : closed) {
+            int n = c.items().length;
+            if (n < 2) continue;
+            for (int mask = 1; mask < (1 << n); mask++) {
+                int bits = Integer.bitCount(mask);
+                if (bits > MAX_ANTECEDENT || bits == n) continue;
+                List<Integer> a = new ArrayList<>();
+                for (int i = 0; i < n; i++) {
+                    if ((mask & (1 << i)) != 0) a.add(c.items()[i]);   // items đã sắp xếp tăng dần
+                }
+                antecedents.add(a);
+            }
+        }
+ 
+        // Sinh luật
+        List<Rule> rules = new ArrayList<>();
+        for (List<Integer> a : antecedents) {
+            int[] aa = a.stream().mapToInt(Integer::intValue).toArray();
+            int supA = 0;
+            Map<Integer, Integer> supWith = new HashMap<>();
+            for (Closed c : closed) {
+                if (!containsAll(c.items(), aa)) continue;
+                supA = Math.max(supA, c.support());
+                for (int b : c.items()) {
+                    if (!a.contains(b)) supWith.merge(b, c.support(), Math::max);
+                }
+            }
+            for (Map.Entry<Integer, Integer> e : supWith.entrySet()) {
+                double conf = e.getValue() / (double) supA;
+                double lift = conf / (itemSupport.get(e.getKey()) / (double) TOTAL_TRANSACTIONS);
+                if (conf >= MIN_CONFIDENCE && lift >= MIN_LIFT) {
+                    rules.add(new Rule(aa, e.getKey(), e.getValue(), conf, lift));
+                }
+            }
+        }
+        // Sắp xếp: lift giảm dần, rồi confidence, rồi support
+        rules.sort((x, y) -> {
+            int c = Double.compare(y.lift(), x.lift());
+            if (c != 0) return c;
+            c = Double.compare(y.confidence(), x.confidence());
+            if (c != 0) return c;
+            return Integer.compare(y.supportCount(), x.supportCount());
+        });
+ 
+        writeOutput(Path.of(OUTPUT_FILE), closed.size(), names, itemSupport, rules);
+ 
+        // Tóm tắt để bạn tự kiểm tra
+        Set<Integer> itemsWithRule = new TreeSet<>();
+        for (Rule r : rules) if (r.antecedent().length == 1) itemsWithRule.add(r.antecedent()[0]);
+        System.out.println("Số tập đóng đọc được : " + closed.size());
+        System.out.println("Số vế trái           : " + antecedents.size());
+        System.out.println("Số luật xuất ra      : " + rules.size());
+        System.out.println("Số món có gợi ý      : " + itemsWithRule.size() + " / " + names.size());
+        System.out.println("Đã ghi file          : " + OUTPUT_FILE);
+    }
+ 
+    static boolean containsAll(int[] sortedItems, int[] sortedQuery) {
+        int i = 0;
+        for (int q : sortedQuery) {
+            while (i < sortedItems.length && sortedItems[i] < q) i++;
+            if (i == sortedItems.length || sortedItems[i] != q) return false;
+            i++;
+        }
+        return true;
+    }
+ 
+    /** Mỗi dòng: "3 5 7 #SUP: 120". Bỏ qua các dòng tiêu đề bắt đầu bằng "@". */
+    static List<Closed> readClosed(Path path) throws IOException {
+        List<Closed> result = new ArrayList<>();
+        for (String line : Files.readAllLines(path, StandardCharsets.UTF_8)) {
+            line = line.trim();
+            if (line.isEmpty() || line.startsWith("@")) continue;
+            int p = line.indexOf("#SUP:");
+            if (p < 0) throw new IllegalArgumentException("Dòng sai định dạng: " + line);
+            int[] items = Arrays.stream(line.substring(0, p).trim().split("\\s+"))
+                    .mapToInt(Integer::parseInt).sorted().toArray();
+            int support = Integer.parseInt(line.substring(p + 5).trim());
+            result.add(new Closed(items, support));
+        }
+        return result;
+    }
+ 
+    /** Mỗi dòng: "mã,tên". Tách ở dấu phẩy đầu tiên nên tên có dấu phẩy vẫn đọc đúng. */
+    static Map<Integer, String> readProducts(Path path) throws IOException {
+        Map<Integer, String> names = new TreeMap<>();
+        for (String line : Files.readAllLines(path, StandardCharsets.UTF_8)) {
+            line = line.replace("\uFEFF", "").trim();
+            int comma = line.indexOf(',');
+            if (comma < 0) continue;
+            try {
+                names.put(Integer.parseInt(line.substring(0, comma).trim()), line.substring(comma + 1).trim());
+            } catch (NumberFormatException ignored) {
+                // bỏ qua dòng tiêu đề
+            }
+        }
+        return names;
+    }
+ 
+    static void writeOutput(Path out, int closedCount, Map<Integer, String> names,
+                            Map<Integer, Integer> itemSupport, List<Rule> rules) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("// Tạo tự động bởi ExportRecommendations.java - KHÔNG sửa tay\n");
+        sb.append("window.BAKERY_RECS = {\n");
+        sb.append("  \"meta\": {\"algorithm\":\"CHARM\",\"dataset\":\"French Bakery Daily Sales\"")
+                .append(",\"transactions\":").append(TOTAL_TRANSACTIONS)
+                .append(",\"minsup\":").append(MINSUP)
+                .append(",\"closedItemsets\":").append(closedCount)
+                .append(",\"minConfidence\":").append(MIN_CONFIDENCE)
+                .append(",\"minLift\":").append(MIN_LIFT)
+                .append(",\"ruleCount\":").append(rules.size()).append("},\n");
+ 
+        sb.append("  \"products\": {");
+        boolean first = true;
+        for (Map.Entry<Integer, String> e : names.entrySet()) {
+            if (!first) sb.append(",");
+            sb.append("\"").append(e.getKey()).append("\":\"").append(escape(e.getValue())).append("\"");
+            first = false;
+        }
+        sb.append("},\n");
+ 
+        sb.append("  \"itemSupport\": {");
+        first = true;
+        for (Map.Entry<Integer, Integer> e : new TreeMap<>(itemSupport).entrySet()) {
+            if (!first) sb.append(",");
+            sb.append("\"").append(e.getKey()).append("\":").append(e.getValue());
+            first = false;
+        }
+        sb.append("},\n");
+ 
+        // Món bán chạy nhất (dùng khi món được chọn chưa có gợi ý)
+        List<Map.Entry<Integer, Integer>> byPopularity = new ArrayList<>(itemSupport.entrySet());
+        byPopularity.sort((x, y) -> y.getValue() - x.getValue());
+        sb.append("  \"popular\": [");
+        for (int i = 0; i < Math.min(10, byPopularity.size()); i++) {
+            if (i > 0) sb.append(",");
+            sb.append(byPopularity.get(i).getKey());
+        }
+        sb.append("],\n");
+ 
+        sb.append("  \"rules\": [\n");
+        for (int i = 0; i < rules.size(); i++) {
+            Rule r = rules.get(i);
+            sb.append("    {\"a\":[");
+            for (int j = 0; j < r.antecedent().length; j++) {
+                if (j > 0) sb.append(",");
+                sb.append(r.antecedent()[j]);
+            }
+            sb.append("],\"b\":").append(r.consequent())
+                    .append(",\"sup\":").append(r.supportCount())
+                    .append(",\"conf\":").append(String.format(Locale.ROOT, "%.4f", r.confidence()))
+                    .append(",\"lift\":").append(String.format(Locale.ROOT, "%.4f", r.lift()))
+                    .append("}").append(i < rules.size() - 1 ? "," : "").append("\n");
+        }
+        sb.append("  ]\n};\n");
+        Files.writeString(out, sb.toString(), StandardCharsets.UTF_8);
+    }
+ 
+    static String escape(String s) {
+        return s.replace("\\", "\\\\").replace("\"", "\\\"");
+    }
+}
+ 

@@ -1,0 +1,118 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Using the ARFF format in the source code version of SPMF  (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000CC}
+.style3 {color: #0000CC; font-weight: bold; }
+.style4 {color: #339933}
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Converting an ARFF file into a transaction database in SPMF format   (<a href="documentation.html">SPMF documentation)</a></h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>The <strong>ARFF format</strong> is used by some data mining software. To provide  interoperability, <strong>t</strong>he GUI interface and command line interface of SPMF can read the
+  ARFF file format since version 0.93 of SPMF and this is totally
+  transparent to the user. When the user run an algorithm on an ARFF file, it is automatically converted. But if a file is used multiple times, it is desirable to convert the file  once to avoid the overhead of repeated conversions. Hence, this example explains how to convert an ARFF file to a transaction database in SPMF format so that it can be reused multiple times. This works only for algorithms that take a transaction database as input (see details below). </p>
+<h2>How to run this example? </h2>
+<p>To run this example: </p>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the &quot;<span class="style3">Convert_ARFF_file_to_transaction_database</span>&quot; algorithm<strong>, </strong> (2) select the input file <span class="highlight">&quot;</span><span class="style3">test.arff</span><span class="highlight">&quot;</span><strong>,</strong> (3) set the
+    output file name (e.g.<span class="highlight"> &quot;</span><span class="style3">output.txt</span><span class="highlight">&quot;</span>) (4)
+    set the maximum number of transactions to <span class="highlight">10 </span>and (5) click &quot;<span class="highlight">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+        <span class="highlight style1"><strong>java -jar spmf.jar run <span class="style3">Convert_ARFF_file_to_transaction_database</span>        test.arff output.txt 10 </strong></span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight">test.arff</span>. </li>
+  </ul>
+<h2><strong></strong><strong>What is the input? </strong></h2>
+<p>The input is a file in ARFF format. The file considered in this example is called<span class="highlight"> test.arff </span>and has the following content: </p>
+<p class="style4">@RELATION emp_proj</p>
+<p class="style4">@ATTRIBUTE ssn STRING<br>
+  @ATTRIBUTE pNumber STRING<br>
+  @ATTRIBUTE hours STRING<br>
+  @ATTRIBUTE eName STRING<br>
+  @ATTRIBUTE pName STRING<br>
+  @ATTRIBUTE pLocation STRING</p>
+<p class="style4">@DATA<br>
+  'ssn:333445555','pNumber:2' ,'hours:10.0','eName:Franklin Wong' ,'pName:ProductY','pLocation:Sugarland'<br>
+  'ssn:333445555','pNumber:3' ,'hours:10.0','eName:Franklin Wong' ,'pName:ProductZ','pLocation:Houston'<br>
+  'ssn:333445555','pNumber:10','hours:10.0','eName:Franklin Wong' ,'pName:ProductX','pLocation:Stafford'<br>
+  'ssn:333445555','pNumber:20','hours:10.0','eName:Franklin Wong' ,'pName:Reorganization','pLocation:Houston'<br>
+  'ssn:123456789','pNumber:1' ,'hours:32.5','eName:Ramesh Narayan','pName:ProductX','pLocation:Bellaire'<br>
+  'ssn:123456789','pNumber:2' ,'hours:7.5' ,'eName:Ramesh Narayan','pName:ProductY','pLocation:Sugarland'<br>
+  'ssn:666884444','pNumber:3' ,'hours:40.0','eName:Ramesh Narayan','pName:ProductZ','pLocation:Houston'<br>
+  'ssn:453453453','pNumber:1' ,'hours:20.0','eName:Joyce English' ,'pName:ProductX','pLocation:Bellaire'<br>
+  'ssn:453453453','pNumber:2' ,'hours:20.0','eName:Joyce English' ,'pName:ProductY','pLocation:Sugarland'</p>
+<p>The test ARFF file, named "emp_proj," represents a relational database linking employees to the projects they work on. It contains six attributes: a social security number (ssn) identifying each employee, a project number (pNumber), the number of hours worked on the project (hours), the employee's name (eName), the project name (pName), and the project location (pLocation). The dataset includes nine records involving three employees — Franklin Wong, Ramesh Narayan, and Joyce English — who are assigned to various projects such as ProductX, ProductY, ProductZ, and Reorganization, located in different cities including Sugarland, Houston, Stafford, and Bellaire. Each record describes one employee-project assignment along with the corresponding hours worked. When converted to SPMF's transaction database format, each record becomes a transaction where the attribute-value pairs (e.g., "ssn:333445555", "pName:ProductY") are treated as items.</p>
+<p>It is important to note that the full ARFF format is supported except that (1) the character
+      &quot;=&quot; is forbidden and (2) escape characters are not considered.</p>
+<h2><strong>What is the output? </strong></h2>
+<p>The output is a transaction database in SPMF format:</p>
+<p><span class="style4">@CONVERTED_FROM_ARFF<br>
+  @FILETYPE=&quot;Simple transaction database&quot;<br>
+  @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+  @RELATION_NAME=emp_proj=<br>
+  @ATTRIBUTE=ssn=STRING=<br>
+  @ATTRIBUTE=pNumber=STRING=<br>
+  @ATTRIBUTE=hours=STRING=<br>
+  @ATTRIBUTE=eName=STRING=<br>
+  @ATTRIBUTE=pName=STRING=<br>
+  @ATTRIBUTE=pLocation=STRING=<br>
+  @ITEM=1=ssn='ssn:333445555'<br>
+  @ITEM=2=pNumber='pNumber:2'<br>
+  @ITEM=3=hours='hours:10.0'<br>
+  @ITEM=4=eName='eName:Franklin Wong'<br>
+  @ITEM=5=pName='pName:ProductY'<br>
+  @ITEM=6=pLocation='pLocation:Sugarland'<br>
+  1 2 3 4 5 6<br>
+  @ITEM=7=pNumber='pNumber:3'<br>
+  @ITEM=8=pName='pName:ProductZ'<br>
+  @ITEM=9=pLocation='pLocation:Houston'<br>
+  1 3 4 7 8 9<br>
+  @ITEM=10=pNumber='pNumber:10'<br>
+  @ITEM=11=pName='pName:ProductX'<br>
+  @ITEM=12=pLocation='pLocation:Stafford'<br>
+  1 3 4 10 11 12<br>
+  @ITEM=13=pNumber='pNumber:20'<br>
+  @ITEM=14=pName='pName:Reorganization'<br>
+  1 3 4 9 13 14<br>
+  @ITEM=15=ssn='ssn:123456789'<br>
+  @ITEM=16=pNumber='pNumber:1'<br>
+  @ITEM=17=hours='hours:32.5'<br>
+  @ITEM=18=eName='eName:Ramesh Narayan'<br>
+  @ITEM=19=pLocation='pLocation:Bellaire'<br>
+  11 15 16 17 18 19<br>
+  @ITEM=20=hours='hours:7.5'<br>
+  2 5 6 15 18 20<br>
+  @ITEM=21=ssn='ssn:666884444'<br>
+  @ITEM=22=hours='hours:40.0'<br>
+  7 8 9 18 21 22<br>
+  @ITEM=23=ssn='ssn:453453453'<br>
+  @ITEM=24=hours='hours:20.0'<br>
+  @ITEM=25=eName='eName:Joyce English'<br>
+  11 16 19 23 24 25<br>
+  2 5 6 23 24 25</span></p>
+<p>The file begins with a header section containing metadata about the conversion. It starts with the tag @CONVERTED_FROM_ARFF, followed by the relation name (@RELATION_NAME=emp_proj=) and the list of attributes (@ATTRIBUTE) corresponding to the six fields from the original ARFF file. </p>
+<p>Each unique attribute-value pair encountered in the data is then assigned a unique integer identifier, declared using @ITEM tags (e.g., @ITEM=1=ssn='ssn:333445555', @ITEM=2=pNumber='pNumber:2', etc.). These @ITEM declarations appear incrementally throughout the file as new attribute-value pairs are encountered for the first time. </p>
+<p>Each of the nine original records is converted into a transaction represented as a line of space-separated integers, where each integer corresponds to one of the attribute-value pairs present in that record. For example, the first transaction "1 2 3 4 5 6" represents Franklin Wong working 10 hours on ProductY in Sugarland. Importantly, the conversion reuses item identifiers across transactions when the same attribute-value pair appears in multiple records, which allows pattern mining algorithms to discover associations between shared attribute values across different employee-project assignments.</p>
+<p>The converted file can then be taken as input by frequent itemset mining and association rule mining algorithms such as Apriori and FPGrowth.
+  <!----------END------>You may see the other examples of the documentation to learn how to run such algorithms. 
+</p>
+<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

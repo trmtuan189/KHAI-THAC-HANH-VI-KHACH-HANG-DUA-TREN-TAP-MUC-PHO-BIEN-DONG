@@ -1,0 +1,311 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Mining On-Shelf High-Utility Itemsets from a Transaction Database using the FOSHU Algorithm (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	  </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+<h1>Mining On-Shelf High-Utility Itemsets from a Transaction Database using the FOSHU Algorithm  (<a href="documentation.html">SPMF documentation</a>) </h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to run the <strong>FOSHU algorithm</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example?</h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight">FOSHU</span>&quot;</strong> algorithm<strong>, </strong> (2) select the input file <strong>&quot;<span class="highlight">DB_FOSHU.txt</span><span class="highlight">&quot;</span></strong>,
+    (3) set the output file name (e.g. "<span class="highlight">output.txt</span>")
+    (4) set the minimum utility ratio to <strong>0.8</strong> and
+    (5) click "<span class="highlight">Run algorithm</span>".</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="highlight">java -jar spmf.jar run<strong> FOSHU DB_FOSHU.txt output.txt 0.8</strong> </span> in a folder containing <span class="highlight">spmf.jar</span> and the example input file <span class="highlight"><strong>DB_FOSHU.txt</strong></span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">"MainTestFOSHU_saveToFile.java"</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is <strong>FOSHU</strong>?</h2>
+<p><strong>FOSHU </strong> (Fournier-Viger et al, 2015) is an
+    algorithm for discovering<strong> high-utility itemsets </strong>in a
+    transaction database containing utility information and information
+    about the <strong>time periods where items</strong> are sold. The task
+    of<strong> on-shelf high-utility itemset mining </strong>is an
+    extension of the<strong> task of high utility </strong>i<strong>temset
+      mining</strong>.</p>
+  <p>The FOSHU algorithm for on-shelf-high-utility itemset mining is
+    interesting because it addresses two limitations of high-utility
+    itemset mining algorithms. First, most algorithms cannot handle
+    databases where items may have negative unit profit/weight. But such
+    items often occur in real-life transaction databases. For example, it
+    is common that a retail store will sell items at a loss to stimulate
+    the sale of other related items or simply to attract customers to their
+    retail location. If classical HUIM algorithms are applied on database
+    containing items with negative unit profit, they can generate an
+    incomplete set of high-utility itemsets. Second, most algorithms
+    consider that items have the same shelf time, i.e. that all item are on
+    sale for the same time period. However, in real-life some items are
+    only sold during some short time period (e.g. the summer). Algorithms
+    ignoring the shelf time of items have a bias toward items having more
+    shelf time since they have more chance to generate a high profit.</p>
+  <p>FOSHU is the state-of-the-art algorithm for on-shelf high-utility
+    itemset mining. It was shown to outperform TS-HOUN by up to three
+    orders of magnitude in terms of execution time.</p>
+  <p>This is the original implementation of FOSHU.</p>
+
+  <h2>What is the input?</h2>
+  <p><strong>FOSHU</strong> takes as input a transaction database
+    with information about the utility of items and their shelf time time,
+    and a minimum utility threshold <em>min_utility ratio </em>(a
+    positive double value in the [0,1] interval)<em>.</em> For example,
+    let's consider the following database consisting of 5 transactions
+    (t1,t2, ..., t5) and 7 items (1, 2, 3, 4, 5, 6, 7). This database is
+    provided in the text file "<strong>DB_FOSHU.txt</strong>" in the
+    package <strong>ca.pfv.spmf.tests </strong>of the SPMF distribution<strong>.</strong></p>
+  <table align="center" border="1" width="1018">
+    <tbody>
+      <tr>
+        <td width="56"><strong>Transaction</strong></td>
+        <td width="156"><strong>Items</strong></td>
+        <td width="190"><strong>Transaction utility (positive)</strong></td>
+        <td width="291"><strong>Item utilities for this transaction</strong></td>
+        <td width="291"><strong>Time period</strong></td>
+      </tr>
+      <tr>
+        <td><strong>t1</strong></td>
+        <td>1 3 4</td>
+        <td>3</td>
+        <td>-5 1 2</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td><strong>t2</strong></td>
+        <td>1 3 5 7</td>
+        <td>17</td>
+        <td>-10 6 6 5</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td><strong>t3</strong></td>
+        <td>1 2 3 4 5 6</td>
+        <td>25</td>
+        <td>-5 4 1 12 3 5</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td><strong>t4</strong></td>
+        <td>2 3 4 5</td>
+        <td>20</td>
+        <td>8 3 6 3</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td><strong>t5</strong></td>
+        <td>2 3 5 7</td>
+        <td>11</td>
+        <td>4 2 3 2</td>
+        <td>2</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Each line of the <strong>database</strong> represents a
+    transaction and contains the following information: </p>
+  <ul>
+    <li> a set of items (the second column of the table), </li>
+    <li>the sum of the  utilities (e.g. profit) of  items having positive utilities in this
+      transaction (the third column of the table),</li>
+    <li>the utility of each item for this transaction (e.g. profit
+      generated by this item for this transaction)(the fourth column of the
+      table).</li>
+    <li>the time period where this transaction occurred (the fifth
+      column). </li>
+  </ul>
+  <p>Note that the value in the third column for each line is the sum
+    of the positive values in the fourth column. Moreoever, note that utility
+    values may be positive or negative integers. Time periods are values
+    numbered 0,1,2,3..., which may represent for example periods such as
+    "summer", "fall", "winter" and "spring".</p>
+  <p>What are real-life examples of such a database? There are several
+    applications in real life. The main application is for customer
+    transaction databases. Imagine that each transaction represents the
+    items purchased by a customer. The first customer named "<strong>t1</strong>"
+    bought items 1, 3 and 4. The amount of profit generated by the sale of
+    each of these item is respectively -5 $, 1 $ and 2 $. The total amount
+    of money spent in this transaction is -5 + 1 + 2 = 3 $. This
+    transaction was done during time period "0", which may for example
+    represents the summer.</p>
+
+  <h2>What is the output?</h2>
+  <p><em> </em>The output of the <strong>FOSHU </strong>algorithm is
+    the set of <strong>on-shelf high utility itemset</strong>s having a
+    relative utility no less than the<strong> <em>min_utility_ratio</em></strong> threshold set by the user. To explain what is an on-shelf high utility
+    itemset, it is necessary to review some definitions. An <strong>itemset</strong> is an unordered set of distinct items. The <strong>utility of an
+      itemset in a transaction </strong>is the sum of the utility of its
+    items in the transaction. For example, the utility of the itemset {1,
+    3, 4} in transaction t1 is -5 + 1 + 2 = 3, and the utility of {1, 3, 4}
+    in transaction t3 is -5 + 1 + 12 = 7. The<strong> utility of an itemset
+      in a database</strong> is the sum of its utility in all transactions
+    where it appears. For example, the utility of {1, 3, 4} in the database
+    is the utility of {1, 3, 4} in t1 plus the utility of {1, 3, 4} in t3,
+    for a total of -2 + 8 = 6. The <strong>relative utility of an itemset </strong>is
+    the utility of that itemset divided by the sum of the transaction
+    utilities for the time period where the itemset was sold (including the negative utilities. For example,
+    itemset {1, 3, 4} was sold in time periods "0" and "1". The total
+    utility of time period "0" and "1" is 5 + 40 = 45. Thus, the
+    relative utility of {1, 3, 4} is 6 / 45 = 0.13. 
+    The relative utility
+    can be interpreted as a ratio of the profit generated by a given
+    itemset during the time period when it was sold.</p>
+  <p>A<strong> on-shelf high utility itemset</strong> is an itemset
+    such that its relative utility is no less than <em>min_utility_ratio.</em> For example, if we run<strong> FOSHU </strong>with a<strong> minimum
+      utility of 0.8</strong>, we obtain the following <strong>on-shelf
+        high-utility itemsets</strong>:</p>
+
+<table align="center" border="1" width="329">
+  <tbody>
+    <tr>
+      <td width="113"><strong> itemsets</strong></td>
+      <td width="97"><strong>utility ($)</strong></td>
+      <td width="97"><strong>relative utility</strong></td>
+    </tr>
+    <tr>
+      <td>{2, 5, 7}</td>
+      <td>9 $</td>
+      <td>0.81</td>
+    </tr>
+    <tr>
+      <td>{2, 3, 5, 7}</td>
+      <td>11 $</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>{5, 7}</td>
+      <td>16 $</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>{3, 5, 7}</td>
+      <td>24 $</td>
+      <td>1.5</td>
+    </tr>
+    <tr>
+      <td>{1, 3, 5, 7}</td>
+      <td>7 $</td>
+      <td>1.4</td>
+    </tr>
+    <tr>
+      <td>{3, 7}</td>
+      <td>15 $</td>
+      <td>0.9375</td>
+    </tr>
+    <tr>
+      <td>{2, 4, 5}</td>
+      <td>36 $</td>
+      <td>0.9</td>
+    </tr>
+    <tr>
+      <td>{2, 3, 4, 5}</td>
+      <td>40 $</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>{2, 3, 4}</td>
+      <td>34 $</td>
+      <td>0.85</td>
+    </tr>
+  </tbody>
+</table>
+
+  <p>If the database is a transaction database from a store, we could
+    interpret these results as all the groups of items bought together that
+    generated a ratio of at least  0.8 on the total profit during the time period when
+    they were sold. </p>
+
+  <h2>Input file format</h2>
+  <p>The <strong> input file format</strong> of<strong> FOSHU </strong>is
+    defined as follows. It is a text file. Each lines represents a
+    transaction. Each line is composed of three sections, as follows.</p>
+  <ul>
+    <li>First, the items contained in the transaction are listed. An
+      item is represented by a positive integer. Each item is separated from
+      the next item by a single space. It is assumed that all items within a
+      same transaction (line) are sorted according to a total order (e.g.
+      ascending order) and that no item can appear twice within the same
+      transaction.</li>
+    <li>Second, the symbol ":" appears and is followed by the
+      transaction utility (an integer).</li>
+    <li>Third, the symbol ":" appears and is followed by the utility of
+      each item in this transaction (an integer), separated by single spaces.</li>
+    <li>Fourth, the symbol ":" appears and is followed by a positive
+      integer such as 0,1,2.... indicating the time period of the transaction</li>
+  </ul>
+  <p>For example, for the previous example, the input file is defined
+    as follows:</p>
+  
+    <p>1 3 4:3:-5 1 2:0<br>
+      1 3 5 7:17:-10 6 6 5:0<br>
+      1 2 3 4 5 6:25:-5 4 1 12 3 5:1<br>
+      2 3 4 5:20:8 3 6 3:1<br>
+      2 3 5 7:11:4 2 3 2:2 </p>
+  
+  <p>Consider the first line. It means that the transaction {1,3, 4}
+    has a total utility of 3 and that items 1, 3 and 4 respectively have a
+    utility of -5, 1 and 2 in this transaction. The following lines follow
+    the same format.</p>
+
+  <h2>Output file format</h2>
+  <p>The <strong>output file format</strong> of<strong> FOSHU</strong>is
+    defined as follows. It is a text file, where each line represents a <strong>on-shelf
+      high utility itemset</strong>. On each line, the items of the itemset
+    are first listed. Each item is represented by an integer, followed by a
+    single space. After, all the items, the keyword " #UTIL: " appears and
+    is followed by the utility of the itemset. Then, the keyword "#RUTIL:"
+    appears followed by the relative utility of this itemset. For example,
+    we show below the output file for this example. </p>
+  <p> 7 2 5 #UTIL: 9 #RUTIL: 0.8181818181818182 <br>
+    7 2 5 3 #UTIL: 11 #RUTIL: 1.0 <br>
+    7 5 #UTIL: 16 #RUTIL: 1.0 <br>
+    7 5 3 #UTIL: 24 #RUTIL: 1.5 <br>
+    7 5 3 1 #UTIL: 7 #RUTIL: 1.4 <br>
+    7 3 #UTIL: 15 #RUTIL: 0.9375 <br>
+    4 2 5 #UTIL: 36 #RUTIL: 0.9 <br>
+    4 2 5 3 #UTIL: 40 #RUTIL: 1.0 <br>
+    4 2 3 #UTIL: 34 #RUTIL: 0.85 </p>
+  <p> For example, the second line indicates that the itemset {2, 3, 5,
+    7} has a utility of 11 $ and a relative utility of 1. The other
+    lines follows the same format.</p>
+
+  <h2>Performance</h2>
+  <p><strong>On-shelf high utility itemset mining </strong>is a more
+    difficult problem than frequent itemset mining. Therefore, <strong>on-shelf
+      high-utility itemset mining</strong> algorithms are generally slower
+    than frequent itemset mining algorithms. The <strong>FOSHU (2015) </strong>algorithm
+    is up to 1000 times faster than TS-HOUN, the previous state-of-the-art
+    algorithm for on-shelf high-utility itemset mining.</p>
+
+  <h2>Implementation details</h2>
+  <p>The version of <strong>FOSHU </strong>offered in SPMF is the
+    original implementation.</p>
+
+  <h2>Where can I get more information about the FOSHU algorithm?</h2>
+  <p>This is the reference of the article describing the <strong>FOSHU</strong> algorithm:</p>
+  <p><em>Fournier-Viger, P., Zida, S. (2015). <a href="https://www.philippe-fournier-viger.com/FOSHU_on-shelf-high-utility-itemset-mining.pdf">FOSHU:
+    Faster On-Shelf High Utility Itemset Mining&#8211; with or without negative
+    unit profit.</a> Proc. 30th Symposium on Applied Computing (ACM
+    SAC 2015). ACM Press, pp. 857-864.</em></p>
+
+
+  <p>Besides, for a general overview of <strong> high utility itemset mining</strong>, you may read this <a rel="nofollow" href="https://www.philippe-fournier-viger.com/Survey_high_utility_itemset2019_draft.pdf">survey paper</a>. </p>
+
+<!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>

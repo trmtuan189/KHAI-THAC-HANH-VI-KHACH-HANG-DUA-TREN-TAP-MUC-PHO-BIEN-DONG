@@ -1,0 +1,124 @@
+	<!doctype html>
+	<html lang="en">
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example: Calculate Statistics for an Uncertain Transaction Database   (SPMF - Java)</title>
+		<link rel="stylesheet" href="docstyle.css"/>
+	    <style type="text/css">
+<!--
+.style1 {color: #0000CC}
+.style3 {color: #0000CC; font-weight: bold; }
+-->
+        </style>
+    </head>
+	  <body>
+		<div width="100%" class="container">
+			  <div class="content">
+				<!----------START------>
+
+<h1>Calculate Statistics for an Uncertain Transaction Database (<a href="documentation.html">SPMF documentation</a>)</h1>
+<!-------------  (3) Change the name of the algorithm here: --------------------------------->
+<p>This example explains how to <strong> calculate statistics about an Uncertain Transaction Database</strong> using the <a href="https://www.philippe-fournier-viger.com/spmf/">SPMF open-source data mining library</a>.</p>
+<!--------------(4) Insert the example here:------------->
+<h2>How to run this example? </h2>
+<ul>
+  <li><strong>If you are using the graphical interface, </strong>(1)
+    choose the <strong>&quot;<span class="highlight style1">Calculate_stats_for_an_uncertain_transaction_database</span>&quot;</strong> algorithm<strong>, </strong> (2) choose the input file <span class="style1"><strong></strong>contextUncertain.txt</span> (3) click &quot;<span class="style1">Run algorithm</span>&quot;.</li>
+  <li><strong>If you want to execute this example from the command line</strong>,
+    then execute this command: <br>
+    <span class="style3">java -jar spmf.jar run Calculate_stats_for_an_uncertain_transaction_database contextUncertain.txt
+      no_output_file</span> in a folder containing <span class="highlight">spmf.jar</span> and the input file <span class="highlight"><span class="style1">contextUncertain.txt</span></span>.</li>
+  <li><strong>If you are using the source code version of SPMF, </strong>launch
+    the file <strong><span class="highlight">&quot;</span><span class="style1">MainTestStatsUncertainTransactionDB.java</span><span class="highlight">&quot;</span></strong> in the package <span class="highlight"><strong>ca.pfv.SPMF.tests</strong></span>. </li>
+</ul>
+<h2>What is this tool?</h2>
+<p>This tool is a tool for generating statistics about an Uncertain Transaction Database. This is a type of data taken as input by algorithms such as UApriori. This tool  can be used to know for example if the database is dense
+    or sparse before applying a data mining algorithms. </p>
+
+<h2>What is the input?</h2>
+<p><strong>This tool </strong> takes as input an <strong>uncertain</strong> <strong>transaction database</strong> containing probabilities. A<strong> transaction database</strong> is a set of transactions where each transaction is a set of items. In this type of data, we assume that each item in a transaction is annotated with an existential probability. For example, let's consider the following transaction database, consisting of 4 transactions (t1,t2...t5) and 5 items (called 1,2,3,4,5). The transaction t1 contains item 1 with a probability of 0.5, item 2 with a probability of 0.4, item 4 with a probability of 0.3 and item 5 with a probability of 0.7. This database is provided in the file "<span class="style1"><strong>contextUncertain.txt</strong>"</span> of the SPMF distribution:</p>
+
+<table align="center" border="1" width="200">
+  <tbody>
+    <tr>
+      <td><br></td>
+      <td><strong>1</strong></td>
+      <td><strong>2</strong></td>
+      <td><strong>3</strong></td>
+      <td><strong>4</strong></td>
+      <td><strong>5</strong></td>
+    </tr>
+    <tr>
+      <td><strong>t1</strong></td>
+      <td>0.5</td>
+      <td>0.4</td>
+      <td><br></td>
+      <td>0.3</td>
+      <td>0.7</td>
+    </tr>
+    <tr>
+      <td><strong>t2</strong></td>
+      <td><br></td>
+      <td>0.5</td>
+      <td>0.4</td>
+      <td><br></td>
+      <td>0.4</td>
+    </tr>
+    <tr>
+      <td><strong>t3</strong></td>
+      <td>0.6</td>
+      <td>0.5</td>
+      <td><br></td>
+      <td>0.1</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <td><strong>t4</strong></td>
+      <td>0.7</td>
+      <td>0.4</td>
+      <td>0.3</td>
+      <td><br></td>
+      <td>0.9</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>What is the output?</h2>
+<p>The output is statistics about the Uncertain Transaction Database. For example,
+    if we use the tool on the previous Uncertain Transaction Database given as example,
+    we get the following statistics:</p>
+
+<p>Number of transactions : 4<br>
+  File contextUncertain.txt<br>
+  Number of distinct items: 5<br>
+  Smallest item id: 1<br>
+  Largest item id: 5<br>
+  Average number of items per transaction: 3.75 standard deviation: 0.4330127018922193 variance: 0.18749999999999997<br>
+  Average item support in the database: 3.0 standard deviation: 0.8944271909999159 variance: 0.7999999999999999 min value: 2 max value: 4<br>
+  Average expected support probability: 0.48000000000000004 standard deviation: 0.18690461025168248 variance: 0.03493333333333333 min value: 0.1 max value: 0.9<br>
+  Database density: 75.0 %
+  <br>
+  <br>
+Note: the  database density is calculated as the average transaction length divided by the number of distinct items.  </p>
+<h2>Input file format</h2>
+<p>The <strong>input file format</strong> is defined as follows. It is a text file. An item is represented by a positive integer. Each item is associated with a probability indicated as a double value between parenthesis. A transaction is a line in the text file. In each line (transaction), each item is immediately followed by its probability between parenthesis and a single space. It is assumed that all items within a same transaction (line) are sorted according to a total order (e.g. ascending order) and that no item can appear twice within the same line. Probabilities should be greater than 0 and not more than 1.</p>
+  
+    <p>For example, for the previous example, the input file is defined as follows:</p>
+    <p>@FILETYPE=&quot;Uncertain transaction database&quot;<br>
+      @SOURCE=&quot;SPMF SOFTWARE https://philippe-fournier-viger.com/spmf/&quot;<br>
+      1(0.5) 2(0.4) 4(0.3) 5(0.7)<br>
+      2(0.5) 3(0.4) 5(0.4)<br>
+      1(0.6) 2(0.5) 4(0.1) 5(0.5)<br>
+      1(0.7) 2(0.4) 3(0.3) 5(0.9)</p>
+    <p>The first two lines are optional metadata. The first line indicate the type of file and the second line describes the source of the data. Then it is the data section.The first transaction represents the itemsets {1, 2, 4, 5} where items 1, 2, 4 and 5 respectively have the probabilities 0.5, 0.4, 0.3 and 0.7.</p>
+    <!----------END------>
+				<div class="footer">
+				  <p><a href="documentation.html">&lt;&lt; Return to table of contents of SPMF documentation</a></p>
+				  <p>Copyright &copy; 2008-2026 <a href="https://www.philippe-fournier-viger.com">Philippe Fournier-Viger</a>. All rights reserved.</p>
+				</div>
+		  </div>
+	  </div>
+		</table>
+	  </body>
+	</html>
